@@ -1,18 +1,25 @@
+{% set setup_data = load_setup_py_data() %}
+
 package:
   name: cml_data_readers
-  version: 0.1.0
+  version: {{ setup_data['version'] }}
 
 source:
   git_url: ../
+  git_rev: {{ 'v' + setup_data['version'] }}  # always use tagged version
 
 build:
   # If this is a new build for the same version, increment the build
   # number. If you do not include this key, it defaults to 0.
-  number: 0
+  number: {{ environ.get("PKG_BUILDNUM", 0) }}
 
   # Specify additional env vars pass through
   # script_env:
   #   - ENV_VAR_HERE
+
+# Common dependencies that need to be listed in both the build and run
+# subsections of the requirements section.
+{% set deps = [] %}
 
 requirements:
   build:
@@ -31,5 +38,6 @@ test:
 
 about:
   home: https://github.com/pennmem/cml_data_readers
+  summary: {{ setup_data['description'] }}
   # license: FIXME
   # license_file: FIXME
