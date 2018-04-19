@@ -10,7 +10,8 @@ from cml_data_readers import constants
 class TestPathFinder:
     @classmethod
     def setup_class(cls):
-        cls.finder = PathFinder('R1389J', rootdir='/Volumes/RHINO/', experiment='catFR5', session=1,
+        cls.finder = PathFinder('R1389J', rootdir='/Volumes/RHINO/',
+                                experiment='catFR5', session=1,
                                 localization=0, montage=0)
 
     @pytest.mark.parametrize("file_type", constants.localization_files)
@@ -39,4 +40,3 @@ class TestPathFinder:
     def test_invalid_file_request(self):
         with pytest.raises(InvalidFileTypeRequest):
             self.finder.find_file('fake_file_type')
-
