@@ -19,6 +19,8 @@
 #
 import os
 import sys
+from cml_data_readers import version_info
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -62,7 +64,7 @@ author = 'Penn Computational Memory Lab'
 # built documents.
 #
 # The short X.Y version.
-from cml_data_readers import version_info
+
 version = '.'.join(version_info[:2])
 # The full version, including alpha/beta/rc tags.
 release = '.'.join(version_info)
@@ -139,7 +141,6 @@ latex_documents = [
      'Penn Computational Memory Lab', 'manual'),
 ]
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -148,7 +149,6 @@ man_pages = [
     (master_doc, 'cml_data_readers', 'cml_data_readers Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -160,9 +160,6 @@ texinfo_documents = [
      author, 'cml_data_readers', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
