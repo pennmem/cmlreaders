@@ -1,7 +1,11 @@
 import pytest
-from cml_data_readers.path_finder import PathFinder
+from cml_data_readers.path_finder import PathFinder, InvalidFileTypeRequest
 from cml_data_readers import constants
 
+
+# Test case for multiple timestamped directories: R1354E PS4_FR5
+# Test case for original classifier
+# No timestamped directories case
 
 class TestPathFinder:
     @classmethod
@@ -32,6 +36,7 @@ class TestPathFinder:
             assert file_path is not None
         return
 
-# Test case for multiple timestamped directories: R1354E PS4_FR5
-# Test case for original classifier
-# No timestamped directories case
+    def test_invalid_file_request(self):
+        with pytest.raises(InvalidFileTypeRequest):
+            self.finder.find_file('fake_file_type')
+
