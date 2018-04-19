@@ -2,7 +2,6 @@
 import os
 import glob
 from .constants import *
-from django.conf import settings
 
 
 class InvalidFileTypeRequest(Exception):
