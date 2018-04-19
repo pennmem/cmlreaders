@@ -1,0 +1,35 @@
+package:
+  name: cml_data_readers
+  version: 0.1.0
+
+source:
+  git_url: ../
+
+build:
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  number: 0
+
+  # Specify additional env vars pass through
+  # script_env:
+  #   - ENV_VAR_HERE
+
+requirements:
+  build:
+    # We default to Python 3.6 if no environment variable is set
+    - python {{ python }}
+    - setuptools
+
+  run:
+    - python {{ python }}
+    # - vs2015_runtime  [win]
+
+test:
+  # Test that we can import the package
+  imports:
+    - cml_data_readers
+
+about:
+  home: https://github.com/pennmem/cml_data_readers
+  # license: FIXME
+  # license_file: FIXME
