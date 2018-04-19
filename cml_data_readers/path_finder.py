@@ -4,6 +4,11 @@ import glob
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
 
 class InvalidFileTypeRequest(Exception):
     """ Exception for requests that are not supported """

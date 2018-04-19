@@ -4,7 +4,7 @@ rhino_paths = {
     ## Localization-level (subject + localization)
     'voxel_coordinates': ["data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt"],
     'prior_stim_results': ['data10/eeg/freesurfer/subjects/{subject_localization}/prior_stim/{subject}_allcords.csv'],
-    'electrode_coordinates': ['data10/RAM/subjects/{subject_localization}/tal/coords/electrode_coordinates.csv', 
+    'electrode_coordinates': ['data10/RAM/subjects/{subject_localization}/tal/coords/electrode_coordinates.csv',
                               'data10/RAM/subjects/{subject_localization}/tal/electrode_coordinates.csv'],
     'jacksheet': ['data10/RAM/subjects/{subject_localization}/docs/jacksheet.txt'],
     'electrode_categories': ['data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt'],
@@ -13,8 +13,8 @@ rhino_paths = {
     'leads': ['data10/RAM/subjects/{subject_localization}/tal/leads.txt'],
     'classifier_excluded_leads': ['data10/RAM/subjects/{subject_localization}/tal/classifier_excluded_leads.txt'],
     'localization': ['protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json'],
-    'wavefront_brain_objects': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/*.obj'],
-    'brain_object': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/{brain_piece}.obj'],
+    # 'wavefront_brain_objects': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/*.obj'],
+    # 'brain_object': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/{brain_piece}.obj'],
     ## Montage level (subject + localization + montage)
     'pairs': ['protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json'],
     'contacts': ['protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json'],
@@ -46,9 +46,9 @@ rhino_paths = {
 
 # Maintain separate lists of the file types depending on what information is
 # required to be able to find them
-localization_files = ['voxel_coordinates', 'prior_stim_results', 
-                      'electrode_coordinates', 'jacksheet', 'area', 
-                      'good_leads', 'leads', 'classifier_excluded_leads', 
+localization_files = ['voxel_coordinates', 'prior_stim_results',
+                      'electrode_coordinates', 'jacksheet', 'area',
+                      'good_leads', 'leads', 'classifier_excluded_leads',
                       'localization', 'electrode_categories']
 
 # All files that change when a montage changes
@@ -58,13 +58,13 @@ montage_files = ['pairs', 'contacts']
 subject_files = ['target_selection_file', 'trained_classifier']
 
 # All files that vary at the session level
-session_files = ['session_summary', 'classifier_summary', 'math_summary', 
+session_files = ['session_summary', 'classifier_summary', 'math_summary',
                  'used_classifier', 'excluded_pairs', 'all_pairs',
-                 'experiment_log','session_log', 'event_log', 'experiment_config', 
+                 'experiment_log','session_log', 'event_log', 'experiment_config',
                  'raw_eeg', 'odin_config']
 
 # All files that require some extra work to identify
-host_pc_files = ['event_log', 'experiment_config', 'raw_eeg', 'odin_config', 
+host_pc_files = ['event_log', 'experiment_config', 'raw_eeg', 'odin_config',
                  'used_classifier', 'excluded_pairs', 'all_pairs']
 
 # Files related to in-session classifier retraining
