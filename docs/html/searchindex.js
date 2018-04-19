@@ -1,0 +1,1 @@
+Search.setIndex({docnames:["index"],envversion:53,filenames:["index.rst"],objects:{},objnames:{},objtypes:{},terms:{},titles:["Computation Memory Lab Data Readers"],titleterms:{comput:0,data:0,lab:0,memori:0,reader:0}})
