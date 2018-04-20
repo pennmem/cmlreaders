@@ -4,6 +4,8 @@ import glob
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files
 
+__all__ = ['PathFinder']
+
 try:
     FileNotFoundError
 except NameError:
@@ -15,7 +17,7 @@ class InvalidFileTypeRequest(Exception):
 
 
 class PathFinder(object):
-    """ Class for finding files on RHINO """
+
     def __init__(self, subject, rootdir='/', experiment=None, session=None,
                  localization=None, montage=None):
         """ Instantiates a PathFind object using the known information
