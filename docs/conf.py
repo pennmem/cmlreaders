@@ -19,7 +19,7 @@
 #
 import os
 import sys
-from cml_data_readers import version_info
+
 
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -64,7 +64,7 @@ author = 'Penn Computational Memory Lab'
 # built documents.
 #
 # The short X.Y version.
-
+from cml_data_readers import version_info
 version = '.'.join(version_info[:2])
 # The full version, including alpha/beta/rc tags.
 release = '.'.join(version_info)
@@ -93,8 +93,8 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'nature'
-
+#html_theme = 'nature'
+html_theme = "sphinx_rtd_theme"
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
