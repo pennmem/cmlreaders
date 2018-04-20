@@ -108,12 +108,12 @@ class PathFinder(object):
         """
         subject_localization = self.subject
 
-        if type(self.localization) == int:
-            localization = str(self.localization)
+        localization = (self.localization if isinstance(self.localization,str)
+            else str(self.localization))
 
         # Some files/locations append the localization number, so to abstract
         # that away from the user, we handle this internally
-        if localization != '0':
+        if localization != '0' and self.localization is not None:
             subject_localization = "_".join([self.subject, self.localization])
 
         paths_to_check = self._paths[file_type]
