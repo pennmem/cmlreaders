@@ -1,6 +1,7 @@
 """ Module for mapping file types to their locations on RHINO """
 import os
 import glob
+import warnings
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files
 
@@ -156,8 +157,8 @@ class PathFinder(object):
             raise RuntimeError("No timestamped folder found in host_pc folder")
 
         if len(timestamped_directories) > 1:
-            raise RuntimeWarning("Multiple timestamped directories found. The"
-                                 " most recent will be returned")
+            warnings.warn("Multiple timestamped directories found. The"
+                                 " most recent will be returned",RuntimeWarning)
 
         # Only return the values from the final "/" to the end
         latest = timestamped_directories[0]
@@ -186,7 +187,7 @@ class PathFinder(object):
                                     "of the expected locations")
 
         if len(found_files) > 1:
-            raise RuntimeWarning('Multiple files found. Returning the first '
-                                 'file found')
+            warnings.warn('Multiple files found. Returning the first '
+                                 'file found',RuntimeWarning)
 
         return found_files[0]
