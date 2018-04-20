@@ -3,4 +3,5 @@ pytest-cov
 codecov
 sphinx
 flake8
+sphinx_rtd_theme
 

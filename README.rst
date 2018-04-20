@@ -53,7 +53,7 @@ The goal of the cml_data_readers package is twofold:
 naming conventions, locations, and file types have changed over time. To the
 greatest extent possible, end users should be allowed to remain oblivious to
 these inconsistencies. This will be achieved primarily through the
-:class:`PathFinder`
+:class:`cml_data_readers.PathFinder`
 
 2. Provide a unified API for reading/writing data that is lab-specific. In its
 current state, lab members use a variety of different readers largely located
@@ -71,7 +71,7 @@ to be read, i.e. subject/experiment/session/montage/etc.
 2. Loading the desired data, which returns a generic data object type
 3. Converting the generic data object type into the desired format
 
-Internally, this generic reader class will use :class:`PathFinder` and the
+Internally, this generic reader class will use :class:`cml_data_readers.PathFinder` and the
 data-specific readers to retrieve the data from disk and store in memory. To be
 more concerete, a session could look like the following:
 
