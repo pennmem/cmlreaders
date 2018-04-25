@@ -152,7 +152,6 @@ class PathFinder(object):
                                                          base_folder_path))
 
         # Sort such that most recently modified appears first
-        print(timestamped_directories)
         timestamped_directories = sorted(timestamped_directories,
                                          key=os.path.getmtime, reverse=True)
 
