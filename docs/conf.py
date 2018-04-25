@@ -64,7 +64,7 @@ author = 'Penn Computational Memory Lab'
 # built documents.
 #
 # The short X.Y version.
-from cml_data_readers import version_info
+from cmlreaders import version_info
 version = '.'.join(version_info[:2])
 # The full version, including alpha/beta/rc tags.
 release = '.'.join(version_info)

@@ -86,12 +86,13 @@ class PathFinder(object):
         Given a specific file type, find the corresponding file on RHINO
         and return the full path
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         file_type: The type of file to load. The given name should match one of
                    the keys from rhino_paths
-        Returns:
-        --------
+
+        Returns
+        -------
         path: str
             The path of the file found based on the request
 
