@@ -158,7 +158,7 @@
 </div>
 <div class="section" id="finding-files-on-rhino">
 <h2>Finding Files on RHINO<a class="headerlink" href="#finding-files-on-rhino" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#cml_data_readers.PathFinder" title="cml_data_readers.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cml_data_readers.PathFinder</span></code></a> class can be used to identify the location of various
+<p>The <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> class can be used to identify the location of various
 file types on RHINO. In an ideal world, all historic data would be processed
 to have consistent file names, locations, and types. However, because this has
 not been the case and individuals analyzing the data have come to expect and
@@ -166,50 +166,54 @@ deal with these inconsistencies, the safer approach is to leave the data in
 its original form and attempt to abstract away these underlying inconsistencies
 for future users.</p>
 <dl class="class">
-<dt id="cml_data_readers.PathFinder">
-<em class="property">class </em><code class="descclassname">cml_data_readers.</code><code class="descname">PathFinder</code><span class="sig-paren">(</span><em>subject</em>, <em>rootdir='/'</em>, <em>experiment=None</em>, <em>session=None</em>, <em>localization=None</em>, <em>montage=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cml_data_readers/path_finder.html#PathFinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cml_data_readers.PathFinder" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder">
+<em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">PathFinder</code><span class="sig-paren">(</span><em>subject</em>, <em>rootdir='/'</em>, <em>experiment=None</em>, <em>session=None</em>, <em>localization=None</em>, <em>montage=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/path_finder.html#PathFinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.PathFinder" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="cml_data_readers.PathFinder.find_file">
-<code class="descname">find_file</code><span class="sig-paren">(</span><em>file_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cml_data_readers/path_finder.html#PathFinder.find_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cml_data_readers.PathFinder.find_file" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.find_file">
+<code class="descname">find_file</code><span class="sig-paren">(</span><em>file_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/path_finder.html#PathFinder.find_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.PathFinder.find_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given a specific file type, find the corresponding file on RHINO
 and return the full path</p>
-<dl class="docutils">
-<dt>file_type: The type of file to load. The given name should match one of</dt>
-<dd>the keys from rhino_paths</dd>
-</dl>
-<dl class="docutils">
-<dt>path: str</dt>
-<dd>The path of the file found based on the request</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_type</strong> (<em>The type of file to load. The given name should match one of</em>) – the keys from rhino_paths</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>path</strong> – The path of the file found based on the request</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cml_data_readers.PathFinder.localization_files">
-<code class="descname">localization_files</code><a class="headerlink" href="#cml_data_readers.PathFinder.localization_files" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.localization_files">
+<code class="descname">localization_files</code><a class="headerlink" href="#cmlreaders.PathFinder.localization_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>All localization related files</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cml_data_readers.PathFinder.montage_files">
-<code class="descname">montage_files</code><a class="headerlink" href="#cml_data_readers.PathFinder.montage_files" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.montage_files">
+<code class="descname">montage_files</code><a class="headerlink" href="#cmlreaders.PathFinder.montage_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>All files that vary by montage number</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cml_data_readers.PathFinder.requestable_files">
-<code class="descname">requestable_files</code><a class="headerlink" href="#cml_data_readers.PathFinder.requestable_files" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.requestable_files">
+<code class="descname">requestable_files</code><a class="headerlink" href="#cmlreaders.PathFinder.requestable_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>All files that can be requested with <cite>PathFinder.find_file</cite></p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cml_data_readers.PathFinder.session_files">
-<code class="descname">session_files</code><a class="headerlink" href="#cml_data_readers.PathFinder.session_files" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.session_files">
+<code class="descname">session_files</code><a class="headerlink" href="#cmlreaders.PathFinder.session_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>All files that vary by session</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cml_data_readers.PathFinder.subject_files">
-<code class="descname">subject_files</code><a class="headerlink" href="#cml_data_readers.PathFinder.subject_files" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.PathFinder.subject_files">
+<code class="descname">subject_files</code><a class="headerlink" href="#cmlreaders.PathFinder.subject_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>All files that vary only by subject</p>
 </dd></dl>
 
@@ -218,8 +222,8 @@ and return the full path</p>
 </div>
 <div class="section" id="path-and-file-constants">
 <h2>Path and File Constants<a class="headerlink" href="#path-and-file-constants" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="#cml_data_readers.PathFinder" title="cml_data_readers.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cml_data_readers.PathFinder</span></code></a> internally uses the <code class="xref py py-mod docutils literal notranslate"><span class="pre">cml_data_readers.constants</span></code>
-module. The usefulness of <a class="reference internal" href="#cml_data_readers.PathFinder" title="cml_data_readers.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cml_data_readers.PathFinder</span></code></a> relies on these
+<p><a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> internally uses the <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.constants</span></code>
+module. The usefulness of <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> relies on these
 constants being well-maintained.</p>
 </div>
 </div>

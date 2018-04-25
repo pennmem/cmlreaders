@@ -64,7 +64,7 @@ author = 'Penn Computational Memory Lab'
 # built documents.
 #
 # The short X.Y version.
-from cml_data_readers import version_info
+from cmlreaders import version_info
 version = '.'.join(version_info[:2])
 # The full version, including alpha/beta/rc tags.
 release = '.'.join(version_info)
@@ -137,7 +137,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'cml_data_readers.tex', 'cml_data_readers Documentation',
+    (master_doc, 'cmlreaders.tex', 'cmlreaders Documentation',
      'Penn Computational Memory Lab', 'manual'),
 ]
 
@@ -146,7 +146,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cml_data_readers', 'cml_data_readers Documentation',
+    (master_doc, 'cmlreaders', 'cmlreaders Documentation',
      [author], 1)
 ]
 
@@ -156,8 +156,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'cml_data_readers', 'cml_data_readers Documentation',
-     author, 'cml_data_readers', 'One line description of project.',
+    (master_doc, 'cmlreaders', 'cmlreaders Documentation',
+     author, 'cmlreaders', 'One line description of project.',
      'Miscellaneous'),
 ]
 

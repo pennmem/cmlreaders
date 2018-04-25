@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-from cml_data_readers import __version__
+from cmlreaders import __version__
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -17,16 +17,16 @@ requirements = []
 setup_requirements = []
 
 setup(
-    name='cml_data_readers',
+    name='cmlreaders',
     version=__version__,
     description="Collection of utility classes for reading CML-specific data files",
     long_description=readme + '\n\n' + history,
     author="Penn Computational Memory Lab",
-    url='https://github.com/pennmem/cml_data_readers',
-    packages=find_packages(include=['cml_data_readers']),
+    url='https://github.com/pennmem/cmlreaders',
+    packages=find_packages(include=['cmlreaders']),
     include_package_data=True,
     install_requires=requirements,
     zip_safe=False,
-    keywords='cml_data_readers',
+    keywords='cmlreaders',
     setup_requires=setup_requirements,
 )

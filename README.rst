@@ -1,14 +1,14 @@
 CML Data Readers
 ================
 
-.. image:: https://img.shields.io/travis/pennmem/cml_data_readers.svg
-   :target: https://travis-ci.org/pennmem/cml_data_readers
+.. image:: https://img.shields.io/travis/pennmem/cmlreaders.svg
+   :target: https://travis-ci.org/pennmem/cmlreaders
 
-.. image:: https://codecov.io/gh/pennmem/cml_data_readers/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/pennmem/cml_data_readers
+.. image:: https://codecov.io/gh/pennmem/cmlreaders/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/pennmem/cmlreaders
 
 .. image:: https://img.shields.io/badge/docs-here-brightgreen.svg
-   :target: https://pennmem.github.io/pennmem/cml_data_readers/html/index.html
+   :target: https://pennmem.github.io/pennmem/cmlreaders/html/index.html
    :alt: docs
 
 This repository contains a collection of utility classes for reading
@@ -27,7 +27,7 @@ Installation
 
     conda create -y -n environment_name python=3
     source activate environment_name
-    conda install -c pennmem cml_data_readers
+    conda install -c pennmem cmlreaders
 
 
 Testing
@@ -39,7 +39,7 @@ mounted:
 
 .. code-block:: shell-sessions
 
-    pytest cml_data_readers/ --rhino-root [path_to_mount_point] --cov=html
+    pytest cmlreaders/ --rhino-root [path_to_mount_point] --cov=html
 
 Upon completion, the coverage report will be saved into htmlcov/ in the top
 level directory of the project.
@@ -47,13 +47,13 @@ level directory of the project.
 
 API Proposal
 ------------
-The goal of the cml_data_readers package is twofold:
+The goal of the cmlreaders package is twofold:
 
 1. Abstract away the inconsistencies of data stored on RHINO. In particular,
 naming conventions, locations, and file types have changed over time. To the
 greatest extent possible, end users should be allowed to remain oblivious to
 these inconsistencies. This will be achieved primarily through the
-:class:`cml_data_readers.PathFinder`
+:class:`cmlreaders.PathFinder`
 
 2. Provide a unified API for reading/writing data that is lab-specific. In its
 current state, lab members use a variety of different readers largely located
@@ -71,7 +71,7 @@ to be read, i.e. subject/experiment/session/montage/etc.
 2. Loading the desired data, which returns a generic data object type
 3. Converting the generic data object type into the desired format
 
-Internally, this generic reader class will use :class:`cml_data_readers.PathFinder` and the
+Internally, this generic reader class will use :class:`cmlreaders.PathFinder` and the
 data-specific readers to retrieve the data from disk and store in memory. To be
 more concerete, a session could look like the following:
 
