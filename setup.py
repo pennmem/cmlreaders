@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
-from cml_data_readers import __version__
+from cmlreaders import __version__
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
