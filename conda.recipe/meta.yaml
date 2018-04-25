@@ -1,7 +1,7 @@
 {% set setup_data = load_setup_py_data() %}
 
 package:
-  name: cml_data_readers
+  name: cmlreaders
   version: {{ setup_data['version'] }}
 
 source:
@@ -34,10 +34,10 @@ requirements:
 test:
   # Test that we can import the package
   imports:
-    - cml_data_readers
+    - cmlreaders
 
 about:
-  home: https://github.com/pennmem/cml_data_readers
+  home: https://github.com/pennmem/cmlreaders
   summary: {{ setup_data['description'] }}
   # license: FIXME
   # license_file: FIXME
