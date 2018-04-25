@@ -27,8 +27,8 @@ class PathFinder(object):
         subject: str
             Subject ID
 
-        Keyword Argments
-        ----------------
+        Keyword Arguments
+        -----------------
         rootdir: str
             Root directory for RHINO
         experiment: str or None
