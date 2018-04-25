@@ -1,0 +1,786 @@
+{
+  "events": [
+    {
+      "event_label": "STIM_ARTIFACT_DETECTION", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373309.889, 
+      "to_id": -1, 
+      "orig_timestamp": -1, 
+      "msg_stub": {
+        "artifact_detection_sample_length": 500, 
+        "artifact_detection_inter_stim_interval": 2000
+      }, 
+      "t_event": 1523373309.889, 
+      "offset": -1, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373312.927, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373312926.0, 
+      "msg_stub": {
+        "hashtag": "48d9c91a89b2f38c224dfbc98a987dc7ea05dada", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373312926.0, 
+      "offset": 5227, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373314.897, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373314897.0, 
+      "msg_stub": {
+        "hashtag": "45bb029bed3e14748238ce26df0735f392d37fae", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373314897.0, 
+      "offset": 7195, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373316.898, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373316898.0, 
+      "msg_stub": {
+        "hashtag": "ba09606010b5771e66033f37720912552876ae8b", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373316898.0, 
+      "offset": 9194, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373318.899, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373318899.0, 
+      "msg_stub": {
+        "hashtag": "d0df9d6f182d419db075441e4cee96aa1691bac5", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373318899.0, 
+      "offset": 11193, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373320.899, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373320899.0, 
+      "msg_stub": {
+        "hashtag": "2a2366d03d10e9f4f3ac8c2f04c56246a24c865a", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373320899.0, 
+      "offset": 13193, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373322.899, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373322898.0, 
+      "msg_stub": {
+        "hashtag": "d951076e79a3b3531a76abaed8a61974abae9559", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373322898.0, 
+      "offset": 15192, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373324.897, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373324897.0, 
+      "msg_stub": {
+        "hashtag": "dfff30209be167d270bdaacf43a3cbb3303edcff", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373324897.0, 
+      "offset": 17192, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373326.9, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373326899.0, 
+      "msg_stub": {
+        "hashtag": "0e1f7fcf92799502337d31a464e67423cfcbdb38", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373326899.0, 
+      "offset": 19207, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373328.899, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373328898.0, 
+      "msg_stub": {
+        "hashtag": "b0fce1b8d4c2b15235bd184aeb6dea7b57a3b445", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373328898.0, 
+      "offset": 21206, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373330.898, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373330898.0, 
+      "msg_stub": {
+        "hashtag": "de1698381266ba86ec4950cb037fe55cf5d8fe88", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373330898.0, 
+      "offset": 23205, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373332.896, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373332896.0, 
+      "msg_stub": {
+        "hashtag": "7ad47f267574f62bbb7867c5e9e7899f05acb83d", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373332896.0, 
+      "offset": 25204, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373334.898, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373334898.0, 
+      "msg_stub": {
+        "hashtag": "635bc3a9c7d707fb90f322842a6723e391f549a1", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373334898.0, 
+      "offset": 27204, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373336.897, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373336897.0, 
+      "msg_stub": {
+        "hashtag": "2714b681f4195eda18fe36c08cc631eda58b0c54", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373336897.0, 
+      "offset": 29203, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373338.898, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373338897.0, 
+      "msg_stub": {
+        "hashtag": "0d88f5f5e465b7ef82eabce0bd09641478c07682", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373338897.0, 
+      "offset": 31202, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM", 
+      "event_value": "ON", 
+      "event_id": 0, 
+      "t0": 1523373340.898, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373340898.0, 
+      "msg_stub": {
+        "hashtag": "457d15f585be76a566f050b1f751e38abd764f83", 
+        "stim_channels": {
+          "AMY7_AMY8": {
+            "amplitude": 500, 
+            "pulse_freq": 200000, 
+            "duration": 500, 
+            "channel_name": "AMY7_AMY8"
+          }
+        }
+      }, 
+      "t_event": 1523373340898.0, 
+      "offset": 33202, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "STIM_ARTIFACT_DETECTION", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373344.927, 
+      "to_id": -1, 
+      "orig_timestamp": -1, 
+      "msg_stub": {
+        "artifact_detection_sample_length": 500, 
+        "removed_bipolar_pairs": {
+          "ch1_label": [
+            "057"
+          ], 
+          "ch0_label": [
+            "056"
+          ], 
+          "contact_name": [
+            "AMY8-AMY9"
+          ]
+        }, 
+        "artifact_detection_inter_stim_interval": 2000
+      }, 
+      "t_event": 1523373344.927, 
+      "offset": -1, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "CLASSIFIER_RETRAINING", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373344.931, 
+      "to_id": -1, 
+      "orig_timestamp": -1, 
+      "msg_stub": {}, 
+      "t_event": 1523373344.931, 
+      "offset": -1, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "CLASSIFIER_RETRAINING", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373345.355, 
+      "to_id": -1, 
+      "orig_timestamp": -1, 
+      "msg_stub": {}, 
+      "t_event": 1523373345.355, 
+      "offset": -1, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "INSTRUCT", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373345.433, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280453.7979, 
+          "name": "INSTRUCT", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373345.433, 
+      "offset": 37736, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "INSTRUCT", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373365.016, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373299954.804, 
+          "name": "INSTRUCT", 
+          "value": false
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373365.016, 
+      "offset": 57321, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "MIC TEST", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373366.868, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373282232.9998, 
+          "name": "MIC TEST", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373366.867, 
+      "offset": 59179, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "MIC TEST", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373374.118, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373287626.9998, 
+          "name": "MIC TEST", 
+          "value": false
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373374.118, 
+      "offset": 66421, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "WAITING", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373374.149, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280384.117, 
+          "name": "WAITING", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373374.149, 
+      "offset": 66453, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "TRIAL", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373374.168, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280393.0, 
+          "phase_type": "PRACTICE", 
+          "listno": 0, 
+          "name": "TRIAL", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373374.167, 
+      "offset": 66469, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "WAITING", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373376.186, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373282392.0, 
+          "name": "WAITING", 
+          "value": false
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373376.186, 
+      "offset": 68499, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "COUNTDOWN", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373376.208, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280393.0, 
+          "name": "COUNTDOWN", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373376.208, 
+      "offset": 68515, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "COUNTDOWN", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373377.645, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373281810.9998, 
+          "name": "COUNTDOWN", 
+          "value": false
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373377.644, 
+      "offset": 69948, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "ORIENT", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373377.664, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280393.0, 
+          "phase_type": "PRACTICE", 
+          "name": "ORIENT", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373377.664, 
+      "offset": 69979, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "ORIENT", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373378.83, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373281537.0, 
+          "phase_type": "PRACTICE", 
+          "name": "ORIENT", 
+          "value": false
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373378.83, 
+      "offset": 71144, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "ENCODING", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373378.85, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "timestamp": 1523373280393.0, 
+          "phase_type": "PRACTICE", 
+          "name": "ENCODING", 
+          "value": true
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373378.849, 
+      "offset": 71160, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "WORD", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373379.974, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "word": "CHEST", 
+          "name": "WORD", 
+          "timestamp": 1523373281498.9998, 
+          "listno": 0, 
+          "value": true, 
+          "serialpos": 0, 
+          "phase_type": "PRACTICE"
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373379.974, 
+      "offset": 72278, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "FEATURES", 
+      "event_value": true, 
+      "event_id": 0, 
+      "t0": 1523373380.851, 
+      "to_id": -1, 
+      "msg_stub": {
+        "start_offset": 71794, 
+        "buffer_name": "experiment"
+      }, 
+      "t_event": 1523373380.851, 
+      "offset": 73160, 
+      "from_id": 0, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }, 
+    {
+      "event_label": "WORD", 
+      "event_value": false, 
+      "event_id": 0, 
+      "t0": 1523373381.608, 
+      "to_id": -1, 
+      "orig_timestamp": 1523373280383.0, 
+      "msg_stub": {
+        "type": "STATE", 
+        "data": {
+          "word": "CHEST", 
+          "name": "WORD", 
+          "timestamp": 1523373282015.9998, 
+          "listno": 0, 
+          "value": false, 
+          "serialpos": 0, 
+          "phase_type": "PRACTICE"
+        }, 
+        "time": 1523373280383.0
+      }, 
+      "t_event": 1523373381.608, 
+      "offset": 73915, 
+      "from_id": -1, 
+      "class": "StoreEventMessage", 
+      "command_id": 16
+    }
+  ], 
+  "odinudp": "see HDF5 file", 
+  "versions": {
+    "ENSGateway": "3.3.1", 
+    "Ramulator": "3.4.0", 
+    "task": {
+      "version": -1, 
+      "name": "TICL_FR"
+    }, 
+    "OdinLib": "3.0.1", 
+    "Brawndo": "Makes you win at yelling", 
+    "ENS Firmware": "5.0.0"
+  }
+}

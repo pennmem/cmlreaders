@@ -18,7 +18,7 @@ def all_files_subject(rhino_root):
 @pytest.mark.parametrize("file_type", list(constants.rhino_paths.keys()))
 def test_find_file(file_type, all_files_subject):
     if file_type == 'target_selection_table':
-        return # does not exist for stim sessions
+        return  # does not exist for stim sessions
 
     if file_type in constants.used_classifier_files:
         with pytest.raises(RuntimeWarning):

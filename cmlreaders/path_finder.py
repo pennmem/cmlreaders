@@ -18,18 +18,17 @@ class InvalidFileTypeRequest(Exception):
 
 
 class PathFinder(object):
-
     def __init__(self, subject, rootdir='/', experiment=None, session=None,
                  localization=None, montage=None):
         """ Instantiates a PathFind object using the known information
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         subject: str
             Subject ID
 
-        Keyword Argments:
-        -----------------
+        Keyword Argments
+        ----------------
         rootdir: str
             Root directory for RHINO
         experiment: str or None
@@ -110,8 +109,11 @@ class PathFinder(object):
         """
         subject_localization = self.subject
 
-        localization = (self.localization if isinstance(self.localization,str)
-            else str(self.localization))
+        localization = (
+            self.localization
+            if isinstance(self.localization, str)
+            else str(self.localization)
+        )
 
         # Some files/locations append the localization number, so to abstract
         # that away from the user, we handle this internally
@@ -159,7 +161,7 @@ class PathFinder(object):
 
         if len(timestamped_directories) > 1:
             warnings.warn("Multiple timestamped directories found. The"
-                                 " most recent will be returned",RuntimeWarning)
+                          " most recent will be returned", RuntimeWarning)
 
         # Only return the values from the final "/" to the end
         latest = timestamped_directories[0]
@@ -189,6 +191,6 @@ class PathFinder(object):
 
         if len(found_files) > 1:
             warnings.warn('Multiple files found. Returning the first '
-                                 'file found',RuntimeWarning)
+                          'file found', RuntimeWarning)
 
         return found_files[0]
