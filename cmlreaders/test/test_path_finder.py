@@ -1,6 +1,6 @@
 import pytest
-from cml_data_readers.path_finder import PathFinder, InvalidFileTypeRequest
-from cml_data_readers import constants
+from cmlreaders.path_finder import PathFinder, InvalidFileTypeRequest
+from cmlreaders import constants
 
 
 # Test case for multiple timestamped directories: R1354E PS4_FR5
