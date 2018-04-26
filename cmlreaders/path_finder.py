@@ -18,8 +18,8 @@ class InvalidFileTypeRequest(Exception):
 
 
 class PathFinder(object):
-    def __init__(self, subject, rootdir='/', experiment=None, session=None,
-                 localization=None, montage=None):
+    def __init__(self, subject=None, experiment=None, session=None,
+                 localization=None, montage=None, rootdir='/'):
         """ Instantiates a PathFind object using the known information
 
         Parameters
@@ -43,7 +43,7 @@ class PathFinder(object):
             Montage number
         """
         self.subject = subject
-        self.rootdir = rootdir
+        self.rootdir = os.path.expanduser(rootdir)
         self.experiment = experiment
         self.session = session
         self.localization = localization
@@ -79,7 +79,7 @@ class PathFinder(object):
         """ All files that vary only by subject """
         return subject_files
 
-    def find_file(self, file_type):
+    def find(self, file_type):
         """
 
         Given a specific file type, find the corresponding file on RHINO

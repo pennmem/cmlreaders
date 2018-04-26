@@ -20,17 +20,12 @@ def test_find_file(file_type, all_files_subject):
     if file_type == 'target_selection_table':
         return  # does not exist for stim sessions
 
-    if file_type in constants.used_classifier_files:
-        with pytest.raises(RuntimeWarning):
-            file_path = all_files_subject.find_file(file_type)
-            assert file_path is not None
-    else:
-        file_path = all_files_subject.find_file(file_type)
-        assert file_path is not None
+    file_path = all_files_subject.find(file_type)
+    assert file_path is not None
     return
 
 
 @pytest.mark.rhino
 def test_invalid_file_request(all_files_subject):
     with pytest.raises(InvalidFileTypeRequest):
-        all_files_subject.find_file('fake_file_type')
+        all_files_subject.find('fake_file_type')

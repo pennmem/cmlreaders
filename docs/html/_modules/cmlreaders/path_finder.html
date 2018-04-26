@@ -164,17 +164,16 @@
 
 
 <div class="viewcode-block" id="PathFinder"><a class="viewcode-back" href="../../index.html#cmlreaders.PathFinder">[docs]</a><span class="k">class</span> <span class="nc">PathFinder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">localization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">localization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Instantiates a PathFind object using the known information</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        -----------</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
 <span class="sd">        subject: str</span>
 <span class="sd">            Subject ID</span>
 
-<span class="sd">        Keyword Argments:</span>
+<span class="sd">        Keyword Arguments</span>
 <span class="sd">        -----------------</span>
 <span class="sd">        rootdir: str</span>
 <span class="sd">            Root directory for RHINO</span>
@@ -190,7 +189,7 @@
 <span class="sd">            Montage number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">rootdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="n">localization</span>
@@ -226,7 +225,7 @@
         <span class="sd">&quot;&quot;&quot; All files that vary only by subject &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">subject_files</span>
 
-<div class="viewcode-block" id="PathFinder.find_file"><a class="viewcode-back" href="../../index.html#cmlreaders.PathFinder.find_file">[docs]</a>    <span class="k">def</span> <span class="nf">find_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+<div class="viewcode-block" id="PathFinder.find"><a class="viewcode-back" href="../../index.html#cmlreaders.PathFinder.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Given a specific file type, find the corresponding file on RHINO</span>
@@ -256,8 +255,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subject_localization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span>
 
-        <span class="n">localization</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span>
-            <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">))</span>
+        <span class="n">localization</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">localization</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="c1"># Some files/locations append the localization number, so to abstract</span>
         <span class="c1"># that away from the user, we handle this internally</span>
@@ -296,7 +298,6 @@
                                                          <span class="n">base_folder_path</span><span class="p">))</span>
 
         <span class="c1"># Sort such that most recently modified appears first</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">)</span>
         <span class="n">timestamped_directories</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">,</span>
                                          <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -305,7 +306,7 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Multiple timestamped directories found. The&quot;</span>
-                                 <span class="s2">&quot; most recent will be returned&quot;</span><span class="p">,</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+                          <span class="s2">&quot; most recent will be returned&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
 
         <span class="c1"># Only return the values from the final &quot;/&quot; to the end</span>
         <span class="n">latest</span> <span class="o">=</span> <span class="n">timestamped_directories</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -335,7 +336,7 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Multiple files found. Returning the first &#39;</span>
-                                 <span class="s1">&#39;file found&#39;</span><span class="p">,</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+                          <span class="s1">&#39;file found&#39;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">found_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 </pre></div>
