@@ -1,5 +1,6 @@
 
 rhino_paths = {
+    'protocols_database': ['protocols/r1.json'],
     # Montage/localization data
     # Localization-level (subject + localization)
     'voxel_coordinates': [
