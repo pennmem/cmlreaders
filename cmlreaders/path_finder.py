@@ -46,8 +46,11 @@ class PathFinder(object):
         self.rootdir = os.path.expanduser(rootdir)
         self.experiment = experiment
         self.session = session
-        self.localization = localization
-        self.montage = montage
+
+        # Stringify localization and montage
+        self.localization = (localization if isinstance(localization, str)
+                             else str(localization))
+        self.montage = (montage if isinstance(montage, str) else str(montage))
         self._paths = rhino_paths
 
     @property
@@ -109,15 +112,9 @@ class PathFinder(object):
         """
         subject_localization = self.subject
 
-        localization = (
-            self.localization
-            if isinstance(self.localization, str)
-            else str(self.localization)
-        )
-
         # Some files/locations append the localization number, so to abstract
         # that away from the user, we handle this internally
-        if localization != '0' and self.localization is not None:
+        if self.localization != '0' and self.localization is not None:
             subject_localization = "_".join([self.subject, self.localization])
 
         paths_to_check = self._paths[file_type]
