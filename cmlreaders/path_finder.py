@@ -19,7 +19,7 @@ class InvalidFileTypeRequest(Exception):
 
 class PathFinder(object):
     def __init__(self, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, rootdir='/'):
+                 localization=0, montage=0, rootdir='/'):
         """ Instantiates a PathFind object using the known information
 
         Parameters
