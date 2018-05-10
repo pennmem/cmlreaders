@@ -1,3 +1,4 @@
+from typing import Optional
 from .readers import *
 
 
@@ -9,8 +10,12 @@ class CMLReader(BaseCMLReader):
             'voxel_coordinates': TextReader
         }
 
-    def __init__(self, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, rootdir="/"):
+    def __init__(self, subject: Optional[str] =None,
+                 experiment: Optional[str] = None,
+                 session: Optional[str] = None,
+                 localization: Optional[str] = None,
+                 montage: Optional[str] = None,
+                 rootdir: Optional[str] = "/"):
         """ Instatiates a general reader for CML-specific data """
 
         self.subject = subject
@@ -20,20 +25,21 @@ class CMLReader(BaseCMLReader):
         self.montage = montage
         self.rootdir = rootdir
 
-        # File type and reader are unintialized initially, but are populated
+        # reader is unintialized initially, but are populated
         # when the user requests that a particular file be loaded
-        self.file_type = None
         self._reader = None
 
-    def load(self, file_type):
-        self.file_type = file_type
-        self._reader = self.readers[self.file_type](self.file_type,
-                                                    subject=self.subject,
-                                                    experiment=self.experiment,
-                                                    session=self.session,
-                                                    localization=self.localization,
-                                                    montage=self.montage,
-                                                    rootdir=self.rootdir)
+    def load(self, data_type):
+        if data_type not in self.readers:
+            raise NotImplementedError("There is no reader to support the requested file type")
+
+        self._reader = self.readers[data_type](data_type,
+                                               subject=self.subject,
+                                               experiment=self.experiment,
+                                               session=self.session,
+                                               localization=self.localization,
+                                               montage=self.montage,
+                                               rootdir=self.rootdir)
 
     def as_dataframe(self):
         return self._reader.as_dataframe()
