@@ -11,23 +11,23 @@ class BaseCMLReader(ABC):
 
     @abstractmethod
     def as_dataframe(self):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def as_recarray(self):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def to_json(self, file_name, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def to_csv(self, file_name, **kwargs):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def to_hdf(self, file_name):
-        pass
+        raise NotImplementedError
 
 
 class TextReader(BaseCMLReader):
@@ -36,20 +36,20 @@ class TextReader(BaseCMLReader):
                               'min_contact_num', 'max_contact_num'],
     }
 
-    def __init__(self, file_type, subject=None, localization=None, rootdir="/",
+    def __init__(self, data_type, subject=None, localization=None, rootdir="/",
                  **kwargs):
         """ Create a TextReader for loading text-based RAM data """
 
-        if (file_type is None) or (subject is None) or (localization is None):
+        if (data_type is None) or (subject is None) or (localization is None):
             pass
 
         finder = PathFinder(subject=subject, localization=localization,
                             rootdir=rootdir)
-        self._file_path = finder.find(file_type)
-        self._headers = self.headers[file_type]
+        self._file_path = finder.find(data_type)
+        self._headers = self.headers[data_type]
 
     def as_dataframe(self):
-        df = pd.read_csv(self._file_path, header=self._headers)
+        df = pd.read_csv(self._file_path, names=self._headers)
         return df
 
     def as_recarray(self):
@@ -63,5 +63,4 @@ class TextReader(BaseCMLReader):
         self.as_dataframe().to_json(file_path, index=False, **kwargs)
 
     def to_hdf(self, file_path):
-        pass
-        return
+        raise NotImplementedError
