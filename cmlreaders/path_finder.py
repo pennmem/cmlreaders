@@ -2,6 +2,8 @@
 import os
 import glob
 import warnings
+from typing import Optional
+
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files
 
@@ -13,13 +15,17 @@ except NameError:
     FileNotFoundError = IOError
 
 
-class InvalidFileTypeRequest(Exception):
+class InvalidDataTypeRequest(Exception):
     """ Exception for requests that are not supported """
 
 
 class PathFinder(object):
-    def __init__(self, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, rootdir='/'):
+    def __init__(self, subject: Optional[str] = None,
+                 experiment: Optional[str] = None,
+                 session: Optional[str] = None,
+                 localization: Optional[str] = None,
+                 montage: Optional[str] = None,
+                 rootdir: Optional[str] = '/'):
         """ Instantiates a PathFind object using the known information
 
         Parameters
@@ -42,15 +48,15 @@ class PathFinder(object):
         montage: int or None
             Montage number
         """
-        self.subject = subject
-        self.rootdir = os.path.expanduser(rootdir)
-        self.experiment = experiment
-        self.session = session
+        self.subject: str = subject
+        self.rootdir: str = os.path.expanduser(rootdir)
+        self.experiment: str = experiment
+        self.session: str = session
 
         # Stringify localization and montage
-        self.localization = (localization if isinstance(localization, str)
-                             else str(localization))
-        self.montage = (montage if isinstance(montage, str) else str(montage))
+        self.localization: str = str(localization)
+        self.montage: str = str(montage)
+
         self._paths = rhino_paths
 
     @property
@@ -82,7 +88,7 @@ class PathFinder(object):
         """ All files that vary only by subject """
         return subject_files
 
-    def find(self, file_type):
+    def find(self, data_type):
         """
 
         Given a specific file type, find the corresponding file on RHINO
@@ -99,14 +105,14 @@ class PathFinder(object):
             The path of the file found based on the request
 
         """
-        if file_type not in rhino_paths:
-            raise InvalidFileTypeRequest("Unknown file type")
+        if data_type not in rhino_paths:
+            raise InvalidDataTypeRequest("Unknown data type")
 
-        expected_path = self._lookup_file(file_type)
+        expected_path = self._lookup_file(data_type)
 
         return expected_path
 
-    def _lookup_file(self, file_type):
+    def _lookup_file(self, data_type):
         """ This will handle the special cases before passing the data through
             to _find_single_path
         """
@@ -117,11 +123,11 @@ class PathFinder(object):
         if self.localization != '0' and self.localization is not None:
             subject_localization = "_".join([self.subject, self.localization])
 
-        paths_to_check = self._paths[file_type]
+        paths_to_check = self._paths[data_type]
         timestamped_dir = None
 
         # Only check the host_pc folder if necessary
-        if (file_type in host_pc_files) or (file_type in used_classifier_files):
+        if (data_type in host_pc_files) or (data_type in used_classifier_files):
             folder_wildcard = self._paths['ramulator_session_folder'][0]
             ramulator_session_folder = folder_wildcard.format(
                 subject=subject_localization, experiment=self.experiment,
@@ -131,7 +137,7 @@ class PathFinder(object):
                 ramulator_session_folder)
 
             # The user can also just request the folder
-            if file_type == 'ramulator_session_folder':
+            if data_type == 'ramulator_session_folder':
                 return ramulator_session_folder
 
         expected_path = self._find_single_path(paths_to_check,
