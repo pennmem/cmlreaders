@@ -63,6 +63,13 @@ rhino_paths = {
         'scratch/report_database/{subject}_{experiment}_all_retrained_classifier.zip',
     ],
 
+    # Session Data
+    'all_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
+    'task_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
+    'math_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
+    'ps4_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
+    'sources': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
+
     # Ramulator-related information
     'experiment_log': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/experiment.log',
