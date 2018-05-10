@@ -1,5 +1,5 @@
 import pytest
-from cmlreaders.path_finder import PathFinder, InvalidFileTypeRequest
+from cmlreaders.path_finder import PathFinder, InvalidDataTypeRequest
 from cmlreaders import constants
 
 
@@ -17,7 +17,7 @@ def all_files_subject(rhino_root):
 @pytest.mark.rhino
 @pytest.mark.parametrize("file_type", list(constants.rhino_paths.keys()))
 def test_find_file(file_type, all_files_subject):
-    if file_type == 'target_selection_table':
+    if file_type in ['target_selection_table', 'ps4_events']:
         return  # does not exist for stim sessions
 
     file_path = all_files_subject.find(file_type)
@@ -27,5 +27,5 @@ def test_find_file(file_type, all_files_subject):
 
 @pytest.mark.rhino
 def test_invalid_file_request(all_files_subject):
-    with pytest.raises(InvalidFileTypeRequest):
+    with pytest.raises(InvalidDataTypeRequest):
         all_files_subject.find('fake_file_type')
