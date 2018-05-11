@@ -157,11 +157,12 @@ class PathFinder(object):
         # Remove all invalid names (valid = only contains numbers and _)
         timestamped_directories = [
             d for d in timestamped_directories
-            if all([c in string.digits for c in d.replace('_', '')])
+            if os.path.isdir(d) and
+            all([c in string.digits for c in os.path.basename(d).replace('_', '')])
         ]
 
         # Sort such that most recent appears first
-        timestamped_directories = sorted(timestamped_directories, reverse=True)
+        timestamped_directories = sorted(timestamped_directories)
 
         if len(timestamped_directories) == 0:
             raise RuntimeError("No timestamped folder found in host_pc folder")
