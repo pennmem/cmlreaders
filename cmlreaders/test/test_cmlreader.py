@@ -20,8 +20,9 @@ class TestCMLReader:
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates.txt', 'classifier_excluded_leads.txt',
         'jacksheet.txt', 'good_leads.txt', 'leads.txt',
-        'electrode_coordinates.csv', 'prior_stim_results.csv'
+        'electrode_coordinates.csv', 'prior_stim_results.csv',
+        'target_selection_table.csv'
     ])
     def test_load(self, file_type):
-        reader = CMLReader(subject="R1405E", localization='0')
+        reader = CMLReader(subject="R1405E", localization='0', experiment="FR1")
         reader.load(data_type=file_type[:-4], file_path=datafile(file_type))
