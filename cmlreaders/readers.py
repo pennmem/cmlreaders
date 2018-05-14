@@ -1,6 +1,7 @@
 import pandas as pd
 
 from .path_finder import PathFinder
+from .exc import UnsupportedOutputFormat
 from abc import abstractmethod, ABC
 
 
@@ -8,6 +9,7 @@ __all__ = ['BaseCMLReader', 'TextReader', 'CSVReader']
 
 
 class BaseCMLReader(ABC):
+    """ Abstract base class that defines the interface for all CML data readers """
 
     @abstractmethod
     def as_dataframe(self):
@@ -18,6 +20,9 @@ class BaseCMLReader(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def as_dict(self):
+        raise NotImplementedError
+
     def to_json(self, file_name, **kwargs):
         raise NotImplementedError
 
@@ -31,6 +36,7 @@ class BaseCMLReader(ABC):
 
 
 class TextReader(BaseCMLReader):
+    """ Generic reader class for reading RAM text files """
     headers = {
         'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
                               'min_contact_num', 'max_contact_num'],
@@ -41,12 +47,15 @@ class TextReader(BaseCMLReader):
         'area': ['lead_label', 'surface_area'],
     }
 
-    def __init__(self, data_type, subject, localization, rootdir="/",
-                 **kwargs):
-        """ Create a TextReader for loading text-based RAM data """
-        finder = PathFinder(subject=subject, localization=localization,
-                            rootdir=rootdir)
-        self._file_path = finder.find(data_type)
+    def __init__(self, data_type, subject, localization, file_path=None,
+                 rootdir="/", **kwargs):
+
+        self._file_path = file_path
+        # When no file path is given, look it up using PathFinder
+        if file_path is None:
+            finder = PathFinder(subject=subject, localization=localization,
+                                rootdir=rootdir)
+            self._file_path = finder.find(data_type)
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
@@ -57,6 +66,10 @@ class TextReader(BaseCMLReader):
         records = self.as_dataframe().to_records()
         return records
 
+    def as_dict(self):
+        df = self.as_dataframe()
+        return df.to_dict(orient='records')
+
     def to_csv(self, file_path, **kwargs):
         self.as_dataframe().to_csv(file_path, index=False, **kwargs)
 
@@ -64,15 +77,20 @@ class TextReader(BaseCMLReader):
         self.as_dataframe().to_json(file_path, index=False, **kwargs)
 
     def to_hdf(self, file_path):
-        raise NotImplementedError
+        raise UnsupportedOutputFormat
 
 
 class CSVReader(BaseCMLReader):
-    def __init__(self, data_type, subject, localization, rootdir="/"):
-        """ Generic reader class for loading csv files with headers """
-        finder = PathFinder(subject=subject, localization=localization,
-                            rootdir=rootdir)
-        self._file_path = finder.find(data_type)
+    """ Generic reader class for loading csv files with headers """
+    def __init__(self, data_type, subject, localization, file_path=None,
+                 rootdir="/", **kwargs):
+
+        self._file_path = file_path
+        # When no file path is given, look it up using PathFinder
+        if file_path is None:
+            finder = PathFinder(subject=subject, localization=localization,
+                                rootdir=rootdir)
+            self._file_path = finder.find(data_type)
 
     def as_dataframe(self):
         df = pd.read_csv(self._file_path)
@@ -82,6 +100,10 @@ class CSVReader(BaseCMLReader):
         records = self.as_dataframe().to_records()
         return records
 
+    def as_dict(self):
+        df = self.as_dataframe()
+        return df.to_dict(orient='records')
+
     def to_csv(self, file_path, **kwargs):
         self.as_dataframe().to_csv(file_path, index=False, **kwargs)
 
@@ -89,6 +111,6 @@ class CSVReader(BaseCMLReader):
         self.as_dataframe().to_json(file_path, index=False, **kwargs)
 
     def to_hdf(self, file_path):
-        raise NotImplementedError
+        raise UnsupportedOutputFormat
 
 
