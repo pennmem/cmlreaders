@@ -35,7 +35,7 @@ class TestCSVReader:
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("data_type", [
-        'electrode_coordinates', 'prior_stim_results'
+        'electrode_coordinates', 'prior_stim_results', 'target_selection_table'
     ])
     @pytest.mark.parametrize("subject,localization", [
         ('R1409D', '0'),
