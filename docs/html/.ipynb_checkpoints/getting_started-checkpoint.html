@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.1.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting Started with CML Readers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/.ipynb_checkpoints/getting_started-checkpoint.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Getting-Started-with-CML-Readers">
+<h1>Getting Started with CML Readers<a class="headerlink" href="#Getting-Started-with-CML-Readers" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cmlreaders</span> <span class="k">as</span> <span class="nn">cml</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Finding-Files-on-Rino">
+<h2>Finding Files on Rino<a class="headerlink" href="#Finding-Files-on-Rino" title="Permalink to this headline">¶</a></h2>
+<p>The PathFinder helper class can be used to locate files on RHINO. It’s
+sole responsibility is to locate and return the file path of the file.
+In many cases, a file could be located in more than one location. In
+these situations, PathFinder will search over the list of possible
+locations and return the path where the file is first found. Implicitly,
+this assumes that the order of the file locations is prioritized such
+that the preferred location comes before a fall-back location.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># If not working on RHINO, specify the mount point</span>
+<span class="n">rhino_root</span> <span class="o">=</span> <span class="s2">&quot;/Volumes/RHINO/&quot;</span>
+
+<span class="c1"># Instantiate the finder object</span>
+<span class="n">finder</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1389J&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;catFR5&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                        <span class="n">localization</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="What-can-you-request?">
+<h3>What can you request?<a class="headerlink" href="#What-can-you-request?" title="Permalink to this headline">¶</a></h3>
+<p>The PathFinder has a few built-in properties to help you understand what
+data types are currently supported. Different file types require that
+the finder be instantiated with different fields. For example, if you
+are planning to request localization files, there is no need to specify
+an experiment, session, or montage. However, it is not a problem to
+specify too many fields, as an extraneous ones will simply be ignored if
+the data type does not require that it be given. The following
+properties are defined: - requestable_files: All supported data types -
+localization_files: Files related to localization - montage_files:
+Files associated with a specific montage - session_files: Files that
+are specific to a session. This files could be processed events,
+Ramulator files, etc.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">finder</span><span class="o">.</span><span class="n">requestable_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;protocols_database&#39;,
+ &#39;voxel_coordinates&#39;,
+ &#39;prior_stim_results&#39;,
+ &#39;electrode_coordinates&#39;,
+ &#39;jacksheet&#39;,
+ &#39;area&#39;,
+ &#39;electrode_categories&#39;,
+ &#39;good_leads&#39;,
+ &#39;leads&#39;,
+ &#39;classifier_excluded_leads&#39;,
+ &#39;localization&#39;,
+ &#39;pairs&#39;,
+ &#39;contacts&#39;,
+ &#39;session_summary&#39;,
+ &#39;classifier_summary&#39;,
+ &#39;math_summary&#39;,
+ &#39;target_selection_table&#39;,
+ &#39;trained_classifier&#39;,
+ &#39;all_events&#39;,
+ &#39;task_events&#39;,
+ &#39;math_events&#39;,
+ &#39;ps4_events&#39;,
+ &#39;sources&#39;,
+ &#39;experiment_log&#39;,
+ &#39;session_log&#39;,
+ &#39;ramulator_session_folder&#39;,
+ &#39;event_log&#39;,
+ &#39;experiment_config&#39;,
+ &#39;raw_eeg&#39;,
+ &#39;odin_config&#39;,
+ &#39;used_classifier&#39;,
+ &#39;excluded_pairs&#39;,
+ &#39;all_pairs&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">finder</span><span class="o">.</span><span class="n">localization_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;voxel_coordinates&#39;,
+ &#39;prior_stim_results&#39;,
+ &#39;electrode_coordinates&#39;,
+ &#39;jacksheet&#39;,
+ &#39;good_leads&#39;,
+ &#39;leads&#39;,
+ &#39;area&#39;,
+ &#39;classifier_excluded_leads&#39;,
+ &#39;localization&#39;,
+ &#39;electrode_categories&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">finder</span><span class="o">.</span><span class="n">montage_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;pairs&#39;, &#39;contacts&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">finder</span><span class="o">.</span><span class="n">session_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[&#39;session_summary&#39;,
+ &#39;classifier_summary&#39;,
+ &#39;math_summary&#39;,
+ &#39;used_classifier&#39;,
+ &#39;excluded_pairs&#39;,
+ &#39;all_pairs&#39;,
+ &#39;experiment_log&#39;,
+ &#39;session_log&#39;,
+ &#39;event_log&#39;,
+ &#39;experiment_config&#39;,
+ &#39;raw_eeg&#39;,
+ &#39;odin_config&#39;,
+ &#39;all_events&#39;,
+ &#39;task_events&#39;,
+ &#39;math_events&#39;,
+ &#39;ps4_events&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Finding-File-Paths">
+<h3>Finding File Paths<a class="headerlink" href="#Finding-File-Paths" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Find some example files</span>
+<span class="n">example_data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pairs&#39;</span><span class="p">,</span> <span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">data_type</span> <span class="ow">in</span> <span class="n">example_data_types</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">data_type</span><span class="o">=</span><span class="n">data_type</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+/Volumes/RHINO/protocols/r1/subjects/R1389J/localizations/0/montages/0/neuroradiology/current_processed/pairs.json
+/Volumes/RHINO/protocols/r1/subjects/R1389J/experiments/catFR5/sessions/1/behavioral/current_processed/task_events.json
+/Volumes/RHINO/data10/RAM/subjects/R1389J/tal/VOX_coords_mother.txt
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Loading-Data">
+<h2>Loading Data<a class="headerlink" href="#Loading-Data" title="Permalink to this headline">¶</a></h2>
+<p>In most cases, the end goal is to load the data into memory rather than
+just locating the file. In this case, CML Readers provides a handy class
+to unify the API for loading data. By default, the location will be
+determined automatically based on the file type using the PathFinder
+class. However, a custom path can be given by using the file_path
+keyword. Each data type can be loaded into one of three common data
+structures for performing analyses: 1. Pandas Dataframe 2. Python
+Dictionary 3. Numpy recarray</p>
+<p>Although recarray’s are supported, users are <strong>highly</strong> encouraged to
+switch to using pandas dataframes as they provide a much richer and
+easier to use API. In fact, pandas was created specifically to replace
+recarrays. If you can find a data-analysis related use case that a
+recarray provides that is not available in pandas, I will personally
+give you $1.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1389J&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;catFR5&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                       <span class="n">localization</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Data Frame</span>
+<span class="n">electrode_coord_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+<span class="n">electrode_coord_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>contact_name</th>
+      <th>contact_type</th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+      <th>atlas</th>
+      <th>orient_to</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>oA1</td>
+      <td>D</td>
+      <td>0.867173</td>
+      <td>-0.308800</td>
+      <td>-0.077759</td>
+      <td>monopolar_orig</td>
+      <td>oA2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>oA8</td>
+      <td>D</td>
+      <td>1.265359</td>
+      <td>-0.102247</td>
+      <td>-0.048478</td>
+      <td>monopolar_orig</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>oA2</td>
+      <td>D</td>
+      <td>0.913253</td>
+      <td>-0.278048</td>
+      <td>-0.083519</td>
+      <td>monopolar_orig</td>
+      <td>oA3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>oA3</td>
+      <td>D</td>
+      <td>0.984687</td>
+      <td>-0.248392</td>
+      <td>-0.071328</td>
+      <td>monopolar_orig</td>
+      <td>oA4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>oA4</td>
+      <td>D</td>
+      <td>1.048341</td>
+      <td>-0.212167</td>
+      <td>-0.074716</td>
+      <td>monopolar_orig</td>
+      <td>oA5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Dictionary</span>
+<span class="n">electrode_coord_dict</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="n">electrode_coord_dict</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[{&#39;contact_name&#39;: &#39;oA1&#39;,
+  &#39;contact_type&#39;: &#39;D&#39;,
+  &#39;x&#39;: 0.867173,
+  &#39;y&#39;: -0.3088,
+  &#39;z&#39;: -0.07775927156960215,
+  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
+  &#39;orient_to&#39;: &#39;oA2&#39;},
+ {&#39;contact_name&#39;: &#39;oA8&#39;,
+  &#39;contact_type&#39;: &#39;D&#39;,
+  &#39;x&#39;: 1.2653590000000001,
+  &#39;y&#39;: -0.1022474,
+  &#39;z&#39;: -0.048477514623626164,
+  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
+  &#39;orient_to&#39;: nan},
+ {&#39;contact_name&#39;: &#39;oA2&#39;,
+  &#39;contact_type&#39;: &#39;D&#39;,
+  &#39;x&#39;: 0.9132530000000001,
+  &#39;y&#39;: -0.278048,
+  &#39;z&#39;: -0.08351888482911221,
+  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
+  &#39;orient_to&#39;: &#39;oA3&#39;},
+ {&#39;contact_name&#39;: &#39;oA3&#39;,
+  &#39;contact_type&#39;: &#39;D&#39;,
+  &#39;x&#39;: 0.9846870000000001,
+  &#39;y&#39;: -0.248392,
+  &#39;z&#39;: -0.07132760474565615,
+  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
+  &#39;orient_to&#39;: &#39;oA4&#39;},
+ {&#39;contact_name&#39;: &#39;oA4&#39;,
+  &#39;contact_type&#39;: &#39;D&#39;,
+  &#39;x&#39;: 1.0483410000000002,
+  &#39;y&#39;: -0.2121674,
+  &#39;z&#39;: -0.07471577238168621,
+  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
+  &#39;orient_to&#39;: &#39;oA5&#39;}]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># DO NOT USE: Recarray</span>
+<span class="n">electrode_coord_recarray</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_recarray</span><span class="p">()</span>
+<span class="n">electrode_coord_recarray</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>rec.array([(0, &#39;oA1&#39;, &#39;D&#39;, 0.867173, -0.3088   , -0.07775927, &#39;monopolar_orig&#39;, &#39;oA2&#39;),
+           (1, &#39;oA8&#39;, &#39;D&#39;, 1.265359, -0.1022474, -0.04847751, &#39;monopolar_orig&#39;, nan),
+           (2, &#39;oA2&#39;, &#39;D&#39;, 0.913253, -0.278048 , -0.08351888, &#39;monopolar_orig&#39;, &#39;oA3&#39;),
+           (3, &#39;oA3&#39;, &#39;D&#39;, 0.984687, -0.248392 , -0.0713276 , &#39;monopolar_orig&#39;, &#39;oA4&#39;),
+           (4, &#39;oA4&#39;, &#39;D&#39;, 1.048341, -0.2121674, -0.07471577, &#39;monopolar_orig&#39;, &#39;oA5&#39;)],
+          dtype=[(&#39;index&#39;, &#39;&lt;i8&#39;), (&#39;contact_name&#39;, &#39;O&#39;), (&#39;contact_type&#39;, &#39;O&#39;), (&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;), (&#39;z&#39;, &#39;&lt;f8&#39;), (&#39;atlas&#39;, &#39;O&#39;), (&#39;orient_to&#39;, &#39;O&#39;)])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Saving-Data">
+<h2>Saving Data<a class="headerlink" href="#Saving-Data" title="Permalink to this headline">¶</a></h2>
+<p>CML Readers supports saving data to at most 3 file formats: 1. CSV 2.
+JSON 3. HDF5</p>
+<p>However, depending on the data type, not all output formats may be
+supported. In particular, HDF5 output is only supported for a minimal
+number of data types. Data that has been saved using one of the built-in
+methods can always be reloaded using it’s corresponding reader. Since
+locations are automatically determined based on the data type, if
+loading from a custom location, be sure to specify the file_type
+parameter when loading the data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reader</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates_test.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;./electrode_coordinates_test.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">electrode_coord_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+<span class="n">electrode_coord_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>contact_name</th>
+      <th>contact_type</th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+      <th>atlas</th>
+      <th>orient_to</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>oA1</td>
+      <td>D</td>
+      <td>0.867173</td>
+      <td>-0.308800</td>
+      <td>-0.077759</td>
+      <td>monopolar_orig</td>
+      <td>oA2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>oA8</td>
+      <td>D</td>
+      <td>1.265359</td>
+      <td>-0.102247</td>
+      <td>-0.048478</td>
+      <td>monopolar_orig</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>oA2</td>
+      <td>D</td>
+      <td>0.913253</td>
+      <td>-0.278048</td>
+      <td>-0.083519</td>
+      <td>monopolar_orig</td>
+      <td>oA3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>oA3</td>
+      <td>D</td>
+      <td>0.984687</td>
+      <td>-0.248392</td>
+      <td>-0.071328</td>
+      <td>monopolar_orig</td>
+      <td>oA4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>oA4</td>
+      <td>D</td>
+      <td>1.048341</td>
+      <td>-0.212167</td>
+      <td>-0.074716</td>
+      <td>monopolar_orig</td>
+      <td>oA5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

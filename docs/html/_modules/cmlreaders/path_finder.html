@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.1.0 documentation</title>
+  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.1.1 documentation</title>
   
 
   
@@ -81,8 +81,13 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
             
           
         </div>
@@ -148,6 +153,8 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
+
 <span class="kn">from</span> <span class="nn">.constants</span> <span class="k">import</span> <span class="n">rhino_paths</span><span class="p">,</span> <span class="n">localization_files</span><span class="p">,</span> <span class="n">montage_files</span><span class="p">,</span> \
     <span class="n">subject_files</span><span class="p">,</span> <span class="n">session_files</span><span class="p">,</span> <span class="n">host_pc_files</span><span class="p">,</span> <span class="n">used_classifier_files</span>
 
@@ -159,13 +166,17 @@
     <span class="ne">FileNotFoundError</span> <span class="o">=</span> <span class="ne">IOError</span>
 
 
-<span class="k">class</span> <span class="nc">InvalidFileTypeRequest</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">InvalidDataTypeRequest</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Exception for requests that are not supported &quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="PathFinder"><a class="viewcode-back" href="../../index.html#cmlreaders.PathFinder">[docs]</a><span class="k">class</span> <span class="nc">PathFinder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">localization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="PathFinder"><a class="viewcode-back" href="../../api.html#cmlreaders.PathFinder">[docs]</a><span class="k">class</span> <span class="nc">PathFinder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">experiment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Instantiates a PathFind object using the known information</span>
 
 <span class="sd">        Parameters</span>
@@ -188,12 +199,15 @@
 <span class="sd">        montage: int or None</span>
 <span class="sd">            Montage number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="n">localization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="n">montage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">experiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">session</span>
+
+        <span class="c1"># Stringify localization and montage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="n">rhino_paths</span>
 
     <span class="nd">@property</span>
@@ -202,7 +216,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">requestable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; All files that can be requested with `PathFinder.find_file` &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; All files that can be requested with `PathFinder.find()` &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
     <span class="nd">@property</span>
@@ -225,7 +239,7 @@
         <span class="sd">&quot;&quot;&quot; All files that vary only by subject &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">subject_files</span>
 
-<div class="viewcode-block" id="PathFinder.find"><a class="viewcode-back" href="../../index.html#cmlreaders.PathFinder.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+<div class="viewcode-block" id="PathFinder.find"><a class="viewcode-back" href="../../api.html#cmlreaders.PathFinder.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Given a specific file type, find the corresponding file on RHINO</span>
@@ -242,35 +256,29 @@
 <span class="sd">            The path of the file found based on the request</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">file_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rhino_paths</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InvalidFileTypeRequest</span><span class="p">(</span><span class="s2">&quot;Unknown file type&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rhino_paths</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidDataTypeRequest</span><span class="p">(</span><span class="s2">&quot;Unknown data type&quot;</span><span class="p">)</span>
 
-        <span class="n">expected_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup_file</span><span class="p">(</span><span class="n">file_type</span><span class="p">)</span>
+        <span class="n">expected_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup_file</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">expected_path</span></div>
 
-    <span class="k">def</span> <span class="nf">_lookup_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_lookup_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; This will handle the special cases before passing the data through</span>
 <span class="sd">            to _find_single_path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subject_localization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span>
 
-        <span class="n">localization</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">localization</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-            <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">)</span>
-        <span class="p">)</span>
-
         <span class="c1"># Some files/locations append the localization number, so to abstract</span>
         <span class="c1"># that away from the user, we handle this internally</span>
-        <span class="k">if</span> <span class="n">localization</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">subject_localization</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">])</span>
 
-        <span class="n">paths_to_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span><span class="p">[</span><span class="n">file_type</span><span class="p">]</span>
+        <span class="n">paths_to_check</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
         <span class="n">timestamped_dir</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Only check the host_pc folder if necessary</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">file_type</span> <span class="ow">in</span> <span class="n">host_pc_files</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">file_type</span> <span class="ow">in</span> <span class="n">used_classifier_files</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data_type</span> <span class="ow">in</span> <span class="n">host_pc_files</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">data_type</span> <span class="ow">in</span> <span class="n">used_classifier_files</span><span class="p">):</span>
             <span class="n">folder_wildcard</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span><span class="p">[</span><span class="s1">&#39;ramulator_session_folder&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">ramulator_session_folder</span> <span class="o">=</span> <span class="n">folder_wildcard</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">subject</span><span class="o">=</span><span class="n">subject_localization</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
@@ -280,7 +288,7 @@
                 <span class="n">ramulator_session_folder</span><span class="p">)</span>
 
             <span class="c1"># The user can also just request the folder</span>
-            <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;ramulator_session_folder&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;ramulator_session_folder&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ramulator_session_folder</span>
 
         <span class="n">expected_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_single_path</span><span class="p">(</span><span class="n">paths_to_check</span><span class="p">,</span>
@@ -324,15 +332,17 @@
                 <span class="n">final_paths</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">path</span><span class="p">])</span>
 
         <span class="n">found_files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">checked_paths</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">final_paths</span><span class="p">:</span>
             <span class="n">expected_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">,</span>
                                          <span class="n">path</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+            <span class="n">checked_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expected_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">expected_path</span><span class="p">):</span>
                 <span class="n">found_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expected_path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Unable to find the requested file in any &quot;</span>
-                                    <span class="s2">&quot;of the expected locations&quot;</span><span class="p">)</span>
+                                    <span class="s2">&quot;of the expected locations:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checked_paths</span><span class="p">)))</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Multiple files found. Returning the first &#39;</span>
@@ -373,7 +383,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
