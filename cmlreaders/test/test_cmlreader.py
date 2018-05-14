@@ -13,7 +13,7 @@ class TestCMLReader:
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results'
     ])
     def test_load_from_rhino(self, file_type, rhino_root):
-        reader = CMLReader(subject="R1405E", localization='1',
+        reader = CMLReader(subject="R1405E", localization='0',
                            rootdir=rhino_root)
         reader.load(file_type)
 
@@ -23,5 +23,5 @@ class TestCMLReader:
         'electrode_coordinates.csv', 'prior_stim_results.csv'
     ])
     def test_load(self, file_type):
-        reader = CMLReader(subject="R1405E", localization='1')
+        reader = CMLReader(subject="R1405E", localization='0')
         reader.load(data_type=file_type[:-4], file_path=datafile(file_type))

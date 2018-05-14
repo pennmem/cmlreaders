@@ -1,7 +1,7 @@
 import pandas as pd
 
 from .path_finder import PathFinder
-from .exc import UnsupportedOutputFormat
+from .exc import UnsupportedOutputFormat, MissingParameter
 from abc import abstractmethod, ABC
 
 
@@ -74,7 +74,7 @@ class TextReader(BaseCMLReader):
         self.as_dataframe().to_csv(file_path, index=False, **kwargs)
 
     def to_json(self, file_path, **kwargs):
-        self.as_dataframe().to_json(file_path, index=False, **kwargs)
+        self.as_dataframe().to_json(file_path)
 
     def to_hdf(self, file_path):
         raise UnsupportedOutputFormat
@@ -82,13 +82,18 @@ class TextReader(BaseCMLReader):
 
 class CSVReader(BaseCMLReader):
     """ Generic reader class for loading csv files with headers """
-    def __init__(self, data_type, subject, localization, file_path=None,
-                 rootdir="/", **kwargs):
+    def __init__(self, data_type, subject, localization, experiment=None,
+                 file_path=None, rootdir="/", **kwargs):
+
+        if (data_type == 'target_selection_table') and experiment is None:
+            raise MissingParameter("Experiment required with target_selection_"
+                                   "table data type")
 
         self._file_path = file_path
         # When no file path is given, look it up using PathFinder
         if file_path is None:
             finder = PathFinder(subject=subject, localization=localization,
+                                experiment=experiment,
                                 rootdir=rootdir)
             self._file_path = finder.find(data_type)
 
@@ -108,7 +113,7 @@ class CSVReader(BaseCMLReader):
         self.as_dataframe().to_csv(file_path, index=False, **kwargs)
 
     def to_json(self, file_path, **kwargs):
-        self.as_dataframe().to_json(file_path, index=False, **kwargs)
+        self.as_dataframe().to_json(file_path, **kwargs)
 
     def to_hdf(self, file_path):
         raise UnsupportedOutputFormat
