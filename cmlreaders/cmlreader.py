@@ -14,7 +14,8 @@ class CMLReader(BaseCMLReader):
         'leads': TextReader,
         'classifier_excluded_leads': TextReader,
         'prior_stim_results': CSVReader,
-        'electrode_coordinates': CSVReader
+        'electrode_coordinates': CSVReader,
+        'target_selection_table': CSVReader
     }
 
     def __init__(self, subject: Optional[str] =None,
