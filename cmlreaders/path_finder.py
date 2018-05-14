@@ -65,7 +65,7 @@ class PathFinder(object):
 
     @property
     def requestable_files(self):
-        """ All files that can be requested with `PathFinder.find_file` """
+        """ All files that can be requested with `PathFinder.find()` """
         return list(self._paths.keys())
 
     @property
@@ -181,15 +181,17 @@ class PathFinder(object):
                 final_paths.extend([path])
 
         found_files = []
+        checked_paths = []
         for path in final_paths:
             expected_path = os.path.join(self.rootdir,
                                          path.format(**kwargs))
+            checked_paths.append(expected_path)
             if os.path.exists(expected_path):
                 found_files.append(expected_path)
 
         if len(found_files) == 0:
             raise FileNotFoundError("Unable to find the requested file in any "
-                                    "of the expected locations")
+                                    "of the expected locations:\n {}".format('\n'.join(checked_paths)))
 
         if len(found_files) > 1:
             warnings.warn('Multiple files found. Returning the first '
