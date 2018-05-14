@@ -55,7 +55,7 @@ rhino_paths = {
         'scratch/report_database/{subject}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        '{subject}_{experiment}_*_target_selection_table.csv',
+        'scratch/report_database/{subject}_{experiment}_*_target_selection_table.csv',
     ],
     'trained_classifier': [
         'scratch/report_database/{subject}_retrained_classifier.zip',

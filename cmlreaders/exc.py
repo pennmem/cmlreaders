@@ -9,3 +9,7 @@ class UnsupportedOutputFormat(CMLReaderException):
 
 class UnsupportedRepresentation(CMLReaderException):
     """ Raised when a data loading method is not supported for the given data type """
+
+
+class MissingParameter(CMLReaderException):
+    """ Raised when a required parameter is missing """
