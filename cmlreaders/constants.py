@@ -1,7 +1,6 @@
 
 rhino_paths = {
     'protocols_database': ['protocols/r1.json'],
-    # Montage/localization data
     # Localization-level (subject + localization)
     'voxel_coordinates': [
         "data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt",
@@ -16,11 +15,11 @@ rhino_paths = {
     'jacksheet': [
         'data10/RAM/subjects/{subject_localization}/docs/jacksheet.txt',
     ],
+    'area': [
+        'data10/RAM/subjects/{subject_localization}/docs/area.txt',
+    ],
     'electrode_categories': [
         'data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt',
-    ],
-    'area': [
-        'data10/RAM/subjects/{subject_localization}/tal/leads.txt',
     ],
     'good_leads': [
         'data10/RAM/subjects/{subject_localization}/tal/good_leads.txt',
@@ -121,9 +120,9 @@ localization_files = [
     'prior_stim_results',
     'electrode_coordinates',
     'jacksheet',
-    'area',
     'good_leads',
     'leads',
+    'area',
     'classifier_excluded_leads',
     'localization',
     'electrode_categories',
@@ -149,6 +148,10 @@ session_files = [
     'experiment_config',
     'raw_eeg',
     'odin_config',
+    'all_events',
+    'task_events',
+    'math_events',
+    'ps4_events'
 ]
 
 # All files that require some extra work to identify

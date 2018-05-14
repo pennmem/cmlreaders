@@ -10,7 +10,7 @@ from cmlreaders import constants
 @pytest.fixture()
 def all_files_subject(rhino_root):
     finder = PathFinder('R1389J', rootdir=rhino_root, experiment='catFR5',
-                        session=1, localization=0, montage=0)
+                        session='1', localization='0', montage='0')
     return finder
 
 

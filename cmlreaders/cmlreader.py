@@ -7,8 +7,14 @@ __all__ = ['CMLReader']
 
 class CMLReader(BaseCMLReader):
     readers = {
-            'voxel_coordinates': TextReader
-        }
+        'voxel_coordinates': TextReader,
+        'jacksheet': TextReader,
+        'good_leads': TextReader,
+        'leads': TextReader,
+        'classifier_excluded_leads': TextReader,
+        'prior_stim_results': CSVReader,
+        'electrode_coordinates': CSVReader
+    }
 
     def __init__(self, subject: Optional[str] =None,
                  experiment: Optional[str] = None,
@@ -31,7 +37,8 @@ class CMLReader(BaseCMLReader):
 
     def load(self, data_type):
         if data_type not in self.readers:
-            raise NotImplementedError("There is no reader to support the requested file type")
+            raise NotImplementedError("There is no reader to support the "
+                                      "requested file type")
 
         self._reader = self.readers[data_type](data_type,
                                                subject=self.subject,
