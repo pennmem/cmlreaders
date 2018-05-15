@@ -110,4 +110,3 @@ class TestCSVReader:
                               experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
-

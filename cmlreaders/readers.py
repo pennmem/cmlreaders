@@ -122,5 +122,3 @@ class CSVReader(BaseCMLReader):
 class BasicJSONReader(BaseCMLReader):
     """ Generic reader class for loading simple JSON files """
     pass
-
-
