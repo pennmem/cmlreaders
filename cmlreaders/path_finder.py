@@ -1,6 +1,8 @@
 """ Module for mapping file types to their locations on RHINO """
-import os
+
 import glob
+import os
+import string
 import warnings
 from typing import Optional
 
@@ -154,9 +156,15 @@ class PathFinder(object):
         timestamped_directories = glob.glob(os.path.join(self.rootdir,
                                                          base_folder_path))
 
-        # Sort such that most recently modified appears first
-        timestamped_directories = sorted(timestamped_directories,
-                                         key=os.path.getmtime, reverse=True)
+        # Remove all invalid names (valid = only contains numbers and _)
+        timestamped_directories = [
+            d for d in timestamped_directories
+            if os.path.isdir(d) and
+            all([c in string.digits for c in os.path.basename(d).replace('_', '')])
+        ]
+
+        # Sort such that most recent appears first
+        timestamped_directories = sorted(timestamped_directories)
 
         if len(timestamped_directories) == 0:
             raise RuntimeError("No timestamped folder found in host_pc folder")
