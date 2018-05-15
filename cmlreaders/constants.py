@@ -1,7 +1,6 @@
 
 rhino_paths = {
     'protocols_database': ['protocols/r1.json'],
-    # Montage/localization data
     # Localization-level (subject + localization)
     'voxel_coordinates': [
         "data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt",
@@ -16,11 +15,11 @@ rhino_paths = {
     'jacksheet': [
         'data10/RAM/subjects/{subject_localization}/docs/jacksheet.txt',
     ],
+    'area': [
+        'data10/RAM/subjects/{subject_localization}/docs/area.txt',
+    ],
     'electrode_categories': [
         'data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt',
-    ],
-    'area': [
-        'data10/RAM/subjects/{subject_localization}/tal/leads.txt',
     ],
     'good_leads': [
         'data10/RAM/subjects/{subject_localization}/tal/good_leads.txt',
@@ -56,12 +55,19 @@ rhino_paths = {
         'scratch/report_database/{subject}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        '{subject}_{experiment}_*_target_selection_table.csv',
+        'scratch/report_database/{subject}_{experiment}_*_target_selection_table.csv',
     ],
     'trained_classifier': [
         'scratch/report_database/{subject}_retrained_classifier.zip',
         'scratch/report_database/{subject}_{experiment}_all_retrained_classifier.zip',
     ],
+
+    # Session Data
+    'all_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
+    'task_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
+    'math_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
+    'ps4_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
+    'sources': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
 
     # Ramulator-related information
     'experiment_log': [
@@ -114,9 +120,9 @@ localization_files = [
     'prior_stim_results',
     'electrode_coordinates',
     'jacksheet',
-    'area',
     'good_leads',
     'leads',
+    'area',
     'classifier_excluded_leads',
     'localization',
     'electrode_categories',
@@ -142,6 +148,10 @@ session_files = [
     'experiment_config',
     'raw_eeg',
     'odin_config',
+    'all_events',
+    'task_events',
+    'math_events',
+    'ps4_events'
 ]
 
 # All files that require some extra work to identify

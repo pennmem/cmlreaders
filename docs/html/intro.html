@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Computation Memory Lab Data Readers &mdash; CML Data Readers 0.1.1 documentation</title>
+  <title>Introduction &mdash; CML Data Readers 0.1.1 documentation</title>
   
 
   
@@ -29,7 +29,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="intro.html" /> 
+    <link rel="next" title="Getting Started with CML Readers" href="getting_started.html" />
+    <link rel="prev" title="Computation Memory Lab Data Readers" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -48,7 +49,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> CML Data Readers
+            <a href="index.html" class="icon icon-home"> CML Data Readers
           
 
           
@@ -83,8 +84,13 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
@@ -101,7 +107,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">CML Data Readers</a>
+          <a href="index.html">CML Data Readers</a>
         
       </nav>
 
@@ -130,15 +136,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Computation Memory Lab Data Readers</li>
+      <li>Introduction</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -170,29 +176,37 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="computation-memory-lab-data-readers">
-<h1>Computation Memory Lab Data Readers<a class="headerlink" href="#computation-memory-lab-data-readers" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#purpose">Purpose</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#description">Description</a></li>
+<div class="section" id="introduction">
+<span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>CMLReaders is a library for easily finding, loading, and saving data types that
+are specific to the Computational Memory Lab at the University of Pennsylvania.
+It abtracts away the need to remember a multitude of file locations, prevents
+the need for analysis code to be littered with try/except blocks, and unifies
+the API for loading and saving lab specific data.</p>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Easily find the location of a file on RHINO</li>
+<li>Supports loading  lab-specific data into memory in analysis-friendly formats</li>
+<li>Convert from one file output format to another</li>
+<li>Single API for loading/saving data. No need to use data-specific readers</li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Finding-Files-on-Rino">Finding Files on Rino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Loading-Data">Loading Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Saving-Data">Saving Data</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#readers">Readers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pathfinder">PathFinder</a></li>
-</ul>
-</li>
-</ul>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders</span></code> library contains a number of lab-specific data readers.
+However, for the vast majority of use cases, users should be able to use
+<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.CMLReader</span></code> to load and save data. All readers
+implement the interface defined in <a class="reference internal" href="api.html#cmlreaders.readers.BaseCMLReader" title="cmlreaders.readers.BaseCMLReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code></a>,
+which includes methods to load data into memory as a dictionary, recarray, or
+Pandas dataframe. There is a save method corresponding to each of the loaders:
+Each format includes a method for saving, i.e. JSON, CSV, and HDF5. It is not
+guaranteed that all loading/saving methods will be implemented for each reader.
+Internally, the readers use <a class="reference internal" href="api.html#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> to identify where
+files are located.</p>
 </div>
 </div>
 
@@ -204,8 +218,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started with CML Readers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="index.html" class="btn btn-neutral" title="Computation Memory Lab Data Readers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
