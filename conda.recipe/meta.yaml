@@ -19,14 +19,18 @@ build:
 
 # Common dependencies that need to be listed in both the build and run
 # subsections of the requirements section.
-{% set deps = [] %}
+{% set deps = [
+    "pandas"
+] %}
 
 requirements:
   build:
     # We default to Python 3.6 if no environment variable is set
     - python {{ python }}
     - setuptools
-
+    {% for dep in deps %}
+    - {{ dep }}
+    {% endfor %}
   run:
     - python {{ python }}
     # - vs2015_runtime  [win]
