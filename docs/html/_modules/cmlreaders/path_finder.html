@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.1.1 documentation</title>
+  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.2.0 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -150,8 +150,10 @@
             
   <h1>Source code for cmlreaders.path_finder</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot; Module for mapping file types to their locations on RHINO &quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
 
@@ -199,14 +201,14 @@
 <span class="sd">        montage: int or None</span>
 <span class="sd">            Montage number</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">subject</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">experiment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
 
         <span class="c1"># Stringify localization and montage</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="n">rhino_paths</span>
 
@@ -305,9 +307,15 @@
         <span class="n">timestamped_directories</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">,</span>
                                                          <span class="n">base_folder_path</span><span class="p">))</span>
 
-        <span class="c1"># Sort such that most recently modified appears first</span>
-        <span class="n">timestamped_directories</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">,</span>
-                                         <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Remove all invalid names (valid = only contains numbers and _)</span>
+        <span class="n">timestamped_directories</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">timestamped_directories</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="nb">all</span><span class="p">([</span><span class="n">c</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)])</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Sort such that most recent appears first</span>
+        <span class="n">timestamped_directories</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">timestamped_directories</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No timestamped folder found in host_pc folder&quot;</span><span class="p">)</span>
@@ -383,7 +391,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.1',
+            VERSION:'0.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

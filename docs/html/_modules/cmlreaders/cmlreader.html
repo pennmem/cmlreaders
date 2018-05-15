@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.1.1 documentation</title>
+  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.2.0 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -150,7 +150,7 @@
             
   <h1>Source code for cmlreaders.cmlreader</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">.readers</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.readers</span> <span class="k">import</span> <span class="n">TextReader</span><span class="p">,</span> <span class="n">CSVReader</span><span class="p">,</span> <span class="n">BaseCMLReader</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CMLReader&#39;</span><span class="p">]</span>
@@ -165,7 +165,8 @@
         <span class="s1">&#39;leads&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
         <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
         <span class="s1">&#39;prior_stim_results&#39;</span><span class="p">:</span> <span class="n">CSVReader</span><span class="p">,</span>
-        <span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">:</span> <span class="n">CSVReader</span>
+        <span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">:</span> <span class="n">CSVReader</span><span class="p">,</span>
+        <span class="s1">&#39;target_selection_table&#39;</span><span class="p">:</span> <span class="n">CSVReader</span>
     <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -257,7 +258,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.1',
+            VERSION:'0.2.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
