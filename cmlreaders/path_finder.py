@@ -48,14 +48,14 @@ class PathFinder(object):
         montage: int or None
             Montage number
         """
-        self.subject: str = subject
-        self.rootdir: str = os.path.expanduser(rootdir)
-        self.experiment: str = experiment
-        self.session: str = session
+        self.subject = subject
+        self.rootdir = os.path.expanduser(rootdir)
+        self.experiment = experiment
+        self.session = session
 
         # Stringify localization and montage
-        self.localization: str = str(localization)
-        self.montage: str = str(montage)
+        self.localization = str(localization)
+        self.montage = str(montage)
 
         self._paths = rhino_paths
 

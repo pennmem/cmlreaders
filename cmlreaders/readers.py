@@ -119,3 +119,8 @@ class CSVReader(BaseCMLReader):
         raise UnsupportedOutputFormat
 
 
+class BasicJSONReader(BaseCMLReader):
+    """ Generic reader class for loading simple JSON files """
+    pass
+
+

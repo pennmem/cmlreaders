@@ -11,18 +11,17 @@ datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 class TestTextReader:
 
-    @pytest.mark.rhino
     @pytest.mark.parametrize("method", ['dataframe', 'recarray', 'dict'])
-    @pytest.mark.parametrize("file_type", [
+    @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
         "jacksheet", "area"])
     @pytest.mark.parametrize("subject,localization", [
         ('R1389J', '0'),
     ])
-    def test_as_methods(self, method, file_type, subject, localization,
-                        rhino_root):
-        reader = TextReader(file_type, subject, localization,
-                            rootdir=rhino_root)
+    def test_as_methods(self, method, data_type, subject, localization):
+        file_path = datafile(data_type + ".txt")
+        reader = TextReader(data_type, subject, localization,
+                            file_path=file_path)
         expected_types = {
             'dataframe': pd.DataFrame,
             'recarray': np.recarray,
@@ -35,36 +34,34 @@ class TestTextReader:
         assert type(data) == expected_types[method]
 
     @pytest.mark.parametrize("method", ['json', 'csv'])
-    @pytest.mark.parametrize("file_type", [
+    @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
         "jacksheet", "area"])
     @pytest.mark.parametrize("subject,localization", [
         ('R1389J', '0'),
     ])
-    def test_to_methods(self, method, file_type, subject, localization,
+    def test_to_methods(self, method, data_type, subject, localization,
                         rhino_root):
-        file_path = datafile(file_type + ".txt")
-        reader = TextReader(file_type, subject, localization,
+        file_path = datafile(data_type + ".txt")
+        reader = TextReader(data_type, subject, localization,
                             file_path=file_path, rootdir=rhino_root)
 
         # Save as specified format
         method_name = "to_{}".format(method)
         callable_method = getattr(reader, method_name)
-        exp_output = datafile("output/" + file_type + "." + method)
+        exp_output = datafile("output/" + data_type + "." + method)
         callable_method(exp_output)
         assert os.path.exists(exp_output)
 
         # Check that data can be reloaded
-        re_reader = TextReader(file_type, subject, localization,
+        re_reader = TextReader(data_type, subject, localization,
                                file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
-        # os.remove(exp_output)
 
 
 class TestCSVReader:
 
-    @pytest.mark.rhino
     @pytest.mark.parametrize("method", ["dataframe", "recarray", "dict"])
     @pytest.mark.parametrize("data_type", [
         'electrode_coordinates', 'prior_stim_results', 'target_selection_table'
@@ -73,8 +70,9 @@ class TestCSVReader:
         ('R1409D', '0'),
     ])
     def test_as_methods(self, method, data_type, subject, localization, rhino_root):
+        file_path = datafile(data_type + ".csv")
         reader = CSVReader(data_type, subject, localization, experiment="FR1",
-                           rootdir=rhino_root)
+                           file_path=file_path)
         expected_types = {
             'dataframe': pd.DataFrame,
             'recarray': np.recarray,
@@ -112,5 +110,4 @@ class TestCSVReader:
                               experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
-        # os.remove(exp_output)
 
