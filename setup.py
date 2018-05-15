@@ -10,10 +10,7 @@ with open('README.rst') as readme_file:
 with open('CHANGELOG.rst') as history_file:
     history = history_file.read()
 
-# TODO: put package requirements here
 requirements = []
-
-# TODO: put setup requirements here
 setup_requirements = []
 
 setup(

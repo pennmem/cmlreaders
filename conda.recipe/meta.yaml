@@ -33,7 +33,9 @@ requirements:
     {% endfor %}
   run:
     - python {{ python }}
-    # - vs2015_runtime  [win]
+    {% for dep in deps %}
+    - {{ dep }}
+    {% endfor %}
 
 test:
   # Test that we can import the package
