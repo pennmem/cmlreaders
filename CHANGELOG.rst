@@ -1,6 +1,13 @@
 Changes
 =======
 
+Version 0.2.0
+-------------
+**5-15-2018**
+* Implemented basic Text and CSV readers
+* Somewhat stabilized the API/internals
+* Improved error message when files are not found
+
 Version 0.1.1
 -------------
 **4-26-2018**
