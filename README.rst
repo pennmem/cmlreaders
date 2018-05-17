@@ -84,6 +84,19 @@ they give us (selection, saving to lots of different formats, etc.). The one
 exception is the EEG data which will be returned as something like a
 :class:`ptsa.data.TimeSeries` object.
 
+To get info like what experiments a subject has done, use the DataFrame
+returned by the :func:`get_data_index` function:
+
+.. code-block:: python
+
+   from cmlreaders import get_data_index
+
+   index = get_data_index()
+   experiments = index[index.subject == 'R1111M'].experiments.unique()
+   print(', '.join(experiments.tolist()))
+
+   # possible output: FR1, FR2, PAL1, PAL2, PS2, catFR1
+
 
 Testing
 -------
