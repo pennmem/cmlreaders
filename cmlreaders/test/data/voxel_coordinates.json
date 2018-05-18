@@ -1,0 +1,2719 @@
+{
+  "leads": {
+    "A": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                170,
+                258,
+                63
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "A1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                127,
+                228,
+                60
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "A8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                165,
+                255,
+                63
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "A2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                158,
+                249,
+                62
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "A3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                151,
+                244,
+                62
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "A4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                144,
+                240,
+                62
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "A5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                137,
+                235,
+                61
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "A6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                131,
+                231,
+                61
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "A7"
+        }
+      ]
+    },
+    "TWOSC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        10
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                207,
+                304,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "TWOSC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                202,
+                308,
+                80
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "TWOSC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                195,
+                314,
+                81
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "TWOSC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                189,
+                320,
+                82
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "TWOSC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                183,
+                325,
+                83
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "TWOSC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                176,
+                330,
+                84
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "TWOSC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                170,
+                336,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "TWOSC7"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                164,
+                341,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "TWOSC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                157,
+                346,
+                86
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            9
+          ],
+          "name": "TWOSC9"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                151,
+                351,
+                87
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            10
+          ],
+          "name": "TWOSC10"
+        }
+      ]
+    },
+    "STG": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                166,
+                295,
+                51
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "STG1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                110,
+                290,
+                46
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "STG8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                159,
+                294,
+                51
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "STG2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                151,
+                294,
+                50
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "STG3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                143,
+                293,
+                49
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "STG4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                135,
+                292,
+                48
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "STG5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                126,
+                291,
+                47
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "STG6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                118,
+                291,
+                47
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "STG7"
+        }
+      ]
+    },
+    "FOURSC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                206,
+                329,
+                88
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "FOURSC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                156,
+                355,
+                94
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "FOURSC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                200,
+                331,
+                88
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "FOURSC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                193,
+                335,
+                89
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "FOURSC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                185,
+                339,
+                90
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "FOURSC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                178,
+                343,
+                91
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "FOURSC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                170,
+                347,
+                92
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "FOURSC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                163,
+                351,
+                93
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "FOURSC7"
+        }
+      ]
+    },
+    "SIXSC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                198,
+                317,
+                78
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "SIXSC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                146,
+                296,
+                87
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "SIXSC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                191,
+                315,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "SIXSC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                183,
+                312,
+                80
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "SIXSC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                176,
+                309,
+                81
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "SIXSC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                168,
+                306,
+                82
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "SIXSC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                161,
+                303,
+                84
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "SIXSC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                154,
+                300,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "SIXSC7"
+        }
+      ]
+    },
+    "SS": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                184,
+                281,
+                107
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "SS1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                150,
+                258,
+                102
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "SS6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                177,
+                277,
+                106
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "SS2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                170,
+                272,
+                105
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "SS3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                163,
+                267,
+                104
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "SS4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                156,
+                263,
+                103
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "SS5"
+        }
+      ]
+    },
+    "ONESC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                183,
+                298,
+                78
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "ONESC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                131,
+                320,
+                80
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "ONESC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                177,
+                300,
+                78
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "ONESC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                169,
+                303,
+                78
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "ONESC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                161,
+                306,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "ONESC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                154,
+                309,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "ONESC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                146,
+                312,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "ONESC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                139,
+                316,
+                80
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "ONESC7"
+        }
+      ]
+    },
+    "MI": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                187,
+                229,
+                91
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "MI1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                152,
+                206,
+                87
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "MI6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                180,
+                224,
+                90
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "MI2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                173,
+                220,
+                89
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "MI3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                166,
+                215,
+                89
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "MI4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                159,
+                211,
+                88
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "MI5"
+        }
+      ]
+    },
+    "THREESC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                193,
+                304,
+                93
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "THREESC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                155,
+                320,
+                100
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "THREESC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                186,
+                307,
+                94
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "THREESC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                179,
+                310,
+                96
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "THREESC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                171,
+                313,
+                97
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "THREESC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                163,
+                317,
+                99
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "THREESC5"
+        }
+      ]
+    },
+    "TWOSMC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        8
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                208,
+                374,
+                66
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "TWOSMC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                393,
+                93
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "TWOSMC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                376,
+                69
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "TWOSMC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                379,
+                73
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "TWOSMC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                382,
+                77
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "TWOSMC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                384,
+                81
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "TWOSMC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                387,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "TWOSMC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                390,
+                89
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "TWOSMC7"
+        }
+      ]
+    },
+    "TWOSTG": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                127,
+                259,
+                45
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "TWOSTG6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                166,
+                267,
+                39
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "TWOSTG1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                159,
+                266,
+                40
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "TWOSTG2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                151,
+                264,
+                41
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "TWOSTG3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                143,
+                263,
+                42
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "TWOSTG4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                135,
+                261,
+                43
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "TWOSTG5"
+        }
+      ]
+    },
+    "SI": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                173,
+                291,
+                76
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "SI1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                135,
+                278,
+                75
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "SI6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                167,
+                288,
+                76
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "SI2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                159,
+                285,
+                76
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "SI3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                151,
+                282,
+                76
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "SI4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                143,
+                280,
+                76
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "SI5"
+        }
+      ]
+    },
+    "ONEMC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        10
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                188,
+                338,
+                68
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "ONEMC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                173,
+                410,
+                75
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            10
+          ],
+          "name": "ONEMC10"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                187,
+                345,
+                69
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "ONEMC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                185,
+                353,
+                70
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "ONEMC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                184,
+                361,
+                71
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "ONEMC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                182,
+                369,
+                72
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "ONEMC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                179,
+                385,
+                73
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "ONEMC7"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                177,
+                393,
+                74
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "ONEMC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                175,
+                402,
+                75
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            9
+          ],
+          "name": "ONEMC9"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                181,
+                376,
+                72
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "ONEMC6"
+        }
+      ]
+    },
+    "MS": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                248,
+                270,
+                123
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "MS1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                209,
+                256,
+                122
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "MS6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                241,
+                268,
+                123
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "MS2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                233,
+                265,
+                123
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "MS3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                225,
+                262,
+                122
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "MS4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                217,
+                259,
+                122
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "MS5"
+        }
+      ]
+    },
+    "TWOMC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        6
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                170,
+                368,
+                54
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "TWOMC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                167,
+                375,
+                55
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "TWOMC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                164,
+                383,
+                56
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "TWOMC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                161,
+                390,
+                57
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "TWOMC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                159,
+                398,
+                58
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "TWOMC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                155,
+                406,
+                59
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "TWOMC6"
+        }
+      ]
+    },
+    "SMG": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        10
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                180,
+                307,
+                66
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "SMG1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                125,
+                256,
+                58
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            10
+          ],
+          "name": "SMG10"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                174,
+                302,
+                65
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "SMG2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                168,
+                297,
+                64
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "SMG3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                162,
+                292,
+                64
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "SMG4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                156,
+                286,
+                63
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "SMG5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                150,
+                280,
+                62
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "SMG6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                144,
+                274,
+                61
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "SMG7"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                137,
+                268,
+                60
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "SMG8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                131,
+                262,
+                59
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            9
+          ],
+          "name": "SMG9"
+        }
+      ]
+    },
+    "PI": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        16
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                188,
+                244,
+                32
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "PI1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                191,
+                245,
+                37
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "PI2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                194,
+                246,
+                43
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "PI3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                197,
+                247,
+                49
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "PI4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                199,
+                248,
+                55
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "PI5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                202,
+                249,
+                61
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "PI6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                204,
+                250,
+                67
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "PI7"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                207,
+                251,
+                73
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "PI8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                211,
+                252,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            9
+          ],
+          "name": "PI9"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                214,
+                252,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            10
+          ],
+          "name": "PI10"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                217,
+                253,
+                91
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            11
+          ],
+          "name": "PI11"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                220,
+                254,
+                97
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            12
+          ],
+          "name": "PI12"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                222,
+                255,
+                103
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            13
+          ],
+          "name": "PI13"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                235,
+                260,
+                130
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            14
+          ],
+          "name": "PI14"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                239,
+                261,
+                136
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            15
+          ],
+          "name": "PI15"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                241,
+                261,
+                141
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            16
+          ],
+          "name": "PI16"
+        }
+      ]
+    },
+    "SMC": {
+      "pairs": [],
+      "type": "D",
+      "dimensions": [
+        1,
+        12
+      ],
+      "n_groups": 1,
+      "contacts": [
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                224,
+                325,
+                79
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            1
+          ],
+          "name": "SMC1"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                187,
+                410,
+                86
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            12
+          ],
+          "name": "SMC12"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                221,
+                332,
+                80
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            2
+          ],
+          "name": "SMC2"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                218,
+                340,
+                81
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            3
+          ],
+          "name": "SMC3"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                215,
+                347,
+                81
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            4
+          ],
+          "name": "SMC4"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                211,
+                355,
+                82
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            5
+          ],
+          "name": "SMC5"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                208,
+                364,
+                83
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            6
+          ],
+          "name": "SMC6"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                205,
+                371,
+                83
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            7
+          ],
+          "name": "SMC7"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                201,
+                379,
+                84
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            8
+          ],
+          "name": "SMC8"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                198,
+                387,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            9
+          ],
+          "name": "SMC9"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                194,
+                394,
+                85
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            10
+          ],
+          "name": "SMC10"
+        },
+        {
+          "lead_group": 0,
+          "coordinate_spaces": {
+            "ct_voxel": {
+              "raw": [
+                191,
+                402,
+                86
+              ]
+            }
+          },
+          "lead_loc": [
+            1,
+            11
+          ],
+          "name": "SMC11"
+        }
+      ]
+    }
+  },
+  "origin_ct": "/Users/zeinab/Desktop/localizarion/R1389J/T01_R1389J_CT.nii.gz"
+}

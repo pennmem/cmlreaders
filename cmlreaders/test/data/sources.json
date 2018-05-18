@@ -1,0 +1,11 @@
+{
+  "R1389J_catFR1_0_20Feb18_1720.h5": {
+    "data_format": "int16", 
+    "n_samples": 1641165, 
+    "name": "R1389J_catFR1_0_20Feb18_1720.h5", 
+    "sample_rate": 1000, 
+    "source_file": "eeg_timeseries.h5", 
+    "start_time_ms": 1519147215759, 
+    "start_time_str": "20Feb18_1720"
+  }
+}
