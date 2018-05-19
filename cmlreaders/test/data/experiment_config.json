@@ -1,0 +1,55 @@
+{
+  "biomarker_threshold": 0.5, 
+  "electrode_config_file": "config_files/R1389J_26FEB2018L0M0STIM.bin", 
+  "excluded_montage_file": "config_files/excluded_pairs.json", 
+  "experiment": {
+    "artifact_detection": {
+      "allow_artifact_detection": true, 
+      "allow_artifact_detection_during_session": false, 
+      "artifact_detection_inter_stim_interval": 2000, 
+      "artifact_detection_number_of_stims_per_channel": 15, 
+      "artifact_detection_sample_time_length": 500
+    }, 
+    "experiment_specific_data": {
+      "allow_classifier_generalization": true, 
+      "classifier_file": "config_files/R1389J-classifier.zip", 
+      "classifier_version": "1.0.2", 
+      "random_stim_prob": false, 
+      "save_debug_output": true, 
+      "stim_channels": {
+        "STG6_STG7": {
+          "stim_amplitude": 0.5, 
+          "stim_duration": 500, 
+          "stim_frequency": 200
+        }
+      }
+    }, 
+    "experiment_specs": {
+      "biomarker_sample_start_time_offset": 0, 
+      "biomarker_sample_time_length": 1366, 
+      "buffer_time": 1365, 
+      "experiment_type": "CatFR5", 
+      "freq_max": 180, 
+      "freq_min": 6, 
+      "num_freqs": 8, 
+      "num_items": 300, 
+      "stim_duration": 500, 
+      "version": "3.0.0"
+    }, 
+    "type": "CatFR5"
+  }, 
+  "global_settings": {
+    "connect_to_task_laptop": true, 
+    "data_dir": "SET_AUTOMATICALLY_AT_A_RUNTIME", 
+    "experiment_config_filename": "SET_AUTOMATICALLY_AT_A_RUNTIME", 
+    "extended_blanking": true, 
+    "max_session_length": 120, 
+    "odin_lib_debug_level": 0, 
+    "plot_fps": 5, 
+    "plot_update_style": "Sweeping", 
+    "plot_window_length": 20000, 
+    "sampling_rate": 1000
+  }, 
+  "montage_file": "config_files/pairs.json", 
+  "subject": "R1389J"
+}

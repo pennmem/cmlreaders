@@ -1,0 +1,16 @@
+{
+  "files": {
+    "all_events": "all_events.json", 
+    "math_events": "math_events.json", 
+    "task_events": "task_events.json"
+  }, 
+  "info": {
+    "contacts": "protocols/r1/subjects/R1389J/localizations/0/montages/0/neuroradiology/current_processed/contacts.json", 
+    "import_type": "build", 
+    "localization": "0", 
+    "montage": "0", 
+    "pairs": "protocols/r1/subjects/R1389J/localizations/0/montages/0/neuroradiology/current_processed/pairs.json", 
+    "subject_alias": "R1389J", 
+    "system_version": 3.3
+  }
+}
