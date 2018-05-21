@@ -8,3 +8,4 @@ Computational Memory Lab Data Readers
    intro
    getting_started.ipynb
    api
+   dev
