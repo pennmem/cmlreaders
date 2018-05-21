@@ -174,38 +174,39 @@ class MontageReader(BaseCMLReader):
 
         with open(self._file_path) as f:
             data = json.load(f)[self.subject][self.data_type]
-            labels = [l for l in data]
 
-            flatten = partial(self._flatten_row, data, labels)
-            with Pool(min(4, cpu_count())) as pool:
-                rows = pool.map(flatten, range(len(labels)))
-            df = pd.concat(rows)
+        labels = [l for l in data]
 
-            # Drop useless atlas.id tags
-            df = df[[col for col in df.columns if not col.endswith('.id')]]
+        flatten = partial(self._flatten_row, data, labels)
+        with Pool(min(4, cpu_count())) as pool:
+            rows = pool.map(flatten, range(len(labels)))
+        df = pd.concat(rows)
 
-            # rename poorly named columns
-            if self.data_type == 'contacts':
-                renames = {'channel': 'contact'}
-            else:
-                renames = {'channel_1': 'contact_1', 'channel_2': 'contact_2'}
-            renames.update({'code': 'label'})
-            df = df.rename(renames, axis=1)
+        # Drop useless atlas.id tags
+        df = df[[col for col in df.columns if not col.endswith('.id')]]
 
-            # ensure that contact and label appear first
-            names = df.columns
-            if self.data_type == 'contacts':
-                first = ['contact']
-            else:
-                first = ['contact_1', 'contact_2']
-            first += ['label']
-            df = df[first + [name for name in names if name not in first]]
+        # rename poorly named columns
+        if self.data_type == 'contacts':
+            renames = {'channel': 'contact'}
+        else:
+            renames = {'channel_1': 'contact_1', 'channel_2': 'contact_2'}
+        renames.update({'code': 'label'})
+        df = df.rename(renames, axis=1)
 
-            # sort by contact
-            key = 'contact' if self.data_type == 'contacts' else 'contact_1'
-            df = df.sort_values(by=key).reset_index(drop=True)
+        # ensure that contact and label appear first
+        names = df.columns
+        if self.data_type == 'contacts':
+            first = ['contact']
+        else:
+            first = ['contact_1', 'contact_2']
+        first += ['label']
+        df = df[first + [name for name in names if name not in first]]
 
-            return df
+        # sort by contact
+        key = 'contact' if self.data_type == 'contacts' else 'contact_1'
+        df = df.sort_values(by=key).reset_index(drop=True)
+
+        return df
 
 
 class ElectrodeCategoriesReader(BaseCMLReader):
