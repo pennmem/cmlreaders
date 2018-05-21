@@ -126,8 +126,26 @@ class RamulatorEventLogReader(BaseCMLReader):
 
 
 class BasicJSONReader(BaseCMLReader):
-    """ Generic reader class for loading simple JSON files """
-    pass
+    """Generic reader class for loading simple JSON files.
+
+    Returns a :class:`pd.DataFrame`.
+
+    """
+    def as_dataframe(self):
+        return pd.read_json(self._file_path)
+
+
+class EventReader(BasicJSONReader):
+    """Reader for all experiment events.
+
+    Returns a :class:`pd.DataFrame`.
+
+    """
+    def as_dataframe(self):
+        df = super().as_dataframe()
+        first = ['eegoffset']
+        df.columns = first + [col for col in df.columns if col not in first]
+        return df
 
 
 class ElectrodeCategoriesReader(BaseCMLReader):
