@@ -33,8 +33,8 @@ class CMLReader(object):
         self.montage = montage
         self.rootdir = rootdir
 
-    def load_proxy(self, data_type, file_path=None):
-        """ Return an instance of the reader class rather than the data """
+    def get_reader(self, data_type, file_path=None):
+        """ Return an instance of the reader class for the given data type """
         return self.readers[data_type](data_type,
                                        subject=self.subject,
                                        experiment=self.experiment,

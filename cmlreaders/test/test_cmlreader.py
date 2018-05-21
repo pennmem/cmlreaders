@@ -33,8 +33,8 @@ class TestCMLReader:
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
         'target_selection_table'
     ])
-    def test_load_proxy(self, file_type):
+    def test_get_reader(self, file_type):
         reader = CMLReader(subject='R1405E', localization='0', experiment='FR1',
                            session='0', montage='0')
-        reader_obj = reader.load_proxy(file_type, file_path=datafile(file_type))
+        reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
         assert type(reader_obj) == reader.readers[file_type]

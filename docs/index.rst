@@ -1,5 +1,5 @@
-Computation Memory Lab Data Readers
-===================================
+Computational Memory Lab Data Readers
+=====================================
 
 .. toctree::
    :maxdepth: 2
@@ -8,5 +8,4 @@ Computation Memory Lab Data Readers
    intro
    getting_started.ipynb
    api
-
-
+   dev

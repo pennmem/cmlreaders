@@ -86,6 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev.html">Developer’s Guide</a></li>
 </ul>
 
             
@@ -149,41 +150,58 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cmlreaders.readers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
 
 <span class="kn">from</span> <span class="nn">.path_finder</span> <span class="k">import</span> <span class="n">PathFinder</span>
 <span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">UnsupportedOutputFormat</span><span class="p">,</span> <span class="n">MissingParameter</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">abstractmethod</span><span class="p">,</span> <span class="n">ABC</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseCMLReader&#39;</span><span class="p">,</span> <span class="s1">&#39;TextReader&#39;</span><span class="p">,</span> <span class="s1">&#39;CSVReader&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TextReader&#39;</span><span class="p">,</span> <span class="s1">&#39;CSVReader&#39;</span><span class="p">,</span> <span class="s1">&#39;RamulatorEventLogReader&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="BaseCMLReader"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.BaseCMLReader">[docs]</a><span class="k">class</span> <span class="nc">BaseCMLReader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Abstract base class that defines the interface for all CML data readers &quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">BaseCMLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base class for CML data readers &quot;&quot;&quot;</span>
 
-    <span class="nd">@abstractmethod</span>
+    <span class="n">default_representation</span> <span class="o">=</span> <span class="s2">&quot;dataframe&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">localization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="c1"># When no file path is given, look it up using PathFinder</span>
+        <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">finder</span> <span class="o">=</span> <span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
+                                <span class="n">montage</span><span class="o">=</span><span class="n">montage</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">default_representation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Load data into memory &quot;&quot;&quot;</span>
+        <span class="n">method_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;as&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)()</span>
+
     <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return data as dataframe &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">as_recarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="sd">&quot;&quot;&quot; Return data as a `np.rec.array` &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_records</span><span class="p">()</span>
 
-    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="sd">&quot;&quot;&quot; Return data as a list of dictionaries &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
 
-    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="sd">&quot;&quot;&quot; Save data to csv file &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">to_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">raise</span> <span class="n">UnsupportedOutputFormat</span>
 
 
 <div class="viewcode-block" id="TextReader"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.TextReader">[docs]</a><span class="k">class</span> <span class="nc">TextReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
@@ -200,32 +218,15 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
-        <span class="c1"># When no file path is given, look it up using PathFinder</span>
-        <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">finder</span> <span class="o">=</span> <span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                                         <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
+                                         <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
+                                         <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TextReader.as_dataframe"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.TextReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">df</span>
-
-    <span class="k">def</span> <span class="nf">as_recarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_records</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">records</span>
-
-    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div>
 
     <span class="k">def</span> <span class="nf">to_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">UnsupportedOutputFormat</span></div>
@@ -239,35 +240,34 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;target_selection_table&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">experiment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingParameter</span><span class="p">(</span><span class="s2">&quot;Experiment required with target_selection_&quot;</span>
                                    <span class="s2">&quot;table data type&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CSVReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                                        <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
+                                        <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                                        <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
-        <span class="c1"># When no file path is given, look it up using PathFinder</span>
-        <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">finder</span> <span class="o">=</span> <span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
-                                <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">data_type</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVReader.as_dataframe"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.CSVReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">df</span>
+        <span class="k">return</span> <span class="n">df</span></div></div>
 
-    <span class="k">def</span> <span class="nf">as_recarray</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_records</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">records</span>
 
-    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="RamulatorEventLogReader"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.RamulatorEventLogReader">[docs]</a><span class="k">class</span> <span class="nc">RamulatorEventLogReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Reader for Ramulator event log &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RamulatorEventLogReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                                                      <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                                                      <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+                                                      <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
+                                                      <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="RamulatorEventLogReader.as_dataframe"><a class="viewcode-back" href="../../api.html#cmlreaders.readers.RamulatorEventLogReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">efile</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">efile</span><span class="o">.</span><span class="n">read</span><span class="p">())[</span><span class="s1">&#39;events&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">to_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">UnsupportedOutputFormat</span></div>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;to_id&#39;</span><span class="p">,</span> <span class="s1">&#39;from_id&#39;</span><span class="p">,</span> <span class="s1">&#39;event_id&#39;</span><span class="p">,</span> <span class="s1">&#39;command_id&#39;</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">BasicJSONReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
@@ -329,9 +329,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

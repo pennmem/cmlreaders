@@ -30,7 +30,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting Started with CML Readers" href="getting_started.html" />
-    <link rel="prev" title="Computation Memory Lab Data Readers" href="index.html" /> 
+    <link rel="prev" title="Computational Memory Lab Data Readers" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -93,6 +93,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
 </ul>
 
             
@@ -200,7 +201,7 @@ the API for loading and saving lab specific data.</p>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders</span></code> library contains a number of lab-specific data readers.
 However, for the vast majority of use cases, users should be able to use
 <code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.CMLReader</span></code> to load and save data. All readers
-implement the interface defined in <a class="reference internal" href="api.html#cmlreaders.readers.BaseCMLReader" title="cmlreaders.readers.BaseCMLReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code></a>,
+implement the interface defined in <code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code>,
 which includes methods to load data into memory as a dictionary, recarray, or
 Pandas dataframe. There is a save method corresponding to each of the loaders:
 Each format includes a method for saving, i.e. JSON, CSV, and HDF5. It is not
@@ -221,7 +222,7 @@ files are located.</p>
         <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started with CML Readers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Computation Memory Lab Data Readers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Computational Memory Lab Data Readers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -274,9 +275,7 @@ files are located.</p>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
