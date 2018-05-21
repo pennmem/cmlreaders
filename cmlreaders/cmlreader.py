@@ -58,4 +58,3 @@ class CMLReader(object):
                                        montage=self.montage,
                                        file_path=file_path,
                                        rootdir=self.rootdir).load()
-
