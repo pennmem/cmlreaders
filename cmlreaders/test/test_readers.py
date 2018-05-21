@@ -4,8 +4,10 @@ import pandas as pd
 import numpy as np
 import functools
 
-from cmlreaders.readers import BasicJSONReader, TextReader, CSVReader, \
-    ElectrodeCategoriesReader, EventReader, RamulatorEventLogReader
+from cmlreaders.readers import (
+    BasicJSONReader, TextReader, CSVReader, ElectrodeCategoriesReader,
+    EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader
+)
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -178,6 +180,28 @@ class TestEventReader:
         reader = EventReader('all_events', file_path=path)
         df = reader.load()
         assert df.columns[0] == 'eegoffset'
+
+
+class TestMontageReader:
+    @pytest.mark.parametrize('kind', ['contacts', 'pairs'])
+    def test_load(self, kind):
+        path = datafile(kind + '.json')
+        reader = MontageReader(kind, subject='R1389J', file_path=path)
+        df = reader.load()
+
+        if kind == 'contacts':
+            assert 'contact' in df.columns
+        else:
+            assert 'contact_1' in df.columns
+            assert 'contact_2' in df.columns
+
+
+class TestLocalizationReader:
+    def test_load(self):
+        path = datafile('localization.json')
+        reader = LocalizationReader('localization', subject='R1389J', file_path=path)
+        df = reader.load()
+        assert isinstance(df, pd.DataFrame)
 
 
 @pytest.mark.rhino

@@ -15,7 +15,7 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy pandas
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy pandas=0.22
   - source activate test-environment
   - pip install -r requirements.txt
   - python setup.py install

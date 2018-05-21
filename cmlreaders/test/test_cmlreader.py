@@ -13,6 +13,7 @@ class TestCMLReader:
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
         'target_selection_table', 'electrode_categories',
         'events', 'all_events', 'math_events', 'task_events',
+        'pairs', 'contacts', 'localization',
     ])
     def test_load_from_rhino(self, file_type, rhino_root):
         # electrode categories aren't always up to date

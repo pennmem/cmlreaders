@@ -1,9 +1,8 @@
 pytest
 pytest-cov
-pandas
+pandas==0.22
 codecov
 sphinx
 flake8
 sphinx_rtd_theme
 nbsphinx
-
