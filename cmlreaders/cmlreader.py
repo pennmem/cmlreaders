@@ -1,5 +1,5 @@
 from typing import Optional
-from .readers import ElectrodeCategoriesReader, CSVReader, \
+from .readers import CSVReader, ElectrodeCategoriesReader, EventReader, \
     RamulatorEventLogReader, TextReader
 
 
@@ -17,6 +17,10 @@ class CMLReader(object):
         'prior_stim_results': CSVReader,
         'electrode_coordinates': CSVReader,
         'electrode_categories': ElectrodeCategoriesReader,
+        'events': EventReader,
+        'all_events': EventReader,
+        'math_events': EventReader,
+        'task_events': EventReader,
         'target_selection_table': CSVReader,
         'experiment_log': RamulatorEventLogReader,
     }
@@ -51,6 +55,10 @@ class CMLReader(object):
         if data_type not in self.readers:
             raise NotImplementedError("There is no reader to support the "
                                       "requested file type")
+
+        # By default we want task + math events when requesting events
+        if data_type == 'events':
+            data_type = 'all_events'
 
         return self.readers[data_type](data_type,
                                        subject=self.subject,

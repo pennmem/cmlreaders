@@ -5,7 +5,7 @@ import numpy as np
 import functools
 
 from cmlreaders.readers import BasicJSONReader, TextReader, CSVReader, \
-    ElectrodeCategoriesReader, RamulatorEventLogReader
+    ElectrodeCategoriesReader, EventReader, RamulatorEventLogReader
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -170,6 +170,14 @@ class TestBasicJSONReader:
         reader = BasicJSONReader('index.json', file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
+
+
+class TestEventReader:
+    def test_load(self):
+        path = datafile('all_events.json')
+        reader = EventReader('all_events', file_path=path)
+        df = reader.load()
+        assert df.columns[0] == 'eegoffset'
 
 
 @pytest.mark.rhino

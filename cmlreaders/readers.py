@@ -135,6 +135,19 @@ class BasicJSONReader(BaseCMLReader):
         return pd.read_json(self._file_path)
 
 
+class EventReader(BasicJSONReader):
+    """Reader for all experiment events.
+
+    Returns a :class:`pd.DataFrame`.
+
+    """
+    def as_dataframe(self):
+        df = super().as_dataframe()
+        first = ['eegoffset']
+        df.columns = first + [col for col in df.columns if col not in first]
+        return df
+
+
 class ElectrodeCategoriesReader(BaseCMLReader):
     """Reads electrode_categories.txt and handles the many inconsistencies in
     those files.
