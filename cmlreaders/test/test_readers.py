@@ -160,5 +160,3 @@ class TestRamulatorEventLogReader:
         # reader because the format has materially changed from the original
         # source. This does not happen for all readers, which is why we can
         # test reloading for some
-
-
