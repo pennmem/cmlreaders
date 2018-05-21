@@ -35,7 +35,12 @@ rhino_paths = {
     'localization': [
         'protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
     ],
-
+    'matlab_bipolar_talstruct': [
+        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_bipol.mat'
+    ],
+    'matlab_monopolar_talstruct': [
+        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_monopol.mat'
+    ],
     # Montage level (subject + localization + montage)
     'pairs': [
         'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
