@@ -5,7 +5,8 @@ from typing import Optional
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, MissingParameter, \
-    UnmetOptionalDependencyError, UnsupportedRepresentation
+    UnmetOptionalDependencyError, UnsupportedRepresentation, \
+    UnsupportedExperimentError
 
 
 __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader']
@@ -315,8 +316,8 @@ class ReportSummaryDataReader(BaseReportDataReader):
         self.session = session
 
         try:
-            from ramutils.reports.summary import FRSessionSummary, \
-                CatFRSessionSummary, FRStimSessionSummary, MathSummary
+            from ramutils.reports.summary import FRStimSessionSummary, \
+                MathSummary
             from ramutils.utils import is_stim_experiment
         except ModuleNotFoundError:
             raise UnmetOptionalDependencyError("Install ramutils to use this reader")
@@ -324,8 +325,6 @@ class ReportSummaryDataReader(BaseReportDataReader):
         self.pyclass_mapping = {
             'math_summary': MathSummary,
             'fr_stim_summary': FRStimSessionSummary,
-            'fr_summary': FRSessionSummary,
-            'catfr_summary': CatFRSessionSummary
         }
 
         self.is_stim_experiment = is_stim_experiment
@@ -335,13 +334,13 @@ class ReportSummaryDataReader(BaseReportDataReader):
             return super(ReportSummaryDataReader, self).as_pyobject()
 
         stim_experiment = self.is_stim_experiment(self.experiment)
-        if stim_experiment:
-            summary_obj = self.pyclass_mapping['fr_stim_summary']
-        else:
-            if "cat" in self.experiment.lower():
-                summary_obj = self.pyclass_mapping['catfr_summary']
-            else:
-                summary_obj = self.pyclass_mapping['fr_summary']
+
+        # TODO: Loading record-only data is a bit more complicated since it is
+        # not tied to a particular session
+        if not stim_experiment:
+            raise UnsupportedExperimentError("Only stim report data is currently supported. The readers in ramutils can still be used")
+
+        summary_obj = self.pyclass_mapping['fr_stim_summary']
 
         return summary_obj.from_hdf(self._file_path)
 

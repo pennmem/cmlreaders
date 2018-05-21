@@ -1,3 +1,4 @@
+import os
 import pytest
 import functools
 from pkg_resources import resource_filename
@@ -15,23 +16,34 @@ class TestCMLReader:
         'math_summary', 'session_summary'
     ])
     def test_load_from_rhino(self, file_type, rhino_root):
-        # electrode categories aren't always up to date
-        subject = 'R1111M' if file_type == 'electrode_categories' else 'R1405E'
-        localization = 0 if (file_type not in ['classifier_summary', 'math_summary', 'session_summary']) else 1
+        subject = "R1405E"
+        experiment = "FR1"
+        session = 1
+        localization = 0
+
+        if file_type in ["electrode_categories", "classifier_summary",
+                         "math_summary", "session_summary"]:
+            subject = "R1111M"
+            experiment = "FR2"
+            session = 0
+
         reader = CMLReader(subject=subject, localization=localization,
-                           experiment='FR1', session=1, rootdir=rhino_root)
+                           experiment=experiment, session=session,
+                           rootdir=rhino_root)
         reader.load(file_type)
 
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates.txt', 'classifier_excluded_leads.txt',
         'jacksheet.txt', 'good_leads.txt', 'leads.txt',
         'electrode_coordinates.csv', 'prior_stim_results.csv',
-        'target_selection_table.csv'
+        'target_selection_table.csv', 'classifier_summary.h5',
+        'math_summary.h5', 'session_summary.h5'
     ])
     def test_load(self, file_type):
-        reader = CMLReader(subject="R1405E", localization=0, experiment="FR1",
+        data_type = os.path.splitext(file_type)[0]
+        reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
                            session=1)
-        reader.load(data_type=file_type[:-4], file_path=datafile(file_type))
+        reader.load(data_type=data_type, file_path=datafile(file_type))
 
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',

@@ -7,7 +7,7 @@ import functools
 from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader, \
     RamulatorEventLogReader, ReportSummaryDataReader, BaseReportDataReader
 from pkg_resources import resource_filename
-from ramutils.reports.summary import ClassifierSummary, CatFRSessionSummary,\
+from ramutils.reports.summary import ClassifierSummary, FRStimSessionSummary,\
     MathSummary
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -191,7 +191,7 @@ class TestBaseReportDataReader:
         file_path = datafile(data_type + ".h5")
         reader = BaseReportDataReader(data_type, subject=subject,
                                       experiment=experiment, session=session,
-                                      file_path=file_path)
+                                      localization=0, file_path=file_path)
 
         pyobj_expected_types = {
             'classifier_summary': ClassifierSummary,
@@ -210,7 +210,7 @@ class TestBaseReportDataReader:
         file_path = datafile(data_type + ".h5")
         reader = BaseReportDataReader(data_type, subject='R1409D',
                                       experiment='catFR1', session=1,
-                                      file_path=file_path)
+                                      localization=0, file_path=file_path)
         # Save as specified format
         method_name = "to_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -225,12 +225,12 @@ class TestReportSummaryReader:
     def test_as_methods(self, method, data_type):
         file_path = datafile(data_type + ".h5")
         reader = ReportSummaryDataReader(data_type, subject='R1409D',
-                                         experiment='catFR1', session=1,
-                                         file_path=file_path)
+                                         experiment='catFR5', session=1,
+                                         localization=0, file_path=file_path)
 
         pyobj_expected_types = {
             'math_summary': MathSummary,
-            'session_summary': CatFRSessionSummary
+            'session_summary': FRStimSessionSummary
         }
 
         expected_types = {
@@ -257,8 +257,8 @@ class TestReportSummaryReader:
         # Load the test data
         file_path = datafile(data_type + ".h5")
         reader = ReportSummaryDataReader(data_type, subject='R1409D',
-                                         experiment='catFR1', session=1,
-                                         file_path=file_path)
+                                         experiment='catFR5', session=1,
+                                         localization=0, file_path=file_path)
         # Save as specified format
         method_name = "to_{}".format(method)
         callable_method = getattr(reader, method_name)
