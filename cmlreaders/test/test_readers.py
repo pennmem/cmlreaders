@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import functools
 
-from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader, \
-    RamulatorEventLogReader
+from cmlreaders.readers import BasicJSONReader, TextReader, CSVReader, \
+    ElectrodeCategoriesReader, RamulatorEventLogReader
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -162,6 +162,14 @@ class TestRamulatorEventLogReader:
         # reader because the format has materially changed from the original
         # source. This does not happen for all readers, which is why we can
         # test reloading for some
+
+
+class TestBasicJSONReader:
+    def test_load(self):
+        path = datafile('index.json')
+        reader = BasicJSONReader('index.json', file_path=path)
+        df = reader.load()
+        assert isinstance(df, pd.DataFrame)
 
 
 @pytest.mark.rhino
