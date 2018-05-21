@@ -3,11 +3,8 @@ import pytest
 import pandas as pd
 import numpy as np
 import functools
-<<<<<<< HEAD
-from cmlreaders.readers import TextReader, CSVReader, RamulatorEventLogReader
-=======
+
 from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader
->>>>>>> master
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
