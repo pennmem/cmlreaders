@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
-from typing import Optional
+from typing import List, Optional
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, MissingParameter
@@ -22,12 +22,16 @@ class BaseCMLReader(object):
                  file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
 
         self._file_path = file_path
+
         # When no file path is given, look it up using PathFinder
         if file_path is None:
             finder = PathFinder(subject=subject, experiment=experiment,
                                 session=session, localization=localization,
                                 montage=montage, rootdir=rootdir)
             self._file_path = finder.find(data_type)
+
+        self.subject = subject
+        self.data_type = data_type
 
     def load(self):
         """ Load data into memory """
@@ -146,6 +150,62 @@ class EventReader(BasicJSONReader):
         first = ['eegoffset']
         df.columns = first + [col for col in df.columns if col not in first]
         return df
+
+
+class MontageReader(BaseCMLReader):
+    """Reads montage files (contacts.json, pairs.json).
+
+    Returns a :class:`pd.DataFrame`.
+
+    """
+    @staticmethod
+    def _flatten_row(data: dict, labels: List[str], i: int) -> pd.DataFrame:
+        entry = data[labels[i]].copy()
+        atlases = entry.pop('atlases')
+        atlas_row = json_normalize(atlases)
+        atlas_row.index = [i]
+        row = pd.concat([pd.DataFrame(entry, index=[i]), atlas_row], axis=1)
+        return row
+
+    def as_dataframe(self):
+        from concurrent.futures import ProcessPoolExecutor as Pool
+        from functools import partial
+        from multiprocessing import cpu_count
+
+        with open(self._file_path) as f:
+            data = json.load(f)[self.subject][self.data_type]
+            labels = [l for l in data]
+
+            flatten = partial(self._flatten_row, data, labels)
+            with Pool(min(4, cpu_count())) as pool:
+                rows = pool.map(flatten, range(len(labels)))
+            df = pd.concat(rows)
+
+            # Drop useless atlas.id tags
+            df = df[[col for col in df.columns if not col.endswith('.id')]]
+
+            # rename poorly named columns
+            if self.data_type == 'contacts':
+                renames = {'channel': 'contact'}
+            else:
+                renames = {'channel_1': 'contact_1', 'channel_2': 'contact_2'}
+            renames.update({'code': 'label'})
+            df = df.rename(renames, axis=1)
+
+            # ensure that contact and label appear first
+            names = df.columns
+            if self.data_type == 'contacts':
+                first = ['contact']
+            else:
+                first = ['contact_1', 'contact_2']
+            first += ['label']
+            df = df[first + [name for name in names if name not in first]]
+
+            # sort by contact
+            key = 'contact' if self.data_type == 'contacts' else 'contact_1'
+            df = df.sort_values(by=key).reset_index(drop=True)
+
+            return df
 
 
 class ElectrodeCategoriesReader(BaseCMLReader):
