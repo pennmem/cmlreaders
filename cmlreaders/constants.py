@@ -33,8 +33,6 @@ rhino_paths = {
     'localization': [
         'protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
     ],
-    # 'wavefront_brain_objects': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/*.obj'],
-    # 'brain_object': ['data10/eeg/freesurfer/subjects/{subject}/surf/roi/{brain_piece}.obj'],
 
     # Montage level (subject + localization + montage)
     'pairs': [

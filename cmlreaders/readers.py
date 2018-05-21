@@ -1,38 +1,55 @@
+import json
 import pandas as pd
+from pandas.io.json import json_normalize
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, MissingParameter
-from abc import abstractmethod, ABC
 
 
-__all__ = ['BaseCMLReader', 'TextReader', 'CSVReader']
+__all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader']
 
 
-class BaseCMLReader(ABC):
-    """ Abstract base class that defines the interface for all CML data readers """
+class BaseCMLReader(object):
+    """ Base class for CML data readers """
 
-    @abstractmethod
+    default_representation = "dataframe"
+
+    def __init__(self, data_type, subject=None, experiment=None, session=None,
+                 localization=None, montage=None, file_path=None, rootdir="/"):
+        self._file_path = file_path
+        # When no file path is given, look it up using PathFinder
+        if file_path is None:
+            finder = PathFinder(subject=subject, experiment=experiment,
+                                session=session, localization=localization,
+                                montage=montage, rootdir=rootdir)
+            self._file_path = finder.find(data_type)
+
+    def load(self, dtype=default_representation):
+        """ Load data into memory """
+        method_name = "_".join(["as", dtype])
+        return getattr(self, method_name)()
+
     def as_dataframe(self):
+        """ Return data as dataframe """
         raise NotImplementedError
 
-    @abstractmethod
     def as_recarray(self):
-        raise NotImplementedError
+        """ Return data as a `np.rec.array` """
+        return self.as_dataframe().to_records()
 
-    @abstractmethod
     def as_dict(self):
-        raise NotImplementedError
+        """ Return data as a list of dictionaries """
+        return self.as_dataframe().to_dict(orient='records')
 
     def to_json(self, file_name, **kwargs):
-        raise NotImplementedError
+        self.as_dataframe().to_json(file_name)
 
-    @abstractmethod
     def to_csv(self, file_name, **kwargs):
-        raise NotImplementedError
+        """ Save data to csv file """
+        self.as_dataframe().to_csv(file_name, index=False, **kwargs)
 
-    @abstractmethod
     def to_hdf(self, file_name):
-        raise NotImplementedError
+        raise UnsupportedOutputFormat
 
 
 class TextReader(BaseCMLReader):
@@ -49,32 +66,15 @@ class TextReader(BaseCMLReader):
 
     def __init__(self, data_type, subject, localization, file_path=None,
                  rootdir="/", **kwargs):
-
-        self._file_path = file_path
-        # When no file path is given, look it up using PathFinder
-        if file_path is None:
-            finder = PathFinder(subject=subject, localization=localization,
-                                rootdir=rootdir)
-            self._file_path = finder.find(data_type)
+        super(TextReader, self).__init__(data_type, subject=subject,
+                                         localization=localization,
+                                         file_path=file_path,
+                                         rootdir=rootdir)
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
         df = pd.read_csv(self._file_path, names=self._headers)
         return df
-
-    def as_recarray(self):
-        records = self.as_dataframe().to_records()
-        return records
-
-    def as_dict(self):
-        df = self.as_dataframe()
-        return df.to_dict(orient='records')
-
-    def to_csv(self, file_path, **kwargs):
-        self.as_dataframe().to_csv(file_path, index=False, **kwargs)
-
-    def to_json(self, file_path, **kwargs):
-        self.as_dataframe().to_json(file_path)
 
     def to_hdf(self, file_path):
         raise UnsupportedOutputFormat
@@ -88,35 +88,34 @@ class CSVReader(BaseCMLReader):
         if (data_type == 'target_selection_table') and experiment is None:
             raise MissingParameter("Experiment required with target_selection_"
                                    "table data type")
-
-        self._file_path = file_path
-        # When no file path is given, look it up using PathFinder
-        if file_path is None:
-            finder = PathFinder(subject=subject, localization=localization,
-                                experiment=experiment,
-                                rootdir=rootdir)
-            self._file_path = finder.find(data_type)
+        super(CSVReader, self).__init__(data_type, subject=subject,
+                                        localization=localization,
+                                        experiment=experiment,
+                                        file_path=file_path, rootdir=rootdir)
 
     def as_dataframe(self):
         df = pd.read_csv(self._file_path)
         return df
 
-    def as_recarray(self):
-        records = self.as_dataframe().to_records()
-        return records
 
-    def as_dict(self):
-        df = self.as_dataframe()
-        return df.to_dict(orient='records')
+class RamulatorEventLogReader(BaseCMLReader):
+    """ Reader for Ramulator event log """
 
-    def to_csv(self, file_path, **kwargs):
-        self.as_dataframe().to_csv(file_path, index=False, **kwargs)
+    def __init__(self, data_type, subject, experiment, session, file_path=None,
+                 rootdir="/", **kwargs):
+        super(RamulatorEventLogReader, self).__init__(data_type, subject=subject,
+                                                      experiment=experiment,
+                                                      session=session,
+                                                      file_path=file_path,
+                                                      rootdir=rootdir)
 
-    def to_json(self, file_path, **kwargs):
-        self.as_dataframe().to_json(file_path, **kwargs)
+    def as_dataframe(self):
+        with open(self._file_path, 'r') as efile:
+            raw = json.loads(efile.read())['events']
 
-    def to_hdf(self, file_path):
-        raise UnsupportedOutputFormat
+        exclude = ['to_id', 'from_id', 'event_id', 'command_id']
+        df = json_normalize(raw)
+        return df.drop(exclude, axis=1)
 
 
 class BasicJSONReader(BaseCMLReader):

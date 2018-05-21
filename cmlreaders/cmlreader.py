@@ -1,11 +1,11 @@
 from typing import Optional
-from .readers import TextReader, CSVReader, BaseCMLReader
+from .readers import TextReader, CSVReader, RamulatorEventLogReader
 
 
 __all__ = ['CMLReader']
 
 
-class CMLReader(BaseCMLReader):
+class CMLReader(object):
     """ Generic reader for all CML-specific files """
     readers = {
         'voxel_coordinates': TextReader,
@@ -15,7 +15,8 @@ class CMLReader(BaseCMLReader):
         'classifier_excluded_leads': TextReader,
         'prior_stim_results': CSVReader,
         'electrode_coordinates': CSVReader,
-        'target_selection_table': CSVReader
+        'target_selection_table': CSVReader,
+        'experiment_log': RamulatorEventLogReader
     }
 
     def __init__(self, subject: Optional[str] =None,
@@ -32,44 +33,29 @@ class CMLReader(BaseCMLReader):
         self.montage = montage
         self.rootdir = rootdir
 
-        # reader is unintialized initially, but are populated
-        # when the user requests that a particular file be loaded
-        self._reader = None
+    def get_reader(self, data_type, file_path=None):
+        """ Return an instance of the reader class for the given data type """
+        return self.readers[data_type](data_type,
+                                       subject=self.subject,
+                                       experiment=self.experiment,
+                                       session=self.session,
+                                       localization=self.localization,
+                                       montage=self.montage,
+                                       file_path=file_path,
+                                       rootdir=self.rootdir)
 
     def load(self, data_type, file_path=None):
+        """ Load requested data into memory """
         if data_type not in self.readers:
             raise NotImplementedError("There is no reader to support the "
                                       "requested file type")
 
-        self._reader = self.readers[data_type](data_type,
-                                               subject=self.subject,
-                                               experiment=self.experiment,
-                                               session=self.session,
-                                               localization=self.localization,
-                                               montage=self.montage,
-                                               file_path=file_path,
-                                               rootdir=self.rootdir)
+        return self.readers[data_type](data_type,
+                                       subject=self.subject,
+                                       experiment=self.experiment,
+                                       session=self.session,
+                                       localization=self.localization,
+                                       montage=self.montage,
+                                       file_path=file_path,
+                                       rootdir=self.rootdir).load()
 
-    def as_dataframe(self):
-        """ Return data as `pd.DataFrame` """
-        return self._reader.as_dataframe()
-
-    def as_recarray(self):
-        """ Return data as `np.rec.array` """
-        return self._reader.as_recarray()
-
-    def as_dict(self):
-        """ Return data as dict """
-        return self._reader.as_dict()
-
-    def to_json(self, file_name, **kwargs):
-        """ Save data to JSON formatted file """
-        return self._reader.to_json(file_name, **kwargs)
-
-    def to_csv(self, file_name, **kwargs):
-        """ Save data to CSV file """
-        return self._reader.to_csv(file_name, **kwargs)
-
-    def to_hdf(self, file_name):
-        """ Save data to HDF5 file """
-        return self._reader.to_hdf(file_name)
