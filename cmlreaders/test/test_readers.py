@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 import numpy as np
 import functools
-from cmlreaders.readers import TextReader, CSVReader
+from cmlreaders.readers import TextReader, CSVReader, RamulatorEventLogReader
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -110,3 +110,58 @@ class TestCSVReader:
                               experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
+
+
+class TestRamulatorEventLogReader:
+    @pytest.mark.parametrize("method", ["dataframe", "recarray", "dict"])
+    @pytest.mark.parametrize("data_type", ['event_log'])
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ('R1409D', 'catFR1', '1'),
+    ])
+    def test_as_methods(self, method, data_type, subject, experiment, session,
+                        rhino_root):
+        file_path = datafile(data_type + ".json")
+        reader = RamulatorEventLogReader(data_type, subject=subject,
+                                         experiment=experiment, session=session,
+                                         file_path=file_path,
+                                         rootdir=rhino_root)
+        expected_types = {
+            'dataframe': pd.DataFrame,
+            'recarray': np.recarray,
+            'dict': list
+        }
+        method_name = "as_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        data = callable_method()
+        assert data is not None
+        assert type(data) == expected_types[method]
+
+    @pytest.mark.parametrize("method", ['json', 'csv'])
+    @pytest.mark.parametrize("data_type", ['event_log'])
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ('R1409D', 'catFR1', '1'),
+    ])
+    def test_to_methods(self, method, data_type, subject, experiment, session,
+                        rhino_root):
+        # Load the test data
+        file_path = datafile(data_type + ".json")
+        reader = RamulatorEventLogReader(data_type, subject=subject,
+                                         experiment=experiment, session=session,
+                                         file_path=file_path,
+                                         rootdir=rhino_root)
+        # Save as specified format
+        method_name = "to_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        exp_output = datafile("output/" + data_type + "." + method)
+        callable_method(exp_output)
+        assert os.path.exists(exp_output)
+
+        # Check that data can be reloaded
+        re_reader = RamulatorEventLogReader(data_type, subject=subject,
+                                            experiment=experiment,
+                                            session=session,
+                                            file_path=exp_output)
+        reread_data = re_reader.as_dataframe()
+        assert reread_data is not None
+
+

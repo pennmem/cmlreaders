@@ -117,6 +117,11 @@ class RamulatorEventLogReader(BaseCMLReader):
         df = json_normalize(raw)
         return df.drop(exclude, axis=1)
 
+    def as_dict(self):
+        with open(self._file_path, 'r') as efile:
+            raw_dict = json.load(efile)
+        return raw_dict
+
 
 class BasicJSONReader(BaseCMLReader):
     """ Generic reader class for loading simple JSON files """
