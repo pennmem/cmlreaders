@@ -1,6 +1,7 @@
 from typing import Optional
 from .readers import ElectrodeCategoriesReader, CSVReader, \
-    RamulatorEventLogReader, TextReader
+    RamulatorEventLogReader, TextReader, BaseReportDataReader, \
+    ReportSummaryDataReader
 
 
 __all__ = ['CMLReader']
@@ -19,6 +20,9 @@ class CMLReader(object):
         'electrode_categories': ElectrodeCategoriesReader,
         'target_selection_table': CSVReader,
         'experiment_log': RamulatorEventLogReader,
+        'classifier_summary': BaseReportDataReader,
+        'session_summary': ReportSummaryDataReader,
+        'math_summary': ReportSummaryDataReader
     }
 
     def __init__(self, subject: Optional[str] =None,

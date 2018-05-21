@@ -266,11 +266,12 @@ class ElectrodeCategoriesReader(BaseCMLReader):
 class BaseReportDataReader(BaseCMLReader):
     default_representation = 'pyobject'
 
-    def __init__(self, data_type, subject, experiment, session, file_path=None,
-                 rootdir="/", **kwargs):
+    def __init__(self, data_type, subject, experiment, session, localization,
+                 file_path=None, rootdir="/", **kwargs):
         super(BaseReportDataReader, self).__init__(data_type, subject=subject,
                                                    experiment=experiment,
                                                    session=session,
+                                                   localization=localization,
                                                    file_path=file_path,
                                                    rootdir=rootdir)
         self.data_type = data_type
@@ -300,11 +301,12 @@ class BaseReportDataReader(BaseCMLReader):
 class ReportSummaryDataReader(BaseReportDataReader):
     """ Generic reader class for HDF5 data produced in reporting pipeline """
 
-    def __init__(self, data_type, subject, experiment, session, file_path=None,
-                 rootdir="/", **kwargs):
+    def __init__(self, data_type, subject, experiment, session, localization,
+                 file_path=None, rootdir="/", **kwargs):
         super(BaseReportDataReader, self).__init__(data_type, subject=subject,
                                                    experiment=experiment,
                                                    session=session,
+                                                   localization=localization,
                                                    file_path=file_path,
                                                    rootdir=rootdir)
         self.data_type = data_type
