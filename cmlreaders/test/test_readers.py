@@ -112,7 +112,7 @@ class TestCSVReader:
         assert reread_data is not None
 
 
-@pytest.mark.only
+@pytest.mark.rhino
 class TestElectrodeCategoriesReader:
     @pytest.mark.parametrize("subject,lens", [
         ("R1111M", {'soz': 9, 'interictal': 15, 'brain_lesion': 5, 'bad_channel': 6})
