@@ -4,7 +4,8 @@ from pandas.io.json import json_normalize
 from typing import Optional
 
 from .path_finder import PathFinder
-from .exc import UnsupportedOutputFormat, MissingParameter
+from .exc import UnsupportedOutputFormat, MissingParameter, \
+    UnmetOptionalDependencyError, UnsupportedRepresentation
 
 
 __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader']
@@ -260,3 +261,91 @@ class ElectrodeCategoriesReader(BaseCMLReader):
                 categories[key] = []
 
         return categories
+
+
+class BaseReportDataReader(BaseCMLReader):
+    default_representation = 'pyobject'
+
+    def __init__(self, data_type, subject, experiment, session, file_path=None,
+                 rootdir="/", **kwargs):
+        super(BaseReportDataReader, self).__init__(data_type, subject=subject,
+                                                   experiment=experiment,
+                                                   session=session,
+                                                   file_path=file_path,
+                                                   rootdir=rootdir)
+        self.data_type = data_type
+
+        try:
+            from ramutils.reports.summary import ClassifierSummary
+        except ModuleNotFoundError:
+            raise UnmetOptionalDependencyError("Install ramutils to use this reader")
+
+        self.pyclass_mapping = {
+            'classifier_summary': ClassifierSummary,
+        }
+
+    def as_pyobject(self):
+        """ Return data as a python object specific to this data type """
+        if self.data_type in self.pyclass_mapping:
+            return self.pyclass_mapping[self.data_type].from_hdf(self._file_path)
+
+    def as_dataframe(self):
+        raise UnsupportedRepresentation("Unable to represent this data as a dataframe")
+
+    def to_hdf(self, file_name):
+        pyobj = self.as_pyobject()
+        pyobj.to_hdf(file_name)
+
+
+class ReportSummaryDataReader(BaseReportDataReader):
+    """ Generic reader class for HDF5 data produced in reporting pipeline """
+
+    def __init__(self, data_type, subject, experiment, session, file_path=None,
+                 rootdir="/", **kwargs):
+        super(BaseReportDataReader, self).__init__(data_type, subject=subject,
+                                                   experiment=experiment,
+                                                   session=session,
+                                                   file_path=file_path,
+                                                   rootdir=rootdir)
+        self.data_type = data_type
+        self.subject = subject
+        self.experiment = experiment
+        self.session = session
+
+        try:
+            from ramutils.reports.summary import FRSessionSummary, \
+                CatFRSessionSummary, FRStimSessionSummary, MathSummary
+            from ramutils.utils import is_stim_experiment
+        except ModuleNotFoundError:
+            raise UnmetOptionalDependencyError("Install ramutils to use this reader")
+
+        self.pyclass_mapping = {
+            'math_summary': MathSummary,
+            'fr_stim_summary': FRStimSessionSummary,
+            'fr_summary': FRSessionSummary,
+            'catfr_summary': CatFRSessionSummary
+        }
+
+        self.is_stim_experiment = is_stim_experiment
+
+    def as_pyobject(self):
+        if self.data_type == 'math_summary':
+            return super(ReportSummaryDataReader, self).as_pyobject()
+
+        stim_experiment = self.is_stim_experiment(self.experiment)
+        if stim_experiment:
+            summary_obj = self.pyclass_mapping['fr_stim_summary']
+        else:
+            if "cat" in self.experiment.lower():
+                summary_obj = self.pyclass_mapping['catfr_summary']
+            else:
+                summary_obj = self.pyclass_mapping['fr_summary']
+
+        return summary_obj.from_hdf(self._file_path)
+
+    def as_dataframe(self):
+        pyobj = self.as_pyobject()
+        return pyobj.to_dataframe()
+
+
+
