@@ -21,9 +21,9 @@ class CMLReader(object):
 
     def __init__(self, subject: Optional[str] =None,
                  experiment: Optional[str] = None,
-                 session: Optional[str] = None,
-                 localization: Optional[str] = None,
-                 montage: Optional[str] = None,
+                 session: Optional[int] = None,
+                 localization: Optional[int] = 0,
+                 montage: Optional[int] = 0,
                  rootdir: Optional[str] = "/"):
 
         self.subject = subject

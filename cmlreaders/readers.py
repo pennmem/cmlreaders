@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
+from typing import Optional
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, MissingParameter
@@ -14,8 +15,12 @@ class BaseCMLReader(object):
 
     default_representation = "dataframe"
 
-    def __init__(self, data_type, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, file_path=None, rootdir="/"):
+    def __init__(self, data_type: str, subject: Optional[str] = None,
+                 experiment: Optional[str] = None,
+                 session: Optional[int] = None,
+                 localization: Optional[int] = 0, montage: Optional[int] = 0,
+                 file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
+
         self._file_path = file_path
         # When no file path is given, look it up using PathFinder
         if file_path is None:
@@ -24,9 +29,9 @@ class BaseCMLReader(object):
                                 montage=montage, rootdir=rootdir)
             self._file_path = finder.find(data_type)
 
-    def load(self, dtype=default_representation):
+    def load(self):
         """ Load data into memory """
-        method_name = "_".join(["as", dtype])
+        method_name = "_".join(["as", self.default_representation])
         return getattr(self, method_name)()
 
     def as_dataframe(self):
@@ -41,7 +46,7 @@ class BaseCMLReader(object):
         """ Return data as a list of dictionaries """
         return self.as_dataframe().to_dict(orient='records')
 
-    def to_json(self, file_name, **kwargs):
+    def to_json(self, file_name):
         self.as_dataframe().to_json(file_name)
 
     def to_csv(self, file_name, **kwargs):
@@ -75,9 +80,6 @@ class TextReader(BaseCMLReader):
     def as_dataframe(self):
         df = pd.read_csv(self._file_path, names=self._headers)
         return df
-
-    def to_hdf(self, file_path):
-        raise UnsupportedOutputFormat
 
 
 class CSVReader(BaseCMLReader):
@@ -121,8 +123,3 @@ class RamulatorEventLogReader(BaseCMLReader):
         with open(self._file_path, 'r') as efile:
             raw_dict = json.load(efile)
         return raw_dict
-
-
-class BasicJSONReader(BaseCMLReader):
-    """ Generic reader class for loading simple JSON files """
-    pass
