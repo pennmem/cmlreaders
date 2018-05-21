@@ -39,6 +39,7 @@ def test_invalid_file_request(all_files_subject):
         all_files_subject.find('fake_file_type')
 
 
+@pytest.mark.xfail
 @pytest.mark.ramulator
 @pytest.mark.rhino
 def test_get_ramulator_files(ramulator_files_finder):

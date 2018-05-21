@@ -20,6 +20,8 @@ rhino_paths = {
     ],
     'electrode_categories': [
         'data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/{subject_localization}_electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/electrode_categories_{subject_localization}.txt',
     ],
     'good_leads': [
         'data10/RAM/subjects/{subject_localization}/tal/good_leads.txt',
