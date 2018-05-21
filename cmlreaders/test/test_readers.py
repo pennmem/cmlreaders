@@ -123,6 +123,5 @@ class TestElectrodeCategoriesReader:
                                            subject=subject,
                                            rootdir=rhino_root)
         categories = reader.load()
-        pytest.set_trace()
         for key, len_ in lens.items():
             assert len(categories[key]) == len_

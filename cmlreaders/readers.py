@@ -132,7 +132,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
     """
     default_representation = 'dict'
 
-    def electrode_categories_reader(self) -> dict:
+    def _read_categories(self) -> dict:
         """Returns a dictionary mapping categories to electrode from the
         electrode_categories.txt file
 
@@ -165,24 +165,24 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         count = 0
         groups = {}  # Save the groups here
 
-        for index, current in enumerate(ch_info[2:]):
+        for index, line in enumerate(ch_info[2:]):
             # We skip to two because all files start with line one being subject
             # followed by another line of '', if the user wishes to access the
             # information feel free to modify below. Blank spaces used to
             # seperate, if we encountered one count increases
-            if current == '':
+            if line == '':
                 count += 1
                 continue  # Ensures '' isn't appended to dict[group_name]
 
             # Ignore a line containing only '-' (sometimes found at the end of
             # files)
-            if current == '-':
+            if line == '-':
                 continue
 
             # Check if the line is relevant if so add a blank list to the dict
-            if current.lower() in relevant:
+            if line.lower() in relevant:
                 count = 0
-                group_name = current.lower()
+                group_name = line.lower()
                 groups[group_name] = []
                 # Sanity check to ensure that they had a '' after the relevant
                 if ch_info[2:][index + 1] != '':  # Skipping two for same reason
@@ -190,12 +190,12 @@ class ElectrodeCategoriesReader(BaseCMLReader):
                 continue
 
             # Triggered when inside of a group e.g. they're channel names
-            if (count == 1) and (current != ''):  # indicates start of group values
-                groups[group_name].append(current)
+            if (count == 1) and (line != ''):  # indicates start of group values
+                groups[group_name].append(line)
 
         return groups
 
-    def get_elec_cat(self) -> dict:
+    def _get_categories_dict(self) -> dict:
         """Return electrode categories from relevant textfile; ensures that the
         fields are consistent regardless of the actual field the RA entered into
         the textfile
@@ -234,7 +234,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
             'broken leads:': 'bad_channel'
         }
 
-        e_cat_reader = self.electrode_categories_reader()
+        e_cat_reader = self._read_categories()
         if e_cat_reader is not None:
             e_cat_reader = {convert[v]: np.array([s.upper() for s in e_cat_reader[v]])
                             for k, v in enumerate(e_cat_reader)}
@@ -244,7 +244,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
     def as_dict(self):
         categories = {
             key: sorted(value.tolist())
-            for key, value in self.get_elec_cat().items()
+            for key, value in self._get_categories_dict().items()
         }
 
         # make sure we have all the keys
