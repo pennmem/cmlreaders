@@ -18,7 +18,7 @@ def all_files_subject(rhino_root):
 @pytest.fixture
 def ramulator_files_finder(rhino_root):
     finder = PathFinder('R1354E', rootdir=rhino_root, experiment='PS4_FR5',
-                        session=0)
+                        session='0')
     return finder
 
 

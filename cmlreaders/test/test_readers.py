@@ -128,7 +128,7 @@ class TestRamulatorEventLogReader:
         expected_types = {
             'dataframe': pd.DataFrame,
             'recarray': np.recarray,
-            'dict': list
+            'dict': dict
         }
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -156,12 +156,9 @@ class TestRamulatorEventLogReader:
         callable_method(exp_output)
         assert os.path.exists(exp_output)
 
-        # Check that data can be reloaded
-        re_reader = RamulatorEventLogReader(data_type, subject=subject,
-                                            experiment=experiment,
-                                            session=session,
-                                            file_path=exp_output)
-        reread_data = re_reader.as_dataframe()
-        assert reread_data is not None
+        # Note: We are not testing that the data can be reloaded with the
+        # reader because the format has materially changed from the original
+        # source. This does not happen for all readers, which is why we can
+        # test reloading for some
 
 

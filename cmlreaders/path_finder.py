@@ -55,9 +55,9 @@ class PathFinder(object):
         self.experiment = experiment
         self.session = session
 
-        # Stringify localization and montage
-        self.localization = str(localization)
-        self.montage = str(montage)
+        # Stringify localization and montage only if they are given
+        self.localization = (str(localization) if localization is not None else None)
+        self.montage = (str(montage) if montage is not None else None)
 
         self._paths = rhino_paths
 
