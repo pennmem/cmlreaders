@@ -174,6 +174,11 @@ class ElectrodeCategoriesReader(BaseCMLReader):
                 count += 1
                 continue  # Ensures '' isn't appended to dict[group_name]
 
+            # Ignore a line containing only '-' (sometimes found at the end of
+            # files)
+            if current == '-':
+                continue
+
             # Check if the line is relevant if so add a blank list to the dict
             if current.lower() in relevant:
                 count = 0
@@ -237,7 +242,14 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         return e_cat_reader
 
     def as_dict(self):
-        return {
+        categories = {
             key: sorted(value.tolist())
             for key, value in self.get_elec_cat().items()
         }
+
+        # make sure we have all the keys
+        for key in ['soz', 'interictal', 'brain_lesion', 'bad_channel']:
+            if key not in categories:
+                categories[key] = []
+
+        return categories
