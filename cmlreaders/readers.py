@@ -209,6 +209,42 @@ class MontageReader(BaseCMLReader):
         return df
 
 
+class LocalizationReader(BaseCMLReader):
+    """Reads data stored in localization.json.
+
+    Returns a :class:`pd.DataFrame`.
+
+    """
+    def as_dataframe(self):
+        import itertools
+
+        with open(self._file_path) as f:
+            data = json.load(f)
+
+        leads = list(data['leads'].values())
+
+        for lead in leads:
+            contacts = lead["contacts"]
+            if isinstance(contacts, dict):
+                contacts = contacts.values()
+            for c in contacts:
+                c.update({"type": lead["type"]})
+            pairs = lead["pairs"]
+            if isinstance(pairs, dict):
+                pairs = pairs.values()
+            for p in pairs:
+                p['names'] = tuple(p['names'])
+                p.update({"type": lead["type"]})
+
+        flat_contact_data = list(itertools.chain(*[x["contacts"] for x in leads]))
+        flat_pairs_data = list(itertools.chain(*[x["pairs"] for x in leads]))
+        all_data = []
+        all_data.append(pd.io.json.json_normalize(flat_contact_data).set_index('name'))
+        all_data.append(pd.io.json.json_normalize(flat_pairs_data).set_index('names'))
+        combined_df = pd.concat(all_data, keys=['contacts', 'pairs'])
+        return combined_df
+
+
 class ElectrodeCategoriesReader(BaseCMLReader):
     """Reads electrode_categories.txt and handles the many inconsistencies in
     those files.
