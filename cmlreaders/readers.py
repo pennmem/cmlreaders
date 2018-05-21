@@ -15,7 +15,7 @@ class BaseCMLReader(object):
     default_representation = "dataframe"
 
     def __init__(self, data_type, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, file_path=None, rootdir="/"):
+                 localization=0, montage=0, file_path=None, rootdir="/"):
         self._file_path = file_path
         # When no file path is given, look it up using PathFinder
         if file_path is None:
@@ -24,9 +24,9 @@ class BaseCMLReader(object):
                                 montage=montage, rootdir=rootdir)
             self._file_path = finder.find(data_type)
 
-    def load(self, dtype=default_representation):
+    def load(self):
         """ Load data into memory """
-        method_name = "_".join(["as", dtype])
+        method_name = "_".join(["as", self.default_representation])
         return getattr(self, method_name)()
 
     def as_dataframe(self):
@@ -123,20 +123,18 @@ class BasicJSONReader(BaseCMLReader):
     pass
 
 
-class ElectrodeCategoryReader(BaseCMLReader):
+class ElectrodeCategoriesReader(BaseCMLReader):
     """Reads electrode_categories.txt and handles the many inconsistencies in
     those files.
 
-    Returns a :class:`pd.DataFrame`.
+    Returns a ``dict``.
 
     """
-    def electrode_categories_reader(self, subject):
-        """Returns a dictionary mapping categories to electrode from the electrode_categories.txt file
+    default_representation = 'dict'
 
-        Parameters
-        ----------
-        subject: str
-            subject ID for subjects in the RAM project. E.g. 'R1111M'
+    def electrode_categories_reader(self) -> dict:
+        """Returns a dictionary mapping categories to electrode from the
+        electrode_categories.txt file
 
         Returns
         -------
@@ -150,8 +148,6 @@ class ElectrodeCategoryReader(BaseCMLReader):
         where and how the data corresponding to bad electrodes are stored.
 
         """
-        import os.path
-
         # Used to indicate relevant strings in the text files
         relevant = {
             'seizure onset zone', 'seizure onset zones', 'seizure onset',
@@ -161,23 +157,8 @@ class ElectrodeCategoryReader(BaseCMLReader):
             'bad electrodes', 'bad electrodes:', 'broken leads', 'broken leads:'
         }
 
-        # Open the file, which may exist in multiple places
-        filename = '/data/eeg/{}/docs/electrode_categories.txt'.format(subject)
-
-        if not os.path.exists(filename):
-            print('{} does not exist'.format(filename))
-            filename = '/scratch/pwanda/electrode_categories/{}_electrode_categories.txt'.format(subject)
-        if not os.path.exists(filename):  # Check spot one, if not go to paul's scratch directory
-            # Because literally it's ACTUALLY SAVED ON PAUL'S SCRATCH DIRECTORY
-            filename = '/scratch/pwanda/electrode_categories/electrode_categories_{}.txt'.format(subject)
-
-        try:
-            with open(filename, 'r') as f:
-                ch_info = f.read().split('\n')
-
-        except IOError:
-            print('File {} not found'.format(filename))
-            return
+        with open(self._file_path, 'r') as f:
+            ch_info = f.read().split('\n')
 
         # This will be used to initalize a before after kind of check to sort
         # the groups
@@ -189,7 +170,7 @@ class ElectrodeCategoryReader(BaseCMLReader):
             # followed by another line of '', if the user wishes to access the
             # information feel free to modify below. Blank spaces used to
             # seperate, if we encountered one count increases
-            if (current == ''):
+            if current == '':
                 count += 1
                 continue  # Ensures '' isn't appended to dict[group_name]
 
@@ -209,15 +190,10 @@ class ElectrodeCategoryReader(BaseCMLReader):
 
         return groups
 
-    def get_elec_cat(self, subject):
+    def get_elec_cat(self) -> dict:
         """Return electrode categories from relevant textfile; ensures that the
         fields are consistent regardless of the actual field the RA entered into
         the textfile
-
-        Parameters
-        ----------
-        subject: str
-            subject ID for subjects in the RAM project. E.g. 'R1111M'
 
         Returns
         -------
@@ -229,36 +205,39 @@ class ElectrodeCategoryReader(BaseCMLReader):
         import numpy as np
 
         convert = {
-            'seizure onset zone': 'SOZ',
-            'seizure onset zones': 'SOZ',
-            'seizure onset': 'SOZ',
+            'seizure onset zone': 'soz',
+            'seizure onset zones': 'soz',
+            'seizure onset': 'soz',
 
             # Interictal activity
-            'interictal': 'IS',
-            'interictal spiking': 'IS',
-            'interictal spikes': 'IS',
-            'ictal onset': 'IS',
-            'ictal onset:': 'IS',
-            'interictal spiking:': 'IS',
-            'octal onset zone': 'IS',
+            'interictal': 'interictal',
+            'interictal spiking': 'interictal',
+            'interictal spikes': 'interictal',
+            'ictal onset': 'interictal',
+            'ictal onset:': 'interictal',
+            'interictal spiking:': 'interictal',
+            'octal onset zone': 'interictal',
 
             # Lesioned Tissue
-            'brain lesions': 'brain lesion',
-            'brain lesions:': 'brain lesion',
+            'brain lesions': 'brain_lesion',
+            'brain lesions:': 'brain_lesion',
 
             # Bad channels
-            'bad electrodes': 'bad ch',
-            'bad electrodes:': 'bad ch',
-            'broken leads': 'bad ch',
-            'broken leads:': 'bad ch'
+            'bad electrodes': 'bad_channel',
+            'bad electrodes:': 'bad_channel',
+            'broken leads': 'bad_channel',
+            'broken leads:': 'bad_channel'
         }
 
-        e_cat_reader = self.electrode_categories_reader(subject)
+        e_cat_reader = self.electrode_categories_reader()
         if e_cat_reader is not None:
             e_cat_reader = {convert[v]: np.array([s.upper() for s in e_cat_reader[v]])
                             for k, v in enumerate(e_cat_reader)}
 
         return e_cat_reader
 
-    def as_dataframe(self):
-        pass
+    def as_dict(self):
+        return {
+            key: sorted(value.tolist())
+            for key, value in self.get_elec_cat().items()
+        }
