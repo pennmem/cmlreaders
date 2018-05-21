@@ -11,10 +11,12 @@ class TestCMLReader:
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
-        'target_selection_table'
+        'target_selection_table', 'electrode_categories',
     ])
     def test_load_from_rhino(self, file_type, rhino_root):
-        reader = CMLReader(subject="R1405E", localization='0', experiment='FR1',
+        # electrode categories aren't always up to date
+        subject = 'R1111M' if file_type == 'electrode_categories' else 'R1405E'
+        reader = CMLReader(subject=subject, localization='0', experiment='FR1',
                            rootdir=rhino_root)
         reader.load(file_type)
 

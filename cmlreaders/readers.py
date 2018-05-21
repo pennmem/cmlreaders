@@ -15,7 +15,7 @@ class BaseCMLReader(object):
     default_representation = "dataframe"
 
     def __init__(self, data_type, subject=None, experiment=None, session=None,
-                 localization=None, montage=None, file_path=None, rootdir="/"):
+                 localization=0, montage=0, file_path=None, rootdir="/"):
         self._file_path = file_path
         # When no file path is given, look it up using PathFinder
         if file_path is None:
@@ -24,9 +24,9 @@ class BaseCMLReader(object):
                                 montage=montage, rootdir=rootdir)
             self._file_path = finder.find(data_type)
 
-    def load(self, dtype=default_representation):
+    def load(self):
         """ Load data into memory """
-        method_name = "_".join(["as", dtype])
+        method_name = "_".join(["as", self.default_representation])
         return getattr(self, method_name)()
 
     def as_dataframe(self):
@@ -121,3 +121,135 @@ class RamulatorEventLogReader(BaseCMLReader):
 class BasicJSONReader(BaseCMLReader):
     """ Generic reader class for loading simple JSON files """
     pass
+
+
+class ElectrodeCategoriesReader(BaseCMLReader):
+    """Reads electrode_categories.txt and handles the many inconsistencies in
+    those files.
+
+    Returns a ``dict``.
+
+    """
+    default_representation = 'dict'
+
+    def _read_categories(self) -> dict:
+        """Returns a dictionary mapping categories to electrode from the
+        electrode_categories.txt file
+
+        Returns
+        -------
+        groups: dict,
+            dictionary mapping relevant field values (bad channel, SOZ, etc.) to
+            the corresponding channels
+
+        Notes
+        -----
+        This function is only required because there's so much inconsistency in
+        where and how the data corresponding to bad electrodes are stored.
+
+        """
+        # Used to indicate relevant strings in the text files
+        relevant = {
+            'seizure onset zone', 'seizure onset zones', 'seizure onset',
+            'interictal', 'interictal spiking', 'interictal spikes',
+            'ictal onset', 'ictal onset:', 'interictal spiking:',
+            'brain lesions', 'brain lesions:', 'octal onset zone',
+            'bad electrodes', 'bad electrodes:', 'broken leads', 'broken leads:'
+        }
+
+        with open(self._file_path, 'r') as f:
+            ch_info = f.read().split('\n')
+
+        # This will be used to initalize a before after kind of check to sort
+        # the groups
+        count = 0
+        groups = {}  # Save the groups here
+
+        for index, line in enumerate(ch_info[2:]):
+            # We skip to two because all files start with line one being subject
+            # followed by another line of '', if the user wishes to access the
+            # information feel free to modify below. Blank spaces used to
+            # seperate, if we encountered one count increases
+            if line == '':
+                count += 1
+                continue  # Ensures '' isn't appended to dict[group_name]
+
+            # Ignore a line containing only '-' (sometimes found at the end of
+            # files)
+            if line == '-':
+                continue
+
+            # Check if the line is relevant if so add a blank list to the dict
+            if line.lower() in relevant:
+                count = 0
+                group_name = line.lower()
+                groups[group_name] = []
+                # Sanity check to ensure that they had a '' after the relevant
+                if ch_info[2:][index + 1] != '':  # Skipping two for same reason
+                    count += 1
+                continue
+
+            # Triggered when inside of a group e.g. they're channel names
+            if (count == 1) and (line != ''):  # indicates start of group values
+                groups[group_name].append(line)
+
+        return groups
+
+    def _get_categories_dict(self) -> dict:
+        """Return electrode categories from relevant textfile; ensures that the
+        fields are consistent regardless of the actual field the RA entered into
+        the textfile
+
+        Returns
+        -------
+        e_cat_reader: dict
+            dictionary mapping relevant field values (bad channel, SOZ, etc.)
+            to the corresponding channels
+
+        """
+        import numpy as np
+
+        convert = {
+            'seizure onset zone': 'soz',
+            'seizure onset zones': 'soz',
+            'seizure onset': 'soz',
+
+            # Interictal activity
+            'interictal': 'interictal',
+            'interictal spiking': 'interictal',
+            'interictal spikes': 'interictal',
+            'ictal onset': 'interictal',
+            'ictal onset:': 'interictal',
+            'interictal spiking:': 'interictal',
+            'octal onset zone': 'interictal',
+
+            # Lesioned Tissue
+            'brain lesions': 'brain_lesion',
+            'brain lesions:': 'brain_lesion',
+
+            # Bad channels
+            'bad electrodes': 'bad_channel',
+            'bad electrodes:': 'bad_channel',
+            'broken leads': 'bad_channel',
+            'broken leads:': 'bad_channel'
+        }
+
+        e_cat_reader = self._read_categories()
+        if e_cat_reader is not None:
+            e_cat_reader = {convert[v]: np.array([s.upper() for s in e_cat_reader[v]])
+                            for k, v in enumerate(e_cat_reader)}
+
+        return e_cat_reader
+
+    def as_dict(self):
+        categories = {
+            key: sorted(value.tolist())
+            for key, value in self._get_categories_dict().items()
+        }
+
+        # make sure we have all the keys
+        for key in ['soz', 'interictal', 'brain_lesion', 'bad_channel']:
+            if key not in categories:
+                categories[key] = []
+
+        return categories

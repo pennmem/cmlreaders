@@ -24,9 +24,9 @@ class InvalidDataTypeRequest(Exception):
 class PathFinder(object):
     def __init__(self, subject: Optional[str] = None,
                  experiment: Optional[str] = None,
-                 session: Optional[str] = None,
-                 localization: Optional[str] = None,
-                 montage: Optional[str] = None,
+                 session: Optional[int] = None,
+                 localization: Optional[int] = None,
+                 montage: Optional[int] = None,
                  rootdir: Optional[str] = '/'):
         """ Instantiates a PathFind object using the known information
 

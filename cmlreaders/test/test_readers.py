@@ -3,7 +3,7 @@ import pytest
 import pandas as pd
 import numpy as np
 import functools
-from cmlreaders.readers import TextReader, CSVReader
+from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -110,3 +110,18 @@ class TestCSVReader:
                               experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
+
+
+@pytest.mark.rhino
+class TestElectrodeCategoriesReader:
+    @pytest.mark.parametrize("subject,lens", [
+        ("R1111M", {'soz': 9, 'interictal': 15, 'brain_lesion': 5, 'bad_channel': 6}),
+        ("R1052E", {'soz': 2, 'interictal': 14, 'brain_lesion': 0, 'bad_channel': 0})
+    ])
+    def test_load(self, subject, lens, rhino_root):
+        reader = ElectrodeCategoriesReader('electrode_categories',
+                                           subject=subject,
+                                           rootdir=rhino_root)
+        categories = reader.load()
+        for key, len_ in lens.items():
+            assert len(categories[key]) == len_
