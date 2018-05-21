@@ -25,8 +25,8 @@ class PathFinder(object):
     def __init__(self, subject: Optional[str] = None,
                  experiment: Optional[str] = None,
                  session: Optional[int] = None,
-                 localization: Optional[int] = None,
-                 montage: Optional[int] = None,
+                 localization: Optional[int] = 0,
+                 montage: Optional[int] = 0,
                  rootdir: Optional[str] = '/'):
         """ Instantiates a PathFind object using the known information
 
@@ -53,9 +53,9 @@ class PathFinder(object):
         self.subject = subject
         self.rootdir = os.path.expanduser(rootdir)
         self.experiment = experiment
-        self.session = session
+        self.session = str(session)
 
-        # Stringify localization and montage
+        # Stringify localization and montage only if they are given
         self.localization = str(localization)
         self.montage = str(montage)
 
@@ -122,7 +122,7 @@ class PathFinder(object):
 
         # Some files/locations append the localization number, so to abstract
         # that away from the user, we handle this internally
-        if self.localization != '0' and self.localization is not None:
+        if self.localization != '0':
             subject_localization = "_".join([self.subject, self.localization])
 
         paths_to_check = self._paths[data_type]

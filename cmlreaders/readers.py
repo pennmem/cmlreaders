@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
+from typing import Optional
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, MissingParameter
@@ -14,8 +15,12 @@ class BaseCMLReader(object):
 
     default_representation = "dataframe"
 
-    def __init__(self, data_type, subject=None, experiment=None, session=None,
-                 localization=0, montage=0, file_path=None, rootdir="/"):
+    def __init__(self, data_type: str, subject: Optional[str] = None,
+                 experiment: Optional[str] = None,
+                 session: Optional[int] = None,
+                 localization: Optional[int] = 0, montage: Optional[int] = 0,
+                 file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
+
         self._file_path = file_path
         # When no file path is given, look it up using PathFinder
         if file_path is None:
@@ -41,7 +46,7 @@ class BaseCMLReader(object):
         """ Return data as a list of dictionaries """
         return self.as_dataframe().to_dict(orient='records')
 
-    def to_json(self, file_name, **kwargs):
+    def to_json(self, file_name):
         self.as_dataframe().to_json(file_name)
 
     def to_csv(self, file_name, **kwargs):
@@ -75,9 +80,6 @@ class TextReader(BaseCMLReader):
     def as_dataframe(self):
         df = pd.read_csv(self._file_path, names=self._headers)
         return df
-
-    def to_hdf(self, file_path):
-        raise UnsupportedOutputFormat
 
 
 class CSVReader(BaseCMLReader):
@@ -116,6 +118,11 @@ class RamulatorEventLogReader(BaseCMLReader):
         exclude = ['to_id', 'from_id', 'event_id', 'command_id']
         df = json_normalize(raw)
         return df.drop(exclude, axis=1)
+
+    def as_dict(self):
+        with open(self._file_path, 'r') as efile:
+            raw_dict = json.load(efile)
+        return raw_dict
 
 
 class BasicJSONReader(BaseCMLReader):
