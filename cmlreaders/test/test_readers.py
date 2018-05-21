@@ -4,7 +4,8 @@ import pandas as pd
 import numpy as np
 import functools
 
-from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader
+from cmlreaders.readers import TextReader, CSVReader, ElectrodeCategoriesReader, \
+    RamulatorEventLogReader
 from pkg_resources import resource_filename
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -161,6 +162,7 @@ class TestRamulatorEventLogReader:
         # reader because the format has materially changed from the original
         # source. This does not happen for all readers, which is why we can
         # test reloading for some
+
 
 @pytest.mark.rhino
 class TestElectrodeCategoriesReader:
