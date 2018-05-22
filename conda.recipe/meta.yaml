@@ -20,7 +20,7 @@ build:
 # Common dependencies that need to be listed in both the build and run
 # subsections of the requirements section.
 {% set deps = [
-    "pandas"
+    "pandas=0.22"
 ] %}
 
 requirements:
