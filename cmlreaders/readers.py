@@ -385,6 +385,17 @@ class ElectrodeCategoriesReader(BaseCMLReader):
 
 
 class BaseReportDataReader(BaseCMLReader):
+    """
+        Reader class for classifier summary data produced in reporting pipeline
+
+    Notes
+    -----
+    By default, a python class is returned. For report data read with this class
+    a python object is the only supported return type. The returned class will
+    be `ramutils.reports.summary.Classifiersummary`
+
+    """
+
     default_representation = 'pyobject'
 
     def __init__(self, data_type, subject, experiment, session, localization,
@@ -420,7 +431,21 @@ class BaseReportDataReader(BaseCMLReader):
 
 
 class ReportSummaryDataReader(BaseReportDataReader):
-    """ Generic reader class for HDF5 data produced in reporting pipeline """
+    """
+        Reader class for session and math summary data produced in the reporting
+        pipeline
+
+    Notes
+    -----
+    By default, a python class is returned based on the type of data. It could
+    be one of
+
+    - `ramutils.reports.summary.MathSummary`
+    - `ramutils.reports.summary.FRStimSessionSummary`
+
+    """
+
+    default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,
                  file_path=None, rootdir="/", **kwargs):
