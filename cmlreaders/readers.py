@@ -4,12 +4,17 @@ from pandas.io.json import json_normalize
 from typing import List, Optional
 
 from .path_finder import PathFinder
-from .exc import UnsupportedOutputFormat, MissingParameter, \
-    UnmetOptionalDependencyError, UnsupportedRepresentation, \
+from .exc import (
+    UnsupportedOutputFormat, MissingParameter,
+    UnmetOptionalDependencyError, UnsupportedRepresentation,
     UnsupportedExperimentError
+)
 
 
-__all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader']
+__all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
+           'BasicJSONReader', 'EventReader', 'MontageReader',
+           'LocalizationReader', 'ElectrodeCategoriesReader',
+           'BaseReportDataReader', 'ReportSummaryDataReader']
 
 
 class BaseCMLReader(object):

@@ -189,7 +189,7 @@ class TestMontageReader:
     @pytest.mark.parametrize('kind', ['contacts', 'pairs'])
     def test_load(self, kind):
         path = datafile(kind + '.json')
-        reader = MontageReader(kind, subject='R1389J', file_path=path)
+        reader = MontageReader(kind, subject='R1405E', file_path=path)
         df = reader.load()
 
         if kind == 'contacts':
@@ -202,7 +202,7 @@ class TestMontageReader:
 class TestLocalizationReader:
     def test_load(self):
         path = datafile('localization.json')
-        reader = LocalizationReader('localization', subject='R1389J', file_path=path)
+        reader = LocalizationReader('localization', subject='R1405E', file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
 

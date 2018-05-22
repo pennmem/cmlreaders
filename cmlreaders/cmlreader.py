@@ -28,7 +28,7 @@ class CMLReader(object):
         'experiment_log': RamulatorEventLogReader,
         'classifier_summary': BaseReportDataReader,
         'session_summary': ReportSummaryDataReader,
-        'math_summary': ReportSummaryDataReader
+        'math_summary': ReportSummaryDataReader,
         'pairs': MontageReader,
         'contacts': MontageReader,
         'localization': LocalizationReader,
