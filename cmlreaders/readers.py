@@ -464,7 +464,7 @@ class ReportSummaryDataReader(BaseReportDataReader):
             from ramutils.reports.summary import FRStimSessionSummary, \
                 MathSummary
             from ramutils.utils import is_stim_experiment
-        except ModuleNotFoundError:
+        except ImportError:
             raise UnmetOptionalDependencyError("Install ramutils to use this reader")
 
         self.pyclass_mapping = {
