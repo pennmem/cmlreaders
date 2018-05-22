@@ -76,7 +76,7 @@ class TestCSVReader:
     @pytest.mark.parametrize("subject,localization", [
         ('R1409D', '0'),
     ])
-    def test_as_methods(self, method, data_type, subject, localization, rhino_root):
+    def test_as_methods(self, method, data_type, subject, localization):
         file_path = datafile(data_type + ".csv")
         reader = CSVReader(data_type, subject, localization, experiment="FR1",
                            file_path=file_path)
