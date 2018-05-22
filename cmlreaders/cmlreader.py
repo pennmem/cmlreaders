@@ -1,7 +1,8 @@
 from typing import Optional
 from .readers import (
-    CSVReader, ElectrodeCategoriesReader, EventReader, LocalizationReader,
-    MontageReader, RamulatorEventLogReader, TextReader
+    ElectrodeCategoriesReader, CSVReader,
+    RamulatorEventLogReader, TextReader, BaseReportDataReader,
+    ReportSummaryDataReader, MontageReader, LocalizationReader, EventReader
 )
 
 
@@ -25,6 +26,9 @@ class CMLReader(object):
         'task_events': EventReader,
         'target_selection_table': CSVReader,
         'experiment_log': RamulatorEventLogReader,
+        'classifier_summary': BaseReportDataReader,
+        'session_summary': ReportSummaryDataReader,
+        'math_summary': ReportSummaryDataReader,
         'pairs': MontageReader,
         'contacts': MontageReader,
         'localization': LocalizationReader,

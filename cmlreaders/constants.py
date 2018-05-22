@@ -51,20 +51,20 @@ rhino_paths = {
 
     # Report Data
     'session_summary': [
-        'scratch/report_database/{subject}_{experiment}_{session}_session_summary.h5',
+        'scratch/report_database/{subject_localization}_{experiment}_{session}_session_summary.h5',
     ],
     'classifier_summary': [
-        'scratch/report_database/{subject}_{experiment}_{session}_classifier_session_{session}.h5',
+        'scratch/report_database/{subject_localization}_{experiment}_{session}_classifier_session_{session}.h5',
     ],
     'math_summary': [
-        'scratch/report_database/{subject}_{experiment}_{session}_math_summary.h5',
+        'scratch/report_database/{subject_localization}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        'scratch/report_database/{subject}_{experiment}_*_target_selection_table.csv',
+        'scratch/report_database/{subject_localization}_{experiment}_*_target_selection_table.csv',
     ],
     'trained_classifier': [
-        'scratch/report_database/{subject}_retrained_classifier.zip',
-        'scratch/report_database/{subject}_{experiment}_all_retrained_classifier.zip',
+        'scratch/report_database/{subject_localization}_retrained_classifier.zip',
+        'scratch/report_database/{subject_localization}_{experiment}_all_retrained_classifier.zip',
     ],
 
     # Session Data

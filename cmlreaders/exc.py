@@ -17,3 +17,11 @@ class MissingParameter(CMLReaderException):
 
 class ReferencingNotPossibleError(CMLReaderException):
     """ Raised when the requested EEG referencing scheme is not possible """
+
+
+class UnmetOptionalDependencyError(CMLReaderException):
+    """ Raised when an optional dependency is used without having first been installed """
+
+
+class UnsupportedExperimentError(CMLReaderException):
+    """ Raised when data for a particular experiment type is not supported """

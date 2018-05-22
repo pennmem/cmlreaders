@@ -6,9 +6,12 @@ import functools
 
 from cmlreaders.readers import (
     BasicJSONReader, TextReader, CSVReader, ElectrodeCategoriesReader,
-    EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader
+    EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader,
+    ReportSummaryDataReader, BaseReportDataReader
 )
 from pkg_resources import resource_filename
+from ramutils.reports.summary import ClassifierSummary, FRStimSessionSummary,\
+    MathSummary
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -73,7 +76,7 @@ class TestCSVReader:
     @pytest.mark.parametrize("subject,localization", [
         ('R1409D', '0'),
     ])
-    def test_as_methods(self, method, data_type, subject, localization, rhino_root):
+    def test_as_methods(self, method, data_type, subject, localization):
         file_path = datafile(data_type + ".csv")
         reader = CSVReader(data_type, subject, localization, experiment="FR1",
                            file_path=file_path)
@@ -186,7 +189,7 @@ class TestMontageReader:
     @pytest.mark.parametrize('kind', ['contacts', 'pairs'])
     def test_load(self, kind):
         path = datafile(kind + '.json')
-        reader = MontageReader(kind, subject='R1389J', file_path=path)
+        reader = MontageReader(kind, subject='R1405E', file_path=path)
         df = reader.load()
 
         if kind == 'contacts':
@@ -199,7 +202,7 @@ class TestMontageReader:
 class TestLocalizationReader:
     def test_load(self):
         path = datafile('localization.json')
-        reader = LocalizationReader('localization', subject='R1389J', file_path=path)
+        reader = LocalizationReader('localization', subject='R1405E', file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
 
@@ -217,3 +220,95 @@ class TestElectrodeCategoriesReader:
         categories = reader.load()
         for key, len_ in lens.items():
             assert len(categories[key]) == len_
+
+
+class TestBaseReportDataReader:
+    @pytest.mark.parametrize("method", ['pyobject'])
+    @pytest.mark.parametrize("data_type", ['classifier_summary'])
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ('R1409D', 'catFR1', '1'),
+    ])
+    def test_as_methods(self, method, data_type, subject, experiment, session):
+        file_path = datafile(data_type + ".h5")
+        reader = BaseReportDataReader(data_type, subject=subject,
+                                      experiment=experiment, session=session,
+                                      localization=0, file_path=file_path)
+
+        pyobj_expected_types = {
+            'classifier_summary': ClassifierSummary,
+        }
+
+        method_name = "as_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        data = callable_method()
+        assert data is not None
+        assert type(data) == pyobj_expected_types[data_type]
+
+    @pytest.mark.parametrize("method", ['hdf'])
+    @pytest.mark.parametrize("data_type", ["classifier_summary"])
+    def test_to_methods(self, method, data_type):
+        # Load the test data
+        file_path = datafile(data_type + ".h5")
+        reader = BaseReportDataReader(data_type, subject='R1409D',
+                                      experiment='catFR1', session=1,
+                                      localization=0, file_path=file_path)
+        # Save as specified format
+        method_name = "to_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        exp_output = datafile("output/" + data_type + ".h5")
+        callable_method(exp_output)
+        assert os.path.exists(exp_output)
+
+
+class TestReportSummaryReader:
+    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray', 'dict'])
+    @pytest.mark.parametrize("data_type", ['math_summary', "session_summary"])
+    def test_as_methods(self, method, data_type):
+        file_path = datafile(data_type + ".h5")
+        reader = ReportSummaryDataReader(data_type, subject='R1409D',
+                                         experiment='catFR5', session=1,
+                                         localization=0, file_path=file_path)
+
+        pyobj_expected_types = {
+            'math_summary': MathSummary,
+            'session_summary': FRStimSessionSummary
+        }
+
+        expected_types = {
+            'dataframe': pd.DataFrame,
+            'recarray': np.recarray,
+            'dict': list,
+
+        }
+
+        method_name = "as_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        data = callable_method()
+        assert data is not None
+
+        if method == "pyobject":
+            assert type(data) == pyobj_expected_types[data_type]
+        else:
+            assert type(data) == expected_types[method]
+
+    @pytest.mark.xfail
+    @pytest.mark.parametrize("method", ['csv', 'json', 'hdf'])
+    @pytest.mark.parametrize("data_type", ["math_summary", "session_summary"])
+    def test_to_methods(self, method, data_type):
+        # Load the test data
+        file_path = datafile(data_type + ".h5")
+        reader = ReportSummaryDataReader(data_type, subject='R1409D',
+                                         experiment='catFR5', session=1,
+                                         localization=0, file_path=file_path)
+        # Save as specified format
+        method_name = "to_{}".format(method)
+        callable_method = getattr(reader, method_name)
+
+        extension = "." + method
+        if method == "hdf":
+            extension = ".h5"
+
+        exp_output = datafile("output/" + data_type + extension)
+        callable_method(exp_output)
+
+        assert os.path.exists(exp_output)
