@@ -1,4 +1,3 @@
-
 class CMLReaderException(Exception):
     """ Generic exception for all CML Reader exceptions """
 
@@ -17,6 +16,10 @@ class MissingParameter(CMLReaderException):
 
 class ReferencingNotPossibleError(CMLReaderException):
     """ Raised when the requested EEG referencing scheme is not possible """
+
+
+class IncompatibleParametersError(CMLReaderException):
+    """Raised mutually exclusive parameters are given to a function."""
 
 
 class UnmetOptionalDependencyError(CMLReaderException):

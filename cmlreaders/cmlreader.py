@@ -1,5 +1,8 @@
-from typing import Optional
+from typing import List, Tuple, Optional
+import pandas as pd
+
 from . import readers
+from .exc import IncompatibleParametersError
 
 
 __all__ = ['CMLReader']
@@ -52,8 +55,23 @@ class CMLReader(object):
                                        file_path=file_path,
                                        rootdir=self.rootdir)
 
-    def load(self, data_type, file_path=None):
-        """ Load requested data into memory """
+    def load(self, data_type: str, file_path: str = None, **kwargs):
+        """Load requested data into memory.
+
+        Parameters
+        ----------
+        data_type
+            Type of data to load (see :attr:`readers` for available options)
+        file_path
+            Absolute path to load if given. This overrides the default search
+            paths.
+
+        Notes
+        -----
+        Keyword arguments that are accepted depend on the type of data being
+        loaded. See :meth:`load_eeg` for details.
+
+        """
         if data_type not in self.readers:
             raise NotImplementedError("There is no reader to support the "
                                       "requested file type")
@@ -70,3 +88,66 @@ class CMLReader(object):
                                        montage=self.montage,
                                        file_path=file_path,
                                        rootdir=self.rootdir).load()
+
+    def load_eeg(self, events: Optional[pd.DataFrame] = None,
+                 pre: int = 0, post: int = 0,
+                 epochs: Optional[List[Tuple[int, int]]] = None,
+                 contacts: Optional[pd.DataFrame] = None,
+                 scheme: Optional[pd.DataFrame] = None):
+        """Load EEG data.
+
+        Keyword arguments
+        -----------------
+        events
+            Events to load EEG epochs from. Incompatible with passing
+            ``epochs``.
+        pre
+            Time in ms to include prior to passed events (default: 0). This
+            parameter has no effect if events are not specified.
+        post
+            Time in ms to include after passed events (default: 0). This
+            parameter has no effect if events are not specified.
+        epochs
+            A list of ``(start, stop)`` tuples to specify epochs to retrieve
+            data from. Incompatible with passing ``events``.
+        contacts
+            Contacts to include when loading data. Any channel that includes
+            these contacts will be loaded. When not given (the default), load
+            all channels.
+        scheme
+            When specified, a bipolar scheme to rereference the data with. This
+            is only possible if the data were recorded in monopolar (a.k.a.
+            common reference) mode.
+
+        Returns
+        -------
+        TimeSeries
+
+        Raises
+        ------
+        RereferencingNotPossibleError
+            When passing ``scheme`` and the data do not support rereferencing.
+        IncompatibleParametersError
+            When both ``events`` and ``epochs`` are specified.
+
+        """
+        if events is not None and epochs is not None:
+            raise IncompatibleParametersError("events and epochs are mutually exclusive")
+
+        kwargs = {
+            'contacts': contacts,
+            'scheme': scheme,
+        }
+
+        if events is not None:
+            kwargs.update({
+                'events': events,
+                'pre': pre,
+                'post': post,
+            })
+        elif epochs is not None:
+            kwargs.update({
+                'epochs': epochs,
+            })
+
+        return self.load('eeg', **kwargs)
