@@ -1,3 +1,5 @@
+from typing import List, Optional, Tuple
+
 import pandas as pd
 import ptsa.data.TimeSeriesX as TimeSeries
 
@@ -55,8 +57,27 @@ class EEGReader(BaseCMLReader):
     def as_dict(self):
         raise UnsupportedOutputFormat
 
-    def as_timeseries(self):
-        pass
+    def as_timeseries(self, events: Optional[pd.DataFrame] = None,
+                      pre: int = 0, post: int = 0,
+                      epochs: Optional[List[Tuple[int, int]]] = None,
+                      contacts: Optional[pd.DataFrame] = None,
+                      scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
+        if events is not None:
+            epochs = self._events_to_epochs(events, pre, post)
+        ts = self._load_From_epochs(epochs, contacts)
+
+        if scheme is not None:
+            return self.rereference(ts, scheme)
+        else:
+            return ts
+
+    def _events_to_epochs(self, events: pd.DataFrame, pre: int, post: int) -> List[Tuple[int, int]]:
+        """Convert events to epochs."""
+
+    def _load_From_epochs(self, epochs: List[Tuple[int, int]],
+                          contacts: Optional[pd.DataFrame]) -> TimeSeries:
+        """Load EEG data based on epochs."""
+        raise NotImplementedError
 
     def rereference(self, data: TimeSeries, scheme: pd.DataFrame) -> TimeSeries:
         """Attempt to rereference the EEG data using the specified scheme.
