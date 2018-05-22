@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
-from typing import List
+from typing import List, Optional
 
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
