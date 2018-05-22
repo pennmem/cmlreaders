@@ -30,6 +30,7 @@ class TestCMLReader:
         reader = CMLReader(subject=subject, localization=localization,
                            experiment=experiment, session=session,
                            rootdir=rhino_root)
+        reader.load(file_type)
 
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates.txt', 'classifier_excluded_leads.txt',

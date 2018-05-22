@@ -467,6 +467,3 @@ class ReportSummaryDataReader(BaseReportDataReader):
     def as_dataframe(self):
         pyobj = self.as_pyobject()
         return pyobj.to_dataframe()
-
-
-
