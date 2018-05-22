@@ -410,7 +410,7 @@ class BaseReportDataReader(BaseCMLReader):
 
         try:
             from ramutils.reports.summary import ClassifierSummary
-        except ModuleNotFoundError:
+        except ImportError:
             raise UnmetOptionalDependencyError("Install ramutils to use this reader")
 
         self.pyclass_mapping = {
