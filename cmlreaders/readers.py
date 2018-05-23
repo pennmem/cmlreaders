@@ -492,3 +492,51 @@ class ReportSummaryDataReader(BaseReportDataReader):
     def as_dataframe(self):
         pyobj = self.as_pyobject()
         return pyobj.to_dataframe()
+
+
+class ClassifierContainerReader(BaseCMLReader):
+    """ Reader class for loading a serialized classifier classifier
+
+    Notes
+    -----
+    By default, a `classiflib.container.ClassifierContainer` class is returned
+
+    """
+
+    default_representation = "pyobject"
+
+    def __init__(self, data_type, subject, experiment, session, localization,
+                 file_path=None, rootdir="/", **kwargs):
+        super(ClassifierContainerReader, self).__init__(data_type,
+                                                        subject=subject,
+                                                        experiment=experiment,
+                                                        session=session,
+                                                        localization=localization,
+                                                        file_path=file_path,
+                                                        rootdir=rootdir)
+        try:
+            from classiflib.container import ClassifierContainer
+        except ImportError:
+            raise UnmetOptionalDependencyError("Install classiflib to use this reader")
+
+        self.pyclass_mapping = {
+            'classifier': ClassifierContainer
+        }
+
+    def as_pyobject(self):
+        summary_obj = self.pyclass_mapping['classifier']
+        return summary_obj.load(self._file_path)
+
+    def to_binary(self, file_name, **kwargs):
+        """
+            Saves classifier to a serialized format as determined by  the file
+            extension. By default, if the file already exists, it will note be
+            overwritten.
+
+        Notes
+        -----
+        See :method:`classiflib.container.ClassifierContainer.save()` for more
+        details on supported output formats
+        """
+        self.as_pyobject().save(file_name, **kwargs)
+
