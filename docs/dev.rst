@@ -1,6 +1,15 @@
 Developer's Guide
 =================
 
+Adding new data types
+---------------------
+To add support for a new data type, first add the data type shortcut name
+to :mod:`cmlreaders.constants` with a list of possible locations on rhino
+as the value. Ideally, a reader already exists that can manage the new data
+type. If this is the case, add the new data type to the ``data_types`` class
+member of the reader class that should be used. If a new reader is required,
+see the following section.
+
 Adding new readers
 ------------------
 
@@ -8,18 +17,22 @@ New readers are added by extending :class:`cmlreaders.readers.BaseCMLReader` and
 implementing one or more of the ``as_xyz`` methods. The default output format
 when calling ``load`` is set by using the class variable ``default_representation``
 which defaults to ``dataframe``. For example, say you want to create a new
-reader that defaults to using a ``dict`` as output, the minimum that needs to be
-done is to override ``as_dict`` and setting that as the default:
+reader that defaults to using a ``dict`` as output and should be used for some
+data type, X. At a minimum, you will need to define a ``data_types`` list that
+contains X, and set ``default_representation`` to ``dict``. If there are
+additional data types that should use this reader, those should also be added
+to the ``data_types`` list.
 
 .. code-block:: python
 
     class MyReader(BaseCMLReader):
+        data_types = ['X']
         default_representation = 'dict'
 
         def as_dict(self):
             return {'for': 'great justice'}
 
-Once the reader works, it must be enabled in the general :class:`cmlreaders.CMLReader`:
-
-1. Add an entry for the class to the :attr:`cmlreaders.reader` dict
-2. Add a test in :mod:`cmlreaders.test.test_cmlreader`
+Once the reader works, test cases for the data types using the new reader
+should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
+to the test cases that should already exist for the new reader. For examples,
+see :mod:`cmlreaders.test.test_readers`.

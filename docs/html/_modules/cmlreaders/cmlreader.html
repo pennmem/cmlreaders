@@ -151,31 +151,37 @@
             
   <h1>Source code for cmlreaders.cmlreader</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">.readers</span> <span class="k">import</span> <span class="n">TextReader</span><span class="p">,</span> <span class="n">CSVReader</span><span class="p">,</span> <span class="n">RamulatorEventLogReader</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">readers</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CMLReader&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="CMLReader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader">[docs]</a><span class="k">class</span> <span class="nc">CMLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Generic reader for all CML-specific files &quot;&quot;&quot;</span>
-    <span class="n">readers</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
-        <span class="s1">&#39;jacksheet&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
-        <span class="s1">&#39;good_leads&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
-        <span class="s1">&#39;leads&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
-        <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">:</span> <span class="n">TextReader</span><span class="p">,</span>
-        <span class="s1">&#39;prior_stim_results&#39;</span><span class="p">:</span> <span class="n">CSVReader</span><span class="p">,</span>
-        <span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">:</span> <span class="n">CSVReader</span><span class="p">,</span>
-        <span class="s1">&#39;target_selection_table&#39;</span><span class="p">:</span> <span class="n">CSVReader</span><span class="p">,</span>
-        <span class="s1">&#39;experiment_log&#39;</span><span class="p">:</span> <span class="n">RamulatorEventLogReader</span>
-    <span class="p">}</span>
+    <span class="sd">&quot;&quot;&quot; Generic reader for all CML-specific files</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    At import, all the readers from :mod:`cmlreaders.readers` will register the</span>
+<span class="sd">    data types that should correspond to that reader by updating the</span>
+<span class="sd">    reader_names dictionary. reader_names is a dict whose keys are one of</span>
+<span class="sd">    the data types understood by :class:`cmlreaders.PathFinder` and defined in</span>
+<span class="sd">    :mod:`cmlreaders.constants`. Values are the name of the reader class</span>
+<span class="sd">    that should be used for loading/reading the data type. When an instance of</span>
+<span class="sd">    :class:`cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is</span>
+<span class="sd">    created that maps the data types to the actual reader class, rather than</span>
+<span class="sd">    just the class name. In essence, :class:`cmlreaders.cmlreader.CMLReader` is</span>
+<span class="sd">    a factory that routes the requests for loading a particular data type to</span>
+<span class="sd">    the reader defined to handle that data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reader_names</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">experiment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
@@ -184,9 +190,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="n">localization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="n">montage</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">rootdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
 <div class="viewcode-block" id="CMLReader.get_reader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an instance of the reader class for the given data type &quot;&quot;&quot;</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">data_type</span><span class="p">,</span>
                                        <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
                                        <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
@@ -202,6 +210,10 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;There is no reader to support the &quot;</span>
                                       <span class="s2">&quot;requested file type&quot;</span><span class="p">)</span>
 
+        <span class="c1"># By default we want task + math events when requesting events</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;events&#39;</span><span class="p">:</span>
+            <span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;all_events&#39;</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">data_type</span><span class="p">,</span>
                                        <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
                                        <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
@@ -210,7 +222,6 @@
                                        <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
                                        <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
                                        <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div></div>
-
 </pre></div>
 
            </div>
@@ -267,7 +278,9 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
   </script> 
 

@@ -14,7 +14,7 @@ class CMLReader(object):
     data types that should correspond to that reader by updating the
     reader_names dictionary. reader_names is a dict whose keys are one of
     the data types understood by :class:`cmlreaders.PathFinder` and defined in
-    :mode:`cmlreaders.constants`. Values are the name of the reader class
+    :mod:`cmlreaders.constants`. Values are the name of the reader class
     that should be used for loading/reading the data type. When an instance of
     :class:`cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is
     created that maps the data types to the actual reader class, rather than
