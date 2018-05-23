@@ -14,7 +14,7 @@ class MetaReader(type):
     """
     def __new__(cls, name, bases, d):
         if name is not "BaseCMLReader":
-            CMLReader.readers.update({x: name for x in d['data_types']})
+            CMLReader.reader_names.update({x: name for x in d['data_types']})
         return type.__new__(cls, name, bases, d)
 
 
