@@ -1,4 +1,3 @@
-import sys
 from typing import Optional
 from . import readers
 

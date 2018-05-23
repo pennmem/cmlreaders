@@ -67,4 +67,3 @@ class BaseCMLReader(object, metaclass=MetaReader):
 
     def to_hdf(self, file_name):
         raise UnsupportedOutputFormat
-

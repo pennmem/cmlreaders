@@ -3,8 +3,8 @@ import pandas as pd
 from pandas.io.json import json_normalize
 from typing import List
 
-from .base_reader import BaseCMLReader
-from .exc import (
+from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.exc import (
     MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
     UnsupportedExperimentError
 )
