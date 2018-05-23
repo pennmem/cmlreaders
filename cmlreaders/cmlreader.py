@@ -2,7 +2,8 @@ from typing import Optional
 from .readers import (
     ElectrodeCategoriesReader, CSVReader,
     RamulatorEventLogReader, TextReader, BaseReportDataReader,
-    ReportSummaryDataReader, MontageReader, LocalizationReader, EventReader
+    ReportSummaryDataReader, MontageReader, LocalizationReader, EventReader,
+    ClassifierContainerReader
 )
 
 
@@ -32,6 +33,8 @@ class CMLReader(object):
         'pairs': MontageReader,
         'contacts': MontageReader,
         'localization': LocalizationReader,
+        'baseline_classifier': ClassifierContainerReader,
+        'used_classifier': ClassifierContainerReader
     }
 
     def __init__(self, subject: Optional[str] =None,
