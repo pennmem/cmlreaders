@@ -1,11 +1,11 @@
 from typing import Optional
 
 from .path_finder import PathFinder
-from .exc import UnsupportedOutputFormat
+from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
 from .cmlreader import CMLReader
 
 
-class MetaReader(type):
+class _MetaReader(type):
     """ Metaclass for all CML readers
 
         The responsibility of the metaclass is to register the reader with
@@ -13,29 +13,34 @@ class MetaReader(type):
 
     Notes
     -----
-    When a child-classes uses `cmlreaders.base_reader.MetaReader` as a meta
-    class, the reader_names dictionary stored as a class variable in
-    `cmlreaders.cmlreader.CMLReader` is updated based on the `data_types`
-    class variable in the sub-class.
+    When a child class uses :class:`cmlreaders.base_reader._MetaReader` as a
+    meta class, the reader_names dictionary stored as a class variable in
+    :class:`cmlreaders.cmlreader.CMLReader` is updated based on the data_types
+    class variable in the child class.
 
     """
     def __new__(cls, name, bases, d):
         if name is not "BaseCMLReader":
+            if 'data_types' not in d:
+                raise ImproperlyDefinedReader(
+                    "All CML readers must define a list called 'data_types' "
+                    "whose elements are the data types that should use the "
+                    "reader")
             CMLReader.reader_names.update({x: name for x in d['data_types']})
         return type.__new__(cls, name, bases, d)
 
 
-class BaseCMLReader(object, metaclass=MetaReader):
+class BaseCMLReader(object, metaclass=_MetaReader):
     """ Base class for CML data readers
 
     Notes
     -----
     All CML readers should inherit from this base class in order to have the
-    reader be registered with the generic `cmlreaders.CMLReader` class. This
-    happens through the metaclass of BaseCMLReader. To ensure the registration
-    happens correctly, new readers must define a list called `data_types`
-    as a class variable containing all of the data types that should use the
-    reader.
+    reader be registered with the generic :class:`cmlreaders.CMLReader` class.
+    This happens through the metaclass of BaseCMLReader. To ensure the
+    registration happens correctly, new readers must define a list called
+    `data_types` as a class variable containing all of the data types that
+    should use the reader.
 
     """
     data_types = []

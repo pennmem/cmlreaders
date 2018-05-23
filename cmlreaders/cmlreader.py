@@ -10,15 +10,15 @@ class CMLReader(object):
 
     Notes
     -----
-    At import, all the readers from `cmlreaders.readers` will register the
+    At import, all the readers from :mod:`cmlreaders.readers` will register the
     data types that should correspond to that reader by updating the
-    `reader_names` dictionary. `reader_names` is a dict whose keys are one of
-    the data types understood by `cmlreaders.PathFinder` and defined in
-    `cmlreaders.constants`. Values are the name of the reader class (string)
+    reader_names dictionary. reader_names is a dict whose keys are one of
+    the data types understood by :class:`cmlreaders.PathFinder` and defined in
+    :mode:`cmlreaders.constants`. Values are the name of the reader class
     that should be used for loading/reading the data type. When an instance of
-    `cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is
+    :class:`cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is
     created that maps the data types to the actual reader class, rather than
-    just the class name. In essense, `cmlreaders.cmlreader.CMLReader` is just
+    just the class name. In essence, :class:`cmlreaders.cmlreader.CMLReader` is
     a factory that routes the requests for loading a particular data type to
     the reader defined to handle that data.
 
