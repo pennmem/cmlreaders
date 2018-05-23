@@ -61,6 +61,7 @@ def test_nonzero_localization_lookup(non_zero_localization_subject):
     path = non_zero_localization_subject.find("pairs")
     assert path is not None
 
+
 @pytest.mark.ramulator
 @pytest.mark.rhino
 def test_get_ramulator_files(ramulator_files_finder):
