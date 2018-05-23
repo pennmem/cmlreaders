@@ -185,8 +185,20 @@
 <h2>Readers<a class="headerlink" href="#readers" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cmlreaders.CMLReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">CMLReader</code><span class="sig-paren">(</span><em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[str</em>, <em>NoneType] = None</em>, <em>localization: Union[str</em>, <em>NoneType] = None</em>, <em>montage: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">CMLReader</code><span class="sig-paren">(</span><em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic reader for all CML-specific files</p>
+<p class="rubric">Notes</p>
+<p>At import, all the readers from <a class="reference internal" href="#module-cmlreaders.readers" title="cmlreaders.readers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.readers</span></code></a> will register the
+data types that should correspond to that reader by updating the
+reader_names dictionary. reader_names is a dict whose keys are one of
+the data types understood by <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> and defined in
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.constants</span></code>. Values are the name of the reader class
+that should be used for loading/reading the data type. When an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.cmlreader.CMLReader</span></code> is instantiated, a new dictionary is
+created that maps the data types to the actual reader class, rather than
+just the class name. In essence, <code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.cmlreader.CMLReader</span></code> is
+a factory that routes the requests for loading a particular data type to
+the reader defined to handle that data.</p>
 <dl class="method">
 <dt id="cmlreaders.CMLReader.get_reader">
 <code class="descname">get_reader</code><span class="sig-paren">(</span><em>data_type</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.get_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.get_reader" title="Permalink to this definition">¶</a></dt>
@@ -201,43 +213,7 @@
 
 </dd></dl>
 
-<span class="target" id="module-cmlreaders.readers"></span><dl class="class">
-<dt id="cmlreaders.readers.TextReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.TextReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic reader class for reading RAM text files</p>
-<dl class="method">
-<dt id="cmlreaders.readers.TextReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#TextReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.TextReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="cmlreaders.readers.CSVReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.</code><code class="descname">CSVReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>experiment=None</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#CSVReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.CSVReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic reader class for loading csv files with headers</p>
-<dl class="method">
-<dt id="cmlreaders.readers.CSVReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#CSVReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.CSVReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="cmlreaders.readers.RamulatorEventLogReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.</code><code class="descname">RamulatorEventLogReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#RamulatorEventLogReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.RamulatorEventLogReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reader for Ramulator event log</p>
-<dl class="method">
-<dt id="cmlreaders.readers.RamulatorEventLogReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers.html#RamulatorEventLogReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.RamulatorEventLogReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
+<span class="target" id="module-cmlreaders.readers"></span></div>
 <div class="section" id="pathfinder">
 <h2>PathFinder<a class="headerlink" href="#pathfinder" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> class can be used to identify the location of
@@ -249,7 +225,7 @@ data in its original form and attempt to abstract away these underlying
 inconsistencies for future users.</p>
 <dl class="class">
 <dt id="cmlreaders.PathFinder">
-<em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">PathFinder</code><span class="sig-paren">(</span><em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[str</em>, <em>NoneType] = None</em>, <em>localization: Union[str</em>, <em>NoneType] = None</em>, <em>montage: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/path_finder.html#PathFinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.PathFinder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">PathFinder</code><span class="sig-paren">(</span><em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/path_finder.html#PathFinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.PathFinder" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cmlreaders.PathFinder.find">
 <code class="descname">find</code><span class="sig-paren">(</span><em>data_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/path_finder.html#PathFinder.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.PathFinder.find" title="Permalink to this definition">¶</a></dt>
@@ -374,7 +350,9 @@ constants being well-maintained.</p>
 
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
       });
   </script> 
 
