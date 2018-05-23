@@ -1,15 +1,15 @@
 from abc import abstractmethod, ABC
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Type, Union
+from typing import List, Optional, Tuple, Type, Union
 
 import numpy as np
 import pandas as pd
 import ptsa.data.TimeSeriesX as TimeSeries
 
-from .exc import UnsupportedOutputFormat, ReferencingNotPossibleError
-from .path_finder import PathFinder
-from .readers import BaseCMLReader
+from cmlreaders.exc import UnsupportedOutputFormat
+from cmlreaders.path_finder import PathFinder
+from cmlreaders.readers import BaseCMLReader
 
 __all__ = ['EEGReader']
 
@@ -158,6 +158,7 @@ class EEGReader(BaseCMLReader):
         sample_rate = meta['sample_rate']
         dtype = meta['data_format']
         n_samples = meta['n_samples']
+        eeg_filename = meta_path.parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
         if events is not None:
@@ -165,7 +166,7 @@ class EEGReader(BaseCMLReader):
         elif epochs is None:
             epochs = [(0, int(1000 * n_samples / sample_rate))]
 
-        reader = reader_class(filename=meta_path.joinpath(basename),
+        reader = reader_class(filename=eeg_filename,
                               sample_rate=sample_rate,
                               dtype=dtype,
                               epochs=epochs)  # FIXME: channels
@@ -214,6 +215,7 @@ if __name__ == "__main__":
     sample_rate = meta['sample_rate']
     dtype = meta['data_format']
     n_samples = meta['n_samples']
+    filename = str(meta_path.parent.joinpath('noreref', basename))
 
-    reader = SplitEEGReader(basename, sample_rate, dtype, [(0, n_samples)])
+    reader = SplitEEGReader(filename, sample_rate, dtype, [(0, 100)])
     print(reader.read())
