@@ -527,6 +527,9 @@ class ClassifierContainerReader(BaseCMLReader):
         summary_obj = self.pyclass_mapping['classifier']
         return summary_obj.load(self._file_path)
 
+    def as_dataframe(self):
+        raise UnsupportedRepresentation("Unable to represent classifier as a dataframe")
+
     def to_binary(self, file_name, **kwargs):
         """
             Saves classifier to a serialized format as determined by  the file

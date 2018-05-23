@@ -9,6 +9,7 @@ from cmlreaders.readers import (
     EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader,
     ReportSummaryDataReader, BaseReportDataReader, ClassifierContainerReader
 )
+from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
 from pkg_resources import resource_filename
 from ramutils.reports.summary import ClassifierSummary, FRStimSessionSummary,\
     MathSummary
@@ -227,7 +228,7 @@ class TestElectrodeCategoriesReader:
 
 
 class TestBaseReportDataReader:
-    @pytest.mark.parametrize("method", ['pyobject'])
+    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
     @pytest.mark.parametrize("data_type", ['classifier_summary'])
     @pytest.mark.parametrize("subject,experiment,session", [
         ('R1409D', 'catFR1', '1'),
@@ -244,6 +245,12 @@ class TestBaseReportDataReader:
 
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
+
+        if method != "pyobject":
+            with pytest.raises(UnsupportedRepresentation):
+                callable_method()
+            return
+
         data = callable_method()
         assert data is not None
         assert type(data) == pyobj_expected_types[data_type]
@@ -295,6 +302,14 @@ class TestReportSummaryReader:
             assert type(data) == pyobj_expected_types[data_type]
         else:
             assert type(data) == expected_types[method]
+
+    def test_load_nonstim_session(self):
+        file_path = datafile('session_summary' + ".h5")
+        reader = ReportSummaryDataReader('session_summary', subject='R1409D',
+                                         experiment='catFR1', session=1,
+                                         localization=0, file_path=file_path)
+        with pytest.raises(UnsupportedExperimentError):
+            reader.as_pyobject()
 
     @pytest.mark.xfail
     @pytest.mark.parametrize("method", ['csv', 'json', 'hdf'])

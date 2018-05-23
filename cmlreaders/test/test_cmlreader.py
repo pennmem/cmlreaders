@@ -14,7 +14,8 @@ class TestCMLReader:
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
         'target_selection_table', 'electrode_categories', 'classifier_summary',
         'math_summary', 'session_summary', 'pairs', 'contacts', 'localization',
-        'baseline_classifier', 'used_classifier'
+        'baseline_classifier', 'used_classifier', 'events', 'all_events',
+        'task_events', 'math_events'
     ])
     def test_load_from_rhino(self, file_type, rhino_root):
         subject = "R1405E"
@@ -46,7 +47,8 @@ class TestCMLReader:
         'electrode_coordinates.csv', 'prior_stim_results.csv',
         'target_selection_table.csv', 'classifier_summary.h5',
         'math_summary.h5', 'session_summary.h5', 'pairs.json', 'contacts.json',
-        'localization.json', 'baseline_classifier.zip', 'used_classifier.zip'
+        'localization.json', 'baseline_classifier.zip', 'used_classifier.zip',
+        'all_events.json', 'math_events.json', 'task_events.json'
     ])
     def test_load(self, file_type):
         data_type = os.path.splitext(file_type)[0]
@@ -59,10 +61,17 @@ class TestCMLReader:
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
         'target_selection_table', 'classifier_summary', 'math_summary',
         'session_summary', 'pairs', 'contacts', 'localization',
-        'baseline_classifier', 'used_classifier'
+        'baseline_classifier', 'used_classifier', 'all_events', 'math_events',
+        'task_events'
     ])
     def test_get_reader(self, file_type):
         reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
                            session=0, montage=0)
         reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
         assert type(reader_obj) == reader.readers[file_type]
+
+    def test_load_unimplemented(self):
+        reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
+                           session=0, montage=0)
+        with pytest.raises(NotImplementedError):
+            reader.load("fake_data")
