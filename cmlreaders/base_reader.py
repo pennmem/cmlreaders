@@ -1,8 +1,8 @@
 from typing import Optional
 
-from cmlreaders.path_finder import PathFinder
-from cmlreaders.exc import UnsupportedOutputFormat
-from cmlreaders.cmlreader import CMLReader
+from .path_finder import PathFinder
+from .exc import UnsupportedOutputFormat
+from .cmlreader import CMLReader
 
 
 class MetaReader(type):
@@ -14,7 +14,7 @@ class MetaReader(type):
     """
     def __new__(cls, name, bases, d):
         if name is not "BaseCMLReader":
-            CMLReader.readers.update({x: d for x in d['data_types']})
+            CMLReader.readers.update({x: name for x in d['data_types']})
         return type.__new__(cls, name, bases, d)
 
 

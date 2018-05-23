@@ -1,9 +1,4 @@
 from typing import Optional
-from .readers import (
-    ElectrodeCategoriesReader, CSVReader,
-    RamulatorEventLogReader, TextReader, BaseReportDataReader,
-    ReportSummaryDataReader, MontageReader, LocalizationReader, EventReader
-)
 
 
 __all__ = ['CMLReader']
@@ -11,28 +6,7 @@ __all__ = ['CMLReader']
 
 class CMLReader(object):
     """ Generic reader for all CML-specific files """
-    readers = {
-        'voxel_coordinates': TextReader,
-        'jacksheet': TextReader,
-        'good_leads': TextReader,
-        'leads': TextReader,
-        'classifier_excluded_leads': TextReader,
-        'prior_stim_results': CSVReader,
-        'electrode_coordinates': CSVReader,
-        'electrode_categories': ElectrodeCategoriesReader,
-        'events': EventReader,
-        'all_events': EventReader,
-        'math_events': EventReader,
-        'task_events': EventReader,
-        'target_selection_table': CSVReader,
-        'experiment_log': RamulatorEventLogReader,
-        'classifier_summary': BaseReportDataReader,
-        'session_summary': ReportSummaryDataReader,
-        'math_summary': ReportSummaryDataReader,
-        'pairs': MontageReader,
-        'contacts': MontageReader,
-        'localization': LocalizationReader,
-    }
+    readers = {}
 
     def __init__(self, subject: Optional[str] =None,
                  experiment: Optional[str] = None,
@@ -50,6 +24,7 @@ class CMLReader(object):
 
     def get_reader(self, data_type, file_path=None):
         """ Return an instance of the reader class for the given data type """
+
         return self.readers[data_type](data_type,
                                        subject=self.subject,
                                        experiment=self.experiment,
