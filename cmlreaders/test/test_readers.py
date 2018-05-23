@@ -323,7 +323,7 @@ class TestReportSummaryReader:
 class TestClassifierContainerReader:
     @pytest.mark.parametrize("method", ['pyobject'])
     @pytest.mark.parametrize("data_type", [
-        'trained_classifier', 'retrained_classifier'])
+        'basic_classifier', 'used_classifier'])
     def test_as_methods(self, method, data_type):
         file_path = datafile(data_type + ".zip")
         reader = ClassifierContainerReader(data_type, subject='R1389J',
@@ -331,8 +331,8 @@ class TestClassifierContainerReader:
                                            localization=0, file_path=file_path)
 
         pyobj_expected_types = {
-            'trained_classifier': ClassifierContainer,
-            'retrained_classifier': ClassifierContainer,
+            'basic_classifier': ClassifierContainer,
+            'used_classifier': ClassifierContainer,
         }
 
         method_name = "as_{}".format(method)
@@ -343,7 +343,7 @@ class TestClassifierContainerReader:
 
     @pytest.mark.parametrize("method", ['binary'])
     @pytest.mark.parametrize("data_type", [
-        'trained_classifier', 'retrained_classifier'])
+        'basic_classifier', 'used_classifier'])
     def test_to_methods(self, method, data_type):
         # Load the test data
         file_path = datafile(data_type + ".zip")
