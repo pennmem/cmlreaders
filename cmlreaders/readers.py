@@ -539,4 +539,3 @@ class ClassifierContainerReader(BaseCMLReader):
         details on supported output formats
         """
         self.as_pyobject().save(file_name, **kwargs)
-
