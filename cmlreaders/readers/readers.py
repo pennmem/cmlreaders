@@ -1,12 +1,11 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
-from typing import List, Optional
+from typing import List
 
-from .path_finder import PathFinder
-from .exc import (
-    UnsupportedOutputFormat, MissingParameter,
-    UnmetOptionalDependencyError, UnsupportedRepresentation,
+from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.exc import (
+    MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
     UnsupportedExperimentError
 )
 
@@ -14,62 +13,14 @@ from .exc import (
 __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
            'BasicJSONReader', 'EventReader', 'MontageReader',
            'LocalizationReader', 'ElectrodeCategoriesReader',
-           'BaseReportDataReader', 'ReportSummaryDataReader']
-
-
-class BaseCMLReader(object):
-    """ Base class for CML data readers """
-
-    default_representation = "dataframe"
-
-    def __init__(self, data_type: str, subject: Optional[str] = None,
-                 experiment: Optional[str] = None,
-                 session: Optional[int] = None,
-                 localization: Optional[int] = 0, montage: Optional[int] = 0,
-                 file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
-
-        self._file_path = file_path
-
-        # When no file path is given, look it up using PathFinder
-        if file_path is None:
-            finder = PathFinder(subject=subject, experiment=experiment,
-                                session=session, localization=localization,
-                                montage=montage, rootdir=rootdir)
-            self._file_path = finder.find(data_type)
-
-        self.subject = subject
-        self.data_type = data_type
-
-    def load(self):
-        """ Load data into memory """
-        method_name = "_".join(["as", self.default_representation])
-        return getattr(self, method_name)()
-
-    def as_dataframe(self):
-        """ Return data as dataframe """
-        raise NotImplementedError
-
-    def as_recarray(self):
-        """ Return data as a `np.rec.array` """
-        return self.as_dataframe().to_records()
-
-    def as_dict(self):
-        """ Return data as a list of dictionaries """
-        return self.as_dataframe().to_dict(orient='records')
-
-    def to_json(self, file_name):
-        self.as_dataframe().to_json(file_name)
-
-    def to_csv(self, file_name, **kwargs):
-        """ Save data to csv file """
-        self.as_dataframe().to_csv(file_name, index=False, **kwargs)
-
-    def to_hdf(self, file_name):
-        raise UnsupportedOutputFormat
+           'BaseReportDataReader', 'ReportSummaryDataReader',
+           'ClassifierContainerReader']
 
 
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """
+    data_types = ['voxel_coordinates', 'jacksheet', 'classifier_excluded_leads',
+                  'good_leads', 'leads', 'area']
     headers = {
         'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
                               'min_contact_num', 'max_contact_num'],
@@ -95,6 +46,9 @@ class TextReader(BaseCMLReader):
 
 class CSVReader(BaseCMLReader):
     """ Generic reader class for loading csv files with headers """
+    data_types = ['prior_stim_results', 'electrode_coordinates',
+                  'electrode_categories', 'target_selection_table']
+
     def __init__(self, data_type, subject, localization, experiment=None,
                  file_path=None, rootdir="/", **kwargs):
 
@@ -113,6 +67,8 @@ class CSVReader(BaseCMLReader):
 
 class RamulatorEventLogReader(BaseCMLReader):
     """ Reader for Ramulator event log """
+
+    data_types = ['experiment_log']
 
     def __init__(self, data_type, subject, experiment, session, file_path=None,
                  rootdir="/", **kwargs):
@@ -142,6 +98,9 @@ class BasicJSONReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
+    data_types = []
+
     def as_dataframe(self):
         return pd.read_json(self._file_path)
 
@@ -152,6 +111,9 @@ class EventReader(BasicJSONReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
+    data_types = ['all_events', 'math_events', 'task_events', 'events']
+
     def as_dataframe(self):
         df = super().as_dataframe()
         first = ['eegoffset']
@@ -165,6 +127,9 @@ class MontageReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
+    data_types = ['pairs', 'contacts']
+
     @staticmethod
     def _flatten_row(data: dict, labels: List[str], i: int) -> pd.DataFrame:
         entry = data[labels[i]].copy()
@@ -222,6 +187,9 @@ class LocalizationReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
+    data_types = ['localization']
+
     def as_dataframe(self):
         import itertools
 
@@ -259,6 +227,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
     Returns a ``dict``.
 
     """
+
+    data_types = ["electrode_categories"]
     default_representation = 'dict'
 
     def _read_categories(self) -> dict:
@@ -395,7 +365,7 @@ class BaseReportDataReader(BaseCMLReader):
     be `ramutils.reports.summary.Classifiersummary`
 
     """
-
+    data_types = ["classifier_summary"]
     default_representation = 'pyobject'
 
     def __init__(self, data_type, subject, experiment, session, localization,
@@ -445,6 +415,7 @@ class ReportSummaryDataReader(BaseReportDataReader):
 
     """
 
+    data_types = ["session_summary", "math_summary"]
     default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,
@@ -503,6 +474,7 @@ class ClassifierContainerReader(BaseCMLReader):
 
     """
 
+    data_types = ["used_classifier", "baseline_classifier"]
     default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,

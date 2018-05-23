@@ -25,3 +25,7 @@ class UnmetOptionalDependencyError(CMLReaderException):
 
 class UnsupportedExperimentError(CMLReaderException):
     """ Raised when data for a particular experiment type is not supported """
+
+
+class ImproperlyDefinedReader(CMLReaderException):
+    """" Raised when a CML reader has not been defined correctly """
