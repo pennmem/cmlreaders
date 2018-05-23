@@ -9,7 +9,7 @@ import ptsa.data.TimeSeriesX as TimeSeries
 
 from cmlreaders.exc import UnsupportedOutputFormat
 from cmlreaders.path_finder import PathFinder
-from cmlreaders.readers import BaseCMLReader
+from cmlreaders.base_reader import BaseCMLReader
 
 __all__ = ['EEGReader']
 
@@ -121,6 +121,7 @@ class EEGReader(BaseCMLReader):
         >>> eeg = reader.load_eeg()
 
     """
+    data_types = ["eeg"]
     default_representation = "timeseries"
 
     def as_dataframe(self):
