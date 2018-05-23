@@ -16,6 +16,13 @@ def current_files_subject(rhino_root):
 
 
 @pytest.fixture()
+def non_zero_localization_subject(rhino_root):
+    finder = PathFinder("R1405E", rootdir=rhino_root, experiment='FR1',
+                        session=1, localization=1, montage=1)
+    return finder
+
+
+@pytest.fixture()
 def legacy_files_subject(rhino_root):
     finder = PathFinder('R1111M', rootdir=rhino_root, localization=0)
     return finder
@@ -49,8 +56,18 @@ def test_invalid_file_request(current_files_subject):
         current_files_subject.find('fake_file_type')
 
 
+@pytest.mark.rhino
+def test_nonzero_localization_lookup(non_zero_localization_subject):
+    path = non_zero_localization_subject.find("pairs")
+    assert path is not None
+
+
 @pytest.mark.ramulator
 @pytest.mark.rhino
 def test_get_ramulator_files(ramulator_files_finder):
     path = ramulator_files_finder.find('experiment_config')
-    assert path.endswith(os.path.join('20171027_144048', 'experiment_config.json'))
+    assert path.endswith(os.path.join('20171027_144048',
+                                      'experiment_config.json'))
+
+    folder_path = ramulator_files_finder.find("ramulator_session_folder")
+    assert folder_path.endswith('20171027_144048')

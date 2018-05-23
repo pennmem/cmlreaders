@@ -7,11 +7,13 @@ import functools
 from cmlreaders.readers import (
     BasicJSONReader, TextReader, CSVReader, ElectrodeCategoriesReader,
     EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader,
-    ReportSummaryDataReader, BaseReportDataReader
+    ReportSummaryDataReader, BaseReportDataReader, ClassifierContainerReader
 )
+from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
 from pkg_resources import resource_filename
 from ramutils.reports.summary import ClassifierSummary, FRStimSessionSummary,\
     MathSummary
+from classiflib.container import ClassifierContainer
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -65,6 +67,7 @@ class TestTextReader:
                                file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
+        os.remove(exp_output)
 
 
 class TestCSVReader:
@@ -117,6 +120,7 @@ class TestCSVReader:
                               experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
+        os.remove(exp_output)
 
 
 class TestRamulatorEventLogReader:
@@ -162,6 +166,7 @@ class TestRamulatorEventLogReader:
         exp_output = datafile("output/" + data_type + "." + method)
         callable_method(exp_output)
         assert os.path.exists(exp_output)
+        os.remove(exp_output)
 
         # Note: We are not testing that the data can be reloaded with the
         # reader because the format has materially changed from the original
@@ -223,7 +228,7 @@ class TestElectrodeCategoriesReader:
 
 
 class TestBaseReportDataReader:
-    @pytest.mark.parametrize("method", ['pyobject'])
+    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
     @pytest.mark.parametrize("data_type", ['classifier_summary'])
     @pytest.mark.parametrize("subject,experiment,session", [
         ('R1409D', 'catFR1', '1'),
@@ -240,6 +245,12 @@ class TestBaseReportDataReader:
 
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
+
+        if method != "pyobject":
+            with pytest.raises(UnsupportedRepresentation):
+                callable_method()
+            return
+
         data = callable_method()
         assert data is not None
         assert type(data) == pyobj_expected_types[data_type]
@@ -258,6 +269,7 @@ class TestBaseReportDataReader:
         exp_output = datafile("output/" + data_type + ".h5")
         callable_method(exp_output)
         assert os.path.exists(exp_output)
+        os.remove(exp_output)
 
 
 class TestReportSummaryReader:
@@ -291,6 +303,14 @@ class TestReportSummaryReader:
         else:
             assert type(data) == expected_types[method]
 
+    def test_load_nonstim_session(self):
+        file_path = datafile('session_summary' + ".h5")
+        reader = ReportSummaryDataReader('session_summary', subject='R1409D',
+                                         experiment='catFR1', session=1,
+                                         localization=0, file_path=file_path)
+        with pytest.raises(UnsupportedExperimentError):
+            reader.as_pyobject()
+
     @pytest.mark.xfail
     @pytest.mark.parametrize("method", ['csv', 'json', 'hdf'])
     @pytest.mark.parametrize("data_type", ["math_summary", "session_summary"])
@@ -312,3 +332,43 @@ class TestReportSummaryReader:
         callable_method(exp_output)
 
         assert os.path.exists(exp_output)
+        os.remove(exp_output)
+
+
+class TestClassifierContainerReader:
+    @pytest.mark.parametrize("method", ['pyobject'])
+    @pytest.mark.parametrize("data_type", [
+        'baseline_classifier', 'used_classifier'])
+    def test_as_methods(self, method, data_type):
+        file_path = datafile(data_type + ".zip")
+        reader = ClassifierContainerReader(data_type, subject='R1389J',
+                                           experiment='catFR5', session=1,
+                                           localization=0, file_path=file_path)
+
+        pyobj_expected_types = {
+            'baseline_classifier': ClassifierContainer,
+            'used_classifier': ClassifierContainer,
+        }
+
+        method_name = "as_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        data = callable_method()
+        assert data is not None
+        assert type(data) == pyobj_expected_types[data_type]
+
+    @pytest.mark.parametrize("method", ['binary'])
+    @pytest.mark.parametrize("data_type", [
+        'baseline_classifier', 'used_classifier'])
+    def test_to_methods(self, method, data_type):
+        # Load the test data
+        file_path = datafile(data_type + ".zip")
+        reader = ClassifierContainerReader(data_type, subject='R1389J',
+                                           experiment='catFR5', session=1,
+                                           localization=0, file_path=file_path)
+        # Save as specified format
+        method_name = "to_{}".format(method)
+        callable_method = getattr(reader, method_name)
+        exp_output = datafile("output/" + data_type + ".zip")
+        callable_method(exp_output, overwrite=True)
+        assert os.path.exists(exp_output)
+        os.remove(exp_output)

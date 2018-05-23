@@ -62,7 +62,7 @@ rhino_paths = {
     'target_selection_table': [
         'scratch/report_database/{subject_localization}_{experiment}_*_target_selection_table.csv',
     ],
-    'trained_classifier': [
+    'baseline_classifier': [
         'scratch/report_database/{subject_localization}_retrained_classifier.zip',
         'scratch/report_database/{subject_localization}_{experiment}_all_retrained_classifier.zip',
     ],
@@ -137,7 +137,7 @@ localization_files = [
 montage_files = ['pairs', 'contacts']
 
 # All files that are constant by subject
-subject_files = ['target_selection_file', 'trained_classifier']
+subject_files = ['target_selection_file', 'basic_classifier']
 
 # All files that vary at the session level
 session_files = [
