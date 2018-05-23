@@ -9,7 +9,14 @@ class MetaReader(type):
     """ Metaclass for all CML readers
 
         The responsibility of the metaclass is to register the reader with
-        the generic CMLReader to avoid needing to do this as a manual step
+        the generic CMLReader to avoid needing to do this as a manual step.
+
+    Notes
+    -----
+    When a child-classes uses `cmlreaders.base_reader.MetaReader` as a meta
+    class, the reader_names dictionary stored as a class variable in
+    `cmlreaders.cmlreader.CMLReader` is updated based on the `data_types`
+    class variable in the sub-class.
 
     """
     def __new__(cls, name, bases, d):
@@ -19,7 +26,18 @@ class MetaReader(type):
 
 
 class BaseCMLReader(object, metaclass=MetaReader):
-    """ Base class for CML data readers """
+    """ Base class for CML data readers
+
+    Notes
+    -----
+    All CML readers should inherit from this base class in order to have the
+    reader be registered with the generic `cmlreaders.CMLReader` class. This
+    happens through the metaclass of BaseCMLReader. To ensure the registration
+    happens correctly, new readers must define a list called `data_types`
+    as a class variable containing all of the data types that should use the
+    reader.
+
+    """
     data_types = []
     default_representation = "dataframe"
 

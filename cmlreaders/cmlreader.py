@@ -5,7 +5,23 @@ __all__ = ['CMLReader']
 
 
 class CMLReader(object):
-    """ Generic reader for all CML-specific files """
+    """ Generic reader for all CML-specific files
+
+    Notes
+    -----
+    At import, all the readers from `cmlreaders.readers` will register the
+    data types that should correspond to that reader by updating the
+    `reader_names` dictionary. `reader_names` is a dict whose keys are one of
+    the data types understood by `cmlreaders.PathFinder` and defined in
+    `cmlreaders.constants`. Values are the name of the reader class (string)
+    that should be used for loading/reading the data type. When an instance of
+    `cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is
+    created that maps the data types to the actual reader class, rather than
+    just the class name. In essense, `cmlreaders.cmlreader.CMLReader` is just
+    a factory that routes the requests for loading a particular data type to
+    the reader defined to handle that data.
+
+    """
     reader_names = {}
 
     def __init__(self, subject: Optional[str] =None,
