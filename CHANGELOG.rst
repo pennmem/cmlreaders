@@ -1,6 +1,16 @@
 Changes
 =======
 
+
+Version 0.3.0
+-------------
+**5-24-2018**
+
+* Updated API to use .load() and .get_reader()
+* Added Json, Montage, Localization, Event, Classifier, ReportData, and
+  ElectrodeCateogry readers
+* Refactored base reader class to use a metaclass for registering new readers
+
 Version 0.2.0
 -------------
 **5-15-2018**
