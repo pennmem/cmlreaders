@@ -267,32 +267,3 @@ class EEGReader(BaseCMLReader):
 
         """
         raise NotImplementedError
-
-
-if __name__ == "__main__":
-    import time
-    from cmlreaders import CMLReader
-
-    subject, experiment, session = 'R1337E', 'FR1', 0
-    rootdir = '/Users/depalati/mnt/rhino'
-
-    finder = PathFinder(subject, experiment, session, rootdir=rootdir)
-
-    meta_path = Path(finder.find('sources'))
-    with meta_path.open() as metafile:
-        meta = list(json.load(metafile).values())[0]
-
-    basename = meta['name']
-    sample_rate = meta['sample_rate']
-    dtype = meta['data_format']
-    n_samples = meta['n_samples']
-    filename = str(meta_path.parent.joinpath('noreref', basename))
-
-    reader = CMLReader(subject, experiment, session, rootdir=rootdir)
-    events = reader.load('events')
-    epochs = events_to_epochs(events[events.type == 'WORD'], rel_start=-100, rel_stop=100)
-
-    eeg_reader = SplitEEGReader(filename, sample_rate, dtype, epochs=epochs)
-    t0 = time.time()
-    print(eeg_reader.read().shape)
-    print(time.time() - t0)
