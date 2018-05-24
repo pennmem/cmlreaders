@@ -117,7 +117,7 @@ class EventReader(BasicJSONReader):
     def as_dataframe(self):
         df = super().as_dataframe()
         first = ['eegoffset']
-        df.columns = first + [col for col in df.columns if col not in first]
+        df = df[first + [col for col in df.columns if col not in first]]
         return df
 
 
