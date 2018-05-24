@@ -20,7 +20,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author="Penn Computational Memory Lab",
     url='https://github.com/pennmem/cmlreaders',
-    packages=find_packages(include=['cmlreaders']),
+    packages=find_packages(),
     include_package_data=True,
     install_requires=requirements,
     zip_safe=False,
