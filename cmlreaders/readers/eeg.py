@@ -32,6 +32,11 @@ class BaseEEGReader(ABC):
         A list of channel indices (1-based) to include when reading. When not
         given, read all available channels.
 
+    Notes
+    -----
+    The :meth:`read` method must be implemented by subclasses to return a 3-D
+    array with dimensions (channels x epochs x time).
+
     """
     def __init__(self, filename: str, sample_rate: Union[int, float],
                  dtype: Type[np.dtype], epochs: List[Tuple[int, int]],
@@ -44,7 +49,7 @@ class BaseEEGReader(ABC):
         self.channels = channels
 
     @abstractmethod
-    def read(self) -> TimeSeries:
+    def read(self) -> np.ndarray:
         """Read the data."""
 
 
@@ -57,18 +62,18 @@ class SplitEEGReader(BaseEEGReader):
     def _read_epoch(mmap: np.memmap, epoch: Tuple[int, int]) -> np.array:
         return np.array(mmap[epoch[0]:epoch[1]])
 
-    def read(self) -> TimeSeries:
+    def read(self) -> np.ndarray:
         if self.channels is None:
             files = sorted(Path(self.filename).parent.glob('*'))
         else:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
-        data = [
+        data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
             for epoch in self.epochs
-        ]
-        return TimeSeries.create(data, samplerate=self.sample_rate)
+        ])
+        return data
 
 
 class EDFReader(BaseEEGReader):
@@ -146,7 +151,33 @@ class EEGReader(BaseCMLReader):
                       epochs: Optional[List[Tuple[int, int]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
-        """Read the timeseries."""
+        """Read the timeseries.
+
+        Keyword arguments
+        -----------------
+        events
+            Events to read data from.
+        pre
+            Time in ms to include before each event.
+        post
+            Time in ms to include after a each event.
+        epochs
+            When given, specify which epochs to read in ms.
+        contacts
+            Contacts to include when reading EEG data.
+        scheme
+            When given, attempt to rereference the data.
+
+        Returns
+        -------
+        A time series with shape (channels, epochs, time)
+
+        Raises
+        ------
+        ValueError
+            When provided epochs are not all the same length
+
+        """
         finder = PathFinder(subject=self.subject,
                             experiment=self.experiment,
                             session=self.session)
@@ -167,27 +198,46 @@ class EEGReader(BaseCMLReader):
         elif epochs is None:
             epochs = [(0, int(1000 * n_samples / sample_rate))]
 
+        tlens = [e[-1] - e[0] for e in epochs]
+        if not np.equal.reduce(tlens == tlens[0]):
+            raise ValueError("Epoch lengths are not all the same!")
+
         reader = reader_class(filename=eeg_filename,
                               sample_rate=sample_rate,
                               dtype=dtype,
                               epochs=epochs)  # FIXME: channels
-        ts = reader.read()
+        data = reader.read()
 
         if scheme is not None:
-            return self.rereference(ts, scheme)
-        else:
-            return ts
+            data = self.rereference(data, scheme)
+
+        epoch_axis_name = 'events' if events is not None else 'epochs'
+        epochs_or_events = events if events is not None else epochs
+
+        # FIXME: is this right?
+        time = np.arange(tlens[0] * 1 / sample_rate)
+
+        ts = TimeSeries.create(
+            data,
+            samplerate=sample_rate,
+            dims=['channels', epoch_axis_name, 'time'],
+            coords={
+                epoch_axis_name: epochs_or_events,
+                'time': time,
+            }
+        )
+        return ts
 
     def _events_to_epochs(self, events: pd.DataFrame, pre: int, post: int) -> List[Tuple[int, int]]:
         """Convert events to epochs."""
 
-    def rereference(self, data: TimeSeries, scheme: pd.DataFrame) -> TimeSeries:
+    def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
         ----------
         data
-            Input timeseries data.
+            Input timeseries data shaped as (channels, epochs, time).
         scheme
             Bipolar pairs to use.
 
@@ -206,7 +256,7 @@ class EEGReader(BaseCMLReader):
 
 
 if __name__ == "__main__":
-    finder = PathFinder(subject='R1111M', experiment='FR1', session=0, rootdir='/Users/depalati/mnt/rhino')
+    finder = PathFinder(subject='R1337E', experiment='FR1', session=0, rootdir='/Users/depalati/mnt/rhino')
 
     meta_path = Path(finder.find('sources'))
     with meta_path.open() as metafile:
@@ -219,4 +269,4 @@ if __name__ == "__main__":
     filename = str(meta_path.parent.joinpath('noreref', basename))
 
     reader = SplitEEGReader(filename, sample_rate, dtype, [(0, 100)])
-    print(reader.read())
+    print(reader.read().shape)
