@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+import functools
 import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
@@ -15,7 +16,8 @@ __all__ = ['EEGReader']
 
 
 def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
-                     rel_stop: int = 100) -> List[Tuple[int, int]]:
+                     rel_stop: int = 100,
+                     sample_rate: Union[int, float] = 1000) -> List[Tuple[int, int]]:
     """Convert events to epochs.
 
     Parameters
@@ -23,9 +25,11 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
     events
         Events to read.
     rel_start
-        Start time relative to events (default: 0).
+        Start time relative to events in ms (default: 0).
     rel_stop
-        Stop time relative to events (default: 100).
+        Stop time relative to events in ms (default: 100).
+    sample_rate
+        Sample rate in Hz (default: 1000).
 
     Returns
     -------
@@ -33,8 +37,8 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
         A list of tuples giving absolute start and stop times.
 
     """
-    offsets = events.eegoffset
-    epochs = [(offset - rel_start, offset + rel_stop) for offset in offsets]
+    offsets = events.eegoffset.values * sample_rate / 1000.
+    epochs = [(int(offset + rel_start), int(offset + rel_stop)) for offset in offsets]
     return epochs
 
 
@@ -158,7 +162,12 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    def as_timeseries(self, epochs: Optional[List[Tuple[int, int]]] = None,
+    @staticmethod
+    def _ms_to_samples(ms: int, rate: Union[int, float]) -> int:
+        """Convert milliseconds to samples given a sample rate in Hz."""
+        return int(n_samples * ms / rate / 1000.)
+
+    def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
@@ -197,12 +206,17 @@ class EEGReader(BaseCMLReader):
         basename = meta['name']
         sample_rate = meta['sample_rate']
         dtype = meta['data_format']
-        n_samples = meta['n_samples']
         eeg_filename = meta_path.parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
         if epochs is None:
-            epochs = [(0, int(1000 * n_samples / sample_rate))]
+            epochs = [(0, -1)]
+        else:
+            to_samples = functools.partial(self._ms_to_samples(rate=sample_rate))
+            epochs = [(to_samples(e[0]), to_samples(e[1])) for e in epochs]
+
+        if contacts is not None:
+            raise NotImplementedError("filtering contacts is not yet implemented")
 
         tlens = [e[-1] - e[0] for e in epochs]
         if not np.equal.reduce(tlens == tlens[0]):
@@ -211,7 +225,7 @@ class EEGReader(BaseCMLReader):
         reader = reader_class(filename=eeg_filename,
                               sample_rate=sample_rate,
                               dtype=dtype,
-                              epochs=epochs)  # FIXME: channels
+                              epochs=epochs)  # TODO: channels
         data = reader.read()
 
         if scheme is not None:
