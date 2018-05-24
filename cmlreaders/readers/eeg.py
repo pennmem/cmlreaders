@@ -14,6 +14,30 @@ from cmlreaders.base_reader import BaseCMLReader
 __all__ = ['EEGReader']
 
 
+def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
+                     rel_stop: int = 100) -> List[Tuple[int, int]]:
+    """Convert events to epochs.
+
+    Parameters
+    ----------
+    events
+        Events to read.
+    rel_start
+        Start time relative to events (default: 0).
+    rel_stop
+        Stop time relative to events (default: 100).
+
+    Returns
+    -------
+    epochs
+        A list of tuples giving absolute start and stop times.
+
+    """
+    offsets = events.eegoffset
+    epochs = [(offset - rel_start, offset + rel_stop) for offset in offsets]
+    return epochs
+
+
 class BaseEEGReader(ABC):
     """Base class for actually reading EEG data. Subclasses will be used by
     :class:`EEGReader` to actually read the format-specific EEG data.
@@ -92,24 +116,12 @@ class EEGReader(BaseCMLReader):
 
     Returns a :class:`TimeSeries`.
 
-    Keyword arguments
-    -----------------
-    events : pd.DataFrame
-        Events to use to determine epochs to load.
-
     Examples
     --------
     All examples start by defining a reader::
 
         >>> from cmlreaders import CMLReader
         >>> reader = CMLReader('R1111M', experiment='FR1', session=0)
-
-    Loading data based on word events and including data 100 ms before and
-    after::
-
-        >>> events = reader.load('events')
-        >>> words = events[events.type == 'WORD']
-        >>> eeg = reader.load_eeg(events=words, pre=100, post=100)
 
     Loading a subset of EEG based on brain region::
 
@@ -146,21 +158,13 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    def as_timeseries(self, events: Optional[pd.DataFrame] = None,
-                      pre: int = 0, post: int = 0,
-                      epochs: Optional[List[Tuple[int, int]]] = None,
+    def as_timeseries(self, epochs: Optional[List[Tuple[int, int]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
 
         Keyword arguments
         -----------------
-        events
-            Events to read data from.
-        pre
-            Time in ms to include before each event.
-        post
-            Time in ms to include after a each event.
         epochs
             When given, specify which epochs to read in ms.
         contacts
@@ -178,6 +182,10 @@ class EEGReader(BaseCMLReader):
             When provided epochs are not all the same length
 
         """
+        # TODO: figure out a good way to specify epochs with events
+        # Since events don't include durations, we can't do this automatically
+        # but would instead need well-named keyword arguments.
+
         finder = PathFinder(subject=self.subject,
                             experiment=self.experiment,
                             session=self.session)
@@ -193,9 +201,7 @@ class EEGReader(BaseCMLReader):
         eeg_filename = meta_path.parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
-        if events is not None:
-            epochs = self._events_to_epochs(events, pre, post)
-        elif epochs is None:
+        if epochs is None:
             epochs = [(0, int(1000 * n_samples / sample_rate))]
 
         tlens = [e[-1] - e[0] for e in epochs]
@@ -211,25 +217,19 @@ class EEGReader(BaseCMLReader):
         if scheme is not None:
             data = self.rereference(data, scheme)
 
-        epoch_axis_name = 'events' if events is not None else 'epochs'
-        epochs_or_events = events if events is not None else epochs
-
         # FIXME: is this right?
         time = np.arange(tlens[0] * 1 / sample_rate)
 
         ts = TimeSeries.create(
             data,
             samplerate=sample_rate,
-            dims=['channels', epoch_axis_name, 'time'],
+            dims=['channels', 'epochs', 'time'],
             coords={
-                epoch_axis_name: epochs_or_events,
+                'epochs': epochs,
                 'time': time,
             }
         )
         return ts
-
-    def _events_to_epochs(self, events: pd.DataFrame, pre: int, post: int) -> List[Tuple[int, int]]:
-        """Convert events to epochs."""
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
@@ -256,7 +256,13 @@ class EEGReader(BaseCMLReader):
 
 
 if __name__ == "__main__":
-    finder = PathFinder(subject='R1337E', experiment='FR1', session=0, rootdir='/Users/depalati/mnt/rhino')
+    import time
+    from cmlreaders import CMLReader
+
+    subject, experiment, session = 'R1337E', 'FR1', 0
+    rootdir = '/Users/depalati/mnt/rhino'
+
+    finder = PathFinder(subject, experiment, session, rootdir=rootdir)
 
     meta_path = Path(finder.find('sources'))
     with meta_path.open() as metafile:
@@ -268,5 +274,11 @@ if __name__ == "__main__":
     n_samples = meta['n_samples']
     filename = str(meta_path.parent.joinpath('noreref', basename))
 
-    reader = SplitEEGReader(filename, sample_rate, dtype, [(0, 100)])
-    print(reader.read().shape)
+    reader = CMLReader(subject, experiment, session, rootdir=rootdir)
+    events = reader.load('events')
+    epochs = events_to_epochs(events[events.type == 'WORD'], rel_start=-100, rel_stop=100)
+
+    eeg_reader = SplitEEGReader(filename, sample_rate, dtype, epochs=epochs)
+    t0 = time.time()
+    print(eeg_reader.read().shape)
+    print(time.time() - t0)

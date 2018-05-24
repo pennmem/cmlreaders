@@ -1,1 +1,2 @@
-from .readers import * # noqa
+from .readers import *  # noqa
+from .eeg import EEGReader
