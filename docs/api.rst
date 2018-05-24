@@ -10,7 +10,7 @@ Readers
 .. autoclass:: cmlreaders.CMLReader
     :members:
 
-.. automodule:: cmlreaders.readers
+.. automodule:: cmlreaders.readers.readers
     :members:
 
 PathFinder

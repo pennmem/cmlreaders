@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.2.0 documentation</title>
+  <title>API &mdash; CML Data Readers 0.3.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -188,7 +188,7 @@
 <em class="property">class </em><code class="descclassname">cmlreaders.</code><code class="descname">CMLReader</code><span class="sig-paren">(</span><em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic reader for all CML-specific files</p>
 <p class="rubric">Notes</p>
-<p>At import, all the readers from <a class="reference internal" href="#module-cmlreaders.readers" title="cmlreaders.readers"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.readers</span></code></a> will register the
+<p>At import, all the readers from <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.readers</span></code> will register the
 data types that should correspond to that reader by updating the
 reader_names dictionary. reader_names is a dict whose keys are one of
 the data types understood by <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> and defined in
@@ -213,7 +213,191 @@ the reader defined to handle that data.</p>
 
 </dd></dl>
 
-<span class="target" id="module-cmlreaders.readers"></span></div>
+<span class="target" id="module-cmlreaders.readers.readers"></span><dl class="class">
+<dt id="cmlreaders.readers.readers.TextReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic reader class for reading RAM text files</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.TextReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.CSVReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">CSVReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>experiment=None</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#CSVReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.CSVReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic reader class for loading csv files with headers</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.CSVReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#CSVReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.CSVReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">RamulatorEventLogReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reader for Ramulator event log</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a list of dictionaries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.BasicJSONReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">BasicJSONReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BasicJSONReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BasicJSONReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic reader class for loading simple JSON files.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.BasicJSONReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BasicJSONReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BasicJSONReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.EventReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">EventReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reader for all experiment events.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.EventReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.MontageReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">MontageReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#MontageReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.MontageReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads montage files (contacts.json, pairs.json).</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.MontageReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#MontageReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.MontageReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.LocalizationReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">LocalizationReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#LocalizationReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.LocalizationReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads data stored in localization.json.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.LocalizationReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#LocalizationReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.LocalizationReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.ElectrodeCategoriesReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">ElectrodeCategoriesReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ElectrodeCategoriesReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ElectrodeCategoriesReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads electrode_categories.txt and handles the many inconsistencies in
+those files.</p>
+<p>Returns a <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.ElectrodeCategoriesReader.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ElectrodeCategoriesReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ElectrodeCategoriesReader.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a list of dictionaries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.BaseReportDataReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">BaseReportDataReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseReportDataReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseReportDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Reader class for classifier summary data produced in reporting pipeline</div></blockquote>
+<p class="rubric">Notes</p>
+<p>By default, a python class is returned. For report data read with this class
+a python object is the only supported return type. The returned class will
+be <cite>ramutils.reports.summary.Classifiersummary</cite></p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.BaseReportDataReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseReportDataReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseReportDataReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.readers.BaseReportDataReader.as_pyobject">
+<code class="descname">as_pyobject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseReportDataReader.as_pyobject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseReportDataReader.as_pyobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a python object specific to this data type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.ReportSummaryDataReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">ReportSummaryDataReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ReportSummaryDataReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ReportSummaryDataReader" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Reader class for session and math summary data produced in the reporting
+pipeline</div></blockquote>
+<p class="rubric">Notes</p>
+<p>By default, a python class is returned based on the type of data. It could
+be one of</p>
+<ul class="simple">
+<li><cite>ramutils.reports.summary.MathSummary</cite></li>
+<li><cite>ramutils.reports.summary.FRStimSessionSummary</cite></li>
+</ul>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.ReportSummaryDataReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ReportSummaryDataReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ReportSummaryDataReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.readers.ReportSummaryDataReader.as_pyobject">
+<code class="descname">as_pyobject</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ReportSummaryDataReader.as_pyobject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ReportSummaryDataReader.as_pyobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a python object specific to this data type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.ClassifierContainerReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">ClassifierContainerReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ClassifierContainerReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ClassifierContainerReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reader class for loading a serialized classifier classifier</p>
+<p class="rubric">Notes</p>
+<p>By default, a <cite>classiflib.container.ClassifierContainer</cite> class is returned</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.ClassifierContainerReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ClassifierContainerReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ClassifierContainerReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.readers.ClassifierContainerReader.to_binary">
+<code class="descname">to_binary</code><span class="sig-paren">(</span><em>file_name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ClassifierContainerReader.to_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ClassifierContainerReader.to_binary" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Saves classifier to a serialized format as determined by  the file
+extension. By default, if the file already exists, it will note be
+overwritten.</div></blockquote>
+<p class="rubric">Notes</p>
+<p>See <a href="#id2"><span class="problematic" id="id3">:method:`classiflib.container.ClassifierContainer.save()`</span></a> for more
+details on supported output formats</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="pathfinder">
 <h2>PathFinder<a class="headerlink" href="#pathfinder" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> class can be used to identify the location of
@@ -328,7 +512,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.2.0',
+            VERSION:'0.3.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
