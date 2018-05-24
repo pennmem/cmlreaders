@@ -165,7 +165,7 @@ class EEGReader(BaseCMLReader):
     @staticmethod
     def _ms_to_samples(ms: int, rate: Union[int, float]) -> int:
         """Convert milliseconds to samples given a sample rate in Hz."""
-        return int(n_samples * ms / rate / 1000.)
+        return int(ms / rate / 1000.)
 
     def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
