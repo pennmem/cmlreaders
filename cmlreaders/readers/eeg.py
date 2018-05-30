@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
 
+import h5py
 import numpy as np
 import pandas as pd
 import ptsa.data.TimeSeriesX as TimeSeries
@@ -105,14 +106,25 @@ class SplitEEGReader(BaseEEGReader):
 
 
 class EDFReader(BaseEEGReader):
-    def read(self):
+    def read(self) -> np.ndarray:
         raise NotImplementedError
 
 
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
-    def read(self):
-        raise NotImplementedError
+    def read(self) -> np.ndarray:
+        if self.channels is not None:
+            raise NotImplementedError("FIXME: we can only read all channels now")
+
+        with h5py.File(self.filename, 'r') as hfile:
+            ts = hfile['/timeseries']
+
+            if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
+                data = np.array([ts[epoch[0]:epoch[1], :].T for epoch in self.epochs])
+            else:
+                data = np.array([ts[:, epoch[0]:epoch[1]] for epoch in self.epochs])
+
+            return data
 
 
 class EEGReader(BaseCMLReader):
