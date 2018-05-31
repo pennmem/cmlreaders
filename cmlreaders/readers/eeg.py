@@ -209,7 +209,8 @@ class EEGReader(BaseCMLReader):
 
         finder = PathFinder(subject=self.subject,
                             experiment=self.experiment,
-                            session=self.session)
+                            session=self.session,
+                            rootdir=self.rootdir)
 
         meta_path = Path(finder.find('sources'))
         with meta_path.open() as metafile:
