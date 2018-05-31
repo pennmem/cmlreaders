@@ -3,7 +3,7 @@ import copy
 import functools
 import json
 from pathlib import Path
-from typing import List, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 import h5py
 import numpy as np
@@ -158,11 +158,33 @@ class EEGReader(BaseCMLReader):
     data_types = ["eeg"]
     default_representation = "timeseries"
 
+    # metainfo loaded from sources.json
+    sources_info: Dict[str, Any] = {}
+
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
         to pass along to :meth:`as_timeseries`.
 
         """
+        finder = PathFinder(subject=self.subject,
+                            experiment=self.experiment,
+                            session=self.session,
+                            rootdir=self.rootdir)
+
+        path = Path(finder.find('sources'))
+        with path.open() as metafile:
+            self.sources_info = list(json.load(metafile).values())[0]
+            self.sources_info['path'] = path
+
+        if 'events' in kwargs:
+            # convert events to epochs
+            events = kwargs.pop('events')
+            epochs = events_to_epochs(events,
+                                      kwargs.pop('rel_start'),
+                                      kwargs.pop('rel_stop'),
+                                      self.sources_info['sample_rate'])
+            kwargs['epochs'] = epochs
+
         return self.as_timeseries(**kwargs)
 
     def as_dataframe(self):
@@ -211,23 +233,10 @@ class EEGReader(BaseCMLReader):
             When provided epochs are not all the same length
 
         """
-        # TODO: figure out a good way to specify epochs with events
-        # Since events don't include durations, we can't do this automatically
-        # but would instead need well-named keyword arguments.
-
-        finder = PathFinder(subject=self.subject,
-                            experiment=self.experiment,
-                            session=self.session,
-                            rootdir=self.rootdir)
-
-        meta_path = Path(finder.find('sources'))
-        with meta_path.open() as metafile:
-            meta = list(json.load(metafile).values())[0]
-
-        basename = meta['name']
-        sample_rate = meta['sample_rate']
-        dtype = meta['data_format']
-        eeg_filename = meta_path.parent.joinpath('noreref', basename)
+        basename = self.sources_info['name']
+        sample_rate = self.sources_info['sample_rate']
+        dtype = self.sources_info['data_format']
+        eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
         orig_epochs = None

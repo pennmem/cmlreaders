@@ -90,7 +90,7 @@ class CMLReader(object):
                                        rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
-                 pre: int = 0, post: int = 0,
+                 rel_start: int = 0, rel_stop: int = 100,
                  epochs: Optional[List[Tuple[int, int]]] = None,
                  contacts: Optional[pd.DataFrame] = None,
                  scheme: Optional[pd.DataFrame] = None):
@@ -101,12 +101,12 @@ class CMLReader(object):
         events
             Events to load EEG epochs from. Incompatible with passing
             ``epochs``.
-        pre
-            Time in ms to include prior to passed events (default: 0). This
-            parameter has no effect if events are not specified.
-        post
-            Time in ms to include after passed events (default: 0). This
-            parameter has no effect if events are not specified.
+        rel_start
+            Start time in ms relative to passed event onsets (default: 0). This
+            parameter has no effect if epochs are specified instead of events.
+        rel_stop
+            Stop time in ms relative to passed event onsets (default: 100). This
+            parameter has no effect if epochs are specified instead of events.
         epochs
             A list of ``(start, stop)`` tuples to specify epochs to retrieve
             data from. Incompatible with passing ``events``.
@@ -142,8 +142,8 @@ class CMLReader(object):
         if events is not None:
             kwargs.update({
                 'events': events,
-                'pre': pre,
-                'post': post,
+                'rel_start': rel_start,
+                'rel_stop': rel_stop,
             })
         elif epochs is not None:
             kwargs.update({
