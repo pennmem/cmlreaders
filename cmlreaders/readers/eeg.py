@@ -159,7 +159,7 @@ class EEGReader(BaseCMLReader):
     default_representation = "timeseries"
 
     # metainfo loaded from sources.json
-    sources_info: Dict[str, Any] = {}
+    sources_info = {}
 
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
