@@ -87,7 +87,7 @@ class CMLReader(object):
                                        localization=self.localization,
                                        montage=self.montage,
                                        file_path=file_path,
-                                       rootdir=self.rootdir).load()  # **kwargs)
+                                       rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  pre: int = 0, post: int = 0,
