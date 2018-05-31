@@ -255,7 +255,6 @@ class EEGReader(BaseCMLReader):
         if scheme is not None:
             data = self.rereference(data, scheme)
 
-        # TODO: store orig_epochs somehow
         dims = ['starts', 'channels', 'time']
         coords = {
             'starts': [e[0] for e in epochs],
@@ -268,6 +267,7 @@ class EEGReader(BaseCMLReader):
             samplerate=sample_rate,
             dims=dims,
             coords=coords,
+            attrs={'orig_epochs': orig_epochs},
         )
         return ts
 
