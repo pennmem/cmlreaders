@@ -90,7 +90,7 @@ class CMLReader(object):
                                        rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
-                 rel_start: int = 0, rel_stop: int = 100,
+                 rel_start: int = None, rel_stop: int = None,
                  epochs: Optional[List[Tuple[int, int]]] = None,
                  contacts: Optional[pd.DataFrame] = None,
                  scheme: Optional[pd.DataFrame] = None):
@@ -140,6 +140,10 @@ class CMLReader(object):
         }
 
         if events is not None:
+            if rel_start is None or rel_stop is None:
+                raise ValueError("rel_start and rel_stop are required keyword"
+                                 " arguments when passing events")
+
             kwargs.update({
                 'events': events,
                 'rel_start': rel_start,

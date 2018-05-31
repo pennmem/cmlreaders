@@ -3,7 +3,7 @@ import copy
 import functools
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import List, Optional, Tuple, Type, Union
 
 import h5py
 import numpy as np

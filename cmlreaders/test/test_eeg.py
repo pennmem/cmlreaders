@@ -91,3 +91,12 @@ class TestEEGReader:
         word_events = events[events.type == 'WORD'].iloc[:10]
         eeg = reader.load_eeg(events=word_events, rel_start=-75, rel_stop=75)
         assert eeg.shape == (10, 121, 150)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events, rel_start=0)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events, rel_stop=0)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events)
