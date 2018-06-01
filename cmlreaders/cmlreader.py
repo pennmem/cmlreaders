@@ -102,11 +102,11 @@ class CMLReader(object):
             Events to load EEG epochs from. Incompatible with passing
             ``epochs``.
         rel_start
-            Start time in ms relative to passed event onsets (default: 0). This
-            parameter has no effect if epochs are specified instead of events.
+            Start time in ms relative to passed event onsets. This parameter is
+            required when passing events and not used otherwise.
         rel_stop
-            Stop time in ms relative to passed event onsets (default: 100). This
-            parameter has no effect if epochs are specified instead of events.
+            Stop time in ms relative to passed event onsets. This  parameter is
+            required when passing events and not used otherwise.
         epochs
             A list of ``(start, stop)`` tuples to specify epochs to retrieve
             data from. Incompatible with passing ``events``.
@@ -128,7 +128,8 @@ class CMLReader(object):
         RereferencingNotPossibleError
             When passing ``scheme`` and the data do not support rereferencing.
         IncompatibleParametersError
-            When both ``events`` and ``epochs`` are specified.
+            When both ``events`` and ``epochs`` are specified or ``events`` are
+            used without passing ``rel_start`` and/or ``rel_stop``.
 
         """
         if events is not None and epochs is not None:
@@ -141,8 +142,10 @@ class CMLReader(object):
 
         if events is not None:
             if rel_start is None or rel_stop is None:
-                raise ValueError("rel_start and rel_stop are required keyword"
-                                 " arguments when passing events")
+                raise IncompatibleParametersError(
+                    "rel_start and rel_stop are required keyword arguments"
+                    " when passing events"
+                )
 
             kwargs.update({
                 'events': events,
