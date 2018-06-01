@@ -54,15 +54,23 @@ class BaseCMLReader(object, metaclass=_MetaReader):
 
         self._file_path = file_path
 
-        # When no file path is given, look it up using PathFinder
-        if file_path is None:
+        # When no file path is given, look it up using PathFinder unless we're
+        # loading EEG data. EEG data is treated differently because of the way
+        # it is stored on rhino: sometimes it is split into one file per channel
+        # and other times it is a single HDF5 or EDF/BDF file.
+        if file_path is None and data_type != 'eeg':
             finder = PathFinder(subject=subject, experiment=experiment,
                                 session=session, localization=localization,
                                 montage=montage, rootdir=rootdir)
             self._file_path = finder.find(data_type)
 
         self.subject = subject
+        self.experiment = experiment
+        self.session = session
+        self.localization = localization
+        self.montage = montage
         self.data_type = data_type
+        self.rootdir = rootdir
 
     def load(self):
         """ Load data into memory """

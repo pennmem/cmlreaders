@@ -71,3 +71,32 @@ class TestFileReaders:
         num_expected_channels = 214
         time_steps = 200
         assert ts.shape == (len(epochs), num_expected_channels, time_steps)
+
+
+@pytest.mark.rhino
+class TestEEGReader:
+    @pytest.mark.parametrize('subject', ['R1298E', 'R1387E'])
+    def test_eeg_reader(self, subject, rhino_root):
+        """Note: R1387E uses Ramulator's HDF5 format, R1298E uses split EEG."""
+        reader = CMLReader(subject=subject, experiment='FR1', session=0,
+                           rootdir=rhino_root)
+        eeg = reader.load_eeg(epochs=[(0, 100), (100, 200)])
+        assert len(eeg['time']) == 100
+        assert len(eeg['starts']) == 2
+
+    def test_eeg_reader_with_events(self, rhino_root):
+        reader = CMLReader(subject='R1387E', experiment='FR1', session=0,
+                           rootdir=rhino_root)
+        events = reader.load('events')
+        word_events = events[events.type == 'WORD'].iloc[:10]
+        eeg = reader.load_eeg(events=word_events, rel_start=-75, rel_stop=75)
+        assert eeg.shape == (10, 121, 150)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events, rel_start=0)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events, rel_stop=0)
+
+        with pytest.raises(ValueError):
+            reader.load_eeg(events=word_events)

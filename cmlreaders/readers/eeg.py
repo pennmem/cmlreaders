@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+import copy
 import functools
 import json
 from pathlib import Path
@@ -7,7 +8,7 @@ from typing import List, Optional, Tuple, Type, Union
 import h5py
 import numpy as np
 import pandas as pd
-import ptsa.data.TimeSeriesX as TimeSeries
+from ptsa.data.TimeSeriesX import TimeSeriesX as TimeSeries
 
 from cmlreaders.exc import UnsupportedOutputFormat
 from cmlreaders.path_finder import PathFinder
@@ -64,7 +65,7 @@ class BaseEEGReader(ABC):
     Notes
     -----
     The :meth:`read` method must be implemented by subclasses to return a 3-D
-    array with dimensions (channels x epochs x time).
+    array with dimensions (epochs x channels x time).
 
     """
     def __init__(self, filename: str, sample_rate: Union[int, float],
@@ -157,6 +158,35 @@ class EEGReader(BaseCMLReader):
     data_types = ["eeg"]
     default_representation = "timeseries"
 
+    # metainfo loaded from sources.json
+    sources_info = {}
+
+    def load(self, **kwargs):
+        """Overrides the generic load method so as to accept keyword arguments
+        to pass along to :meth:`as_timeseries`.
+
+        """
+        finder = PathFinder(subject=self.subject,
+                            experiment=self.experiment,
+                            session=self.session,
+                            rootdir=self.rootdir)
+
+        path = Path(finder.find('sources'))
+        with path.open() as metafile:
+            self.sources_info = list(json.load(metafile).values())[0]
+            self.sources_info['path'] = path
+
+        if 'events' in kwargs:
+            # convert events to epochs
+            events = kwargs.pop('events')
+            epochs = events_to_epochs(events,
+                                      kwargs.pop('rel_start'),
+                                      kwargs.pop('rel_stop'),
+                                      self.sources_info['sample_rate'])
+            kwargs['epochs'] = epochs
+
+        return self.as_timeseries(**kwargs)
+
     def as_dataframe(self):
         raise UnsupportedOutputFormat
 
@@ -177,7 +207,7 @@ class EEGReader(BaseCMLReader):
     @staticmethod
     def _ms_to_samples(ms: int, rate: Union[int, float]) -> int:
         """Convert milliseconds to samples given a sample rate in Hz."""
-        return int(ms / rate / 1000.)
+        return int(rate * ms / 1000.)
 
     def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
@@ -203,35 +233,26 @@ class EEGReader(BaseCMLReader):
             When provided epochs are not all the same length
 
         """
-        # TODO: figure out a good way to specify epochs with events
-        # Since events don't include durations, we can't do this automatically
-        # but would instead need well-named keyword arguments.
-
-        finder = PathFinder(subject=self.subject,
-                            experiment=self.experiment,
-                            session=self.session)
-
-        meta_path = Path(finder.find('sources'))
-        with meta_path.open() as metafile:
-            meta = list(json.load(metafile).values())[0]
-
-        basename = meta['name']
-        sample_rate = meta['sample_rate']
-        dtype = meta['data_format']
-        eeg_filename = meta_path.parent.joinpath('noreref', basename)
+        basename = self.sources_info['name']
+        sample_rate = self.sources_info['sample_rate']
+        dtype = self.sources_info['data_format']
+        eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
+
+        orig_epochs = None
 
         if epochs is None:
             epochs = [(0, -1)]
         else:
-            to_samples = functools.partial(self._ms_to_samples(rate=sample_rate))
+            to_samples = functools.partial(self._ms_to_samples, rate=sample_rate)
+            orig_epochs = copy.deepcopy(epochs)
             epochs = [(to_samples(e[0]), to_samples(e[1])) for e in epochs]
 
         if contacts is not None:
             raise NotImplementedError("filtering contacts is not yet implemented")
 
-        tlens = [e[-1] - e[0] for e in epochs]
-        if not np.equal.reduce(tlens == tlens[0]):
+        tlens = np.array([e[-1] - e[0] for e in epochs])
+        if not np.all(tlens == tlens[0]):
             raise ValueError("Epoch lengths are not all the same!")
 
         reader = reader_class(filename=eeg_filename,
@@ -243,17 +264,19 @@ class EEGReader(BaseCMLReader):
         if scheme is not None:
             data = self.rereference(data, scheme)
 
-        # FIXME: is this right?
-        time = np.arange(tlens[0] * 1 / sample_rate)
+        dims = ['starts', 'channels', 'time']
+        coords = {
+            'starts': [e[0] for e in epochs],
+            'channels': ['CH{}'.format(i) for i in range(data.shape[1])],
+            'time': np.linspace(0, tlens[0] / 1000., data.shape[2]),
+        }
 
         ts = TimeSeries.create(
             data,
             samplerate=sample_rate,
-            dims=['channels', 'epochs', 'time'],
-            coords={
-                'epochs': epochs,
-                'time': time,
-            }
+            dims=dims,
+            coords=coords,
+            attrs={'orig_epochs': orig_epochs},
         )
         return ts
 

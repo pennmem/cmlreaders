@@ -90,7 +90,7 @@ class CMLReader(object):
                                        rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
-                 pre: int = 0, post: int = 0,
+                 rel_start: int = None, rel_stop: int = None,
                  epochs: Optional[List[Tuple[int, int]]] = None,
                  contacts: Optional[pd.DataFrame] = None,
                  scheme: Optional[pd.DataFrame] = None):
@@ -101,12 +101,12 @@ class CMLReader(object):
         events
             Events to load EEG epochs from. Incompatible with passing
             ``epochs``.
-        pre
-            Time in ms to include prior to passed events (default: 0). This
-            parameter has no effect if events are not specified.
-        post
-            Time in ms to include after passed events (default: 0). This
-            parameter has no effect if events are not specified.
+        rel_start
+            Start time in ms relative to passed event onsets. This parameter is
+            required when passing events and not used otherwise.
+        rel_stop
+            Stop time in ms relative to passed event onsets. This  parameter is
+            required when passing events and not used otherwise.
         epochs
             A list of ``(start, stop)`` tuples to specify epochs to retrieve
             data from. Incompatible with passing ``events``.
@@ -128,7 +128,8 @@ class CMLReader(object):
         RereferencingNotPossibleError
             When passing ``scheme`` and the data do not support rereferencing.
         IncompatibleParametersError
-            When both ``events`` and ``epochs`` are specified.
+            When both ``events`` and ``epochs`` are specified or ``events`` are
+            used without passing ``rel_start`` and/or ``rel_stop``.
 
         """
         if events is not None and epochs is not None:
@@ -140,10 +141,16 @@ class CMLReader(object):
         }
 
         if events is not None:
+            if rel_start is None or rel_stop is None:
+                raise IncompatibleParametersError(
+                    "rel_start and rel_stop are required keyword arguments"
+                    " when passing events"
+                )
+
             kwargs.update({
                 'events': events,
-                'pre': pre,
-                'post': post,
+                'rel_start': rel_start,
+                'rel_stop': rel_stop,
             })
         elif epochs is not None:
             kwargs.update({
