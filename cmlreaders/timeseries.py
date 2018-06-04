@@ -1,5 +1,5 @@
 import numpy as np
-from typing import List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from ptsa.data.TimeSeriesX import TimeSeriesX
 
@@ -19,6 +19,8 @@ class TimeSeries(object):
         Optional list of channel labels.
     tstart
         Start time for each epoch in ms (default: 0).
+    attrs
+        Arbitrary additional attributes to store.
 
     Raises
     ------
@@ -30,7 +32,8 @@ class TimeSeries(object):
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, int]]] = None,
                  channels: Optional[List[str]] = None,
-                 tstart: Union[int, float] = 0):
+                 tstart: Union[int, float] = 0,
+                 attrs: Optional[Dict[str, Any]] = None):
         if len(data.shape) == 2:
             data = np.array([data])
         if len(data.shape) != 3:
@@ -53,6 +56,8 @@ class TimeSeries(object):
             self.channels = channels
         else:
             self.channels = ["CH{}".format(i) for i in range(self.data.shape[1])]
+
+        self.attrs = attrs if attrs is not None else {}
 
     @property
     def shape(self):
