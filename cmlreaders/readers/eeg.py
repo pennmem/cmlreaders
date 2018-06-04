@@ -8,11 +8,13 @@ from typing import List, Optional, Tuple, Type, Union
 import h5py
 import numpy as np
 import pandas as pd
-from ptsa.data.TimeSeriesX import TimeSeriesX as TimeSeries
 
-from cmlreaders.exc import UnsupportedOutputFormat
-from cmlreaders.path_finder import PathFinder
 from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.exc import (
+    RereferencingNotPossibleError, UnsupportedOutputFormat
+)
+from cmlreaders.path_finder import PathFinder
+from cmlreaders.timeseries import TimeSeries
 
 __all__ = ['EEGReader']
 
@@ -78,6 +80,9 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.channels = channels
 
+        # in cases where we can't rereference, this will get changed to False
+        self.rereferencing_possible = True
+
     @abstractmethod
     def read(self) -> np.ndarray:
         """Read the data."""
@@ -118,6 +123,13 @@ class RamulatorHDF5Reader(BaseEEGReader):
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         with h5py.File(self.filename, 'r') as hfile:
+            try:
+                self.rereferencing_possible = bool(hfile['monopolar_possible'][0])
+            except KeyError:
+                # Older versions of Ramulator recorded monopolar channels only
+                # and did not include a flag indicating this.
+                pass
+
             ts = hfile['/timeseries']
 
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
@@ -225,12 +237,17 @@ class EEGReader(BaseCMLReader):
 
         Returns
         -------
-        A time series with shape (channels, epochs, time)
+        A time series with shape (channels, epochs, time). By default, this
+        returns data as it was physically recorded (e.g., if recorded with a
+        common reference, each channel will be a contact's reading referenced to
+        the common reference, a.k.a. "monopolar channels").
 
         Raises
         ------
         ValueError
             When provided epochs are not all the same length
+        RereferencingNotPossibleError
+            When rereferincing is not possible.
 
         """
         basename = self.sources_info['name']
@@ -262,22 +279,13 @@ class EEGReader(BaseCMLReader):
         data = reader.read()
 
         if scheme is not None:
+            if not reader.rereferencing_possible:
+                raise RereferencingNotPossibleError
             data = self.rereference(data, scheme)
 
-        dims = ['starts', 'channels', 'time']
-        coords = {
-            'starts': [e[0] for e in epochs],
-            'channels': ['CH{}'.format(i) for i in range(data.shape[1])],
-            'time': np.linspace(0, tlens[0] / 1000., data.shape[2]),
-        }
-
-        ts = TimeSeries.create(
-            data,
-            samplerate=sample_rate,
-            dims=dims,
-            coords=coords,
-            attrs={'orig_epochs': orig_epochs},
-        )
+        # TODO: channels, tstart
+        attrs = {'orig_epochs': orig_epochs}
+        ts = TimeSeries(data, sample_rate, epochs=epochs, attrs=attrs)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
@@ -286,19 +294,25 @@ class EEGReader(BaseCMLReader):
         Parameters
         ----------
         data
-            Input timeseries data shaped as (channels, epochs, time).
+            Input timeseries data shaped as (epochs, channels, time).
         scheme
-            Bipolar pairs to use.
+            Bipolar pairs to use. This should be at a minimum a
+            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
 
         Returns
         -------
         reref
             Rereferenced timeseries.
 
-        Raises
-        ------
-        RereferencingNotPossibleError
-            When rereferincing is not possible.
+        Notes
+        -----
+        This method is meant to be used when loading data and so returns a raw
+        Numpy array. If used externally, a :class:`TimeSeries` will need to be
+        constructed manually.
 
         """
-        raise NotImplementedError
+        c1, c2 = scheme.contact_1 - 1, scheme.contact_2 - 1
+        reref = np.array(
+            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
+        )
+        return reref
