@@ -112,6 +112,8 @@ class TestEEGReader:
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         epochs = [(0, 100)]
+        rate = float(reader.load('sources').loc['sample_rate'])
+        expected_samples = int(rate * epochs[0][-1] / 1000)
         scheme = reader.load('pairs')
 
         if not reref_possible:
@@ -120,6 +122,6 @@ class TestEEGReader:
 
         else:
             data = reader.load_eeg(epochs=epochs)
-            assert data.shape == (1, 100, 100)
+            assert data.shape == (1, 100, expected_samples)
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
-            assert data.shape == (1, 141, 100)
+            assert data.shape == (1, 141, expected_samples)

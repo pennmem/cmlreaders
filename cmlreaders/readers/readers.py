@@ -99,7 +99,7 @@ class BasicJSONReader(BaseCMLReader):
 
     """
 
-    data_types = []
+    data_types = ['sources']
 
     def as_dataframe(self):
         return pd.read_json(self._file_path)
