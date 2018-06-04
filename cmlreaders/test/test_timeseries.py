@@ -21,6 +21,8 @@ class TestTimeSeries:
 
         ts = TimeSeries(data, 1000)
 
+        assert ts.shape == ts.data.shape
+
         for epoch in ts.epochs:
             assert epoch == (-1, -1)
 

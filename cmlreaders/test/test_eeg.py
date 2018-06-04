@@ -4,6 +4,7 @@ from pkg_resources import resource_filename
 import pytest
 
 from cmlreaders import CMLReader, PathFinder
+from cmlreaders import exc
 from cmlreaders.readers.eeg import (
     events_to_epochs, RamulatorHDF5Reader, SplitEEGReader
 )
@@ -81,8 +82,8 @@ class TestEEGReader:
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         eeg = reader.load_eeg(epochs=[(0, 100), (100, 200)])
-        assert len(eeg['time']) == 100
-        assert len(eeg['starts']) == 2
+        assert len(eeg.time) == 100
+        assert len(eeg.epochs) == 2
 
     def test_eeg_reader_with_events(self, rhino_root):
         reader = CMLReader(subject='R1387E', experiment='FR1', session=0,
@@ -92,11 +93,33 @@ class TestEEGReader:
         eeg = reader.load_eeg(events=word_events, rel_start=-75, rel_stop=75)
         assert eeg.shape == (10, 121, 150)
 
-        with pytest.raises(ValueError):
+        ErrorType = exc.IncompatibleParametersError
+
+        with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events, rel_start=0)
 
-        with pytest.raises(ValueError):
+        with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events, rel_stop=0)
 
-        with pytest.raises(ValueError):
+        with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events)
+
+    @pytest.mark.parametrize("subject,reref_possible", [
+        (['R1387E', False]),
+        (['R1111M', True])
+    ])
+    def test_rereference(self, subject, reref_possible, rhino_root):
+        reader = CMLReader(subject=subject, experiment='FR1', session=0,
+                           rootdir=rhino_root)
+        epochs = [(0, 100)]
+        scheme = reader.load('pairs')
+
+        if not reref_possible:
+            with pytest.raises(exc.RereferencingNotPossibleError):
+                reader.load_eeg(epochs=epochs, scheme=scheme)
+
+        else:
+            data = reader.load_eeg(epochs=epochs)
+            assert data.shape == (1, 100, 100)
+            data = reader.load_eeg(epochs=epochs, scheme=scheme)
+            assert data.shape == (1, 141, 100)

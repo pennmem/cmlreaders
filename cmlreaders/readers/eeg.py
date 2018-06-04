@@ -8,13 +8,13 @@ from typing import List, Optional, Tuple, Type, Union
 import h5py
 import numpy as np
 import pandas as pd
-from ptsa.data.TimeSeriesX import TimeSeriesX as TimeSeries
 
+from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     RereferencingNotPossibleError, UnsupportedOutputFormat
 )
 from cmlreaders.path_finder import PathFinder
-from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.timeseries import TimeSeries
 
 __all__ = ['EEGReader']
 
@@ -283,20 +283,8 @@ class EEGReader(BaseCMLReader):
                 raise RereferencingNotPossibleError
             data = self.rereference(data, scheme)
 
-        dims = ['starts', 'channels', 'time']
-        coords = {
-            'starts': [e[0] for e in epochs],
-            'channels': ['CH{}'.format(i) for i in range(data.shape[1])],
-            'time': np.linspace(0, tlens[0] / 1000., data.shape[2]),
-        }
-
-        ts = TimeSeries.create(
-            data,
-            samplerate=sample_rate,
-            dims=dims,
-            coords=coords,
-            attrs={'orig_epochs': orig_epochs},
-        )
+        # TODO: channels, tstart
+        ts = TimeSeries(data, sample_rate, epochs=epochs)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
@@ -305,7 +293,7 @@ class EEGReader(BaseCMLReader):
         Parameters
         ----------
         data
-            Input timeseries data shaped as (channels, epochs, time).
+            Input timeseries data shaped as (epochs, channels, time).
         scheme
             Bipolar pairs to use. This should be at a minimum a
             :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
@@ -315,5 +303,15 @@ class EEGReader(BaseCMLReader):
         reref
             Rereferenced timeseries.
 
+        Notes
+        -----
+        This method is meant to be used when loading data and so returns a raw
+        Numpy array. If used externally, a :class:`TimeSeries` will need to be
+        constructed manually.
+
         """
-        pass
+        c1, c2 = scheme.contact_1 - 1, scheme.contact_2 - 1
+        reref = np.array(
+            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
+        )
+        return reref

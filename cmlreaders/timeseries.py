@@ -55,6 +55,11 @@ class TimeSeries(object):
             self.channels = ["CH{}".format(i) for i in range(self.data.shape[1])]
 
     @property
+    def shape(self):
+        """Get the shape of the data."""
+        return self.data.shape
+
+    @property
     def start_offsets(self) -> np.ndarray:
         """Returns the start offsets in ms for each epoch."""
         return np.array([e[0] for e in self.epochs])
