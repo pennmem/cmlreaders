@@ -1,5 +1,3 @@
-from collections import ChainMap
-
 import numpy as np
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -123,8 +121,10 @@ class TimeSeries(object):
                     raise ValueError("Start times are not properly aligned for concatenation")
                 last += step
 
-        # TODO: do this in a better way...
-        attrs = dict(ChainMap(*[s.attrs for s in series]))
+        attrs = {
+            key: [s.attrs.get(key, None) for s in series]
+            for key in series[0].attrs.keys()
+        }
 
         if dim == "events":
             check_samples()
