@@ -78,6 +78,9 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.channels = channels
 
+        # in cases where we can't rereference, this will get changed to False
+        self.rereferencing_possible = True
+
     @abstractmethod
     def read(self) -> np.ndarray:
         """Read the data."""
@@ -118,6 +121,13 @@ class RamulatorHDF5Reader(BaseEEGReader):
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         with h5py.File(self.filename, 'r') as hfile:
+            try:
+                self.rereferencing_possible = bool(hfile['monopolar_possible'][0])
+            except KeyError:
+                # Older versions of Ramulator recorded monopolar channels only
+                # and did not include a flag indicating this.
+                pass
+
             ts = hfile['/timeseries']
 
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
@@ -225,7 +235,10 @@ class EEGReader(BaseCMLReader):
 
         Returns
         -------
-        A time series with shape (channels, epochs, time)
+        A time series with shape (channels, epochs, time). By default, this
+        returns data as it was physically recorded (e.g., if recorded with a
+        common reference, each channel will be a contact's reading referenced to
+        the common reference, a.k.a. "monopolar channels").
 
         Raises
         ------
@@ -288,7 +301,8 @@ class EEGReader(BaseCMLReader):
         data
             Input timeseries data shaped as (channels, epochs, time).
         scheme
-            Bipolar pairs to use.
+            Bipolar pairs to use. This should be at a minimum a
+            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
 
         Returns
         -------
