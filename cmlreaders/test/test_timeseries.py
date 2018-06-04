@@ -89,8 +89,10 @@ class TestTimeSeries:
 
         if dim == "events":
             assert ts.shape == (2, n_channels, n_samples)
+            assert_equal(ts.data, np.concatenate(data, axis=0))
         elif dim == "time":
-            pass
+            assert ts.shape == (1, n_channels, n_samples * 2)
+            assert_equal(ts.data, np.concatenate(data, axis=2))
 
     def test_to_ptsa(self):
         data = np.random.random((10, 32, 100))

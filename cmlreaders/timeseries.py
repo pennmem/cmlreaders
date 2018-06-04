@@ -123,13 +123,15 @@ class TimeSeries(object):
                     raise ValueError("Start times are not properly aligned for concatenation")
                 last += step
 
+        # TODO: do this in a better way...
+        attrs = dict(ChainMap(*[s.attrs for s in series]))
+
         if dim == "events":
             check_samples()
             check_channels()
 
             data = np.concatenate([s.data for s in series], axis=0)
             epochs = list(np.concatenate([s.epochs for s in series]))
-            attrs = dict(ChainMap(*[s.attrs for s in series]))
 
             return TimeSeries(data, samplerate, epochs,
                               channels=series[0].channels,
@@ -139,6 +141,12 @@ class TimeSeries(object):
         elif dim == "time":
             check_channels()
             check_starts()
+
+            data = np.concatenate([s.data for s in series], axis=2)
+            return TimeSeries(data, samplerate, series[0].epochs,
+                              channels=series[0].channels,
+                              tstart=series[0].time[0],
+                              attrs=attrs)
 
     @property
     def shape(self):
