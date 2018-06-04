@@ -14,7 +14,7 @@ class MissingParameter(CMLReaderException):
     """ Raised when a required parameter is missing """
 
 
-class ReferencingNotPossibleError(CMLReaderException):
+class RereferencingNotPossibleError(CMLReaderException):
     """ Raised when the requested EEG referencing scheme is not possible """
 
 

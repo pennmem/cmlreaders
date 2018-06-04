@@ -10,7 +10,9 @@ import numpy as np
 import pandas as pd
 from ptsa.data.TimeSeriesX import TimeSeriesX as TimeSeries
 
-from cmlreaders.exc import UnsupportedOutputFormat
+from cmlreaders.exc import (
+    RereferencingNotPossibleError, UnsupportedOutputFormat
+)
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.base_reader import BaseCMLReader
 
@@ -244,6 +246,8 @@ class EEGReader(BaseCMLReader):
         ------
         ValueError
             When provided epochs are not all the same length
+        RereferencingNotPossibleError
+            When rereferincing is not possible.
 
         """
         basename = self.sources_info['name']
@@ -275,6 +279,8 @@ class EEGReader(BaseCMLReader):
         data = reader.read()
 
         if scheme is not None:
+            if not reader.rereferencing_possible:
+                raise RereferencingNotPossibleError
             data = self.rereference(data, scheme)
 
         dims = ['starts', 'channels', 'time']
@@ -309,10 +315,5 @@ class EEGReader(BaseCMLReader):
         reref
             Rereferenced timeseries.
 
-        Raises
-        ------
-        RereferencingNotPossibleError
-            When rereferincing is not possible.
-
         """
-        raise NotImplementedError
+        pass
