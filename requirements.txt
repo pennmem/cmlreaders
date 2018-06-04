@@ -6,3 +6,4 @@ sphinx
 flake8
 sphinx_rtd_theme
 nbsphinx
+mne>=0.16

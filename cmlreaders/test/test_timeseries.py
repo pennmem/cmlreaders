@@ -102,3 +102,18 @@ class TestTimeSeries:
         assert tsx['samplerate'] == ts.samplerate
         assert_equal(tsx['start_offset'].data, ts.start_offsets)
         assert_equal(tsx['time'].data, ts.time)
+
+    def test_to_mne(self):
+        events = int(np.random.uniform(1, 10))
+        channels = int(np.random.uniform(1, 128))
+        samples = int(np.random.uniform(10, 100))
+
+        data = np.random.random((events, channels, samples))
+        rate = 1000
+        ts = TimeSeries(data, rate)
+        ea = ts.to_mne()
+
+        assert len(ea.times) == samples
+        assert len(ea.events) == events
+        assert len(ea.info['chs']) == channels
+        assert_equal(ea.get_data().shape, data.shape)

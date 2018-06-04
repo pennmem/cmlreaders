@@ -173,21 +173,17 @@ class TimeSeries(object):
             }
         )
 
-    # def to_mne(self) -> "mne.EpochsArray":
-    #     """Convert data to MNE's ``EpochsArray`` format."""
-    #     import mne
-    #
-    #     names = eegs[0]['channels'].data.tolist()
-    #     info = mne.create_info(names, eegs[0]['samplerate'], ch_types='eeg')
-    #     data = np.concatenate(eegs, axis=0)
-    #
-    #     events = np.empty([data.shape[0], 3], dtype=int)
-    #     events[:, 0] = list(range(data.shape[0]))
-    #     # FIXME: are these ok?
-    #     events[:, 1] = 0
-    #     events[:, 2] = 0
-    #     event_id = {'resting': 0}
-    #
-    #     epochs = mne.EpochsArray(data, info, events, event_id=event_id,
-    #                              verbose=False)
-    #     return epochs
+    def to_mne(self) -> "mne.EpochsArray":
+        """Convert data to MNE's ``EpochsArray`` format."""
+        import mne
+
+        info = mne.create_info(self.channels, self.samplerate, ch_types='eeg')
+
+        events = np.empty([self.data.shape[0], 3], dtype=int)
+        events[:, 0] = list(range(self.data.shape[0]))
+        # FIXME: are these ok?
+        events[:, 1] = 0
+        events[:, 2] = 1
+
+        epochs = mne.EpochsArray(self.data, info, events, verbose=False)
+        return epochs
