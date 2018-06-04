@@ -64,6 +64,82 @@ class TimeSeries(object):
         n_samples = self.data.shape[-1]
         return np.arange(tstart, n_samples * 1 / rate + tstart, rate)
 
+    @classmethod
+    def concatenate(cls, series: List["TimeSeries"], dim="events") -> "TimeSeries":
+        """Concatenate several :class:`TimeSeries` objects.
+
+        Parameters
+        ----------
+        series
+            The time series to concatenate.
+        dim
+            The dimension to concatenate on. Allowed options are: "events",
+            "time". Default: "events".
+
+        Returns
+        -------
+        combined
+            The concatenated time series.
+
+        Raises
+        ------
+        ValueError
+            When trying to concatenate along the wrong dimension.
+
+        Notes
+        -----
+        This attempts to combine attributes using a :class:`ChainMap`. This is
+        likely not the right solution, so don't rely on keeping attributes.
+
+        """
+        if dim not in ["events", "time"]:
+            raise ValueError("Invalid dimension to concatenate on: " + dim)
+
+        samplerate = series[0].samplerate
+        if not all([s.samplerate == samplerate for s in series]):
+            raise ValueError("Sample rates must be the same for all series")
+
+        def check_samples():
+            if not all([s.shape[-1] == series[0].shape[-1] for s in series]):
+                raise ValueError("Number of samples must match to concatenate"
+                                 " events")
+
+        def check_times():
+            if not all([s.time == series[0].time for s in series]):
+                raise ValueError("Times must be the same for all series")
+
+        def check_channels():
+            if not all([s.channels == series[0].channels for s in series]):
+                raise ValueError("Channels must be the same for all series")
+
+        def check_starts():
+            if len(series) == 1:
+                return
+
+            step = series[0].samplerate / 1000.
+            last = series[0].time[-1]
+            for s in series[1:]:
+                if last + step != s.time[0]:
+                    raise ValueError("Start times are not properly aligned for concatenation")
+                last += step
+
+        if dim == "events":
+            check_samples()
+            check_channels()
+
+            data = np.concatenate([s.data for s in series], axis=0)
+            epochs = list(np.concatenate([s.epochs for s in series]))
+            attrs = dict(ChainMap(*[s.attrs for s in series]))
+
+            return TimeSeries(data, samplerate, epochs,
+                              channels=series[0].channels,
+                              tstart=series[0].time[0],
+                              attrs=attrs)
+
+        elif dim == "time":
+            check_channels()
+            check_starts()
+
     @property
     def shape(self):
         """Get the shape of the data."""
@@ -96,3 +172,22 @@ class TimeSeries(object):
                 'time': self.time
             }
         )
+
+    # def to_mne(self) -> "mne.EpochsArray":
+    #     """Convert data to MNE's ``EpochsArray`` format."""
+    #     import mne
+    #
+    #     names = eegs[0]['channels'].data.tolist()
+    #     info = mne.create_info(names, eegs[0]['samplerate'], ch_types='eeg')
+    #     data = np.concatenate(eegs, axis=0)
+    #
+    #     events = np.empty([data.shape[0], 3], dtype=int)
+    #     events[:, 0] = list(range(data.shape[0]))
+    #     # FIXME: are these ok?
+    #     events[:, 1] = 0
+    #     events[:, 2] = 0
+    #     event_id = {'resting': 0}
+    #
+    #     epochs = mne.EpochsArray(data, info, events, event_id=event_id,
+    #                              verbose=False)
+    #     return epochs

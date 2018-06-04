@@ -63,6 +63,35 @@ class TestTimeSeries:
         with pytest.raises(ValueError):
             TimeSeries(data, 1000, channels=['a', 'b'])
 
+    @pytest.mark.parametrize("dim", ["events", "time"])
+    def test_concatenate(self, dim):
+        n_channels = 32
+        n_samples = 100
+        rate = 1000
+
+        data = [
+            np.random.random((1, n_channels, n_samples)),
+            np.random.random((1, n_channels, n_samples)),
+        ]
+
+        def get_tstart(i):
+            if dim == "time":
+                return (i * n_samples) / rate * 1000
+            else:
+                return 0
+
+        series = [
+            TimeSeries(d, rate, tstart=get_tstart(i), attrs={'test': 'me'})
+            for i, d in enumerate(data)
+        ]
+
+        ts = TimeSeries.concatenate(series, dim=dim)
+
+        if dim == "events":
+            assert ts.shape == (2, n_channels, n_samples)
+        elif dim == "time":
+            pass
+
     def test_to_ptsa(self):
         data = np.random.random((10, 32, 100))
         rate = 1000
