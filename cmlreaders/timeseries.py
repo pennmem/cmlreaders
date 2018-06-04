@@ -1,7 +1,7 @@
+from collections import ChainMap
+
 import numpy as np
 from typing import Any, Dict, List, Optional, Tuple, Union
-
-from ptsa.data.TimeSeriesX import TimeSeriesX
 
 
 class TimeSeries(object):
@@ -40,8 +40,8 @@ class TimeSeries(object):
             raise ValueError("Data must be 2- or 3-dimensional")
 
         self.data = data
-        self.time = np.arange(tstart, data.shape[-1] * samplerate, samplerate)
         self.samplerate = samplerate
+        self.time = self._make_time_array(tstart)
 
         if epochs is not None:
             if len(epochs) != self.data.shape[0]:
@@ -58,6 +58,11 @@ class TimeSeries(object):
             self.channels = ["CH{}".format(i) for i in range(self.data.shape[1])]
 
         self.attrs = attrs if attrs is not None else {}
+
+    def _make_time_array(self, tstart):
+        rate = self.samplerate / 1000.
+        n_samples = self.data.shape[-1]
+        return np.arange(tstart, n_samples * 1 / rate + tstart, rate)
 
     @property
     def shape(self):
@@ -77,8 +82,10 @@ class TimeSeries(object):
         """Apply a filter to the data and return a new :class:`TimeSeries`."""
         raise NotImplementedError
 
-    def to_ptsa(self) -> TimeSeriesX:
+    def to_ptsa(self) -> "TimeSeriesX":
         """Convert to a PTSA :class:`TimeSeriesX` object."""
+        from ptsa.data.TimeSeriesX import TimeSeriesX
+
         return TimeSeriesX.create(
             self.data,
             samplerate=self.samplerate,

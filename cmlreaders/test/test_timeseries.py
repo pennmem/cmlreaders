@@ -8,6 +8,16 @@ from cmlreaders.timeseries import TimeSeries
 
 
 class TestTimeSeries:
+    def test_make_time_array(self):
+        data = np.random.random((1, 32, 2))
+        rate = 1000
+
+        ts = TimeSeries(data, rate)
+        assert_equal([0, 1], ts.time)
+
+        ts = TimeSeries(data, rate, tstart=1)
+        assert_equal([1, 2], ts.time)
+
     @pytest.mark.parametrize("data", [
         np.random.random((1, 32, 100)),
         np.random.random((32, 100)),
