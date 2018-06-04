@@ -284,7 +284,8 @@ class EEGReader(BaseCMLReader):
             data = self.rereference(data, scheme)
 
         # TODO: channels, tstart
-        ts = TimeSeries(data, sample_rate, epochs=epochs)
+        attrs = {'orig_epochs': orig_epochs}
+        ts = TimeSeries(data, sample_rate, epochs=epochs, attrs=attrs)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
