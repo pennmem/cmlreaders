@@ -134,13 +134,15 @@ localization_files = [
     'classifier_excluded_leads',
     'localization',
     'electrode_categories',
+    'target_selection_file',
+    'baseline_classifier',
 ]
 
 # All files that change when a montage changes
 montage_files = ['pairs', 'contacts']
 
 # All files that are constant by subject
-subject_files = ['target_selection_file', 'basic_classifier']
+subject_files = []
 
 # All files that vary at the session level
 session_files = [

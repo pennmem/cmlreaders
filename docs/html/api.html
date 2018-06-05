@@ -27,6 +27,7 @@
   
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Developer’s Guide" href="dev.html" />
@@ -86,6 +87,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#readers">Readers</a></li>
@@ -207,8 +209,68 @@ the reader defined to handle that data.</p>
 
 <dl class="method">
 <dt id="cmlreaders.CMLReader.load">
-<code class="descname">load</code><span class="sig-paren">(</span><em>data_type</em>, <em>file_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load requested data into memory</p>
+<code class="descname">load</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>file_path: str = None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load requested data into memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data_type</strong> – Type of data to load (see <code class="xref py py-attr docutils literal notranslate"><span class="pre">readers</span></code> for available options)</li>
+<li><strong>file_path</strong> – Absolute path to load if given. This overrides the default search
+paths.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Keyword arguments that are accepted depend on the type of data being
+loaded. See <a class="reference internal" href="#cmlreaders.CMLReader.load_eeg" title="cmlreaders.CMLReader.load_eeg"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_eeg()</span></code></a> for details.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.CMLReader.load_eeg">
+<code class="descname">load_eeg</code><span class="sig-paren">(</span><em>events: Union[pandas.core.frame.DataFrame, NoneType] = None, rel_start: int = None, rel_stop: int = None, epochs: Union[typing.List[typing.Tuple[int, int]], NoneType] = None, contacts: Union[pandas.core.frame.DataFrame, NoneType] = None, scheme: Union[pandas.core.frame.DataFrame, NoneType] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load_eeg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load_eeg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load EEG data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – Events to load EEG epochs from. Incompatible with passing
+<code class="docutils literal notranslate"><span class="pre">epochs</span></code>.</li>
+<li><strong>rel_start</strong> – Start time in ms relative to passed event onsets. This parameter is
+required when passing events and not used otherwise.</li>
+<li><strong>rel_stop</strong> – Stop time in ms relative to passed event onsets. This  parameter is
+required when passing events and not used otherwise.</li>
+<li><strong>epochs</strong> – A list of <code class="docutils literal notranslate"><span class="pre">(start,</span> <span class="pre">stop)</span></code> tuples to specify epochs to retrieve
+data from. Incompatible with passing <code class="docutils literal notranslate"><span class="pre">events</span></code>.</li>
+<li><strong>contacts</strong> – Contacts to include when loading data. Any channel that includes
+these contacts will be loaded. When not given (the default), load
+all channels.</li>
+<li><strong>scheme</strong> – When specified, a bipolar scheme to rereference the data with. This
+is only possible if the data were recorded in monopolar (a.k.a.
+common reference) mode.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">TimeSeries</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">RereferencingNotPossibleError</span></code> – When passing <code class="docutils literal notranslate"><span class="pre">scheme</span></code> and the data do not support rereferencing.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">IncompatibleParametersError</span></code> – When both <code class="docutils literal notranslate"><span class="pre">events</span></code> and <code class="docutils literal notranslate"><span class="pre">epochs</span></code> are specified or <code class="docutils literal notranslate"><span class="pre">events</span></code> are
+used without passing <code class="docutils literal notranslate"><span class="pre">rel_start</span></code> and/or <code class="docutils literal notranslate"><span class="pre">rel_stop</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

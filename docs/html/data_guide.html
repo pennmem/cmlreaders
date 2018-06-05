@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Guide &mdash; CML Data Readers 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started with CML Readers" href="getting_started.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/data_guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="data-guide">
+<span id="id1"></span><h1>Data Guide<a class="headerlink" href="#data-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide focus is a high-level “data dictionary” of files generated within
+the CML and supported by the CMLReaders package. For more information on the
+locations of the files, see <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.constants</span></code>. In the table below,
+each row corresponds to a particular file type that is supported by the
+CMLReaders package. The table contains the following fields:</p>
+<ul class="simple">
+<li>Data Type: Identifier that can be used for loading/interacing with the data</li>
+<li>Description: Short description of the information contained in the file</li>
+<li>Format: The format of the underlying file</li>
+<li>Generated By: A link to the pipeline/code that produces the file</li>
+<li>Used By: One or more links to code repositories or processing pipelines
+that use, or are otherwise dependent upon, this file.</li>
+<li>Level: The level, at which, the file is guaranteed to be unique. For example, a
+level of “subject” indicates that there is one file per subject regardless of
+localization or experiments/tasks completed.</li>
+</ul>
+<p>The following “levels” are defined:</p>
+<ul class="simple">
+<li>protocol: A synonym for “project” or “study.” For example, RAM data is part
+of the “r1” protocol, while scalp experiments are part of the “ltp” protocol.</li>
+<li>subject: A single participant in a study. Typically, subject identifiers are
+6 alpha-numeric characters in length, for example R1001P.</li>
+<li>localization: Each time a subject undergoes surgery to add or remove
+electrodes, this is considered a new localization. Localizations are 0-indexed.
+Data at this level changes whenever there is a new localization,</li>
+<li>montage: Any change to a subject’s montage results in a new montage number.
+Note: Montage numbers do not reset in the case of a new localization.</li>
+<li>session: Data that is unique to a single session of a particular experiment.
+This is the lowest level of data stored since localization/montage/etc. are
+fixed for the duration of a session.</li>
+</ul>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Data Type</td>
+<td>Description</td>
+<td>Format</td>
+<td>Generated By</td>
+<td>Used By</td>
+<td>Level</td>
+</tr>
+<tr class="row-even"><td>r1_index</td>
+<td>Index of sessions completed across experiments and subjects within the R1 protocol</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>protocol</td>
+</tr>
+<tr class="row-odd"><td>ltp_index</td>
+<td>Index of sessions completed across experiments and subjects within the LTP protocol</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td>&#160;</td>
+<td>protocol</td>
+</tr>
+<tr class="row-even"><td>target_selection_table</td>
+<td>Metadata for each contact. Used for selecting stimulation targets. Generated as part of the RAM reporting pipeline once a subject has completed a full set of record-only sessions. Used by the 3D brain visualization application.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,  <a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>baseline_classifier</td>
+<td>A serialized version of a RAM brain state classifier that has been trained using record-only data. When loaded, the trained model can be used to make out of sample predictions given new features (powers). Generated as part of the reporting pipeline and includes all channels by default.</td>
+<td>zip</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/classiflib">classiflib</a>, <a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,</td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>electrode_coordinates</td>
+<td>Table of contact metadata in long-form including contact name, type, freesurfer coordinates, atlas location, etc. Generated as part of the brain viz pipeline to be used in the 3D brain visualization.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>prior_stim_results</td>
+<td>Table of previously used stimulation targets with the memory modulation results along with coordinates in freesurfer space that have been mapped into a particular subject’s space. Used by the 3D brain visualization application to display prior stim locations/results.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>localization</td>
+<td>Metadata for implanted electrodes. Includes coordinates from various spaces as well a locations based on different atlases for both contacts and pairs of contacts. Generated as part of the localization pipeline.</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>, <a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a>, <a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>voxel_coordinates</td>
+<td>Metadata for implanted electrodes including voxel coordinates of each contact. Generated using Vox Tool as part of the broader localization pipeline. Used by the neurorad pipeline to generate coordinates in other spaces, atlas locations, and other metadata.</td>
+<td>json</td>
+<td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>jacksheet</td>
+<td>Labels for all signals recorded from a subject. Typically this includes all EEG-related contacts, but can contain additional signals such as EKG or other reference channels. It is formmated as one label per line. It is used as part of the config generation pipeline.</td>
+<td>txt</td>
+<td>manual</td>
+<td><a class="reference external" href="https://github.com/pennmem/bptools">bptools</a>, <a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>area</td>
+<td>Surface area for each implanted depth electrode. Typically this file is manually generated. It is used by the config generation pipeline.</td>
+<td>txt</td>
+<td>manual</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>leads</td>
+<td>Channel numbers of all contacts. One channel per line. In the old reporting/config generation pipelines, channels were manually removed from this file in order to remove them from classifier training and config generation. In the new pipeline, this is done by using the classifier_excluded_leads file instead.</td>
+<td>txt</td>
+<td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
+<td>&#160;</td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>good_leads</td>
+<td>Channel numbers of all contacts not identified as being bad channels. One channel per line</td>
+<td>txt</td>
+<td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
+<td>&#160;</td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>classifier_excluded_leads</td>
+<td>Labels of contacts that should be excluded when training a classifier. One label per line. This is a manually-created file used by the config generation pipeline to allow arbitrary sets of contacts to be excluded from classifier training.</td>
+<td>txt</td>
+<td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>electrdode_categories</td>
+<td>Lists contacts in the seizure onset zone, exhibiting frequent interictal activity, residing in a brain lesion, or labelled as bad/broken by the clinical staff. Produced near the end of a patient’s time in the EMU and is primarily useful for post-hoc analysis.</td>
+<td>txt</td>
+<td>manual</td>
+<td>&#160;</td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>matlab_bipolar_talstruct</td>
+<td>Legacy MATLAB talstruct files containing bipolar contact metadata. This file has been replaced by the pairs.json file.</td>
+<td>mat</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-odd"><td>matlab_monopolar_talstruct</td>
+<td>Legacy MATLAB talstruct files containing single contact metadata. This file has been replaced by contacts.json.</td>
+<td>mat</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td>localization</td>
+</tr>
+<tr class="row-even"><td>pairs</td>
+<td>Metadata for neighboring contacts. Produced from localization.json in the current neurorad pipeline.</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>montage</td>
+</tr>
+<tr class="row-odd"><td>contacts</td>
+<td>Metadata for each implanted contact . Produced from localization.json in the current neurorad pipeline</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>montage</td>
+</tr>
+<tr class="row-even"><td>session_summary</td>
+<td>Binary file containing information summarizing a particular session</td>
+<td>h5</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>classifier_summary</td>
+<td>Binary file containing information summarizing the performance of a classifier in a given session in the case of stimulation experiments, or for a set of sessions for record-only experiments</td>
+<td>h5</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>math_summary</td>
+<td>Binary file containing information summarizing math distractor task performance</td>
+<td>h5</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>all_events</td>
+<td>All normalized events associated with a session. Produced as part of the event creation pipeline.</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>task_events</td>
+<td>Normalized task-related events. This is a subset of all_events and is generated by event creation</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>math_events</td>
+<td>Normalized math distractor events. This is also a subset of all_events and is generated by event creation</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>ps4_events</td>
+<td>Normalized events related to PS4 sessions generated by the event creation pipeline</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>sources</td>
+<td>Contains information about the eeg files for a particular session including the sample rate, start time of the recording, length of the recording, etc.</td>
+<td>json</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>experiment_log</td>
+<td>Log file produced by the task laptop for PyEPL experiments. This file should not be used in analyses.</td>
+<td>csv</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>session_log</td>
+<td>Log file produced by the task laptop during a session. This file should not be used in analyses.</td>
+<td>csv</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>ramulator_session_folder</td>
+<td>Timestamped folder containing files generated by Ramulator during a session. Not likely to be used frequently by data analysts.</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>event_log</td>
+<td>Log file produced by Ramulator during a session. This file should not be used in analyses, but can be useful for debugging if something goes wrong with Ramulator.</td>
+<td>json</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>experiment_config</td>
+<td>Configuration file used by Ramulator to run an experiment. This file is unlikely to be used by analysts, but is helpful when determining what parameters were used for a particular session.</td>
+<td>json</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>raw_eeg</td>
+<td>Binary file containing EEG data recorded during a session</td>
+<td>h5</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>odin_config</td>
+<td>Configuration file for the ENS. This file is unlikely to be used by analysts.</td>
+<td>csv</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>used_classifier</td>
+<td>The serialized classifier that was used during the session. This classifier differs from the baseline_classifier in that it may contain fewer channels if an artifiact detection algorithm was employed in the session. To best re-create what happened in an experiment in post hoc analyses, this is the classifier that should be used.</td>
+<td>zip</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-even"><td>excluded_pairs</td>
+<td>Metadata for pairs of contacts that were rejected as part of an artifact detection algorithm</td>
+<td>json</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+<tr class="row-odd"><td>all_pairs</td>
+<td>Metadata for all pairs of contacts that were recorded during a session</td>
+<td>json</td>
+<td>&#160;</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td>session</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started with CML Readers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intro.html" class="btn btn-neutral" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.3.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>
