@@ -6,6 +6,7 @@ Computational Memory Lab Data Readers
    :caption: Contents:
 
    intro
+   data_guide
    getting_started.ipynb
    api
    dev

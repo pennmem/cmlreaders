@@ -27,6 +27,7 @@
   
     <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -84,6 +85,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data_guide.html">Data Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dev.html">Developer’s Guide</a></li>
@@ -150,8 +152,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cmlreaders.cmlreader</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">readers</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">IncompatibleParametersError</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CMLReader&#39;</span><span class="p">]</span>
@@ -204,8 +209,23 @@
                                        <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
                                        <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CMLReader.load"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load requested data into memory &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CMLReader.load"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load requested data into memory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data_type</span>
+<span class="sd">            Type of data to load (see :attr:`readers` for available options)</span>
+<span class="sd">        file_path</span>
+<span class="sd">            Absolute path to load if given. This overrides the default search</span>
+<span class="sd">            paths.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Keyword arguments that are accepted depend on the type of data being</span>
+<span class="sd">        loaded. See :meth:`load_eeg` for details.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">data_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;There is no reader to support the &quot;</span>
                                       <span class="s2">&quot;requested file type&quot;</span><span class="p">)</span>
@@ -221,7 +241,77 @@
                                        <span class="n">localization</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
                                        <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
                                        <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                                       <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div></div>
+                                       <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CMLReader.load_eeg"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load_eeg">[docs]</a>    <span class="k">def</span> <span class="nf">load_eeg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rel_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rel_stop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">contacts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">scheme</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load EEG data.</span>
+
+<span class="sd">        Keyword arguments</span>
+<span class="sd">        -----------------</span>
+<span class="sd">        events</span>
+<span class="sd">            Events to load EEG epochs from. Incompatible with passing</span>
+<span class="sd">            ``epochs``.</span>
+<span class="sd">        rel_start</span>
+<span class="sd">            Start time in ms relative to passed event onsets. This parameter is</span>
+<span class="sd">            required when passing events and not used otherwise.</span>
+<span class="sd">        rel_stop</span>
+<span class="sd">            Stop time in ms relative to passed event onsets. This  parameter is</span>
+<span class="sd">            required when passing events and not used otherwise.</span>
+<span class="sd">        epochs</span>
+<span class="sd">            A list of ``(start, stop)`` tuples to specify epochs to retrieve</span>
+<span class="sd">            data from. Incompatible with passing ``events``.</span>
+<span class="sd">        contacts</span>
+<span class="sd">            Contacts to include when loading data. Any channel that includes</span>
+<span class="sd">            these contacts will be loaded. When not given (the default), load</span>
+<span class="sd">            all channels.</span>
+<span class="sd">        scheme</span>
+<span class="sd">            When specified, a bipolar scheme to rereference the data with. This</span>
+<span class="sd">            is only possible if the data were recorded in monopolar (a.k.a.</span>
+<span class="sd">            common reference) mode.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TimeSeries</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        RereferencingNotPossibleError</span>
+<span class="sd">            When passing ``scheme`` and the data do not support rereferencing.</span>
+<span class="sd">        IncompatibleParametersError</span>
+<span class="sd">            When both ``events`` and ``epochs`` are specified or ``events`` are</span>
+<span class="sd">            used without passing ``rel_start`` and/or ``rel_stop``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">IncompatibleParametersError</span><span class="p">(</span><span class="s2">&quot;events and epochs are mutually exclusive&quot;</span><span class="p">)</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;contacts&#39;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">,</span>
+            <span class="s1">&#39;scheme&#39;</span><span class="p">:</span> <span class="n">scheme</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rel_start</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">rel_stop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">IncompatibleParametersError</span><span class="p">(</span>
+                    <span class="s2">&quot;rel_start and rel_stop are required keyword arguments&quot;</span>
+                    <span class="s2">&quot; when passing events&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;events&#39;</span><span class="p">:</span> <span class="n">events</span><span class="p">,</span>
+                <span class="s1">&#39;rel_start&#39;</span><span class="p">:</span> <span class="n">rel_start</span><span class="p">,</span>
+                <span class="s1">&#39;rel_stop&#39;</span><span class="p">:</span> <span class="n">rel_stop</span><span class="p">,</span>
+            <span class="p">})</span>
+        <span class="k">elif</span> <span class="n">epochs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="n">epochs</span><span class="p">,</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;eeg&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -137,7 +137,7 @@ localization_files = [
 montage_files = ['pairs', 'contacts']
 
 # All files that are constant by subject
-subject_files = ['target_selection_file', 'basic_classifier']
+subject_files = ['target_selection_file', 'baseline_classifier']
 
 # All files that vary at the session level
 session_files = [
