@@ -32,7 +32,6 @@ def _index_dict_to_dataframe(data: Dict) -> pd.DataFrame:
                 entries.append(entry)
 
     df = pd.DataFrame(entries)
-    # df.set_index(["subject", "experiment", "session"], inplace=True)
     return df
 
 
