@@ -19,9 +19,8 @@ from cmlreaders.timeseries import TimeSeries
 __all__ = ['EEGReader']
 
 
-def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
-                     rel_stop: int = 100,
-                     sample_rate: Union[int, float] = 1000) -> List[Tuple[int, int]]:
+def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
+                     sample_rate: Union[int, float]) -> List[Tuple[int, int]]:
     """Convert events to epochs.
 
     Parameters
@@ -29,11 +28,11 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
     events
         Events to read.
     rel_start
-        Start time relative to events in ms (default: 0).
+        Start time relative to events in ms.
     rel_stop
-        Stop time relative to events in ms (default: 100).
+        Stop time relative to events in ms.
     sample_rate
-        Sample rate in Hz (default: 1000).
+        Sample rate in Hz.
 
     Returns
     -------
@@ -41,7 +40,7 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
         A list of tuples giving absolute start and stop times.
 
     """
-    offsets = events.eegoffset.values * sample_rate / 1000.
+    offsets = 1000 * events.eegoffset.values / sample_rate
     epochs = [(int(offset + rel_start), int(offset + rel_stop)) for offset in offsets]
     return epochs
 
@@ -88,6 +87,7 @@ class BaseEEGReader(ABC):
         """Read the data."""
 
 
+# FIXME: epochs need to be converted to samples
 class SplitEEGReader(BaseEEGReader):
     """Read so-called split EEG data (that is, raw binary data stored as one
     channel per file).
@@ -116,6 +116,7 @@ class EDFReader(BaseEEGReader):
         raise NotImplementedError
 
 
+# FIXME: epochs need to be converted to samples
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
     def read(self) -> np.ndarray:
@@ -157,7 +158,7 @@ class EEGReader(BaseCMLReader):
         >>> contacts = reader.load('contacts')
         >>> eeg = reader.load_eeg(contacts=contacts[contacts.region == 'MTL'])
 
-    Loading from explicitly specified epochs::
+    Loading from explicitly specified epochs (units are ms)::
 
         >>> epochs = [(100, 200), (300, 400)]
         >>> eeg = reader.load_eeg(epochs=epochs)

@@ -3,6 +3,8 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 
+import pandas as pd
+
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
@@ -23,10 +25,25 @@ def events():
 def test_events_to_epochs(events, rel_start, rel_stop):
     words = events[events.type == 'WORD']
 
-    epochs = events_to_epochs(words, rel_start=rel_start, rel_stop=rel_stop)
+    epochs = events_to_epochs(words, rel_start, rel_stop, 1000)
     assert len(epochs) == 156
     for epoch in epochs:
         assert epoch[1] - epoch[0] == rel_stop - rel_start
+
+
+def test_events_to_epochs_simple():
+    offsets = [1, 2]  # in samples
+    events = pd.DataFrame({"eegoffset": offsets})
+    rate = 1  # in samples / s
+    rel_start = -10  # in ms
+    rel_stop = 10  # in ms
+
+    epochs = events_to_epochs(events, rel_start, rel_stop, rate)
+
+    assert epochs[0][0] == 990
+    assert epochs[0][1] == 1010
+    assert epochs[1][0] == 1990
+    assert epochs[1][1] == 2010
 
 
 @pytest.mark.rhino
