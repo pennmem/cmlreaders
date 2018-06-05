@@ -3,13 +3,21 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 
+import numpy as np
+from numpy.testing import assert_equal
 import pandas as pd
 
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
-    events_to_epochs, RamulatorHDF5Reader, SplitEEGReader
+    BaseEEGReader, events_to_epochs, RamulatorHDF5Reader, SplitEEGReader
 )
+
+
+class FakeEEGReader(BaseEEGReader):
+    """Used to test common functionality of all EEG readers."""
+    def read(self):
+        pass
 
 
 @pytest.fixture
@@ -90,6 +98,17 @@ class TestFileReaders:
         time_steps = 200
         assert ts.shape == (len(epochs), num_expected_channels, time_steps)
 
+
+class TestBaseEEGReader:
+    @pytest.mark.parametrize("rate,expected", [
+        (123, [(0, 12)]),
+        (1000, [(0, 100)])
+    ])
+    def test_samples(self, rate, expected):
+        epochs = [(0, 100)]
+
+        reader = FakeEEGReader("", rate, np.int16, epochs)
+        assert_equal(reader.samples, expected)
 
 @pytest.mark.rhino
 class TestEEGReader:

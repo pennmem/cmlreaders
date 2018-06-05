@@ -82,6 +82,15 @@ class BaseEEGReader(ABC):
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
 
+    @property
+    @functools.lru_cache()
+    def samples(self) -> np.ndarray:
+        """Converts epochs in ms to number of samples. Note that this will round
+        to the nearest sample when applicable.
+
+        """
+        return np.around(np.array(self.epochs) * self.sample_rate / 1000).astype(np.int)
+
     @abstractmethod
     def read(self) -> np.ndarray:
         """Read the data."""
