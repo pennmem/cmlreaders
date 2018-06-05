@@ -105,7 +105,7 @@ Since this repository is specific to the data formats of the lab, almost all
 tests require RHINO access. To run the test suite from a computer with RHINO
 mounted:
 
-.. code-block:: shell-sessions
+.. code-block:: shell-session
 
     pytest cmlreaders/ --rhino-root [path_to_mount_point] --cov=html
 
