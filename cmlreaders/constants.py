@@ -1,6 +1,9 @@
 
 rhino_paths = {
-    'protocols_database': ['protocols/r1.json'],
+    # data indices
+    'r1_index': ['protocols/r1.json'],
+    'ltp_index': ['protocols/ltp.json'],
+
     # Localization-level (subject + localization)
     'voxel_coordinates': [
         "data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt",
