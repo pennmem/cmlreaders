@@ -112,7 +112,7 @@ class TestEEGReader:
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         epochs = [(0, 100)]
-        rate = float(reader.load('sources').loc['sample_rate'])
+        rate = float(reader.load('sources')['sample_rate'])
         expected_samples = int(rate * epochs[0][-1] / 1000)
         scheme = reader.load('pairs')
 
