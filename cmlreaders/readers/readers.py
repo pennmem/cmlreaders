@@ -14,7 +14,7 @@ __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
            'BasicJSONReader', 'EventReader', 'MontageReader',
            'LocalizationReader', 'ElectrodeCategoriesReader',
            'BaseReportDataReader', 'ReportSummaryDataReader',
-           'ClassifierContainerReader']
+           'ClassifierContainerReader', 'EEGMetaReader']
 
 
 class TextReader(BaseCMLReader):
@@ -99,10 +99,26 @@ class BasicJSONReader(BaseCMLReader):
 
     """
 
-    data_types = ['sources']
+    data_types = []
 
     def as_dataframe(self):
         return pd.read_json(self._file_path)
+
+
+class EEGMetaReader(BaseCMLReader):
+    """Reads the ``sources.json`` file which describes metainfo about EEG data.
+
+    Returns a :class:`dict`.
+
+    """
+    data_types = ["sources"]
+    default_representation = "dict"
+
+    def as_dict(self):
+        with open(self._file_path, 'r') as metafile:
+            sources_info = list(json.load(metafile).values())[0]
+            sources_info['path'] = metafile
+        return sources_info
 
 
 class EventReader(BasicJSONReader):

@@ -5,9 +5,10 @@ import numpy as np
 import functools
 
 from cmlreaders.readers import (
-    BasicJSONReader, TextReader, CSVReader, ElectrodeCategoriesReader,
-    EventReader, LocalizationReader, MontageReader, RamulatorEventLogReader,
-    ReportSummaryDataReader, BaseReportDataReader, ClassifierContainerReader
+    BasicJSONReader, TextReader, CSVReader, EEGMetaReader,
+    ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
+    RamulatorEventLogReader, ReportSummaryDataReader, BaseReportDataReader,
+    ClassifierContainerReader
 )
 from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
 from pkg_resources import resource_filename
@@ -180,6 +181,18 @@ class TestBasicJSONReader:
         reader = BasicJSONReader('index.json', file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
+
+
+class TestEEGMetaReader:
+    def test_load(self):
+        path = datafile("sources.json")
+        reader = EEGMetaReader("sources.json", file_path=path)
+        sources = reader.load()
+
+        assert isinstance(sources, dict)
+        assert sources["data_format"] == "int16"
+        assert sources["n_samples"] == 1641165
+        assert sources["sample_rate"] == 1000
 
 
 class TestEventReader:
