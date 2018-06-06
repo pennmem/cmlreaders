@@ -16,7 +16,7 @@ from cmlreaders.timeseries import TimeSeries
 
 __all__ = [
     "EEGReader",
-    "make_events",
+    "milliseconds_to_events",
     "milliseconds_to_samples",
 ]
 
@@ -32,12 +32,35 @@ def milliseconds_to_samples(millis: Union[int, float],
     sample_rate
         Sample rate in samples per second.
 
+    Returns
+    -------
+    Number of samples.
+
     """
     return int(sample_rate * millis / 1000.)
 
 
-def make_events(onsets: List[Union[int, float]],
-                sample_rate: Union[int, float]) -> pd.DataFrame:
+def samples_to_milliseconds(samples: int,
+                            sample_rate: Union[int, float]) -> Union[int, float]:
+    """Convert samples to milliseconds.
+
+    Parameters
+    ----------
+    samples
+        Number of samples.
+    sample_rate
+        Sample rate in samples per second.
+
+    Returns
+    -------
+    Samples converted to milliseconds.
+
+    """
+    return 1000 * samples / sample_rate
+
+
+def milliseconds_to_events(onsets: List[Union[int, float]],
+                           sample_rate: Union[int, float]) -> pd.DataFrame:
     """Take times and produce a minimal events :class:`pd.DataFrame` to load
     EEG data with.
 

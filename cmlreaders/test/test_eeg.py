@@ -9,8 +9,8 @@ import pandas as pd
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
-    events_to_epochs, make_events, milliseconds_to_samples,
-    RamulatorHDF5Reader, SplitEEGReader,
+    events_to_epochs, milliseconds_to_events, milliseconds_to_samples,
+    RamulatorHDF5Reader, samples_to_milliseconds, SplitEEGReader,
 )
 
 
@@ -31,12 +31,21 @@ def test_milliseconds_to_samples(millis, rate, samples):
     assert milliseconds_to_samples(millis, rate) == samples
 
 
+@pytest.mark.parametrize("samples,rate,millis", [
+    (1000, 1000, 1000),
+    (1000, 500, 2000),
+    (1000, 250, 4000),
+])
+def test_samples_to_milliseconds(samples, rate, millis):
+    assert samples_to_milliseconds(samples, rate) == millis
+
+
 @pytest.mark.parametrize("onsets,rate,expected", [
     ([0], 1000, [0]),
     ([10], 100, [1])
 ])
-def test_make_events(onsets, rate, expected):
-    df = make_events(onsets, rate)
+def test_milliseconds_to_events(onsets, rate, expected):
+    df = milliseconds_to_events(onsets, rate)
     assert_equal(expected, df.eegoffset.values)
 
 
