@@ -3,10 +3,14 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 
+from numpy.testing import assert_equal
+import pandas as pd
+
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
-    events_to_epochs, RamulatorHDF5Reader, SplitEEGReader
+    events_to_epochs, milliseconds_to_events, milliseconds_to_samples,
+    RamulatorHDF5Reader, samples_to_milliseconds, SplitEEGReader,
 )
 
 
@@ -18,15 +22,57 @@ def events():
     return reader.as_dataframe()
 
 
+@pytest.mark.parametrize("millis,rate,samples", [
+    (1000, 1000, 1000),
+    (1000, 500, 500),
+    (1000, 250, 250),
+])
+def test_milliseconds_to_samples(millis, rate, samples):
+    assert milliseconds_to_samples(millis, rate) == samples
+
+
+@pytest.mark.parametrize("samples,rate,millis", [
+    (1000, 1000, 1000),
+    (1000, 500, 2000),
+    (1000, 250, 4000),
+])
+def test_samples_to_milliseconds(samples, rate, millis):
+    assert samples_to_milliseconds(samples, rate) == millis
+
+
+@pytest.mark.parametrize("onsets,rate,expected", [
+    ([0], 1000, [0]),
+    ([10], 100, [1])
+])
+def test_milliseconds_to_events(onsets, rate, expected):
+    df = milliseconds_to_events(onsets, rate)
+    assert_equal(expected, df.eegoffset.values)
+
+
 @pytest.mark.parametrize('rel_start', [-100, 0])
 @pytest.mark.parametrize('rel_stop', [100, 500])
 def test_events_to_epochs(events, rel_start, rel_stop):
     words = events[events.type == 'WORD']
 
-    epochs = events_to_epochs(words, rel_start=rel_start, rel_stop=rel_stop)
+    epochs = events_to_epochs(words, rel_start, rel_stop, 1000)
     assert len(epochs) == 156
     for epoch in epochs:
         assert epoch[1] - epoch[0] == rel_stop - rel_start
+
+
+def test_events_to_epochs_simple():
+    offsets = [100, 200]  # in samples
+    events = pd.DataFrame({"eegoffset": offsets})
+    rate = 1000  # in samples / s
+    rel_start = -10  # in ms
+    rel_stop = 10  # in ms
+
+    epochs = events_to_epochs(events, rel_start, rel_stop, rate)
+
+    assert epochs[0][0] == 90
+    assert epochs[0][1] == 110
+    assert epochs[1][0] == 190
+    assert epochs[1][1] == 210
 
 
 @pytest.mark.rhino
@@ -50,21 +96,21 @@ class TestFileReaders:
     def test_split_eeg_reader(self, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta('R1111M', 'FR1', 0, rhino_root)
 
-        starts = range(0, 500, 100)
-        stops = [start + 200 for start in starts]
-        epochs = list(zip(starts, stops))
+        events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
+        rel_start, rel_stop = 0, 200
+        epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
         eeg_reader = SplitEEGReader(filename, sample_rate, dtype, epochs)
         ts = eeg_reader.read()
 
-        assert ts.shape == (len(epochs), 100, 200)
+        assert ts.shape == (len(epochs), 100, 100)
 
     def test_ramulator_hdf5_reader(self, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta('R1386T', 'FR1', 0, rhino_root)
 
-        starts = range(0, 500, 100)
-        stops = [start + 200 for start in starts]
-        epochs = list(zip(starts, stops))
+        events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
+        rel_start, rel_stop = 0, 200
+        epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
         eeg_reader = RamulatorHDF5Reader(filename, sample_rate, dtype, epochs)
         ts = eeg_reader.read()
@@ -105,15 +151,19 @@ class TestEEGReader:
             reader.load_eeg(events=word_events)
 
     @pytest.mark.parametrize("subject,reref_possible", [
-        (['R1387E', False]),
-        (['R1111M', True])
+        ('R1387E', False),
+        ('R1111M', True),
     ])
     def test_rereference(self, subject, reref_possible, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
-        epochs = [(0, 100)]
-        rate = float(reader.load('sources')['sample_rate'])
-        expected_samples = int(rate * epochs[0][-1] / 1000)
+        rate = reader.load("sources")["sample_rate"]
+
+        events = pd.DataFrame({"eegoffset": [0]})
+        rel_start, rel_stop = 0, 100
+        epochs = events_to_epochs(events, rel_start, rel_stop, rate)
+
+        expected_samples = int(rate * rel_stop / 1000)
         scheme = reader.load('pairs')
 
         if not reref_possible:
