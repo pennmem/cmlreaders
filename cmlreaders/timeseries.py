@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 
@@ -159,8 +160,19 @@ class TimeSeries(object):
         return np.array([e[0] for e in self.epochs])
 
     def resample(self, rate: Union[int, float]) -> "TimeSeries":
-        """Resample the time series."""
-        raise NotImplementedError
+        """Resample the time series.
+
+        Parameters
+        ----------
+        rate: Union[int,float]
+            new sampling rate, in Hz
+        """
+        new_len = int(len(self.time) * rate / self.samplerate)
+        new_data, _ = scipy.signal.resample(self.data, new_len,
+                                            t=self.time, axis=-1)
+        return TimeSeries(new_data, rate, epochs=self.epochs,
+                          channels=self.channels, tstart=self.time[0],
+                          attrs=self.attrs)
 
     def filter(self, filter) -> "TimeSeries":
         """Apply a filter to the data and return a new :class:`TimeSeries`."""
