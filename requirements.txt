@@ -1,9 +1,12 @@
 pytest
 pytest-cov
 pandas==0.22
+numpy
+scipy
 codecov
 sphinx
 flake8
 sphinx_rtd_theme
 nbsphinx
 mne>=0.16
+h5py
