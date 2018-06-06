@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.signal
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 
@@ -39,7 +40,7 @@ class TimeSeries(object):
 
         self.data = data
         self.samplerate = samplerate
-        self.time = self._make_time_array(tstart)
+        self.time = self._make_time_array(tstart)  #: time in milliseconds
 
         if epochs is not None:
             if len(epochs) != self.data.shape[0]:
@@ -58,9 +59,9 @@ class TimeSeries(object):
         self.attrs = attrs if attrs is not None else {}
 
     def _make_time_array(self, tstart):
-        rate = self.samplerate / 1000.
+        rate = 1000. / self.samplerate
         n_samples = self.data.shape[-1]
-        return np.arange(tstart, n_samples * 1 / rate + tstart, rate)
+        return np.arange(tstart, n_samples * rate + tstart, rate)
 
     @classmethod
     def concatenate(cls, series: List["TimeSeries"], dim="events") -> "TimeSeries":
