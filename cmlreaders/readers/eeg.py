@@ -1,6 +1,4 @@
 from abc import abstractmethod, ABC
-import copy
-import functools
 import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
@@ -16,12 +14,75 @@ from cmlreaders.exc import (
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
 
-__all__ = ['EEGReader']
+__all__ = [
+    "EEGReader",
+    "milliseconds_to_events",
+    "milliseconds_to_samples",
+]
 
 
-def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
-                     rel_stop: int = 100,
-                     sample_rate: Union[int, float] = 1000) -> List[Tuple[int, int]]:
+def milliseconds_to_samples(millis: Union[int, float],
+                            sample_rate: Union[int, float]) -> int:
+    """Covert times in milliseconds to number of samples.
+
+    Parameters
+    ----------
+    millis
+        Time in ms.
+    sample_rate
+        Sample rate in samples per second.
+
+    Returns
+    -------
+    Number of samples.
+
+    """
+    return int(sample_rate * millis / 1000.)
+
+
+def samples_to_milliseconds(samples: int,
+                            sample_rate: Union[int, float]) -> Union[int, float]:
+    """Convert samples to milliseconds.
+
+    Parameters
+    ----------
+    samples
+        Number of samples.
+    sample_rate
+        Sample rate in samples per second.
+
+    Returns
+    -------
+    Samples converted to milliseconds.
+
+    """
+    return 1000 * samples / sample_rate
+
+
+def milliseconds_to_events(onsets: List[Union[int, float]],
+                           sample_rate: Union[int, float]) -> pd.DataFrame:
+    """Take times and produce a minimal events :class:`pd.DataFrame` to load
+    EEG data with.
+
+    Parameters
+    ----------
+    onsets
+        Onset times in ms.
+    sample_rate
+        Sample rate in samples per second.
+
+    Returns
+    -------
+    events
+        A :class:`pd.DataFrame` with ``eegoffset`` as the only column.
+
+    """
+    samples = [milliseconds_to_samples(onset, sample_rate) for onset in onsets]
+    return pd.DataFrame({"eegoffset": samples})
+
+
+def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
+                     sample_rate: Union[int, float]) -> List[Tuple[int, int]]:
     """Convert events to epochs.
 
     Parameters
@@ -29,20 +90,23 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int = 0,
     events
         Events to read.
     rel_start
-        Start time relative to events in ms (default: 0).
+        Start time relative to events in ms.
     rel_stop
-        Stop time relative to events in ms (default: 100).
+        Stop time relative to events in ms.
     sample_rate
-        Sample rate in Hz (default: 1000).
+        Sample rate in Hz.
 
     Returns
     -------
     epochs
-        A list of tuples giving absolute start and stop times.
+        A list of tuples giving absolute start and stop times in number of
+        samples.
 
     """
-    offsets = events.eegoffset.values * sample_rate / 1000.
-    epochs = [(int(offset + rel_start), int(offset + rel_stop)) for offset in offsets]
+    rel_start = milliseconds_to_samples(rel_start, sample_rate)
+    rel_stop = milliseconds_to_samples(rel_stop, sample_rate)
+    offsets = events.eegoffset.values
+    epochs = [(offset + rel_start, offset + rel_stop) for offset in offsets]
     return epochs
 
 
@@ -59,7 +123,8 @@ class BaseEEGReader(ABC):
     dtype
         numpy dtype to use for reading data
     epochs
-        Epochs to include.
+        Epochs to include. Epochs are defined with a start and stop sample
+        counts.
     channels
         A list of channel indices (1-based) to include when reading. When not
         given, read all available channels.
@@ -157,7 +222,7 @@ class EEGReader(BaseCMLReader):
         >>> contacts = reader.load('contacts')
         >>> eeg = reader.load_eeg(contacts=contacts[contacts.region == 'MTL'])
 
-    Loading from explicitly specified epochs::
+    Loading from explicitly specified epochs (units are samples)::
 
         >>> epochs = [(100, 200), (300, 400)]
         >>> eeg = reader.load_eeg(epochs=epochs)
@@ -216,11 +281,6 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    @staticmethod
-    def _ms_to_samples(ms: int, rate: Union[int, float]) -> int:
-        """Convert milliseconds to samples given a sample rate in Hz."""
-        return int(rate * ms / 1000.)
-
     def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
@@ -256,14 +316,8 @@ class EEGReader(BaseCMLReader):
         eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
-        orig_epochs = None
-
         if epochs is None:
             epochs = [(0, -1)]
-        else:
-            to_samples = functools.partial(self._ms_to_samples, rate=sample_rate)
-            orig_epochs = copy.deepcopy(epochs)
-            epochs = [(to_samples(e[0]), to_samples(e[1])) for e in epochs]
 
         if contacts is not None:
             raise NotImplementedError("filtering contacts is not yet implemented")
@@ -284,8 +338,7 @@ class EEGReader(BaseCMLReader):
             data = self.rereference(data, scheme)
 
         # TODO: channels, tstart
-        attrs = {'orig_epochs': orig_epochs}
-        ts = TimeSeries(data, sample_rate, epochs=epochs, attrs=attrs)
+        ts = TimeSeries(data, sample_rate, epochs=epochs)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
