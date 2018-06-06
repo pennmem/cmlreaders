@@ -10,15 +10,9 @@ import pandas as pd
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
-    BaseEEGReader, events_to_epochs, milliseconds_to_samples,
+    events_to_epochs, make_events, milliseconds_to_samples,
     RamulatorHDF5Reader, SplitEEGReader,
 )
-
-
-class FakeEEGReader(BaseEEGReader):
-    """Used to test common functionality of all EEG readers."""
-    def read(self):
-        pass
 
 
 @pytest.fixture
@@ -36,6 +30,15 @@ def events():
 ])
 def test_milliseconds_to_samples(millis, rate, samples):
     assert milliseconds_to_samples(millis, rate) == samples
+
+
+@pytest.mark.parametrize("onsets,rate,expected", [
+    ([0], 1000, [0]),
+    ([10], 100, [1])
+])
+def test_make_events(onsets, rate, expected):
+    df = make_events(onsets, rate)
+    assert_equal(expected, df.eegoffset.values)
 
 
 @pytest.mark.parametrize('rel_start', [-100, 0])
