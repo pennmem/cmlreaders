@@ -16,7 +16,25 @@ from cmlreaders.exc import (
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
 
-__all__ = ['EEGReader']
+__all__ = [
+    "EEGReader",
+    "milliseconds_to_samples",
+]
+
+
+def milliseconds_to_samples(millis: Union[int, float],
+                            sample_rate: Union[int, float]) -> int:
+    """Covert times in milliseconds to number of samples.
+
+    Parameters
+    ----------
+    millis
+        Time in ms.
+    sample_rate
+        Sample rate in samples per second.
+
+    """
+    return int(sample_rate * millis / 1000.)
 
 
 def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
@@ -37,11 +55,14 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
     Returns
     -------
     epochs
-        A list of tuples giving absolute start and stop times.
+        A list of tuples giving absolute start and stop times in number of
+        samples.
 
     """
-    offsets = 1000 * events.eegoffset.values / sample_rate
-    epochs = [(int(offset + rel_start), int(offset + rel_stop)) for offset in offsets]
+    rel_start = milliseconds_to_samples(rel_start, sample_rate)
+    rel_stop = milliseconds_to_samples(rel_stop, sample_rate)
+    offsets = events.eegoffset.values
+    epochs = [(offset + rel_start, offset + rel_stop) for offset in offsets]
     return epochs
 
 
@@ -58,7 +79,8 @@ class BaseEEGReader(ABC):
     dtype
         numpy dtype to use for reading data
     epochs
-        Epochs to include.
+        Epochs to include. Epochs are defined with a start and stop sample
+        counts.
     channels
         A list of channel indices (1-based) to include when reading. When not
         given, read all available channels.
@@ -82,21 +104,11 @@ class BaseEEGReader(ABC):
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
 
-    @property
-    @functools.lru_cache()
-    def samples(self) -> np.ndarray:
-        """Converts epochs in ms to number of samples. Note that this will round
-        to the nearest sample when applicable.
-
-        """
-        return np.around(np.array(self.epochs) * self.sample_rate / 1000).astype(np.int)
-
     @abstractmethod
     def read(self) -> np.ndarray:
         """Read the data."""
 
 
-# FIXME: epochs need to be converted to samples
 class SplitEEGReader(BaseEEGReader):
     """Read so-called split EEG data (that is, raw binary data stored as one
     channel per file).
@@ -125,7 +137,6 @@ class EDFReader(BaseEEGReader):
         raise NotImplementedError
 
 
-# FIXME: epochs need to be converted to samples
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
     def read(self) -> np.ndarray:
@@ -167,7 +178,7 @@ class EEGReader(BaseCMLReader):
         >>> contacts = reader.load('contacts')
         >>> eeg = reader.load_eeg(contacts=contacts[contacts.region == 'MTL'])
 
-    Loading from explicitly specified epochs (units are ms)::
+    Loading from explicitly specified epochs (units are samples)::
 
         >>> epochs = [(100, 200), (300, 400)]
         >>> eeg = reader.load_eeg(epochs=epochs)
@@ -226,11 +237,6 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    @staticmethod
-    def _ms_to_samples(ms: int, rate: Union[int, float]) -> int:
-        """Convert milliseconds to samples given a sample rate in Hz."""
-        return int(rate * ms / 1000.)
-
     def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
@@ -266,14 +272,8 @@ class EEGReader(BaseCMLReader):
         eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
         reader_class = self._get_reader_class(basename)
 
-        orig_epochs = None
-
         if epochs is None:
             epochs = [(0, -1)]
-        else:
-            to_samples = functools.partial(self._ms_to_samples, rate=sample_rate)
-            orig_epochs = copy.deepcopy(epochs)
-            epochs = [(to_samples(e[0]), to_samples(e[1])) for e in epochs]
 
         if contacts is not None:
             raise NotImplementedError("filtering contacts is not yet implemented")
@@ -294,8 +294,7 @@ class EEGReader(BaseCMLReader):
             data = self.rereference(data, scheme)
 
         # TODO: channels, tstart
-        attrs = {'orig_epochs': orig_epochs}
-        ts = TimeSeries(data, sample_rate, epochs=epochs, attrs=attrs)
+        ts = TimeSeries(data, sample_rate, epochs=epochs)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:

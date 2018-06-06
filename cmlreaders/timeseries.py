@@ -155,7 +155,7 @@ class TimeSeries(object):
 
     @property
     def start_offsets(self) -> np.ndarray:
-        """Returns the start offsets in ms for each epoch."""
+        """Returns the start offsets in samples for each epoch."""
         return np.array([e[0] for e in self.epochs])
 
     def resample(self, rate: Union[int, float]) -> "TimeSeries":
