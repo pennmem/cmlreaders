@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.3.0 documentation</title>
+  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.4.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.3
+                0.4
               </div>
             
           
@@ -94,8 +94,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#Finding-File-Paths">Finding File Paths</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Loading-Data">Loading Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Saving-Data">Saving Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-Data">Loading Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Using-the-Default-Representation">Using the Default Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Saving-Data">Saving Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-from-a-Custom-Location">Loading from a Custom Location</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -355,7 +363,9 @@ div.nboutput div.output_area.stderr {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">cmlreaders</span> <span class="k">as</span> <span class="nn">cml</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">cmlreaders</span> <span class="k">as</span> <span class="nn">cml</span>
 </pre></div>
 </div>
 </div>
@@ -390,13 +400,16 @@ data types are currently supported. Different file types require that
 the finder be instantiated with different fields. For example, if you
 are planning to request localization files, there is no need to specify
 an experiment, session, or montage. However, it is not a problem to
-specify too many fields, as an extraneous ones will simply be ignored if
-the data type does not require that it be given. The following
+specify too many fields, as any extraneous ones will simply be ignored
+if the data type does not require that it be given. The following
 properties are defined: - requestable_files: All supported data types -
 localization_files: Files related to localization - montage_files:
 Files associated with a specific montage - session_files: Files that
 are specific to a session. This files could be processed events,
 Ramulator files, etc.</p>
+<p>For high-level information about each of these data types, see the <a class="reference external" href="https://pennmem.github.io/cmlreaders/html/data_guide.html">Data
+Guide</a>
+section of the documentation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [3]:
@@ -413,7 +426,8 @@ Ramulator files, etc.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;protocols_database&#39;,
+<span></span>[&#39;r1_index&#39;,
+ &#39;ltp_index&#39;,
  &#39;voxel_coordinates&#39;,
  &#39;prior_stim_results&#39;,
  &#39;electrode_coordinates&#39;,
@@ -424,13 +438,15 @@ Ramulator files, etc.</p>
  &#39;leads&#39;,
  &#39;classifier_excluded_leads&#39;,
  &#39;localization&#39;,
+ &#39;matlab_bipolar_talstruct&#39;,
+ &#39;matlab_monopolar_talstruct&#39;,
  &#39;pairs&#39;,
  &#39;contacts&#39;,
  &#39;session_summary&#39;,
  &#39;classifier_summary&#39;,
  &#39;math_summary&#39;,
  &#39;target_selection_table&#39;,
- &#39;trained_classifier&#39;,
+ &#39;baseline_classifier&#39;,
  &#39;all_events&#39;,
  &#39;task_events&#39;,
  &#39;math_events&#39;,
@@ -474,7 +490,9 @@ Ramulator files, etc.</p>
  &#39;area&#39;,
  &#39;classifier_excluded_leads&#39;,
  &#39;localization&#39;,
- &#39;electrode_categories&#39;]
+ &#39;electrode_categories&#39;,
+ &#39;target_selection_file&#39;,
+ &#39;baseline_classifier&#39;]
 </pre></div>
 </div>
 </div>
@@ -561,58 +579,43 @@ Ramulator files, etc.</p>
 </div>
 </div>
 </div>
-<div class="section" id="Loading-Data">
-<h2>Loading Data<a class="headerlink" href="#Loading-Data" title="Permalink to this headline">¶</a></h2>
-<p>In most cases, the end goal is to load the data into memory rather than
-just locating the file. In this case, CML Readers provides a handy class
-to unify the API for loading data. By default, the location will be
-determined automatically based on the file type using the PathFinder
-class. However, a custom path can be given by using the file_path
-keyword. Each data type can be loaded into one of three common data
-structures for performing analyses: 1. Pandas Dataframe 2. Python
-Dictionary 3. Numpy recarray</p>
-<p>Although recarray’s are supported, users are <strong>highly</strong> encouraged to
-switch to using pandas dataframes as they provide a much richer and
-easier to use API. In fact, pandas was created specifically to replace
-recarrays. If you can find a data-analysis related use case that a
-recarray provides that is not available in pandas, I will personally
-give you $1.</p>
+<div class="section" id="Identifying-Available-Sessions">
+<h2>Identifying Available Sessions<a class="headerlink" href="#Identifying-Available-Sessions" title="Permalink to this headline">¶</a></h2>
+<p>CMLReaders contains a utility function for loading the json-formatted
+index files located in the protocols/ directory on RHINO as a dataframe.
+Once loaded, the standard pandas selection idioms can be used to answer
+questions such as:</p>
+<ol class="arabic simple">
+<li>What subjects completed FR1?</li>
+<li>What experiments did subject R1111M complete?</li>
+<li>How many sessions have been colleted of PAL1?</li>
+</ol>
+<p>For many analyses, this will be the first step in determining the sample
+of subjects to be used.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1389J&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;catFR5&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
-                       <span class="n">localization</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">cmlreaders</span> <span class="k">import</span> <span class="n">get_data_index</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [10]:
+<span></span>In [9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Data Frame</span>
-<span class="n">electrode_coord_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-<span class="n">electrode_coord_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span></span><span class="n">r1_data</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;r1&#39;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s1">&#39;/Volumes/RHINO/&#39;</span><span class="p">)</span>
+<span class="n">r1_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[10]:
+<span></span>Out[9]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -634,65 +637,125 @@ give you $1.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>contact_name</th>
-      <th>contact_type</th>
-      <th>x</th>
-      <th>y</th>
-      <th>z</th>
-      <th>atlas</th>
-      <th>orient_to</th>
+      <th>Recognition</th>
+      <th>all_events</th>
+      <th>contacts</th>
+      <th>experiment</th>
+      <th>import_type</th>
+      <th>localization</th>
+      <th>math_events</th>
+      <th>montage</th>
+      <th>original_experiment</th>
+      <th>original_session</th>
+      <th>pairs</th>
+      <th>ps4_events</th>
+      <th>session</th>
+      <th>subject</th>
+      <th>subject_alias</th>
+      <th>system_version</th>
+      <th>task_events</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>oA1</td>
-      <td>D</td>
-      <td>0.867173</td>
-      <td>-0.308800</td>
-      <td>-0.077759</td>
-      <td>monopolar_orig</td>
-      <td>oA2</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>FR1</td>
+      <td>build</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>R1001P</td>
+      <td>R1001P</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>oA8</td>
-      <td>D</td>
-      <td>1.265359</td>
-      <td>-0.102247</td>
-      <td>-0.048478</td>
-      <td>monopolar_orig</td>
       <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>FR1</td>
+      <td>build</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>R1001P</td>
+      <td>R1001P</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR1/s...</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>oA2</td>
-      <td>D</td>
-      <td>0.913253</td>
-      <td>-0.278048</td>
-      <td>-0.083519</td>
-      <td>monopolar_orig</td>
-      <td>oA3</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>FR2</td>
+      <td>build</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>R1001P</td>
+      <td>R1001P</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>oA3</td>
-      <td>D</td>
-      <td>0.984687</td>
-      <td>-0.248392</td>
-      <td>-0.071328</td>
-      <td>monopolar_orig</td>
-      <td>oA4</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>FR2</td>
+      <td>build</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>NaN</td>
+      <td>1</td>
+      <td>R1001P</td>
+      <td>R1001P</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/FR2/s...</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>oA4</td>
-      <td>D</td>
-      <td>1.048341</td>
-      <td>-0.212167</td>
-      <td>-0.074716</td>
-      <td>monopolar_orig</td>
-      <td>oA5</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/PAL1/...</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>PAL1</td>
+      <td>build</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/experiments/PAL1/...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>protocols/r1/subjects/R1001P/localizations/0/m...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>R1001P</td>
+      <td>R1001P</td>
+      <td>NaN</td>
+      <td>protocols/r1/subjects/R1001P/experiments/PAL1/...</td>
     </tr>
   </tbody>
 </table>
@@ -700,13 +763,76 @@ give you $1.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># What subjects completed FR1?</span>
+<span class="n">fr1_subjects</span> <span class="o">=</span> <span class="n">r1_data</span><span class="p">[</span><span class="n">r1_data</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;FR1&#39;</span><span class="p">][</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">fr1_subjects</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([&#39;R1001P&#39;, &#39;R1002P&#39;, &#39;R1003P&#39;, &#39;R1006P&#39;, &#39;R1010J&#39;, &#39;R1015J&#39;,
+       &#39;R1018P&#39;, &#39;R1020J&#39;, &#39;R1022J&#39;, &#39;R1023J&#39;, &#39;R1026D&#39;, &#39;R1027J&#39;,
+       &#39;R1030J&#39;, &#39;R1031M&#39;, &#39;R1032D&#39;, &#39;R1033D&#39;, &#39;R1034D&#39;, &#39;R1035M&#39;,
+       &#39;R1036M&#39;, &#39;R1039M&#39;, &#39;R1042M&#39;, &#39;R1044J&#39;, &#39;R1045E&#39;, &#39;R1048E&#39;,
+       &#39;R1049J&#39;, &#39;R1050M&#39;, &#39;R1051J&#39;, &#39;R1052E&#39;, &#39;R1053M&#39;, &#39;R1054J&#39;,
+       &#39;R1056M&#39;, &#39;R1057E&#39;, &#39;R1059J&#39;, &#39;R1060M&#39;, &#39;R1061T&#39;, &#39;R1062J&#39;,
+       &#39;R1063C&#39;, &#39;R1065J&#39;, &#39;R1066P&#39;, &#39;R1067P&#39;, &#39;R1068J&#39;, &#39;R1069M&#39;,
+       &#39;R1070T&#39;, &#39;R1074M&#39;, &#39;R1075J&#39;, &#39;R1076D&#39;, &#39;R1077T&#39;, &#39;R1080E&#39;,
+       &#39;R1081J&#39;, &#39;R1083J&#39;, &#39;R1084T&#39;, &#39;R1086M&#39;, &#39;R1089P&#39;, &#39;R1092J&#39;,
+       &#39;R1093J&#39;, &#39;R1094T&#39;, &#39;R1096E&#39;, &#39;R1098D&#39;, &#39;R1100D&#39;, &#39;R1101T&#39;,
+       &#39;R1102P&#39;, &#39;R1104D&#39;, &#39;R1105E&#39;, &#39;R1106M&#39;, &#39;R1108J&#39;, &#39;R1111M&#39;,
+       &#39;R1112M&#39;, &#39;R1113T&#39;, &#39;R1114C&#39;, &#39;R1115T&#39;, &#39;R1118N&#39;, &#39;R1120E&#39;,
+       &#39;R1121M&#39;, &#39;R1122E&#39;, &#39;R1123C&#39;, &#39;R1124J&#39;, &#39;R1125T&#39;, &#39;R1127P&#39;,
+       &#39;R1128E&#39;, &#39;R1129D&#39;, &#39;R1130M&#39;, &#39;R1131M&#39;, &#39;R1134T&#39;, &#39;R1135E&#39;,
+       &#39;R1136N&#39;, &#39;R1137E&#39;, &#39;R1138T&#39;, &#39;R1142N&#39;, &#39;R1145J&#39;, &#39;R1146E&#39;,
+       &#39;R1147P&#39;, &#39;R1148P&#39;, &#39;R1149N&#39;, &#39;R1150J&#39;, &#39;R1151E&#39;, &#39;R1153T&#39;,
+       &#39;R1154D&#39;, &#39;R1155D&#39;, &#39;R1156D&#39;, &#39;R1158T&#39;, &#39;R1159P&#39;, &#39;R1161E&#39;,
+       &#39;R1162N&#39;, &#39;R1163T&#39;, &#39;R1164E&#39;, &#39;R1166D&#39;, &#39;R1167M&#39;, &#39;R1168T&#39;,
+       &#39;R1169P&#39;, &#39;R1170J&#39;, &#39;R1171M&#39;, &#39;R1172E&#39;, &#39;R1173J&#39;, &#39;R1174T&#39;,
+       &#39;R1175N&#39;, &#39;R1176M&#39;, &#39;R1177M&#39;, &#39;R1178P&#39;, &#39;R1184M&#39;, &#39;R1185N&#39;,
+       &#39;R1186P&#39;, &#39;R1187P&#39;, &#39;R1189M&#39;, &#39;R1191J&#39;, &#39;R1193T&#39;, &#39;R1195E&#39;,
+       &#39;R1196N&#39;, &#39;R1198M&#39;, &#39;R1200T&#39;, &#39;R1201P&#39;, &#39;R1202M&#39;, &#39;R1203T&#39;,
+       &#39;R1204T&#39;, &#39;R1207J&#39;, &#39;R1212P&#39;, &#39;R1214M&#39;, &#39;R1215M&#39;, &#39;R1216E&#39;,
+       &#39;R1217T&#39;, &#39;R1221P&#39;, &#39;R1222M&#39;, &#39;R1223E&#39;, &#39;R1226D&#39;, &#39;R1228M&#39;,
+       &#39;R1229M&#39;, &#39;R1230J&#39;, &#39;R1231M&#39;, &#39;R1232N&#39;, &#39;R1234D&#39;, &#39;R1236J&#39;,
+       &#39;R1240T&#39;, &#39;R1241J&#39;, &#39;R1243T&#39;, &#39;R1247P&#39;, &#39;R1250N&#39;, &#39;R1251M&#39;,
+       &#39;R1260D&#39;, &#39;R1264P&#39;, &#39;R1268T&#39;, &#39;R1274T&#39;, &#39;R1275D&#39;, &#39;R1277J&#39;,
+       &#39;R1281E&#39;, &#39;R1283T&#39;, &#39;R1286J&#39;, &#39;R1288P&#39;, &#39;R1290M&#39;, &#39;R1291M&#39;,
+       &#39;R1292E&#39;, &#39;R1293P&#39;, &#39;R1297T&#39;, &#39;R1298E&#39;, &#39;R1299T&#39;, &#39;R1302M&#39;,
+       &#39;R1304N&#39;, &#39;R1306E&#39;, &#39;R1307N&#39;, &#39;R1308T&#39;, &#39;R1309M&#39;, &#39;R1310J&#39;,
+       &#39;R1311T&#39;, &#39;R1313J&#39;, &#39;R1315T&#39;, &#39;R1316T&#39;, &#39;R1317D&#39;, &#39;R1318N&#39;,
+       &#39;R1320D&#39;, &#39;R1321M&#39;, &#39;R1323T&#39;, &#39;R1324M&#39;, &#39;R1325C&#39;, &#39;R1328E&#39;,
+       &#39;R1329T&#39;, &#39;R1330D&#39;, &#39;R1331T&#39;, &#39;R1332M&#39;, &#39;R1334T&#39;, &#39;R1336T&#39;,
+       &#39;R1337E&#39;, &#39;R1338T&#39;, &#39;R1339D&#39;, &#39;R1341T&#39;, &#39;R1342M&#39;, &#39;R1345D&#39;,
+       &#39;R1346T&#39;, &#39;R1347D&#39;, &#39;R1349T&#39;, &#39;R1350D&#39;, &#39;R1351M&#39;, &#39;R1354E&#39;,
+       &#39;R1355T&#39;, &#39;R1358T&#39;, &#39;R1361C&#39;, &#39;R1363T&#39;, &#39;R1364C&#39;, &#39;R1367D&#39;,
+       &#39;R1368T&#39;, &#39;R1373T&#39;, &#39;R1374T&#39;, &#39;R1375C&#39;, &#39;R1376D&#39;, &#39;R1377M&#39;,
+       &#39;R1378T&#39;, &#39;R1379E&#39;, &#39;R1380D&#39;, &#39;R1381T&#39;, &#39;R1383J&#39;, &#39;R1384J&#39;,
+       &#39;R1385E&#39;, &#39;R1386T&#39;, &#39;R1387E&#39;, &#39;R1390M&#39;, &#39;R1391T&#39;, &#39;R1393T&#39;,
+       &#39;R1394E&#39;, &#39;R1395M&#39;, &#39;R1396T&#39;, &#39;R1397D&#39;, &#39;R1398J&#39;, &#39;R1401J&#39;,
+       &#39;R1402E&#39;, &#39;R1404E&#39;, &#39;R1405E&#39;, &#39;R1406M&#39;, &#39;R1409D&#39;, &#39;R1412M&#39;,
+       &#39;R1414E&#39;, &#39;R1415T&#39;, &#39;R1416T&#39;, &#39;R1420T&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Dictionary</span>
-<span class="n">electrode_coord_dict</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
-<span class="n">electrode_coord_dict</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span></span><span class="c1"># What experiments did R1111M complete?</span>
+<span class="n">r1111m_experiments</span> <span class="o">=</span> <span class="n">r1_data</span><span class="p">[</span><span class="n">r1_data</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;R1111M&#39;</span><span class="p">][</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="n">r1111m_experiments</span>
 </pre></div>
 </div>
 </div>
@@ -716,41 +842,7 @@ give you $1.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[{&#39;contact_name&#39;: &#39;oA1&#39;,
-  &#39;contact_type&#39;: &#39;D&#39;,
-  &#39;x&#39;: 0.867173,
-  &#39;y&#39;: -0.3088,
-  &#39;z&#39;: -0.07775927156960215,
-  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
-  &#39;orient_to&#39;: &#39;oA2&#39;},
- {&#39;contact_name&#39;: &#39;oA8&#39;,
-  &#39;contact_type&#39;: &#39;D&#39;,
-  &#39;x&#39;: 1.2653590000000001,
-  &#39;y&#39;: -0.1022474,
-  &#39;z&#39;: -0.048477514623626164,
-  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
-  &#39;orient_to&#39;: nan},
- {&#39;contact_name&#39;: &#39;oA2&#39;,
-  &#39;contact_type&#39;: &#39;D&#39;,
-  &#39;x&#39;: 0.9132530000000001,
-  &#39;y&#39;: -0.278048,
-  &#39;z&#39;: -0.08351888482911221,
-  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
-  &#39;orient_to&#39;: &#39;oA3&#39;},
- {&#39;contact_name&#39;: &#39;oA3&#39;,
-  &#39;contact_type&#39;: &#39;D&#39;,
-  &#39;x&#39;: 0.9846870000000001,
-  &#39;y&#39;: -0.248392,
-  &#39;z&#39;: -0.07132760474565615,
-  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
-  &#39;orient_to&#39;: &#39;oA4&#39;},
- {&#39;contact_name&#39;: &#39;oA4&#39;,
-  &#39;contact_type&#39;: &#39;D&#39;,
-  &#39;x&#39;: 1.0483410000000002,
-  &#39;y&#39;: -0.2121674,
-  &#39;z&#39;: -0.07471577238168621,
-  &#39;atlas&#39;: &#39;monopolar_orig&#39;,
-  &#39;orient_to&#39;: &#39;oA5&#39;}]
+<span></span>array([&#39;FR1&#39;, &#39;FR2&#39;, &#39;PAL1&#39;, &#39;PAL2&#39;, &#39;PS2&#39;, &#39;catFR1&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -760,9 +852,9 @@ give you $1.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># DO NOT USE: Recarray</span>
-<span class="n">electrode_coord_recarray</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_recarray</span><span class="p">()</span>
-<span class="n">electrode_coord_recarray</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span></span><span class="c1"># How many sessions of PAL1 have been collected?</span>
+<span class="n">pal_sessions</span> <span class="o">=</span> <span class="n">r1_data</span><span class="p">[</span><span class="n">r1_data</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PAL1&#39;</span><span class="p">]</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">pal_sessions</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -772,61 +864,60 @@ give you $1.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>rec.array([(0, &#39;oA1&#39;, &#39;D&#39;, 0.867173, -0.3088   , -0.07775927, &#39;monopolar_orig&#39;, &#39;oA2&#39;),
-           (1, &#39;oA8&#39;, &#39;D&#39;, 1.265359, -0.1022474, -0.04847751, &#39;monopolar_orig&#39;, nan),
-           (2, &#39;oA2&#39;, &#39;D&#39;, 0.913253, -0.278048 , -0.08351888, &#39;monopolar_orig&#39;, &#39;oA3&#39;),
-           (3, &#39;oA3&#39;, &#39;D&#39;, 0.984687, -0.248392 , -0.0713276 , &#39;monopolar_orig&#39;, &#39;oA4&#39;),
-           (4, &#39;oA4&#39;, &#39;D&#39;, 1.048341, -0.2121674, -0.07471577, &#39;monopolar_orig&#39;, &#39;oA5&#39;)],
-          dtype=[(&#39;index&#39;, &#39;&lt;i8&#39;), (&#39;contact_name&#39;, &#39;O&#39;), (&#39;contact_type&#39;, &#39;O&#39;), (&#39;x&#39;, &#39;&lt;f8&#39;), (&#39;y&#39;, &#39;&lt;f8&#39;), (&#39;z&#39;, &#39;&lt;f8&#39;), (&#39;atlas&#39;, &#39;O&#39;), (&#39;orient_to&#39;, &#39;O&#39;)])
+<span></span>151
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="Saving-Data">
-<h2>Saving Data<a class="headerlink" href="#Saving-Data" title="Permalink to this headline">¶</a></h2>
-<p>CML Readers supports saving data to at most 3 file formats: 1. CSV 2.
-JSON 3. HDF5</p>
-<p>However, depending on the data type, not all output formats may be
-supported. In particular, HDF5 output is only supported for a minimal
-number of data types. Data that has been saved using one of the built-in
-methods can always be reloaded using it’s corresponding reader. Since
-locations are automatically determined based on the data type, if
-loading from a custom location, be sure to specify the file_type
-parameter when loading the data.</p>
+<div class="section" id="Loading-Data">
+<h2>Loading Data<a class="headerlink" href="#Loading-Data" title="Permalink to this headline">¶</a></h2>
+<p>In most cases, the end goal is to load the data into memory rather than
+just locating a file or determing what data has been collected. In this
+case, CML Readers provides a handy class to unify the API for loading
+data. By default, the location will be determined automatically based on
+the file type using the PathFinder class demonstrated earlier. However,
+a custom path can be given by using the file_path keyword. This can be
+useful if you have some data stored locally that is in the same format
+as one of the data types supported by CMLReaders that you would like to
+load and use. See the “Loading from a Custom Location” section below for
+an example.</p>
+<p>Each data type has a default representation that is returned when you
+call the .load() method. Most users will want to use this default
+representation. However, if you would like to get the data in a
+different format, you have two options:</p>
+<ol class="arabic simple">
+<li>Get the reader for the data type and load the data using a different
+supported method using one of the as_x methods</li>
+<li>Load the data as the default type and convert it manually</li>
+</ol>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">reader</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates_test.csv&quot;</span><span class="p">)</span>
+<span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1389J&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;catFR5&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+                       <span class="n">localization</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="section" id="Using-the-Default-Representation">
+<h3>Using the Default Representation<a class="headerlink" href="#Using-the-Default-Representation" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;./electrode_coordinates_test.csv&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">electrode_coord_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
-<span class="n">electrode_coord_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span></span><span class="c1"># Pandas dataframe</span>
+<span class="n">events_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;task_events&#39;</span><span class="p">)</span>
+<span class="n">events_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[15]:
+<span></span>Out[14]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -848,69 +939,733 @@ parameter when loading the data.</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>contact_name</th>
-      <th>contact_type</th>
-      <th>x</th>
-      <th>y</th>
-      <th>z</th>
-      <th>atlas</th>
-      <th>orient_to</th>
+      <th>eegoffset</th>
+      <th>category</th>
+      <th>category_num</th>
+      <th>eegfile</th>
+      <th>exp_version</th>
+      <th>experiment</th>
+      <th>intrusion</th>
+      <th>is_stim</th>
+      <th>item_name</th>
+      <th>item_num</th>
+      <th>...</th>
+      <th>recog_rt</th>
+      <th>recognized</th>
+      <th>rectime</th>
+      <th>rejected</th>
+      <th>serialpos</th>
+      <th>session</th>
+      <th>stim_list</th>
+      <th>stim_params</th>
+      <th>subject</th>
+      <th>type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>oA1</td>
-      <td>D</td>
-      <td>0.867173</td>
-      <td>-0.308800</td>
-      <td>-0.077759</td>
-      <td>monopolar_orig</td>
-      <td>oA2</td>
+      <td>-1</td>
+      <td>X</td>
+      <td>-999</td>
+      <td></td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[]</td>
+      <td>R1389J</td>
+      <td>STIM_ARTIFACT_DETECTION_START</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>oA8</td>
-      <td>D</td>
-      <td>1.265359</td>
-      <td>-0.102247</td>
-      <td>-0.048478</td>
-      <td>monopolar_orig</td>
-      <td>NaN</td>
+      <td>5831</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>oA2</td>
-      <td>D</td>
-      <td>0.913253</td>
-      <td>-0.278048</td>
-      <td>-0.083519</td>
-      <td>monopolar_orig</td>
-      <td>oA3</td>
+      <td>7790</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>oA3</td>
-      <td>D</td>
-      <td>0.984687</td>
-      <td>-0.248392</td>
-      <td>-0.071328</td>
-      <td>monopolar_orig</td>
-      <td>oA4</td>
+      <td>9786</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>oA4</td>
-      <td>D</td>
-      <td>1.048341</td>
-      <td>-0.212167</td>
-      <td>-0.074716</td>
-      <td>monopolar_orig</td>
-      <td>oA5</td>
+      <td>11782</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
     </tr>
   </tbody>
 </table>
+<p>5 rows × 28 columns</p>
 </div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Custom python class</span>
+<span class="n">session_summary</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;session_summary&#39;</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">session_summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Could not import MorletWaveletFilterCppLegacy (single-core C++ version of MorletWaveletFilter): cannot import name &#39;MorletWaveletTransform&#39;
+You can still use MorletWaveletFilter
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>ramutils.reports.summary.FRStimSessionSummary
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Python dictionary</span>
+<span class="n">electrode_categories_dict</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;electrode_categories&#39;</span><span class="p">)</span>
+<span class="n">electrode_categories_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>{&#39;interictal&#39;: [&#39;ONEMC 9&#39;,
+  &#39;ONEMC10&#39;,
+  &#39;ONEMC8&#39;,
+  &#39;SMC3&#39;,
+  &#39;SMC4&#39;,
+  &#39;STG 7 &#39;,
+  &#39;STG8&#39;,
+  &#39;TWOSTG 4&#39;],
+ &#39;brain_lesion&#39;: [&#39;FOURSC&#39;, &#39;ONESC&#39;, &#39;ONNEMC&#39;, &#39;THREESC&#39;, &#39;TWOMC&#39;, &#39;TWOSC&#39;],
+ &#39;bad_channel&#39;: [&#39;NONE&#39;],
+ &#39;soz&#39;: []}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Using-the-Underlying-Reader">
+<h3>Using the Underlying Reader<a class="headerlink" href="#Using-the-Underlying-Reader" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Ask CMLReader to give back the reader instead of the data</span>
+<span class="n">event_reader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="s1">&#39;task_events&#39;</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">event_reader</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[17]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>cmlreaders.readers.readers.EventReader
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load the task events as a dictionary instead of the default representation</span>
+<span class="n">event_dict</span> <span class="o">=</span> <span class="n">event_reader</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<span class="n">event_dict</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[18]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[{&#39;eegoffset&#39;: -1,
+  &#39;category&#39;: &#39;X&#39;,
+  &#39;category_num&#39;: -999,
+  &#39;eegfile&#39;: &#39;&#39;,
+  &#39;exp_version&#39;: &#39;&#39;,
+  &#39;experiment&#39;: &#39;catFR5&#39;,
+  &#39;intrusion&#39;: -999,
+  &#39;is_stim&#39;: False,
+  &#39;item_name&#39;: &#39;X&#39;,
+  &#39;item_num&#39;: -999,
+  &#39;list&#39;: -999,
+  &#39;montage&#39;: 0,
+  &#39;msoffset&#39;: -1,
+  &#39;mstime&#39;: -1,
+  &#39;phase&#39;: &#39;&#39;,
+  &#39;protocol&#39;: &#39;r1&#39;,
+  &#39;recalled&#39;: False,
+  &#39;recog_resp&#39;: -999,
+  &#39;recog_rt&#39;: -999,
+  &#39;recognized&#39;: -999,
+  &#39;rectime&#39;: -999,
+  &#39;rejected&#39;: -999,
+  &#39;serialpos&#39;: -999,
+  &#39;session&#39;: 1,
+  &#39;stim_list&#39;: False,
+  &#39;stim_params&#39;: [],
+  &#39;subject&#39;: &#39;R1389J&#39;,
+  &#39;type&#39;: &#39;STIM_ARTIFACT_DETECTION_START&#39;}]
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Load the task event as a recarray (not recommended)</span>
+<span class="n">event_recarray</span> <span class="o">=</span> <span class="n">event_reader</span><span class="o">.</span><span class="n">as_recarray</span><span class="p">()</span>
+<span class="n">event_recarray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>(0, -1, &#39;X&#39;, -999, &#39;&#39;, &#39;&#39;, &#39;catFR5&#39;, -999, False, &#39;X&#39;, -999, -999, 0, -1, -1, &#39;&#39;, &#39;r1&#39;, False, -999, -999, -999, -999, -999, -999, 1, False, [], &#39;R1389J&#39;, &#39;STIM_ARTIFACT_DETECTION_START&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Saving-Data">
+<h2>Saving Data<a class="headerlink" href="#Saving-Data" title="Permalink to this headline">¶</a></h2>
+<p>CMLReaders can also be used to save data in a different format from the
+original files. The three supported output formats are: CSV, JSON, and
+HDF5. However, not all file formats are supported by all of the readers.
+In particular, HDF5 output is only supported for a minimal number of
+data types.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># JSON to CSV</span>
+<span class="n">event_reader</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;task_events.csv&quot;</span><span class="p">)</span>
+<span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;task_events.csv&quot;</span><span class="p">)</span>
+<span class="n">event_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>eegoffset</th>
+      <th>category</th>
+      <th>category_num</th>
+      <th>eegfile</th>
+      <th>exp_version</th>
+      <th>experiment</th>
+      <th>intrusion</th>
+      <th>is_stim</th>
+      <th>item_name</th>
+      <th>item_num</th>
+      <th>...</th>
+      <th>recog_rt</th>
+      <th>recognized</th>
+      <th>rectime</th>
+      <th>rejected</th>
+      <th>serialpos</th>
+      <th>session</th>
+      <th>stim_list</th>
+      <th>stim_params</th>
+      <th>subject</th>
+      <th>type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[]</td>
+      <td>R1389J</td>
+      <td>STIM_ARTIFACT_DETECTION_START</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5831</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td>NaN</td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>NaN</td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7790</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td>NaN</td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>NaN</td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9786</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td>NaN</td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>NaN</td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11782</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td>NaN</td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>NaN</td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># CSV to JSON</span>
+<span class="n">electrode_coord_reader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">)</span>
+<span class="n">electrode_coord_reader</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;electrode_coordinates.json&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">electrode_coord_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">electrode_coord_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dict_keys([&#39;contact_name&#39;, &#39;contact_type&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;atlas&#39;, &#39;orient_to&#39;])
+</pre></div>
+</div>
+</div>
+<div class="section" id="Loading-from-a-Custom-Location">
+<h3>Loading from a Custom Location<a class="headerlink" href="#Loading-from-a-Custom-Location" title="Permalink to this headline">¶</a></h3>
+<p>Since locations are automatically determined based on the data type, if
+loading from a custom location, be sure to specify the file_type
+parameter when loading the data. One common use case for this
+functionality is that you need to load some data from your scratch or
+home directory that is in a format supported by CMLReaders. Another use
+case is that you may discover that data is residing in a location that
+is not known by CMLReaders. Instead of waiting until the next release of
+the package, you can use a custom file path to load the data, submit an
+issue on Github, and continue with you analysis.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Loading from a custom location</span>
+<span class="n">event_reader</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s2">&quot;task_events.json&quot;</span><span class="p">)</span>
+<span class="n">event_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;task_events.json&#39;</span><span class="p">)</span>
+<span class="n">event_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>eegoffset</th>
+      <th>category</th>
+      <th>category_num</th>
+      <th>eegfile</th>
+      <th>exp_version</th>
+      <th>experiment</th>
+      <th>intrusion</th>
+      <th>is_stim</th>
+      <th>item_name</th>
+      <th>item_num</th>
+      <th>...</th>
+      <th>recog_rt</th>
+      <th>recognized</th>
+      <th>rectime</th>
+      <th>rejected</th>
+      <th>serialpos</th>
+      <th>session</th>
+      <th>stim_list</th>
+      <th>stim_params</th>
+      <th>subject</th>
+      <th>type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1</td>
+      <td>X</td>
+      <td>-999</td>
+      <td></td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[]</td>
+      <td>R1389J</td>
+      <td>STIM_ARTIFACT_DETECTION_START</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5831</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>23781</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td></td>
+      <td>-1</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
+      <td>R1389J</td>
+      <td>STIM_ON</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>315125</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>X</td>
+      <td>-999</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>1</td>
+      <td>False</td>
+      <td>[]</td>
+      <td>R1389J</td>
+      <td>REC_END</td>
+    </tr>
+    <tr>
+      <th>1000</th>
+      <td>2515863</td>
+      <td>Flowers</td>
+      <td>9</td>
+      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
+      <td></td>
+      <td>catFR5</td>
+      <td>-999</td>
+      <td>False</td>
+      <td>LILY</td>
+      <td>112</td>
+      <td>...</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>-999</td>
+      <td>4</td>
+      <td>1</td>
+      <td>True</td>
+      <td>[]</td>
+      <td>R1389J</td>
+      <td>WORD</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div></div>
+</div>
 </div>
 </div>
 </div>
@@ -957,7 +1712,7 @@ parameter when loading the data.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.0',
+            VERSION:'0.4.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
