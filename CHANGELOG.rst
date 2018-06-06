@@ -1,6 +1,25 @@
 Changes
 =======
 
+Version 0.4.0
+-------------
+
+**2018-06-06**
+
+* Implemented custom TimeSeries representation that can be converted to PTSA
+  or MNE format
+* Implemented EEG reader with support for loading a full session or event-based
+  subset
+* Updated getting started guide and documentation
+
+
+Version 0.3.1
+-------------
+
+**2018-05-24**
+
+* Minor bugfix to allow conda package to build correctly
+
 Version 0.3.0
 -------------
 
