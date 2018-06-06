@@ -4,13 +4,19 @@
 API
 ===
 
-Readers
-========
+CML Reader
+==========
 
 .. autoclass:: cmlreaders.CMLReader
     :members:
 
+Custom Readers
+==============
+
 .. automodule:: cmlreaders.readers.readers
+    :members:
+
+.. automodule:: cmlreaders.readers.eeg
     :members:
 
 PathFinder

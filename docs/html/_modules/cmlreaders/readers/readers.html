@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.3.0 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.4.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.3
+                0.4
               </div>
             
           
@@ -168,7 +168,7 @@
            <span class="s1">&#39;BasicJSONReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EventReader&#39;</span><span class="p">,</span> <span class="s1">&#39;MontageReader&#39;</span><span class="p">,</span>
            <span class="s1">&#39;LocalizationReader&#39;</span><span class="p">,</span> <span class="s1">&#39;ElectrodeCategoriesReader&#39;</span><span class="p">,</span>
            <span class="s1">&#39;BaseReportDataReader&#39;</span><span class="p">,</span> <span class="s1">&#39;ReportSummaryDataReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;ClassifierContainerReader&#39;</span><span class="p">]</span>
+           <span class="s1">&#39;ClassifierContainerReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EEGMetaReader&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="TextReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader">[docs]</a><span class="k">class</span> <span class="nc">TextReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
@@ -253,10 +253,26 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;sources&#39;</span><span class="p">]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="BasicJSONReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BasicJSONReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EEGMetaReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EEGMetaReader">[docs]</a><span class="k">class</span> <span class="nc">EEGMetaReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads the ``sources.json`` file which describes metainfo about EEG data.</span>
+
+<span class="sd">    Returns a :class:`dict`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">]</span>
+    <span class="n">default_representation</span> <span class="o">=</span> <span class="s2">&quot;dict&quot;</span>
+
+<div class="viewcode-block" id="EEGMetaReader.as_dict"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EEGMetaReader.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">metafile</span><span class="p">:</span>
+            <span class="n">sources_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">metafile</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metafile</span>
+        <span class="k">return</span> <span class="n">sources_info</span></div></div>
 
 
 <div class="viewcode-block" id="EventReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader">[docs]</a><span class="k">class</span> <span class="nc">EventReader</span><span class="p">(</span><span class="n">BasicJSONReader</span><span class="p">):</span>
@@ -702,7 +718,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.3.0',
+            VERSION:'0.4.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

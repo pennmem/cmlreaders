@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; CML Data Readers 0.3.0 documentation</title>
+  <title>Introduction &mdash; CML Data Readers 0.4.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.3
+                0.4
               </div>
             
           
@@ -183,34 +183,35 @@
 <span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
-<p>CMLReaders is a library for easily finding, loading, and saving data types that
-are specific to the Computational Memory Lab at the University of Pennsylvania.
-It abtracts away the need to remember a multitude of file locations, prevents
+<p>CMLReaders is a library for easily finding, loading, and saving data that is
+specific to the Computational Memory Lab at the University of Pennsylvania.
+It abstracts away the need to remember a multitude of file locations, prevents
 the need for analysis code to be littered with try/except blocks, and unifies
-the API for loading and saving lab specific data. For more information on lab
-specific data types, see the Data Guide section.</p>
+the API for loading lab specific data. For more information on lab
+specific data types, see the <a class="reference internal" href="data_guide.html#data-guide"><span class="std std-ref">Data Guide</span></a> section.</p>
 </div>
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Easily find the location of a file on RHINO</li>
-<li>Supports loading  lab-specific data into memory in analysis-friendly formats</li>
+<li>Single API for loading data</li>
 <li>Convert from one file output format to another</li>
-<li>Single API for loading/saving data. No need to use data-specific readers</li>
 </ul>
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders</span></code> library contains a number of lab-specific data readers.
 However, for the vast majority of use cases, users should be able to use
-<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.CMLReader</span></code> to load and save data. All readers
-implement the interface defined in <code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code>,
-which includes methods to load data into memory as a dictionary, recarray, or
-Pandas dataframe. There is a save method corresponding to each of the loaders:
-Each format includes a method for saving, i.e. JSON, CSV, and HDF5. It is not
-guaranteed that all loading/saving methods will be implemented for each reader.
-Internally, the readers use <a class="reference internal" href="api.html#cmlreaders.PathFinder" title="cmlreaders.PathFinder"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.PathFinder</span></code></a> to identify where
-files are located.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.CMLReader</span></code> to load data.</p>
+<p>In situations where the user would like to load data into a non-default
+format or convert between different output formats, the individual readers can
+be used directly. All readers are built on top of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code>. These readers implement various
+as_x() methods to load data into memory using different representations such
+as a dictionary, dataframe, recarray, python class, etc. Readers also implement
+different to_y() methods for saving data to CSV, JSON, or HDF5 output formats.
+Different readers implement different loading and saving methods, so consult the
+<a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a> documentation for more information.</p>
 </div>
 </div>
 
@@ -256,7 +257,7 @@ files are located.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.3.0',
+            VERSION:'0.4.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
