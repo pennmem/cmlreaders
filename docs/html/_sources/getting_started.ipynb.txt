@@ -22,7 +22,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Finding Files on Rino\n",
+    "## Finding Files on Rhino\n",
     "\n",
     "The PathFinder helper class can be used to locate files on RHINO. It's sole responsibility is to locate and return the file path of the file. In many cases, a file could be located in more than one location. In these situations, PathFinder will search over the list of possible locations and return the path where the file is first found. Implicitly, this assumes that the order of the file locations is prioritized such that the preferred location comes before a fall-back location. "
    ]
@@ -37,8 +37,8 @@
     "rhino_root = \"/Volumes/RHINO/\"\n",
     "\n",
     "# Instantiate the finder object\n",
-    "finder = cml.PathFinder(subject=\"R1389J\", experiment=\"catFR5\", session=\"1\", \n",
-    "                        localization=\"0\", montage=\"0\", rootdir=rhino_root)"
+    "finder = cml.PathFinder(subject=\"R1389J\", experiment=\"catFR5\", session=1, \n",
+    "                        localization=0, montage=0, rootdir=rhino_root)"
    ]
   },
   {
@@ -48,6 +48,7 @@
     "### What can you request?\n",
     "\n",
     "The PathFinder has a few built-in properties to help you understand what data types are currently supported. Different file types require that the finder be instantiated with different fields. For example, if you are planning to request localization files, there is no need to specify an experiment, session, or montage. However, it is not a problem to specify too many fields, as any extraneous ones will simply be ignored if the data type does not require that it be given. The following properties are defined:\n",
+    "\n",
     "- requestable_files: All supported data types\n",
     "- localization_files: Files related to localization\n",
     "- montage_files: Files associated with a specific montage\n",
@@ -588,8 +589,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "reader = cml.CMLReader(subject=\"R1389J\", experiment=\"catFR5\", session=\"1\", \n",
-    "                       localization=\"0\", montage=\"0\", rootdir=rhino_root)"
+    "reader = cml.CMLReader(subject=\"R1389J\", experiment=\"catFR5\", session=1, \n",
+    "                       localization=0, montage=0, rootdir=rhino_root)"
    ]
   },
   {
@@ -997,275 +998,6 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Saving Data\n",
-    "\n",
-    "CMLReaders can also be used to save data in a different format from the original files. The three supported output formats are: CSV, JSON, and HDF5. However, not all file formats are supported by all of the readers. In particular, HDF5 output is only supported for a minimal number of data types."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 20,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "<div>\n",
-       "<style scoped>\n",
-       "    .dataframe tbody tr th:only-of-type {\n",
-       "        vertical-align: middle;\n",
-       "    }\n",
-       "\n",
-       "    .dataframe tbody tr th {\n",
-       "        vertical-align: top;\n",
-       "    }\n",
-       "\n",
-       "    .dataframe thead th {\n",
-       "        text-align: right;\n",
-       "    }\n",
-       "</style>\n",
-       "<table border=\"1\" class=\"dataframe\">\n",
-       "  <thead>\n",
-       "    <tr style=\"text-align: right;\">\n",
-       "      <th></th>\n",
-       "      <th>eegoffset</th>\n",
-       "      <th>category</th>\n",
-       "      <th>category_num</th>\n",
-       "      <th>eegfile</th>\n",
-       "      <th>exp_version</th>\n",
-       "      <th>experiment</th>\n",
-       "      <th>intrusion</th>\n",
-       "      <th>is_stim</th>\n",
-       "      <th>item_name</th>\n",
-       "      <th>item_num</th>\n",
-       "      <th>...</th>\n",
-       "      <th>recog_rt</th>\n",
-       "      <th>recognized</th>\n",
-       "      <th>rectime</th>\n",
-       "      <th>rejected</th>\n",
-       "      <th>serialpos</th>\n",
-       "      <th>session</th>\n",
-       "      <th>stim_list</th>\n",
-       "      <th>stim_params</th>\n",
-       "      <th>subject</th>\n",
-       "      <th>type</th>\n",
-       "    </tr>\n",
-       "  </thead>\n",
-       "  <tbody>\n",
-       "    <tr>\n",
-       "      <th>0</th>\n",
-       "      <td>-1</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>catFR5</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>False</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>...</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>1</td>\n",
-       "      <td>False</td>\n",
-       "      <td>[]</td>\n",
-       "      <td>R1389J</td>\n",
-       "      <td>STIM_ARTIFACT_DETECTION_START</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>1</th>\n",
-       "      <td>5831</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>catFR5</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>False</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>-1</td>\n",
-       "      <td>...</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>1</td>\n",
-       "      <td>False</td>\n",
-       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
-       "      <td>R1389J</td>\n",
-       "      <td>STIM_ON</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>2</th>\n",
-       "      <td>7790</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>catFR5</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>False</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>-1</td>\n",
-       "      <td>...</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>1</td>\n",
-       "      <td>False</td>\n",
-       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
-       "      <td>R1389J</td>\n",
-       "      <td>STIM_ON</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>3</th>\n",
-       "      <td>9786</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>catFR5</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>False</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>-1</td>\n",
-       "      <td>...</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>1</td>\n",
-       "      <td>False</td>\n",
-       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
-       "      <td>R1389J</td>\n",
-       "      <td>STIM_ON</td>\n",
-       "    </tr>\n",
-       "    <tr>\n",
-       "      <th>4</th>\n",
-       "      <td>11782</td>\n",
-       "      <td>X</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>catFR5</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>False</td>\n",
-       "      <td>NaN</td>\n",
-       "      <td>-1</td>\n",
-       "      <td>...</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>-999</td>\n",
-       "      <td>1</td>\n",
-       "      <td>False</td>\n",
-       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
-       "      <td>R1389J</td>\n",
-       "      <td>STIM_ON</td>\n",
-       "    </tr>\n",
-       "  </tbody>\n",
-       "</table>\n",
-       "<p>5 rows × 28 columns</p>\n",
-       "</div>"
-      ],
-      "text/plain": [
-       "   eegoffset category  category_num                          eegfile  \\\n",
-       "0         -1        X          -999                              NaN   \n",
-       "1       5831        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
-       "2       7790        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
-       "3       9786        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
-       "4      11782        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
-       "\n",
-       "   exp_version experiment  intrusion  is_stim item_name  item_num  \\\n",
-       "0          NaN     catFR5       -999    False         X      -999   \n",
-       "1          NaN     catFR5       -999    False       NaN        -1   \n",
-       "2          NaN     catFR5       -999    False       NaN        -1   \n",
-       "3          NaN     catFR5       -999    False       NaN        -1   \n",
-       "4          NaN     catFR5       -999    False       NaN        -1   \n",
-       "\n",
-       "               ...                recog_rt  recognized  rectime  rejected  \\\n",
-       "0              ...                    -999        -999     -999      -999   \n",
-       "1              ...                    -999        -999     -999      -999   \n",
-       "2              ...                    -999        -999     -999      -999   \n",
-       "3              ...                    -999        -999     -999      -999   \n",
-       "4              ...                    -999        -999     -999      -999   \n",
-       "\n",
-       "  serialpos session  stim_list  \\\n",
-       "0      -999       1      False   \n",
-       "1      -999       1      False   \n",
-       "2      -999       1      False   \n",
-       "3      -999       1      False   \n",
-       "4      -999       1      False   \n",
-       "\n",
-       "                                         stim_params  subject  \\\n",
-       "0                                                 []   R1389J   \n",
-       "1  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
-       "2  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
-       "3  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
-       "4  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
-       "\n",
-       "                            type  \n",
-       "0  STIM_ARTIFACT_DETECTION_START  \n",
-       "1                        STIM_ON  \n",
-       "2                        STIM_ON  \n",
-       "3                        STIM_ON  \n",
-       "4                        STIM_ON  \n",
-       "\n",
-       "[5 rows x 28 columns]"
-      ]
-     },
-     "execution_count": 20,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# JSON to CSV\n",
-    "event_reader.to_csv(\"task_events.csv\")\n",
-    "event_df = pd.read_csv(\"task_events.csv\")\n",
-    "event_df.head()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 21,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "dict_keys(['contact_name', 'contact_type', 'x', 'y', 'z', 'atlas', 'orient_to'])"
-      ]
-     },
-     "execution_count": 21,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# CSV to JSON\n",
-    "electrode_coord_reader = reader.get_reader('electrode_coordinates')\n",
-    "electrode_coord_reader.to_json('electrode_coordinates.json')\n",
-    "\n",
-    "with open(\"electrode_coordinates.json\") as f:\n",
-    "    electrode_coord_dict = json.load(f)\n",
-    "\n",
-    "electrode_coord_dict.keys()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
     "### Loading from a Custom Location\n",
     "\n",
     "Since locations are automatically determined based on the data type, if loading from a custom location, be sure to specify the file_type parameter when loading the data. One common use case for this functionality is that you need to load some data from your scratch or home directory that is in a format supported by CMLReaders. Another use case is that you may discover that data is residing in a location that is not known by CMLReaders. Instead of waiting until the next release of the package, you can use a custom file path to load the data, submit an issue on Github, and continue with you analysis. \n"
@@ -1273,7 +1005,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [
     {
@@ -1492,7 +1224,7 @@
        "[5 rows x 28 columns]"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 20,
      "metadata": {},
      "output_type": "execute_result"
     }
@@ -1502,6 +1234,475 @@
     "event_reader.to_json(\"task_events.json\")\n",
     "event_df = reader.load('task_events', file_path='task_events.json')\n",
     "event_df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Saving Data\n",
+    "\n",
+    "CMLReaders can also be used to save data in a different format from the original files. The three supported output formats are: CSV, JSON, and HDF5. However, not all file formats are supported by all of the readers. In particular, HDF5 output is only supported for a minimal number of data types."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>eegoffset</th>\n",
+       "      <th>category</th>\n",
+       "      <th>category_num</th>\n",
+       "      <th>eegfile</th>\n",
+       "      <th>exp_version</th>\n",
+       "      <th>experiment</th>\n",
+       "      <th>intrusion</th>\n",
+       "      <th>is_stim</th>\n",
+       "      <th>item_name</th>\n",
+       "      <th>item_num</th>\n",
+       "      <th>...</th>\n",
+       "      <th>recog_rt</th>\n",
+       "      <th>recognized</th>\n",
+       "      <th>rectime</th>\n",
+       "      <th>rejected</th>\n",
+       "      <th>serialpos</th>\n",
+       "      <th>session</th>\n",
+       "      <th>stim_list</th>\n",
+       "      <th>stim_params</th>\n",
+       "      <th>subject</th>\n",
+       "      <th>type</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>-1</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>catFR5</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>False</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>...</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>1</td>\n",
+       "      <td>False</td>\n",
+       "      <td>[]</td>\n",
+       "      <td>R1389J</td>\n",
+       "      <td>STIM_ARTIFACT_DETECTION_START</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>5831</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>catFR5</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>False</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>-1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>1</td>\n",
+       "      <td>False</td>\n",
+       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
+       "      <td>R1389J</td>\n",
+       "      <td>STIM_ON</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>7790</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>catFR5</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>False</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>-1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>1</td>\n",
+       "      <td>False</td>\n",
+       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
+       "      <td>R1389J</td>\n",
+       "      <td>STIM_ON</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>9786</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>catFR5</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>False</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>-1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>1</td>\n",
+       "      <td>False</td>\n",
+       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
+       "      <td>R1389J</td>\n",
+       "      <td>STIM_ON</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>11782</td>\n",
+       "      <td>X</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>catFR5</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>False</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>-1</td>\n",
+       "      <td>...</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>-999</td>\n",
+       "      <td>1</td>\n",
+       "      <td>False</td>\n",
+       "      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>\n",
+       "      <td>R1389J</td>\n",
+       "      <td>STIM_ON</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 28 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   eegoffset category  category_num                          eegfile  \\\n",
+       "0         -1        X          -999                              NaN   \n",
+       "1       5831        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
+       "2       7790        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
+       "3       9786        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
+       "4      11782        X          -999  R1389J_catFR5_1_28Feb18_1552.h5   \n",
+       "\n",
+       "   exp_version experiment  intrusion  is_stim item_name  item_num  \\\n",
+       "0          NaN     catFR5       -999    False         X      -999   \n",
+       "1          NaN     catFR5       -999    False       NaN        -1   \n",
+       "2          NaN     catFR5       -999    False       NaN        -1   \n",
+       "3          NaN     catFR5       -999    False       NaN        -1   \n",
+       "4          NaN     catFR5       -999    False       NaN        -1   \n",
+       "\n",
+       "               ...                recog_rt  recognized  rectime  rejected  \\\n",
+       "0              ...                    -999        -999     -999      -999   \n",
+       "1              ...                    -999        -999     -999      -999   \n",
+       "2              ...                    -999        -999     -999      -999   \n",
+       "3              ...                    -999        -999     -999      -999   \n",
+       "4              ...                    -999        -999     -999      -999   \n",
+       "\n",
+       "  serialpos session  stim_list  \\\n",
+       "0      -999       1      False   \n",
+       "1      -999       1      False   \n",
+       "2      -999       1      False   \n",
+       "3      -999       1      False   \n",
+       "4      -999       1      False   \n",
+       "\n",
+       "                                         stim_params  subject  \\\n",
+       "0                                                 []   R1389J   \n",
+       "1  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
+       "2  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
+       "3  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
+       "4  [{'amplitude': 500.0, 'anode_label': 'STG6', '...   R1389J   \n",
+       "\n",
+       "                            type  \n",
+       "0  STIM_ARTIFACT_DETECTION_START  \n",
+       "1                        STIM_ON  \n",
+       "2                        STIM_ON  \n",
+       "3                        STIM_ON  \n",
+       "4                        STIM_ON  \n",
+       "\n",
+       "[5 rows x 28 columns]"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# JSON to CSV\n",
+    "event_reader.to_csv(\"task_events.csv\")\n",
+    "event_df = pd.read_csv(\"task_events.csv\")\n",
+    "event_df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dict_keys(['contact_name', 'contact_type', 'x', 'y', 'z', 'atlas', 'orient_to'])"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# CSV to JSON\n",
+    "electrode_coord_reader = reader.get_reader('electrode_coordinates')\n",
+    "electrode_coord_reader.to_json('electrode_coordinates.json')\n",
+    "\n",
+    "with open(\"electrode_coordinates.json\") as f:\n",
+    "    electrode_coord_dict = json.load(f)\n",
+    "\n",
+    "electrode_coord_dict.keys()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Examples"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Loading Multiple Sessions\n",
+    "\n",
+    "CMLReaders is currently designed for loading events one session at a time. This may change in the future, but in the interim, it is straightforward to load multiple sessions-worth of events. Although it can be done more succinctly using a list comprehension, we will use a traditional for loop for the sake of clarity."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 2, 3, 9])"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Find all sessions of FR6 that subject R1409D completed\n",
+    "sessions_completed = r1_data[(r1_data['subject'] == 'R1409D') & \n",
+    "                             (r1_data['experiment'] == 'FR6')]['session'].unique()\n",
+    "sessions_completed"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4527"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "all_events = []\n",
+    "for session in sessions_completed:\n",
+    "    sess_events = cml.CMLReader(subject=\"R1409D\", experiment=\"FR6\", session=session, \n",
+    "                                localization=0, montage=0, rootdir=rhino_root).load('task_events')\n",
+    "    all_events.append(sess_events)\n",
+    "\n",
+    "all_sessions_df = pd.concat(all_events)\n",
+    "len(all_sessions_df)\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Loading EEG"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "reader = cml.CMLReader(subject='R1111M', experiment='FR1', session=0, rootdir=rhino_root)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Full Session"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(1, 100, 1623159)"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "full_session_eeg = reader.load_eeg()\n",
+    "full_session_eeg.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### EEG from Events"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "events = reader.load('events')\n",
+    "word_events = events[events['type'] == 'WORD']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(288, 100, 50)"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "word_event_eeg = reader.load_eeg(events=word_events, rel_start=0, rel_stop=100)\n",
+    "word_event_eeg.shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Converting EEG Representation\n",
+    "\n",
+    "By default, CMLReaders uses a custom representation of time series data. However, we provide two utility methods for converting this representation to a format that is understood by PTSA and MNE, since these are common libraries for interacting with EEG data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "ptsa.data.TimeSeriesX.TimeSeriesX"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ptsa_eeg = word_event_eeg.to_ptsa()\n",
+    "type(ptsa_eeg)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mne.epochs.EpochsArray"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mne_eeg = word_event_eeg.to_mne()\n",
+    "type(mne_eeg)"
    ]
   }
  ],

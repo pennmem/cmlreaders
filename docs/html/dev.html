@@ -90,6 +90,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-search-paths">Adding new search paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-data-types">Adding new data types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-readers">Adding new readers</a></li>
 </ul>
@@ -179,11 +180,32 @@
 </style>
 <div class="section" id="developer-s-guide">
 <h1>Developer’s Guide<a class="headerlink" href="#developer-s-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="adding-new-search-paths">
+<h2>Adding new search paths<a class="headerlink" href="#adding-new-search-paths" title="Permalink to this headline">¶</a></h2>
+<p>All of the file path information is contained in the <code class="docutils literal notranslate"><span class="pre">rhino_paths</span></code> dictionary
+contained within <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.constants</span></code>. The keys of the dictionary are the
+supported data types and the values are python lists whose elements correspond
+to the possible locations of where the data can be found. Paths within the list
+should appear in the preferred search order since
+<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.path_finder.PathFinder</span></code> is set up to return the first path
+where an existing file is found. When adding a new search path, place the
+new path in the desired location within the list of search paths.</p>
+</div>
 <div class="section" id="adding-new-data-types">
 <h2>Adding new data types<a class="headerlink" href="#adding-new-data-types" title="Permalink to this headline">¶</a></h2>
 <p>To add support for a new data type, first add the data type shortcut name
 to <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.constants</span></code> with a list of possible locations on rhino
-as the value. Ideally, a reader already exists that can manage the new data
+as the value. Next, add this data type to the appropriate list:</p>
+<ul class="simple">
+<li>subject_files</li>
+<li>localization_files</li>
+<li>montage_files</li>
+<li>session_files</li>
+<li>host_pc_files</li>
+<li>used_classifier_files</li>
+</ul>
+<p>These lists are used by <code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.path_finder.PathFinder</span></code>.</p>
+<p>Ideally, a reader already exists that can manage the new data
 type. If this is the case, add the new data type to the <code class="docutils literal notranslate"><span class="pre">data_types</span></code> class
 member of the reader class that should be used. If a new reader is required,
 see the following section.</p>
