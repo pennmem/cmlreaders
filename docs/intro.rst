@@ -35,6 +35,3 @@ different to_y() methods for saving data to CSV, JSON, or HDF5 output formats.
 Different readers implement different loading and saving methods, so consult the
 :ref:`api` documentation for more information.
 
-See the :ref:`getting_started` section for some examples of common use cases.
-
-
