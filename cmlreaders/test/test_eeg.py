@@ -3,7 +3,6 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 
-import numpy as np
 from numpy.testing import assert_equal
 import pandas as pd
 
