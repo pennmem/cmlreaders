@@ -69,6 +69,14 @@ class TestTimeSeries:
         with pytest.raises(ValueError):
             TimeSeries(data, 1000, channels=['a', 'b'])
 
+    def test_resample(self):
+        x = np.linspace(0, 4 * np.pi, 400)
+        data = np.sin([x, x])
+        ts = TimeSeries(data, 100)
+        new_ts = ts.resample(200)
+        assert len(new_ts.time) == 2 * len(ts.time)
+        assert (new_ts.time[1] - new_ts.time[0]) * 2 == (ts.time[1] - ts.time[0])
+
     @pytest.mark.parametrize("dim", ["events", "time"])
     def test_concatenate(self, dim):
         n_channels = 32
