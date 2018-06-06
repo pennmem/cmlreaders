@@ -9,20 +9,20 @@ from cmlreaders.timeseries import TimeSeries
 
 class TestTimeSeries:
 
-    @pytest.mark.parametrize("tstart",[0,1])
-    def test_make_time_array_tstart(self,tstart):
+    @pytest.mark.parametrize("tstart", [0, 1])
+    def test_make_time_array_tstart(self, tstart):
         data = np.random.random((1, 32, 2))
         rate = 1000
 
-        ts = TimeSeries(data, rate,tstart=tstart)
-        assert_equal([tstart, tstart+1], ts.time)
+        ts = TimeSeries(data, rate, tstart=tstart)
+        assert_equal([tstart, tstart + 1], ts.time)
 
-    @pytest.mark.parametrize("samplerate",[50,1000,5000])
-    def test_make_time_array_samplerate(self,samplerate):
-        data=np.random.random((1,1,100))
-        ts = TimeSeries(data,samplerate=samplerate)
+    @pytest.mark.parametrize("samplerate", [50, 1000, 5000])
+    def test_make_time_array_samplerate(self, samplerate):
+        data = np.random.random((1, 1, 100))
+        ts = TimeSeries(data, samplerate=samplerate)
         assert len(ts.time) == ts.data.shape[-1]
-        assert_equal(ts.time[1]-ts.time[0], 1000./samplerate)
+        assert_equal(ts.time[1] - ts.time[0], 1000. / samplerate)
 
     @pytest.mark.parametrize("data", [
         np.random.random((1, 32, 100)),
