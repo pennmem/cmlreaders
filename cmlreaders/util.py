@@ -13,6 +13,6 @@ def get_root_dir(path: Union[str, Path] = None) -> str:
 
     """
     if path is not None:
-        return path
+        return os.path.expanduser(path)
 
-    return os.environ.get("CML_ROOT", "/")
+    return os.path.expanduser(os.environ.get("CML_ROOT", "/"))
