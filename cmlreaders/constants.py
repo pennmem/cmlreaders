@@ -84,6 +84,9 @@ rhino_paths = {
     'session_log': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.log',
     ],
+    'session_json': [
+        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.json',
+    ],
     'ramulator_session_folder': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*',
     ],
@@ -154,6 +157,7 @@ session_files = [
     'all_pairs',
     'experiment_log',
     'session_log',
+    'session_json',
     'event_log',
     'experiment_config',
     'raw_eeg',
