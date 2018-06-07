@@ -77,7 +77,6 @@ class TestCMLReader:
         with pytest.raises(NotImplementedError):
             reader.load("fake_data")
 
-    @pytest.mark.only
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,experiment,session", [
         ("R1354E", "PS4_FR", 1),

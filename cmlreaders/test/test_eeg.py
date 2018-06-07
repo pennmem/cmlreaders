@@ -3,6 +3,7 @@ from pathlib import Path
 from pkg_resources import resource_filename
 import pytest
 
+import numpy as np
 from numpy.testing import assert_equal
 import pandas as pd
 
@@ -10,7 +11,8 @@ from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
     events_to_epochs, milliseconds_to_events, milliseconds_to_samples,
-    RamulatorHDF5Reader, samples_to_milliseconds, SplitEEGReader,
+    NumpyEEGReader, RamulatorHDF5Reader, samples_to_milliseconds,
+    SplitEEGReader,
 )
 
 
@@ -75,7 +77,6 @@ def test_events_to_epochs_simple():
     assert epochs[1][1] == 210
 
 
-@pytest.mark.rhino
 class TestFileReaders:
     def get_finder(self, subject, experiment, session, rootdir):
         return PathFinder(subject, experiment, session, rootdir=rootdir)
@@ -93,6 +94,17 @@ class TestFileReaders:
 
         return basename, sample_rate, dtype, filename
 
+    @pytest.mark.only
+    def test_npy_reader(self):
+        filename = resource_filename("cmlreaders.test.data", "eeg.npy")
+        reader = NumpyEEGReader(filename, np.int16, [(0, -1)])
+        ts = reader.read()
+        assert ts.shape == (1, 32, 1000)
+
+        orig = np.load(filename)
+        assert_equal(orig, ts[0])
+
+    @pytest.mark.rhino
     def test_split_eeg_reader(self, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta('R1111M', 'FR1', 0, rhino_root)
 
@@ -100,11 +112,12 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, sample_rate, dtype, epochs)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs)
         ts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
 
+    @pytest.mark.rhino
     def test_ramulator_hdf5_reader(self, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta('R1386T', 'FR1', 0, rhino_root)
 
@@ -112,7 +125,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = RamulatorHDF5Reader(filename, sample_rate, dtype, epochs)
+        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs)
         ts = eeg_reader.read()
 
         num_expected_channels = 214

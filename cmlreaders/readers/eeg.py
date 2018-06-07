@@ -118,8 +118,6 @@ class BaseEEGReader(ABC):
     ----------
     filename
         Base name for EEG file(s) including absolute path
-    sample_rate
-        Sample rate in 1/s
     dtype
         numpy dtype to use for reading data
     epochs
@@ -135,11 +133,10 @@ class BaseEEGReader(ABC):
     array with dimensions (epochs x channels x time).
 
     """
-    def __init__(self, filename: str, sample_rate: Union[int, float],
-                 dtype: Type[np.dtype], epochs: List[Tuple[int, int]],
+    def __init__(self, filename: str, dtype: Type[np.dtype],
+                 epochs: List[Tuple[int, int]],
                  channels: Optional[List[int]] = None,):
         self.filename = filename
-        self.sample_rate = sample_rate
         self.dtype = dtype
 
         self.epochs = epochs
@@ -151,6 +148,18 @@ class BaseEEGReader(ABC):
     @abstractmethod
     def read(self) -> np.ndarray:
         """Read the data."""
+
+
+class NumpyEEGReader(BaseEEGReader):
+    """Read EEG data stored in Numpy's .npy format."""
+    def read(self) -> np.ndarray:
+        if self.channels is not None:
+            raise NotImplementedError("FIXME: we can only read all channels now")
+
+        raw = np.load(self.filename)
+        data = np.array([raw[:, e[0]:(e[1] if e[1] > 0 else None)]
+                         for e in self.epochs])
+        return data
 
 
 class SplitEEGReader(BaseEEGReader):
@@ -276,8 +285,10 @@ class EEGReader(BaseCMLReader):
     @staticmethod
     def _get_reader_class(basename: str) -> Type[BaseEEGReader]:
         """Return the class to use for loading EEG data."""
-        if basename.endswith('.h5'):
+        if basename.endswith(".h5"):
             return RamulatorHDF5Reader
+        elif basename.endswith(".npy"):
+            return NumpyEEGReader
         else:
             return SplitEEGReader
 
@@ -327,7 +338,6 @@ class EEGReader(BaseCMLReader):
             raise ValueError("Epoch lengths are not all the same!")
 
         reader = reader_class(filename=eeg_filename,
-                              sample_rate=sample_rate,
                               dtype=dtype,
                               epochs=epochs)  # TODO: channels
         data = reader.read()
