@@ -1,7 +1,8 @@
-import os
-import pytest
 import functools
+import os
 from pkg_resources import resource_filename
+import pytest
+
 from cmlreaders import CMLReader
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -75,3 +76,14 @@ class TestCMLReader:
                            session=0, montage=0)
         with pytest.raises(NotImplementedError):
             reader.load("fake_data")
+
+    @pytest.mark.only
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ("R1354E", "PS4_FR", 1),
+    ])
+    def test_ps4_events(self, subject, experiment, session, rhino_root):
+        reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
+        events = reader.load("events")
+        ps4_events = reader.load("ps4_events")
+        assert all(events == ps4_events)

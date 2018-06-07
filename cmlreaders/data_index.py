@@ -6,6 +6,7 @@ from typing import Dict
 import pandas as pd
 
 from .path_finder import PathFinder
+from .util import get_root_dir
 
 
 def read_index(path: str) -> Dict:
@@ -35,7 +36,7 @@ def _index_dict_to_dataframe(data: Dict) -> pd.DataFrame:
     return df
 
 
-def get_data_index(kind: str = "all", rootdir: str = "/") -> pd.DataFrame:
+def get_data_index(kind: str = "all", rootdir: str = None) -> pd.DataFrame:
     """Get an index to all available data.
 
     Parameters
@@ -58,7 +59,7 @@ def get_data_index(kind: str = "all", rootdir: str = "/") -> pd.DataFrame:
     if kind not in kinds:
         raise ValueError("Unknown data index: " + kind)
 
-    finder = PathFinder(rootdir=rootdir)
+    finder = PathFinder(rootdir=get_root_dir(rootdir))
     data = []
 
     if kind == "ltp" or kind == "all":
