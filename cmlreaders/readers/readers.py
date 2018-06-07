@@ -11,6 +11,7 @@ from cmlreaders.exc import (
 
 
 __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
+           'SessionJSONLogReader',
            'BasicJSONReader', 'EventReader', 'MontageReader',
            'LocalizationReader', 'ElectrodeCategoriesReader',
            'BaseReportDataReader', 'ReportSummaryDataReader',
