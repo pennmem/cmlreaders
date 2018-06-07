@@ -118,8 +118,6 @@ class BaseEEGReader(ABC):
     ----------
     filename
         Base name for EEG file(s) including absolute path
-    sample_rate
-        Sample rate in 1/s
     dtype
         numpy dtype to use for reading data
     epochs
@@ -135,11 +133,10 @@ class BaseEEGReader(ABC):
     array with dimensions (epochs x channels x time).
 
     """
-    def __init__(self, filename: str, sample_rate: Union[int, float],
-                 dtype: Type[np.dtype], epochs: List[Tuple[int, int]],
+    def __init__(self, filename: str, dtype: Type[np.dtype],
+                 epochs: List[Tuple[int, int]],
                  channels: Optional[List[int]] = None,):
         self.filename = filename
-        self.sample_rate = sample_rate
         self.dtype = dtype
 
         self.epochs = epochs
@@ -341,7 +338,6 @@ class EEGReader(BaseCMLReader):
             raise ValueError("Epoch lengths are not all the same!")
 
         reader = reader_class(filename=eeg_filename,
-                              sample_rate=sample_rate,
                               dtype=dtype,
                               epochs=epochs)  # TODO: channels
         data = reader.read()

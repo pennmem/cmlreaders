@@ -97,7 +97,7 @@ class TestFileReaders:
     @pytest.mark.only
     def test_npy_reader(self):
         filename = resource_filename("cmlreaders.test.data", "eeg.npy")
-        reader = NumpyEEGReader(filename, 1000, np.int16, [(0, -1)])
+        reader = NumpyEEGReader(filename, np.int16, [(0, -1)])
         ts = reader.read()
         assert ts.shape == (1, 32, 1000)
 
@@ -112,7 +112,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, sample_rate, dtype, epochs)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs)
         ts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
@@ -125,7 +125,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = RamulatorHDF5Reader(filename, sample_rate, dtype, epochs)
+        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs)
         ts = eeg_reader.read()
 
         num_expected_channels = 214
