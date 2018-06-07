@@ -112,14 +112,13 @@ class SessionJSONLogReader(BaseCMLReader):
     data_types = ['session_json']
 
     def as_dataframe(self):
-        df = pd.read_json(self._file_path,lines=True)
-        contents_dict = [{col:df.iloc[i][col] for col in df.columns}
-                         for i in df.index ]
+        df = pd.read_json(self._file_path, lines=True)
+        contents_dict = [{col: df.iloc[i][col] for col in df.columns}
+                         for i in df.index]
         df_normalized = pd.io.json.json_normalize(contents_dict)
-        fixed_columns = {col:col.replace(' ','_').lower()
+        fixed_columns = {col: col.replace(' ', '_').lower()
                          for col in df_normalized.columns}
         return df_normalized.rename(columns=fixed_columns)
-
 
 
 class EEGMetaReader(BaseCMLReader):
