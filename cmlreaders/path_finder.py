@@ -8,6 +8,7 @@ from typing import Optional
 
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files
+from .util import get_root_dir
 
 __all__ = ['PathFinder']
 
@@ -27,7 +28,7 @@ class PathFinder(object):
                  session: Optional[int] = None,
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
-                 rootdir: Optional[str] = '/'):
+                 rootdir: Optional[str] = None):
         """ Instantiates a PathFind object using the known information
 
         Parameters
@@ -38,7 +39,8 @@ class PathFinder(object):
         Keyword Arguments
         -----------------
         rootdir: str
-            Root directory for RHINO
+            Root directory for RHINO. Default: use ``CML_ROOT`` environment
+            variable or ``"/"`` if not defined.
         experiment: str or None
             RAM experiment name. If none, then the data is assumed to be
             constant across experiments
@@ -49,9 +51,10 @@ class PathFinder(object):
             Localization number
         montage: int or None
             Montage number
+
         """
         self.subject = subject
-        self.rootdir = os.path.expanduser(rootdir)
+        self.rootdir = get_root_dir(rootdir)
         self.experiment = experiment
         self.session = str(session)
 
