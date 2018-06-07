@@ -128,7 +128,7 @@ class EventReader(BasicJSONReader):
 
     """
 
-    data_types = ['all_events', 'math_events', 'task_events', 'events']
+    data_types = ['all_events', 'math_events', 'task_events', 'events', 'ps4_events']
 
     def as_dataframe(self):
         df = super().as_dataframe()

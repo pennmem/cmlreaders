@@ -78,8 +78,11 @@ class CMLReader(object):
                                       "requested file type")
 
         # By default we want task + math events when requesting events
-        if data_type == 'events':
-            data_type = 'all_events'
+        if data_type == "events":
+            if not self.experiment.startswith("PS4"):
+                data_type = "all_events"
+            else:
+                data_type = "ps4_events"
 
         return self.readers[data_type](data_type,
                                        subject=self.subject,
