@@ -153,6 +153,18 @@ class BaseEEGReader(ABC):
         """Read the data."""
 
 
+class NumpyEEGReader(BaseEEGReader):
+    """Read EEG data stored in Numpy's .npy format."""
+    def read(self) -> np.ndarray:
+        if self.channels is not None:
+            raise NotImplementedError("FIXME: we can only read all channels now")
+
+        raw = np.load(self.filename)
+        data = np.array([raw[:, e[0]:(e[1] if e[1] > 0 else None)]
+                         for e in self.epochs])
+        return data
+
+
 class SplitEEGReader(BaseEEGReader):
     """Read so-called split EEG data (that is, raw binary data stored as one
     channel per file).
@@ -276,8 +288,10 @@ class EEGReader(BaseCMLReader):
     @staticmethod
     def _get_reader_class(basename: str) -> Type[BaseEEGReader]:
         """Return the class to use for loading EEG data."""
-        if basename.endswith('.h5'):
+        if basename.endswith(".h5"):
             return RamulatorHDF5Reader
+        elif basename.endswith(".npy"):
+            return NumpyEEGReader
         else:
             return SplitEEGReader
 
