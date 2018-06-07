@@ -3,6 +3,7 @@ import pandas as pd
 
 from . import readers
 from .exc import IncompatibleParametersError
+from .util import get_root_dir
 
 
 __all__ = ['CMLReader']
@@ -33,14 +34,14 @@ class CMLReader(object):
                  session: Optional[int] = None,
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
-                 rootdir: Optional[str] = "/"):
+                 rootdir: Optional[str] = None):
 
         self.subject = subject
         self.experiment = experiment
         self.session = session
         self.localization = localization
         self.montage = montage
-        self.rootdir = rootdir
+        self.rootdir = get_root_dir(rootdir)
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
 
     def get_reader(self, data_type, file_path=None):
