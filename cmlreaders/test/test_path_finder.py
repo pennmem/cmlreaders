@@ -57,7 +57,7 @@ def test_invalid_file_request(current_files_subject):
 
 
 @pytest.mark.rhino
-@pytest.mark.parametrize("filetype",["pairs", "voxel_coordinates", "jacksheet",
+@pytest.mark.parametrize("filetype", ["pairs", "voxel_coordinates", "jacksheet",
                                      "ramulator_session_folder"])
 def test_nonzero_localization_lookup(non_zero_localization_subject, filetype):
     path = non_zero_localization_subject.find(filetype)
