@@ -135,8 +135,8 @@ class PathFinder(object):
         if (data_type in host_pc_files) or (data_type in used_classifier_files):
             folder_wildcard = self._paths['ramulator_session_folder'][0]
             ramulator_session_folder = folder_wildcard.format(
-                subject=subject_localization, experiment=self.experiment,
-                session=self.session)
+                subject=self.subject, subject_localization=subject_localization,
+                experiment=self.experiment, session=self.session)
 
             timestamped_dir = self._get_most_recent_ramulator_folder(
                 ramulator_session_folder)

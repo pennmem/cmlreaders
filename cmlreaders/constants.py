@@ -79,28 +79,28 @@ rhino_paths = {
 
     # Ramulator-related information
     'experiment_log': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/experiment.log',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/experiment.log',
     ],
     'session_log': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.log',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/session.log',
     ],
     'ramulator_session_folder': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/*',
     ],
 
     # There can be multiple timestamped folders for the host pc files for when
     # a session is restarted
     'event_log': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/event_log.json',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/event_log.json',
     ],
     'experiment_config': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/experiment_config.json',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/experiment_config.json',
     ],
     'raw_eeg': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/eeg_timeseries.h5',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/eeg_timeseries.h5',
     ],
     'odin_config': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}_*.csv',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}_*.csv',
     ],
 
     # There can be multiple classifiers if artifcat detection was enabled and
@@ -108,16 +108,16 @@ rhino_paths = {
     # general, the files should be listed in order of preference so that the
     # first file found is returned
     'used_classifier': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/{subject}-classifier.zip',
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}-classifier.zip',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/{subject}-classifier.zip',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}-classifier.zip',
     ],
     'excluded_pairs': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/excluded_pairs.json',
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/excluded_pairs.json'
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/excluded_pairs.json',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/excluded_pairs.json'
     ],
     'all_pairs': [
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/pairs.json',
-        'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/pairs.json'
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/pairs.json',
+        'data10/RAM/subjects/{subject_localization}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/pairs.json'
     ],
 }
 
