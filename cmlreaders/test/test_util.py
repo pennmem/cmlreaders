@@ -2,7 +2,7 @@ from contextlib import contextmanager
 import os
 import pytest
 
-from cmlreaders.util import get_root_dir
+from cmlreaders.util import get_root_dir, is_rerefable
 
 
 @contextmanager
@@ -32,3 +32,14 @@ def test_get_root_dir(path, with_env_var):
                 assert root == "/"
             else:
                 assert root == path
+
+
+@pytest.mark.rhino
+@pytest.mark.parametrize("subject,experiment,session,result", [
+    ("R1361C", "FR1", 0, False),
+    ("R1353N", "PAL1", 0, True),
+    ("R1111M", "catFR1", 0, True),
+    ("R1409D", "FR6", 0, False),
+])
+def test_isrerefable(subject, experiment, session, result, rhino_root):
+    assert is_rerefable(subject, experiment, session, rootdir=rhino_root) == result
