@@ -59,10 +59,10 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         # it is stored on rhino: sometimes it is split into one file per channel
         # and other times it is a single HDF5 or EDF/BDF file.
         if file_path is None and data_type != 'eeg':
-            finder = PathFinder(subject=subject, experiment=experiment,
-                                session=session, localization=localization,
-                                montage=montage, rootdir=rootdir)
-            self._file_path = finder.find(data_type)
+            self.finder = PathFinder(subject=subject, experiment=experiment,
+                                     session=session, localization=localization,
+                                     montage=montage, rootdir=rootdir)
+            self._file_path = self.finder.find(data_type)
 
         self.subject = subject
         self.experiment = experiment

@@ -1,13 +1,16 @@
 import json
+from pathlib import Path
+from typing import List
+
 import pandas as pd
 from pandas.io.json import json_normalize
-from typing import List
 
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
     UnsupportedExperimentError
 )
+from cmlreaders.util import is_rerefable
 
 
 __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
@@ -117,7 +120,7 @@ class EEGMetaReader(BaseCMLReader):
     def as_dict(self):
         with open(self._file_path, 'r') as metafile:
             sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = metafile
+            sources_info['path'] = self._file_path
         return sources_info
 
 
@@ -149,19 +152,54 @@ class MontageReader(BaseCMLReader):
     @staticmethod
     def _flatten_row(data: dict, labels: List[str], i: int) -> pd.DataFrame:
         entry = data[labels[i]].copy()
-        atlases = entry.pop('atlases')
-        atlas_row = json_normalize(atlases)
-        atlas_row.index = [i]
-        row = pd.concat([pd.DataFrame(entry, index=[i]), atlas_row], axis=1)
-        return row
+        try:
+            atlases = entry.pop('atlases')
+            atlas_row = json_normalize(atlases)
+            atlas_row.index = [i]
+            row = pd.concat([pd.DataFrame(entry, index=[i]), atlas_row], axis=1)
+            return row
+        except KeyError:
+            # Ramulator pairs.json files are more minimal and do not include
+            # the atlas locations
+            return pd.DataFrame(entry, index=[i])
 
     def as_dataframe(self):
         from concurrent.futures import ProcessPoolExecutor as Pool
         from functools import partial
         from multiprocessing import cpu_count
 
-        with open(self._file_path) as f:
-            data = json.load(f)[self.subject][self.data_type]
+        if self.data_type == "pairs":
+            try:
+                rerefable = is_rerefable(self.subject, self.experiment,
+                                         self.session, self.localization,
+                                         self.montage, self.rootdir)
+            except FileNotFoundError:
+                # We get this error when testing with file_path specified, so
+                # don't worry about it here.
+                import warnings
+                warnings.warn(
+                    "Couldn't determine if EEG data can be rereferenced. "
+                    "This can happen if you didn't specify an experiment and/or"
+                    " session, or if you're passing file_path explicitly. "
+                    "Proceeding with the assumption that rereferencing is "
+                    "possible.", UserWarning
+                )
+                rerefable = True
+        else:
+            rerefable = True  # for contacts, we don't care about this
+
+        if rerefable:
+            with open(self._file_path) as f:
+                data = json.load(f)[self.subject][self.data_type]
+        else:
+            # look for the pairs.json file actually used by Ramulator
+            ramulator_config_path = self.finder.find("experiment_config")
+            with open(ramulator_config_path) as f:
+                montage_path = Path(ramulator_config_path).parent.joinpath(
+                    json.load(f)["montage_file"]
+                )
+                with open(montage_path) as montage_file:
+                    data = json.load(montage_file)[self.subject][self.data_type]
 
         labels = [l for l in data]
 
@@ -183,11 +221,13 @@ class MontageReader(BaseCMLReader):
 
         # ensure that contact and label appear first
         names = df.columns
-        if self.data_type == 'contacts':
-            first = ['contact']
+        if self.data_type == "contacts":
+            first = ["contact"]
         else:
-            first = ['contact_1', 'contact_2']
-        first += ['label']
+            first = ["contact_1", "contact_2"]
+        if "label" in df.columns:
+            # Ramulator pairs.json files don't necessarily include this
+            first += ["label"]
         df = df[first + [name for name in names if name not in first]]
 
         # sort by contact

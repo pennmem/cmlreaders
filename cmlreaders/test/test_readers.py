@@ -216,6 +216,17 @@ class TestMontageReader:
             assert 'contact_1' in df.columns
             assert 'contact_2' in df.columns
 
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,expected_pairs", [
+        ("R1111M", 141),
+        ("R1405E", 158),
+    ])
+    def test_load_pairs(self, subject, expected_pairs, rhino_root):
+        reader = MontageReader("pairs", subject=subject, experiment="FR1",
+                               session=0, rootdir=rhino_root)
+        df = reader.load()
+        assert len(df) == expected_pairs
+
 
 class TestLocalizationReader:
     def test_load(self):
