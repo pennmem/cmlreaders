@@ -117,7 +117,7 @@ class EEGMetaReader(BaseCMLReader):
     def as_dict(self):
         with open(self._file_path, 'r') as metafile:
             sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = metafile
+            sources_info['path'] = self._file_path
         return sources_info
 
 
