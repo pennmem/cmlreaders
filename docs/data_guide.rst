@@ -30,7 +30,8 @@ The following "levels" are defined:
   electrodes, this is considered a new localization. Localizations are 0-indexed.
   Data at this level changes whenever there is a new localization,
 - montage: Any change to a subject's montage results in a new montage number.
-  Note: Montage numbers do not reset in the case of a new localization.
+  Montage changes can occur when when the set of contacts used for recording
+  changes. Note: Montage numbers do not reset in the case of a new localization.
 - session: Data that is unique to a single session of a particular experiment.
   This is the lowest level of data stored since localization/montage/etc. are
   fixed for the duration of a session.

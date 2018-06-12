@@ -16,13 +16,6 @@ def current_files_subject(rhino_root):
 
 
 @pytest.fixture()
-def non_zero_localization_subject(rhino_root):
-    finder = PathFinder("R1405E", rootdir=rhino_root, experiment='FR1',
-                        session=1, localization=1, montage=1)
-    return finder
-
-
-@pytest.fixture()
 def legacy_files_subject(rhino_root):
     finder = PathFinder('R1111M', rootdir=rhino_root, localization=0)
     return finder
@@ -57,8 +50,17 @@ def test_invalid_file_request(current_files_subject):
 
 
 @pytest.mark.rhino
-def test_nonzero_localization_lookup(non_zero_localization_subject):
-    path = non_zero_localization_subject.find("pairs")
+@pytest.mark.parametrize("subject,localization,montage", [
+    ('R1006P', 0, 0),  # standard case
+    ('R1006P', 0, 1),  # re-montage without localization change
+    ('R1024E', 0, 0),
+    ('R1024E', 1, 1),  # localization change resulting in montage change
+    ('R1024E', 1, 2),  # montage change after a re-implant
+])
+def test_montage_file_lookup(subject, localization, montage, rhino_root):
+    finder = PathFinder(subject, localization=localization, montage=montage,
+                        rootdir=rhino_root)
+    path = finder.find('pairs')
     assert path is not None
 
 
