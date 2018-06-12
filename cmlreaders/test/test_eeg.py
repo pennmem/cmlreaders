@@ -116,6 +116,25 @@ class TestFileReaders:
         ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
+        assert len(contacts) == 100
+
+    @pytest.mark.rhino
+    def test_split_eeg_reader_missing_contacts(self, rhino_root):
+        basename, sample_rate, dtype, filename = self.get_meta('R1006P', 'FR2', 0, rhino_root)
+
+        events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
+        rel_start, rel_stop = 0, 200
+        epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
+
+        eeg_reader = SplitEEGReader(filename, dtype, epochs)
+        ts, contacts = eeg_reader.read()
+
+        assert ts.shape == (len(epochs), 123, 102)
+        assert 1 not in contacts
+        assert 98 not in contacts
+        assert 99 not in contacts
+        assert 100 not in contacts
+        assert len(contacts) == 123
 
     @pytest.mark.rhino
     def test_ramulator_hdf5_reader(self, rhino_root):

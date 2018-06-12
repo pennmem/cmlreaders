@@ -183,7 +183,8 @@ class SplitEEGReader(BaseEEGReader):
 
     def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is None:
-            files = sorted(Path(self.filename).parent.glob('*'))
+            files = sorted([p for p in Path(self.filename).parent.glob('*')])
+            contacts = [int(f.name.split(".")[-1]) for f in files]
         else:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
@@ -194,9 +195,6 @@ class SplitEEGReader(BaseEEGReader):
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
             for epoch in self.epochs
         ])
-
-        # FIXME
-        contacts = [i + 1 for i in range(data.shape[1])]
 
         return data, contacts
 
