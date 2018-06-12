@@ -37,7 +37,7 @@ def ramulator_files_finder(rhino_root):
 
 @pytest.mark.rhino
 @pytest.mark.parametrize("file_type", list(constants.rhino_paths.keys()))
-def test_find_file(file_type, current_files_subject, legacy_files_subject):
+def test_find_file(file_type, current_files_subject, legacy_files_subject,):
     if file_type in ['target_selection_table', 'ps4_events']:
         return  # does not exist for stim sessions
 
@@ -57,8 +57,10 @@ def test_invalid_file_request(current_files_subject):
 
 
 @pytest.mark.rhino
-def test_nonzero_localization_lookup(non_zero_localization_subject):
-    path = non_zero_localization_subject.find("pairs")
+@pytest.mark.parametrize("filetype", ["pairs", "voxel_coordinates", "jacksheet",
+                                      "ramulator_session_folder"])
+def test_nonzero_localization_lookup(non_zero_localization_subject, filetype):
+    path = non_zero_localization_subject.find(filetype)
     assert path is not None
 
 
