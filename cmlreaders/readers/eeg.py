@@ -129,8 +129,9 @@ class BaseEEGReader(ABC):
 
     Notes
     -----
-    The :meth:`read` method must be implemented by subclasses to return a 3-D
-    array with dimensions (epochs x channels x time).
+    The :meth:`read` method must be implemented by subclasses to return a tuple
+    containing a 3-D array with dimensions (epochs x channels x time) and a
+    list of contact numbers.
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
@@ -146,20 +147,29 @@ class BaseEEGReader(ABC):
         self.rereferencing_possible = True
 
     @abstractmethod
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
 
 
 class NumpyEEGReader(BaseEEGReader):
-    """Read EEG data stored in Numpy's .npy format."""
-    def read(self) -> np.ndarray:
+    """Read EEG data stored in Numpy's .npy format.
+
+    Notes
+    -----
+    This reader is currently only used to do some testing so lacks some features
+    such as being able to determine what contact numbers it's actually using.
+    Instead, it will just give contacts as a sequential list of ints.
+
+    """
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is not None:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         raw = np.load(self.filename)
         data = np.array([raw[:, e[0]:(e[1] if e[1] > 0 else None)]
                          for e in self.epochs])
-        return data
+        contacts = [i + 1 for i in range(data.shape[1])]
+        return data, contacts
 
 
 class SplitEEGReader(BaseEEGReader):
@@ -171,28 +181,34 @@ class SplitEEGReader(BaseEEGReader):
     def _read_epoch(mmap: np.memmap, epoch: Tuple[int, int]) -> np.array:
         return np.array(mmap[epoch[0]:epoch[1]])
 
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is None:
             files = sorted(Path(self.filename).parent.glob('*'))
         else:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
+
+        # FIXME
         data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
             for epoch in self.epochs
         ])
-        return data
+
+        # FIXME
+        contacts = [i + 1 for i in range(data.shape[1])]
+
+        return data, contacts
 
 
 class EDFReader(BaseEEGReader):
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         raise NotImplementedError
 
 
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is not None:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
@@ -211,7 +227,10 @@ class RamulatorHDF5Reader(BaseEEGReader):
             else:
                 data = np.array([ts[:, epoch[0]:epoch[1]] for epoch in self.epochs])
 
-            return data
+            # FIXME
+            contacts = [i + 1 for i in range(data.shape[1])]
+
+            return data, contacts
 
 
 class EEGReader(BaseCMLReader):
@@ -340,15 +359,15 @@ class EEGReader(BaseCMLReader):
         reader = reader_class(filename=eeg_filename,
                               dtype=dtype,
                               epochs=epochs)  # TODO: channels
-        data = reader.read()
+        data, contacts = reader.read()
 
         if scheme is not None:
             if not reader.rereferencing_possible:
                 raise RereferencingNotPossibleError
             data = self.rereference(data, scheme)
 
-        # TODO: channels, tstart
-        ts = TimeSeries(data, sample_rate, epochs=epochs)
+        # TODO: tstart
+        ts = TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
         return ts
 
     def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
