@@ -121,12 +121,12 @@ class PathFinder(object):
         """ This will handle the special cases before passing the data through
             to _find_single_path
         """
-        subject_localization = self.subject
+        subject_montage = self.subject
 
-        # Some files/locations append the localization number, so to abstract
-        # that away from the user, we handle this internally
-        if self.localization != '0':
-            subject_localization = "_".join([self.subject, self.localization])
+        # Some files/locations append the montage number to the subject ID, so
+        # to abstract that away from the user, we handle this internally
+        if self.montage != '0':
+            subject_montage = "_".join([self.subject, self.montage])
 
         paths_to_check = self._paths[data_type]
         timestamped_dir = None
@@ -135,7 +135,7 @@ class PathFinder(object):
         if (data_type in host_pc_files) or (data_type in used_classifier_files):
             folder_wildcard = self._paths['ramulator_session_folder'][0]
             ramulator_session_folder = folder_wildcard.format(
-                subject=subject_localization, experiment=self.experiment,
+                subject=subject_montage, experiment=self.experiment,
                 session=self.session)
 
             timestamped_dir = self._get_most_recent_ramulator_folder(
@@ -147,7 +147,7 @@ class PathFinder(object):
 
         expected_path = self._find_single_path(paths_to_check,
                                                subject=self.subject,
-                                               subject_localization=subject_localization,
+                                               subject_montage=subject_montage,
                                                timestamped_dir=timestamped_dir,
                                                experiment=self.experiment,
                                                session=self.session,

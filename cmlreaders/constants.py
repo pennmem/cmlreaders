@@ -4,47 +4,48 @@ rhino_paths = {
     'r1_index': ['protocols/r1.json'],
     'ltp_index': ['protocols/ltp.json'],
 
-    # Localization-level (subject + localization)
-    'voxel_coordinates': [
-        "data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt",
-    ],
-    'prior_stim_results': [
-        'data10/eeg/freesurfer/subjects/{subject_localization}/prior_stim/{subject}_allcords.csv',
-    ],
-    'electrode_coordinates': [
-        'data10/RAM/subjects/{subject_localization}/tal/coords/electrode_coordinates.csv',
-        'data10/RAM/subjects/{subject_localization}/tal/electrode_coordinates.csv',
-    ],
-    'jacksheet': [
-        'data10/RAM/subjects/{subject_localization}/docs/jacksheet.txt',
-    ],
-    'area': [
-        'data10/RAM/subjects/{subject_localization}/docs/area.txt',
-    ],
-    'electrode_categories': [
-        'data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/{subject_localization}_electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/electrode_categories_{subject_localization}.txt',
-    ],
-    'good_leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/good_leads.txt',
-    ],
-    'leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/leads.txt',
-    ],
-    'classifier_excluded_leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/classifier_excluded_leads.txt',
-    ],
+    # Localization-level (subject + localization_
     'localization': [
         'protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
     ],
+
+    # Montage-level (subject + montage)
+    'voxel_coordinates': [
+        "data10/RAM/subjects/{subject_montage}/tal/VOX_coords_mother.txt",
+    ],
+    'prior_stim_results': [
+        'data10/eeg/freesurfer/subjects/{subject_montage}/prior_stim/{subject}_allcords.csv',
+    ],
+    'electrode_coordinates': [
+        'data10/RAM/subjects/{subject_montage}/tal/coords/electrode_coordinates.csv',
+        'data10/RAM/subjects/{subject_montage}/tal/electrode_coordinates.csv',
+    ],
+    'jacksheet': [
+        'data10/RAM/subjects/{subject_montage}/docs/jacksheet.txt',
+    ],
+    'area': [
+        'data10/RAM/subjects/{subject_montage}/docs/area.txt',
+    ],
+    'electrode_categories': [
+        'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
+    ],
+    'good_leads': [
+        'data10/RAM/subjects/{subject_montage}/tal/good_leads.txt',
+    ],
+    'leads': [
+        'data10/RAM/subjects/{subject_montage}/tal/leads.txt',
+    ],
+    'classifier_excluded_leads': [
+        'data10/RAM/subjects/{subject_montage}/tal/classifier_excluded_leads.txt',
+    ],
     'matlab_bipolar_talstruct': [
-        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_bipol.mat'
+        'data10/RAM/subjects/{subject_montage}/tal/{subject_montage}_talLocs_database_bipol.mat'
     ],
     'matlab_monopolar_talstruct': [
-        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_monopol.mat'
+        'data10/RAM/subjects/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat'
     ],
-    # Montage level (subject + localization + montage)
     'pairs': [
         'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
     ],
@@ -54,20 +55,20 @@ rhino_paths = {
 
     # Report Data
     'session_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_session_summary.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_session_summary.h5',
     ],
     'classifier_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_classifier_session_{session}.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_classifier_session_{session}.h5',
     ],
     'math_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_math_summary.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        'scratch/report_database/{subject_localization}_{experiment}_*_target_selection_table.csv',
+        'scratch/report_database/{subject_montage}_{experiment}_*_target_selection_table.csv',
     ],
     'baseline_classifier': [
-        'scratch/report_database/{subject_localization}_retrained_classifier.zip',
-        'scratch/report_database/{subject_localization}_{experiment}_all_retrained_classifier.zip',
+        'scratch/report_database/{subject_montage}_retrained_classifier.zip',
+        'scratch/report_database/{subject_montage}_{experiment}_all_retrained_classifier.zip',
     ],
 
     # Session Data
@@ -124,6 +125,13 @@ rhino_paths = {
 # Maintain separate lists of the file types depending on what information is
 # required to be able to find them
 localization_files = [
+    'localization'
+]
+
+# All files that change when a montage changes
+montage_files = [
+    'pairs',
+    'contacts',
     'voxel_coordinates',
     'prior_stim_results',
     'electrode_coordinates',
@@ -132,14 +140,10 @@ localization_files = [
     'leads',
     'area',
     'classifier_excluded_leads',
-    'localization',
     'electrode_categories',
     'target_selection_file',
     'baseline_classifier',
 ]
-
-# All files that change when a montage changes
-montage_files = ['pairs', 'contacts']
 
 # All files that are constant by subject
 subject_files = []
