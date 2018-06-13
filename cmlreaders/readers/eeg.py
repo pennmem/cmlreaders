@@ -225,8 +225,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
             else:
                 data = np.array([ts[:, epoch[0]:epoch[1]] for epoch in self.epochs])
 
-            # FIXME
-            contacts = [i + 1 for i in range(data.shape[1])]
+            contacts = hfile["ports"][:]
 
             return data, contacts
 
