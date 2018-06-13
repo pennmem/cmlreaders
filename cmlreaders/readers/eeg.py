@@ -361,19 +361,22 @@ class EEGReader(BaseCMLReader):
         if scheme is not None:
             if not reader.rereferencing_possible:
                 raise RereferencingNotPossibleError
-            data = self.rereference(data, scheme)
+            data = self.rereference(data, contacts, scheme)
 
         # TODO: tstart
         ts = TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
         return ts
 
-    def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
         ----------
         data
             Input timeseries data shaped as (epochs, channels, time).
+        contacts
+            List of contact numbers that index the data.
         scheme
             Bipolar pairs to use. This should be at a minimum a
             :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
@@ -390,7 +393,14 @@ class EEGReader(BaseCMLReader):
         constructed manually.
 
         """
-        c1, c2 = scheme.contact_1 - 1, scheme.contact_2 - 1
+        contact_to_index = {
+            c: i
+            for i, c in enumerate(contacts)
+        }
+
+        c1 = [contact_to_index[c] for c in scheme.contact_1 - 1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2 - 1]
+
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
         )
