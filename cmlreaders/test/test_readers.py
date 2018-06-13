@@ -43,6 +43,22 @@ class TestTextReader:
         assert data is not None
         assert type(data) == expected_types[method]
 
+    def test_read_jacksheet(self):
+        file_path = datafile("jacksheet.txt")
+        reader = TextReader("jacksheet", "R1389J", 0, file_path=file_path)
+        js = reader.load()
+
+        assert "number" in js.columns
+        assert "label" in js.columns
+
+        data = np.loadtxt(file_path, delimiter=" ", dtype=[
+            ("number", "<i8"),
+            ("label", "|U32"),
+        ])
+
+        np.testing.assert_equal(data["number"], js.number)
+        np.testing.assert_equal(data["label"], js.label)
+
     @pytest.mark.parametrize("method", ['json', 'csv'])
     @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
