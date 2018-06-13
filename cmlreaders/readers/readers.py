@@ -24,7 +24,7 @@ class TextReader(BaseCMLReader):
     headers = {
         'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
                               'min_contact_num', 'max_contact_num'],
-        'jacksheet': ['channel_label'],
+        'jacksheet': ["number", "label"],
         'classifier_excluded_leads': ['channel_label'],
         'good_leads': ['channel_num'],
         'leads': ['channel_num'],
@@ -40,7 +40,11 @@ class TextReader(BaseCMLReader):
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
-        df = pd.read_csv(self._file_path, names=self._headers)
+        if self.data_type == "jacksheet":
+            sep = " "
+        else:
+            sep = ","  # read_csv's default value
+        df = pd.read_csv(self._file_path, sep=sep, names=self._headers)
         return df
 
 
