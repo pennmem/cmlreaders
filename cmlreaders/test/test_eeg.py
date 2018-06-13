@@ -137,8 +137,14 @@ class TestFileReaders:
         assert len(contacts) == 123
 
     @pytest.mark.rhino
-    def test_ramulator_hdf5_reader(self, rhino_root):
-        basename, sample_rate, dtype, filename = self.get_meta('R1386T', 'FR1', 0, rhino_root)
+    @pytest.mark.parametrize("subject,experiment,session,num_channels,sequential", [
+        ("R1363T", "FR1", 0, 178, True),  # all contacts sequential
+        ("R1392N", "PAL1", 0, 112, False),  # missing some contacts in jacksheet
+    ])
+    def test_ramulator_hdf5_reader(self, subject, experiment, session,
+                                   num_channels, sequential, rhino_root):
+        basename, sample_rate, dtype, filename = self.get_meta(
+            subject, experiment, session, rhino_root)
 
         events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
         rel_start, rel_stop = 0, 200
@@ -147,9 +153,11 @@ class TestFileReaders:
         eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs)
         ts, contacts = eeg_reader.read()
 
-        num_expected_channels = 214
         time_steps = 200
-        assert ts.shape == (len(epochs), num_expected_channels, time_steps)
+        assert ts.shape == (len(epochs), num_channels, time_steps)
+
+        df = pd.DataFrame({"contacts": contacts})
+        assert sequential == all(df.index + 1 == contacts)
 
 
 @pytest.mark.rhino
