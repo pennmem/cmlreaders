@@ -50,8 +50,11 @@ class TextReader(BaseCMLReader):
 
 class CSVReader(BaseCMLReader):
     """ Generic reader class for loading csv files with headers """
-    data_types = ['prior_stim_results', 'electrode_coordinates',
-                  'electrode_categories', 'target_selection_table']
+    data_types = [
+        "electrode_coordinates",
+        "prior_stim_results",
+        "target_selection_table",
+    ]
 
     def __init__(self, data_type, subject, localization, experiment=None,
                  file_path=None, rootdir="/", **kwargs):
