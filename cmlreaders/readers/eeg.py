@@ -129,8 +129,9 @@ class BaseEEGReader(ABC):
 
     Notes
     -----
-    The :meth:`read` method must be implemented by subclasses to return a 3-D
-    array with dimensions (epochs x channels x time).
+    The :meth:`read` method must be implemented by subclasses to return a tuple
+    containing a 3-D array with dimensions (epochs x channels x time) and a
+    list of contact numbers.
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
@@ -146,20 +147,29 @@ class BaseEEGReader(ABC):
         self.rereferencing_possible = True
 
     @abstractmethod
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
 
 
 class NumpyEEGReader(BaseEEGReader):
-    """Read EEG data stored in Numpy's .npy format."""
-    def read(self) -> np.ndarray:
+    """Read EEG data stored in Numpy's .npy format.
+
+    Notes
+    -----
+    This reader is currently only used to do some testing so lacks some features
+    such as being able to determine what contact numbers it's actually using.
+    Instead, it will just give contacts as a sequential list of ints.
+
+    """
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is not None:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         raw = np.load(self.filename)
         data = np.array([raw[:, e[0]:(e[1] if e[1] > 0 else None)]
                          for e in self.epochs])
-        return data
+        contacts = [i + 1 for i in range(data.shape[1])]
+        return data, contacts
 
 
 class SplitEEGReader(BaseEEGReader):
@@ -171,28 +181,32 @@ class SplitEEGReader(BaseEEGReader):
     def _read_epoch(mmap: np.memmap, epoch: Tuple[int, int]) -> np.array:
         return np.array(mmap[epoch[0]:epoch[1]])
 
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is None:
-            files = sorted(Path(self.filename).parent.glob('*'))
+            files = sorted([p for p in Path(self.filename).parent.glob('*')])
+            contacts = [int(f.name.split(".")[-1]) for f in files]
         else:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
         memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
+
+        # FIXME
         data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
             for epoch in self.epochs
         ])
-        return data
+
+        return data, contacts
 
 
 class EDFReader(BaseEEGReader):
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         raise NotImplementedError
 
 
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
-    def read(self) -> np.ndarray:
+    def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is not None:
             raise NotImplementedError("FIXME: we can only read all channels now")
 
@@ -211,7 +225,9 @@ class RamulatorHDF5Reader(BaseEEGReader):
             else:
                 data = np.array([ts[:, epoch[0]:epoch[1]] for epoch in self.epochs])
 
-            return data
+            contacts = hfile["ports"][:]
+
+            return data, contacts
 
 
 class EEGReader(BaseCMLReader):
@@ -340,24 +356,27 @@ class EEGReader(BaseCMLReader):
         reader = reader_class(filename=eeg_filename,
                               dtype=dtype,
                               epochs=epochs)  # TODO: channels
-        data = reader.read()
+        data, contacts = reader.read()
 
         if scheme is not None:
             if not reader.rereferencing_possible:
                 raise RereferencingNotPossibleError
-            data = self.rereference(data, scheme)
+            data = self.rereference(data, contacts, scheme)
 
-        # TODO: channels, tstart
-        ts = TimeSeries(data, sample_rate, epochs=epochs)
+        # TODO: tstart
+        ts = TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
         return ts
 
-    def rereference(self, data: np.ndarray, scheme: pd.DataFrame) -> np.ndarray:
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
         ----------
         data
             Input timeseries data shaped as (epochs, channels, time).
+        contacts
+            List of contact numbers that index the data.
         scheme
             Bipolar pairs to use. This should be at a minimum a
             :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
@@ -374,7 +393,14 @@ class EEGReader(BaseCMLReader):
         constructed manually.
 
         """
-        c1, c2 = scheme.contact_1 - 1, scheme.contact_2 - 1
+        contact_to_index = {
+            c: i
+            for i, c in enumerate(contacts)
+        }
+
+        c1 = [contact_to_index[c] for c in scheme.contact_1 - 1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2 - 1]
+
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
         )

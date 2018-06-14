@@ -14,8 +14,10 @@ class TimeSeries(object):
         Sample rate in Hz.
     epochs
         Optional list of tuples defining epochs in ms.
-    channels
-        Optional list of channel labels.
+    contacts
+        Optional list of contact numbers (these are the same as the jackbox
+        numbers). When not given, this will default to a list ranged like
+        ``[1, data.shape[1]]``.
     tstart
         Start time for each epoch in ms (default: 0).
     attrs
@@ -30,7 +32,7 @@ class TimeSeries(object):
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, int]]] = None,
-                 channels: Optional[List[str]] = None,
+                 contacts: Optional[List[int]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):
         if len(data.shape) == 2:
@@ -49,12 +51,14 @@ class TimeSeries(object):
         else:
             self.epochs = [(-1, -1) for _ in range(self.data.shape[0])]
 
-        if channels is not None:
-            if len(channels) != self.data.shape[1]:
-                raise ValueError("channels must be the same length as the second data dimension")
-            self.channels = channels
+        if contacts is not None:
+            if len(contacts) != self.data.shape[1]:
+                raise ValueError("contacts must be the same length as the second data dimension")
+            self.contacts = contacts
         else:
-            self.channels = ["CH{}".format(i) for i in range(self.data.shape[1])]
+            self.contacts = np.linspace(1, self.data.shape[1],
+                                        self.data.shape[1],
+                                        dtype=np.int).tolist()
 
         self.attrs = attrs if attrs is not None else {}
 
@@ -108,7 +112,7 @@ class TimeSeries(object):
                 raise ValueError("Times must be the same for all series")
 
         def check_channels():
-            if not all([s.channels == series[0].channels for s in series]):
+            if not all([s.contacts == series[0].contacts for s in series]):
                 raise ValueError("Channels must be the same for all series")
 
         def check_starts():
@@ -135,7 +139,7 @@ class TimeSeries(object):
             epochs = list(np.concatenate([s.epochs for s in series]))
 
             return TimeSeries(data, samplerate, epochs,
-                              channels=series[0].channels,
+                              contacts=series[0].contacts,
                               tstart=series[0].time[0],
                               attrs=attrs)
 
@@ -145,7 +149,7 @@ class TimeSeries(object):
 
             data = np.concatenate([s.data for s in series], axis=2)
             return TimeSeries(data, samplerate, series[0].epochs,
-                              channels=series[0].channels,
+                              contacts=series[0].contacts,
                               tstart=series[0].time[0],
                               attrs=attrs)
 
@@ -171,7 +175,7 @@ class TimeSeries(object):
         new_data, _ = scipy.signal.resample(self.data, new_len,
                                             t=self.time, axis=-1)
         return TimeSeries(new_data, rate, epochs=self.epochs,
-                          channels=self.channels, tstart=self.time[0],
+                          contacts=self.contacts, tstart=self.time[0],
                           attrs=self.attrs)
 
     def filter(self, filter) -> "TimeSeries":
@@ -188,7 +192,7 @@ class TimeSeries(object):
             dims=('start_offset', 'channel', 'time'),
             coords={
                 'start_offset': self.start_offsets,
-                'channel': self.channels,
+                'channel': self.contacts,
                 'time': self.time
             }
         )
@@ -197,7 +201,8 @@ class TimeSeries(object):
         """Convert data to MNE's ``EpochsArray`` format."""
         import mne
 
-        info = mne.create_info(self.channels, self.samplerate, ch_types='eeg')
+        info = mne.create_info([str(c) for c in self.contacts], self.samplerate,
+                               ch_types='eeg')
 
         events = np.empty([self.data.shape[0], 3], dtype=int)
         events[:, 0] = list(range(self.data.shape[0]))

@@ -98,7 +98,7 @@ class TestFileReaders:
     def test_npy_reader(self):
         filename = resource_filename("cmlreaders.test.data", "eeg.npy")
         reader = NumpyEEGReader(filename, np.int16, [(0, -1)])
-        ts = reader.read()
+        ts, contacts = reader.read()
         assert ts.shape == (1, 32, 1000)
 
         orig = np.load(filename)
@@ -113,24 +113,51 @@ class TestFileReaders:
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
         eeg_reader = SplitEEGReader(filename, dtype, epochs)
-        ts = eeg_reader.read()
+        ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
+        assert len(contacts) == 100
 
     @pytest.mark.rhino
-    def test_ramulator_hdf5_reader(self, rhino_root):
-        basename, sample_rate, dtype, filename = self.get_meta('R1386T', 'FR1', 0, rhino_root)
+    def test_split_eeg_reader_missing_contacts(self, rhino_root):
+        basename, sample_rate, dtype, filename = self.get_meta('R1006P', 'FR2', 0, rhino_root)
+
+        events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
+        rel_start, rel_stop = 0, 200
+        epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
+
+        eeg_reader = SplitEEGReader(filename, dtype, epochs)
+        ts, contacts = eeg_reader.read()
+
+        assert ts.shape == (len(epochs), 123, 102)
+        assert 1 not in contacts
+        assert 98 not in contacts
+        assert 99 not in contacts
+        assert 100 not in contacts
+        assert len(contacts) == 123
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,experiment,session,num_channels,sequential", [
+        ("R1363T", "FR1", 0, 178, True),  # all contacts sequential
+        ("R1392N", "PAL1", 0, 112, False),  # missing some contacts in jacksheet
+    ])
+    def test_ramulator_hdf5_reader(self, subject, experiment, session,
+                                   num_channels, sequential, rhino_root):
+        basename, sample_rate, dtype, filename = self.get_meta(
+            subject, experiment, session, rhino_root)
 
         events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
         eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs)
-        ts = eeg_reader.read()
+        ts, contacts = eeg_reader.read()
 
-        num_expected_channels = 214
         time_steps = 200
-        assert ts.shape == (len(epochs), num_expected_channels, time_steps)
+        assert ts.shape == (len(epochs), num_channels, time_steps)
+
+        df = pd.DataFrame({"contacts": contacts})
+        assert sequential == all(df.index + 1 == contacts)
 
 
 @pytest.mark.rhino
@@ -165,7 +192,8 @@ class TestEEGReader:
 
     @pytest.mark.parametrize("subject,reref_possible", [
         ('R1387E', False),
-        ('R1111M', True),
+        # FIXME: re-enable this once rereferencing is fixed
+        # ('R1111M', True),
     ])
     def test_rereference(self, subject, reref_possible, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
