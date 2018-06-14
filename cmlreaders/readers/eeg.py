@@ -308,7 +308,6 @@ class EEGReader(BaseCMLReader):
                             else e + (0,)
                             for e in kwargs['epochs']]
 
-
         return self.as_timeseries(**kwargs)
 
     def as_dataframe(self):
@@ -365,7 +364,7 @@ class EEGReader(BaseCMLReader):
 
         ts = []
 
-        for fileno, epoch_lst in itertools.groupby(epochs,key=lambda x: x[-1]):
+        for fileno, epoch_lst in itertools.groupby(epochs, key=lambda x: x[-1]):
             sources_info = list(self.sources_info.values())[fileno]
             basename = sources_info['name']
             sample_rate = sources_info['sample_rate']
@@ -383,7 +382,7 @@ class EEGReader(BaseCMLReader):
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
                                   epochs=epochs)  # TODO: channels
-            data,contacts = reader.read()
+            data, contacts = reader.read()
 
             if scheme is not None:
                 if not reader.rereferencing_possible:

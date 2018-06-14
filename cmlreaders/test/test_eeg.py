@@ -221,6 +221,3 @@ class TestEEGReader:
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
 
-
-if __name__ == "__main__":
-    TestEEGReader().test_eeg_reader_with_events('R1161E', '/Volumes/rhino_root')
