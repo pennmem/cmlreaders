@@ -111,8 +111,8 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
     rel_start = milliseconds_to_samples(rel_start, sample_rate)
     rel_stop = milliseconds_to_samples(rel_stop, sample_rate)
     offsets = events.eegoffset.values
-    eegfiles = events.eegfile.values
     if basenames is not None:
+        eegfiles = events.eegfile.values
         epochs = [(offset + rel_start, offset + rel_stop,
                    basenames.index(eegfile))
                   for (offset, eegfile) in zip(offsets, eegfiles)]
