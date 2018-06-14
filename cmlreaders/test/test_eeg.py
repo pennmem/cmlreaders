@@ -220,4 +220,3 @@ class TestEEGReader:
             assert data.shape == (1, 100, expected_samples)
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
-
