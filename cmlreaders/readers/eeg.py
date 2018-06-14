@@ -388,13 +388,13 @@ class EEGReader(BaseCMLReader):
             if scheme is not None:
                 if not reader.rereferencing_possible:
                     raise RereferencingNotPossibleError
-                data = self.rereference(data, contacts scheme)
+                data = self.rereference(data, contacts, scheme)
 
             # TODO: tstart
             ts.append(
                 TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
             )
-            return ts
+            return TimeSeries.concatenate(ts)
 
     def rereference(self, data: np.ndarray, contacts: List[int],
                     scheme: pd.DataFrame) -> np.ndarray:
