@@ -388,12 +388,14 @@ class EEGReader(BaseCMLReader):
                 if not reader.rereferencing_possible:
                     raise RereferencingNotPossibleError
                 data = self.rereference(data, contacts, scheme)
+                pairs = scheme[['contact_1', 'contact_2']].to_records().tolist()
 
             # TODO: tstart
             ts.append(
-                TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
-            )
-            return TimeSeries.concatenate(ts)
+                TimeSeries(data, sample_rate, epochs=epochs,
+                           contacts=contacts if scheme is None else pairs)
+                )
+        return TimeSeries.concatenate(ts)
 
     def rereference(self, data: np.ndarray, contacts: List[int],
                     scheme: pd.DataFrame) -> np.ndarray:
@@ -426,8 +428,8 @@ class EEGReader(BaseCMLReader):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in scheme.contact_1 - 1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2 - 1]
+        c1 = [contact_to_index[c] for c in scheme.contact_1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2]
 
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
