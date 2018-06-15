@@ -394,7 +394,7 @@ class EEGReader(BaseCMLReader):
             ts.append(
                 TimeSeries(data, sample_rate, epochs=epochs,
                            contacts=contacts if scheme is None else pairs)
-                )
+            )
         return TimeSeries.concatenate(ts)
 
     def rereference(self, data: np.ndarray, contacts: List[int],
