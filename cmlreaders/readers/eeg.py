@@ -3,6 +3,9 @@ import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
 
+from collections import OrderedDict
+import itertools
+
 import h5py
 import numpy as np
 import pandas as pd
@@ -13,6 +16,7 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
+
 
 __all__ = [
     "EEGReader",
@@ -82,7 +86,9 @@ def milliseconds_to_events(onsets: List[Union[int, float]],
 
 
 def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
-                     sample_rate: Union[int, float]) -> List[Tuple[int, int]]:
+                     sample_rate: Union[int, float],
+                     basenames: Optional[List[str]] = None
+                     ) -> List[Tuple[int, int, int]]:
     """Convert events to epochs.
 
     Parameters
@@ -106,7 +112,14 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
     rel_start = milliseconds_to_samples(rel_start, sample_rate)
     rel_stop = milliseconds_to_samples(rel_stop, sample_rate)
     offsets = events.eegoffset.values
-    epochs = [(offset + rel_start, offset + rel_stop) for offset in offsets]
+    if basenames is not None:
+        eegfiles = events.eegfile.values
+        epochs = [(offset + rel_start, offset + rel_stop,
+                   basenames.index(eegfile))
+                  for (offset, eegfile) in zip(offsets, eegfiles)]
+    else:
+        epochs = [(offset + rel_start, offset + rel_stop, 0)
+                  for offset in offsets]
     return epochs
 
 
@@ -121,7 +134,7 @@ class BaseEEGReader(ABC):
     dtype
         numpy dtype to use for reading data
     epochs
-        Epochs to include. Epochs are defined with a start and stop sample
+        Epochs to include. Epochs are defined with start and stop sample
         counts.
     channels
         A list of channel indices (1-based) to include when reading. When not
@@ -178,12 +191,13 @@ class SplitEEGReader(BaseEEGReader):
 
     """
     @staticmethod
-    def _read_epoch(mmap: np.memmap, epoch: Tuple[int, int]) -> np.array:
+    def _read_epoch(mmap: np.memmap, epoch: Tuple[int, ...]) -> np.array:
         return np.array(mmap[epoch[0]:epoch[1]])
 
     def read(self) -> Tuple[np.ndarray, List[int]]:
         if self.channels is None:
-            files = sorted([p for p in Path(self.filename).parent.glob('*')])
+            basename = Path(self.filename).name
+            files = sorted(Path(self.filename).parent.glob(basename + '.*'))
             contacts = [int(f.name.split(".")[-1]) for f in files]
         else:
             raise NotImplementedError("FIXME: we can only read all channels now")
@@ -252,6 +266,16 @@ class EEGReader(BaseCMLReader):
         >>> epochs = [(100, 200), (300, 400)]
         >>> eeg = reader.load_eeg(epochs=epochs)
 
+    Loading from specified epochs, when there are multiple files for the
+    session (units are relative to the start of each file):
+
+        >>> epochs = [(100,200,0), (100,200,1)]
+        >>> eeg = reader.load_eeg(epochs=epochs)
+
+    Loading EEG from -100 ms to +100 ms relative to a set of events:
+        >>> events = reader.load('events')
+        >>> eeg = reader.load_eeg(events,rel_start=-100, rel_stop=100)
+
     Loading an entire session::
 
         >>> eeg = reader.load_eeg()
@@ -275,17 +299,26 @@ class EEGReader(BaseCMLReader):
 
         path = Path(finder.find('sources'))
         with path.open() as metafile:
-            self.sources_info = list(json.load(metafile).values())[0]
+            self.sources_info = json.load(metafile,
+                                          object_pairs_hook=OrderedDict)
             self.sources_info['path'] = path
 
         if 'events' in kwargs:
             # convert events to epochs
             events = kwargs.pop('events')
+            source_info_list = list(self.sources_info.values())[:-1]
+            sample_rate = source_info_list[0]['sample_rate']
+            basenames = [info['name'] for info in source_info_list]
             epochs = events_to_epochs(events,
                                       kwargs.pop('rel_start'),
                                       kwargs.pop('rel_stop'),
-                                      self.sources_info['sample_rate'])
+                                      sample_rate,
+                                      basenames)
             kwargs['epochs'] = epochs
+
+        kwargs['epochs'] = [e if len(e) == 3
+                            else e + (0,)
+                            for e in kwargs['epochs']]
 
         return self.as_timeseries(**kwargs)
 
@@ -308,7 +341,8 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    def as_timeseries(self, epochs: Optional[List[Tuple[float, float]]] = None,
+    def as_timeseries(self,
+                      epochs: Optional[List[Tuple[int, int, int]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
@@ -337,35 +371,43 @@ class EEGReader(BaseCMLReader):
             When rereferincing is not possible.
 
         """
-        basename = self.sources_info['name']
-        sample_rate = self.sources_info['sample_rate']
-        dtype = self.sources_info['data_format']
-        eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
-        reader_class = self._get_reader_class(basename)
-
         if epochs is None:
-            epochs = [(0, -1)]
+            epochs = [(0, -1, 0)]
 
-        if contacts is not None:
-            raise NotImplementedError("filtering contacts is not yet implemented")
+        ts = []
 
-        tlens = np.array([e[-1] - e[0] for e in epochs])
-        if not np.all(tlens == tlens[0]):
-            raise ValueError("Epoch lengths are not all the same!")
+        for fileno, epoch_lst in itertools.groupby(epochs, key=lambda x: x[-1]):
+            sources_info = list(self.sources_info.values())[fileno]
+            basename = sources_info['name']
+            sample_rate = sources_info['sample_rate']
+            dtype = sources_info['data_format']
+            eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
+            reader_class = self._get_reader_class(basename)
 
-        reader = reader_class(filename=eeg_filename,
-                              dtype=dtype,
-                              epochs=epochs)  # TODO: channels
-        data, contacts = reader.read()
+            if contacts is not None:
+                raise NotImplementedError("filtering contacts is not yet implemented")
 
-        if scheme is not None:
-            if not reader.rereferencing_possible:
-                raise RereferencingNotPossibleError
-            data = self.rereference(data, contacts, scheme)
+            tlens = np.array([e[1] - e[0] for e in epochs])
+            if not np.all(tlens == tlens[0]):
+                raise ValueError("Epoch lengths are not all the same!")
 
-        # TODO: tstart
-        ts = TimeSeries(data, sample_rate, epochs=epochs, contacts=contacts)
-        return ts
+            reader = reader_class(filename=eeg_filename,
+                                  dtype=dtype,
+                                  epochs=epochs)  # TODO: channels
+            data, contacts = reader.read()
+
+            if scheme is not None:
+                if not reader.rereferencing_possible:
+                    raise RereferencingNotPossibleError
+                data = self.rereference(data, contacts, scheme)
+                pairs = scheme[['contact_1', 'contact_2']].to_records().tolist()
+
+            # TODO: tstart
+            ts.append(
+                TimeSeries(data, sample_rate, epochs=epochs,
+                           contacts=contacts if scheme is None else pairs)
+            )
+        return TimeSeries.concatenate(ts)
 
     def rereference(self, data: np.ndarray, contacts: List[int],
                     scheme: pd.DataFrame) -> np.ndarray:
@@ -398,8 +440,8 @@ class EEGReader(BaseCMLReader):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in scheme.contact_1 - 1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2 - 1]
+        c1 = [contact_to_index[c] for c in scheme.contact_1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2]
 
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]

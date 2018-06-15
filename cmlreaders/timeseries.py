@@ -112,7 +112,8 @@ class TimeSeries(object):
                 raise ValueError("Times must be the same for all series")
 
         def check_channels():
-            if not all([s.contacts == series[0].contacts for s in series]):
+            if not all([np.all(s.contacts == series[0].contacts)
+                        for s in series]):
                 raise ValueError("Channels must be the same for all series")
 
         def check_starts():

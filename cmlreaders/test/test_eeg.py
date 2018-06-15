@@ -171,13 +171,17 @@ class TestEEGReader:
         assert len(eeg.time) == 100
         assert len(eeg.epochs) == 2
 
-    def test_eeg_reader_with_events(self, rhino_root):
-        reader = CMLReader(subject='R1387E', experiment='FR1', session=0,
+    @pytest.mark.parametrize('subject', ['R1161E', 'R1387E'])
+    def test_eeg_reader_with_events(self, subject, rhino_root):
+        """Note: R1161E is split over two separate sets of files"""
+
+        reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         events = reader.load('events')
-        word_events = events[events.type == 'WORD'].iloc[:10]
+        word_events = events[events.type == 'WORD']
         eeg = reader.load_eeg(events=word_events, rel_start=-75, rel_stop=75)
-        assert eeg.shape == (10, 121, 150)
+        assert eeg.shape[0] == len(word_events)
+        assert eeg.shape[-1] == 150
 
         ErrorType = exc.IncompatibleParametersError
 
