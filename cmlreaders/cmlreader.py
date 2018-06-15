@@ -95,7 +95,7 @@ class CMLReader(object):
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,
-                 epochs: Optional[List[Tuple[int, int]]] = None,
+                 epochs: Optional[List[Tuple[int, ...]]] = None,
                  contacts: Optional[pd.DataFrame] = None,
                  scheme: Optional[pd.DataFrame] = None):
         """Load EEG data.
@@ -112,8 +112,14 @@ class CMLReader(object):
             Stop time in ms relative to passed event onsets. This  parameter is
             required when passing events and not used otherwise.
         epochs
-            A list of ``(start, stop)`` tuples to specify epochs to retrieve
-            data from. Incompatible with passing ``events``.
+            A list of tuples to specify epochs to retrieve data from. These can
+            be in one of two forms:
+
+            - (start_index, stop_index)
+            - (start_index, stop_index, file_number) when the EEG
+            for the session is is split over multiple recordings.
+
+            Incompatible with passing ``events``.
         contacts
             Contacts to include when loading data. Any channel that includes
             these contacts will be loaded. When not given (the default), load

@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
+
 from collections import OrderedDict
 import itertools
 
@@ -133,7 +134,7 @@ class BaseEEGReader(ABC):
     dtype
         numpy dtype to use for reading data
     epochs
-        Epochs to include. Epochs are defined with a start and stop sample
+        Epochs to include. Epochs are defined with start and stop sample
         counts.
     channels
         A list of channel indices (1-based) to include when reading. When not
@@ -190,7 +191,7 @@ class SplitEEGReader(BaseEEGReader):
 
     """
     @staticmethod
-    def _read_epoch(mmap: np.memmap, epoch: Tuple[int, int]) -> np.array:
+    def _read_epoch(mmap: np.memmap, epoch: Tuple[int, ...]) -> np.array:
         return np.array(mmap[epoch[0]:epoch[1]])
 
     def read(self) -> Tuple[np.ndarray, List[int]]:
@@ -265,6 +266,16 @@ class EEGReader(BaseCMLReader):
         >>> epochs = [(100, 200), (300, 400)]
         >>> eeg = reader.load_eeg(epochs=epochs)
 
+    Loading from specified epochs, when there are multiple files for the
+    session (units are relative to the start of each file):
+
+        >>> epochs = [(100,200,0), (100,200,1)]
+        >>> eeg = reader.load_eeg(epochs=epochs)
+
+    Loading EEG from -100 ms to +100 ms relative to a set of events:
+        >>> events = reader.load('events')
+        >>> eeg = reader.load_eeg(events,rel_start=-100, rel_stop=100)
+
     Loading an entire session::
 
         >>> eeg = reader.load_eeg()
@@ -288,7 +299,8 @@ class EEGReader(BaseCMLReader):
 
         path = Path(finder.find('sources'))
         with path.open() as metafile:
-            self.sources_info = json.load(metafile, object_pairs_hook=OrderedDict)
+            self.sources_info = json.load(metafile,
+                                          object_pairs_hook=OrderedDict)
             self.sources_info['path'] = path
 
         if 'events' in kwargs:
