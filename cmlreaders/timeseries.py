@@ -32,7 +32,7 @@ class TimeSeries(object):
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, int]]] = None,
-                 contacts: Optional[List[int]] = None,
+                 channels: Optional[List[int]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):
         if len(data.shape) == 2:
@@ -51,12 +51,12 @@ class TimeSeries(object):
         else:
             self.epochs = [(-1, -1) for _ in range(self.data.shape[0])]
 
-        if contacts is not None:
-            if len(contacts) != self.data.shape[1]:
+        if channels is not None:
+            if len(channels) != self.data.shape[1]:
                 raise ValueError("contacts must be the same length as the second data dimension")
-            self.contacts = contacts
+            self.channels = channels
         else:
-            self.contacts = np.linspace(1, self.data.shape[1],
+            self.channels = np.linspace(1, self.data.shape[1],
                                         self.data.shape[1],
                                         dtype=np.int).tolist()
 
@@ -112,7 +112,7 @@ class TimeSeries(object):
                 raise ValueError("Times must be the same for all series")
 
         def check_channels():
-            if not all([np.all(s.contacts == series[0].contacts)
+            if not all([np.all(s.channels == series[0].channels)
                         for s in series]):
                 raise ValueError("Channels must be the same for all series")
 
@@ -140,7 +140,7 @@ class TimeSeries(object):
             epochs = list(np.concatenate([s.epochs for s in series]))
 
             return TimeSeries(data, samplerate, epochs,
-                              contacts=series[0].contacts,
+                              channels=series[0].channels,
                               tstart=series[0].time[0],
                               attrs=attrs)
 
@@ -150,7 +150,7 @@ class TimeSeries(object):
 
             data = np.concatenate([s.data for s in series], axis=2)
             return TimeSeries(data, samplerate, series[0].epochs,
-                              contacts=series[0].contacts,
+                              channels=series[0].channels,
                               tstart=series[0].time[0],
                               attrs=attrs)
 
@@ -176,7 +176,7 @@ class TimeSeries(object):
         new_data, _ = scipy.signal.resample(self.data, new_len,
                                             t=self.time, axis=-1)
         return TimeSeries(new_data, rate, epochs=self.epochs,
-                          contacts=self.contacts, tstart=self.time[0],
+                          channels=self.channels, tstart=self.time[0],
                           attrs=self.attrs)
 
     def filter(self, filter) -> "TimeSeries":
@@ -193,7 +193,7 @@ class TimeSeries(object):
             dims=('start_offset', 'channel', 'time'),
             coords={
                 'start_offset': self.start_offsets,
-                'channel': self.contacts,
+                'channel': self.channels,
                 'time': self.time
             }
         )
@@ -202,7 +202,7 @@ class TimeSeries(object):
         """Convert data to MNE's ``EpochsArray`` format."""
         import mne
 
-        info = mne.create_info([str(c) for c in self.contacts], self.samplerate,
+        info = mne.create_info([str(c) for c in self.channels], self.samplerate,
                                ch_types='eeg')
 
         events = np.empty([self.data.shape[0], 3], dtype=int)

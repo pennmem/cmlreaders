@@ -400,12 +400,12 @@ class EEGReader(BaseCMLReader):
                 if not reader.rereferencing_possible:
                     raise RereferencingNotPossibleError
                 data = self.rereference(data, contacts, scheme)
-                pairs = scheme[['contact_1', 'contact_2']].to_records().tolist()
+                pairs = scheme.label
 
             # TODO: tstart
             ts.append(
                 TimeSeries(data, sample_rate, epochs=epochs,
-                           contacts=contacts if scheme is None else pairs)
+                           channels=contacts if scheme is None else pairs)
             )
         return TimeSeries.concatenate(ts)
 
