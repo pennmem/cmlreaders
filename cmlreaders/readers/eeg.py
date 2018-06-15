@@ -156,12 +156,52 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.channels = channels
 
+
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
 
     @abstractmethod
     def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
+
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame) -> np.ndarray:
+        """Attempt to rereference the EEG data using the specified scheme.
+
+        Parameters
+        ----------
+        data
+            Input timeseries data shaped as (epochs, channels, time).
+        contacts
+            List of contact numbers that index the data.
+        scheme
+            Bipolar pairs to use. This should be at a minimum a
+            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
+
+        Returns
+        -------
+        reref
+            Rereferenced timeseries.
+
+        Notes
+        -----
+        This method is meant to be used when loading data and so returns a raw
+        Numpy array. If used externally, a :class:`TimeSeries` will need to be
+        constructed manually.
+
+        """
+        contact_to_index = {
+            c: i
+            for i, c in enumerate(contacts)
+        }
+
+        c1 = [contact_to_index[c] for c in scheme.contact_1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2]
+
+        reref = np.array(
+            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
+        )
+        return reref
 
 
 class NumpyEEGReader(BaseEEGReader):
@@ -242,6 +282,22 @@ class RamulatorHDF5Reader(BaseEEGReader):
             contacts = hfile["ports"][:]
 
             return data, contacts
+
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame):
+        if self.rereferencing_possible:
+            return BaseEEGReader.rereference(self, data, contacts, scheme)
+        else:
+            with h5py.File(self.filename,'r') as hfile:
+                all_names = hfile['bipolar_info']['contact_names'][:]
+
+            # FIXME:
+            if any(label not in all_names for label in scheme.labels):
+                raise RereferencingNotPossibleError
+            chosen_channels = [name in scheme.labels for name in all_names]
+            return data[:, chosen_channels, :]
+
+
 
 
 class EEGReader(BaseCMLReader):
@@ -397,9 +453,7 @@ class EEGReader(BaseCMLReader):
             data, contacts = reader.read()
 
             if scheme is not None:
-                if not reader.rereferencing_possible:
-                    raise RereferencingNotPossibleError
-                data = self.rereference(data, contacts, scheme)
+                data = reader.rereference(data, contacts, scheme)
                 pairs = scheme.label
 
             # TODO: tstart
@@ -409,41 +463,3 @@ class EEGReader(BaseCMLReader):
             )
         return TimeSeries.concatenate(ts)
 
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame) -> np.ndarray:
-        """Attempt to rereference the EEG data using the specified scheme.
-
-        Parameters
-        ----------
-        data
-            Input timeseries data shaped as (epochs, channels, time).
-        contacts
-            List of contact numbers that index the data.
-        scheme
-            Bipolar pairs to use. This should be at a minimum a
-            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
-
-        Returns
-        -------
-        reref
-            Rereferenced timeseries.
-
-        Notes
-        -----
-        This method is meant to be used when loading data and so returns a raw
-        Numpy array. If used externally, a :class:`TimeSeries` will need to be
-        constructed manually.
-
-        """
-        contact_to_index = {
-            c: i
-            for i, c in enumerate(contacts)
-        }
-
-        c1 = [contact_to_index[c] for c in scheme.contact_1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2]
-
-        reref = np.array(
-            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
-        )
-        return reref
