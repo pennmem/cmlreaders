@@ -156,7 +156,6 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.channels = channels
 
-
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
 
@@ -288,16 +287,23 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible:
             return BaseEEGReader.rereference(self, data, contacts, scheme)
         else:
-            with h5py.File(self.filename,'r') as hfile:
-                all_names = hfile['bipolar_info']['contact_names'][:]
+            assert len(contacts) == data.shape[1]
+            assert scheme.shape[0] == data.shape[1]
+            with h5py.File(self.filename, 'r') as hfile:
+                all_nums = hfile['sense_channel_info']['port_name'][:]
 
             # FIXME:
-            if any(label not in all_names for label in scheme.labels):
-                raise RereferencingNotPossibleError
-            chosen_channels = [name in scheme.labels for name in all_names]
-            return data[:, chosen_channels, :]
+            if any(channel not in all_nums for channel in scheme.contact_1):
+                raise RereferencingNotPossibleError(
+                    'The following channels are missing: %s' % (
+                        ','.join(l for (l, c) in zip(scheme.label, scheme.contact_1)
+                                 if c not in all_nums)
+                    )
+                )
+            channel_to_index = {c: i for (i, c) in enumerate(contacts)}
+            channel_inds = [channel_to_index[c] for c in scheme.contact_1]
 
-
+            return data[:, channel_inds, :]
 
 
 class EEGReader(BaseCMLReader):
@@ -462,4 +468,3 @@ class EEGReader(BaseCMLReader):
                            channels=contacts if scheme is None else pairs)
             )
         return TimeSeries.concatenate(ts)
-

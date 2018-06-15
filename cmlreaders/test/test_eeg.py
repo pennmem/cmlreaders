@@ -195,9 +195,8 @@ class TestEEGReader:
             reader.load_eeg(events=word_events)
 
     @pytest.mark.parametrize("subject,reref_possible", [
-        ('R1387E', False),
-        # FIXME: re-enable this once rereferencing is fixed
-        # ('R1111M', True),
+        ('R1384J', False),
+        ('R1111M', True),
     ])
     def test_rereference(self, subject, reref_possible, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
@@ -210,13 +209,14 @@ class TestEEGReader:
 
         expected_samples = int(rate * rel_stop / 1000)
         scheme = reader.load('pairs')
+        print(scheme.label)
 
-        if not reref_possible:
-            with pytest.raises(exc.RereferencingNotPossibleError):
-                reader.load_eeg(epochs=epochs, scheme=scheme)
-
-        else:
+        if reref_possible:
             data = reader.load_eeg(epochs=epochs)
             assert data.shape == (1, 100, expected_samples)
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
+        else:
+            data_noreref = reader.load_eeg(epochs=epochs)
+            data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
+            assert (data_noreref.data == data_reref.data).all()

@@ -53,7 +53,10 @@ class TimeSeries(object):
 
         if channels is not None:
             if len(channels) != self.data.shape[1]:
-                raise ValueError("contacts must be the same length as the second data dimension")
+                raise ValueError(
+                    "len(channels) (%d) "
+                    "must be the same length as the second data dimension (%d)" %
+                    (len(channels), self.data.shape[1]))
             self.channels = channels
         else:
             self.channels = np.linspace(1, self.data.shape[1],
