@@ -148,7 +148,7 @@ class BaseEEGReader(ABC):
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
-                 epochs: List[Tuple[int, int]],
+                 epochs: List[Tuple[int, Union[int, None]]],
                  channels: Optional[List[int]] = None,):
         self.filename = filename
         self.dtype = dtype
@@ -287,19 +287,25 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible:
             return BaseEEGReader.rereference(self, data, contacts, scheme)
         else:
-            assert len(contacts) == data.shape[1]
-            assert scheme.shape[0] == data.shape[1]
             with h5py.File(self.filename, 'r') as hfile:
-                all_nums = hfile['sense_channel_info']['port_name'][:]
+                bpinfo = hfile['bipolar_info']
+                all_nums = [(int(a), int(b))for (a, b) in
+                            list(zip(bpinfo['ch0_label'][()],
+                                     bpinfo['ch1_label'][()])
+                                 )
+                            ]
+            scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
+            is_valid_channel = [channel in all_nums for channel in scheme_nums]
 
             # FIXME:
-            if any(channel not in all_nums for channel in scheme.contact_1):
+            if not all(is_valid_channel):
                 raise RereferencingNotPossibleError(
                     'The following channels are missing: %s' % (
-                        ','.join(l for (l, c) in zip(scheme.label, scheme.contact_1)
-                                 if c not in all_nums)
-                    )
+                        ', '.join(label) for (label, valid) in
+                        zip(scheme.label, is_valid_channel)
+                        if not valid)
                 )
+
             channel_to_index = {c: i for (i, c) in enumerate(contacts)}
             channel_inds = [channel_to_index[c] for c in scheme.contact_1]
 
@@ -404,7 +410,7 @@ class EEGReader(BaseCMLReader):
             return SplitEEGReader
 
     def as_timeseries(self,
-                      epochs: Optional[List[Tuple[int, int, int]]] = None,
+                      epochs: Optional[List[Tuple[int, Union[int, None], int]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
@@ -434,7 +440,7 @@ class EEGReader(BaseCMLReader):
 
         """
         if epochs is None:
-            epochs = [(0, -1, 0)]
+            epochs = [(0, None, 0)]
 
         ts = []
 

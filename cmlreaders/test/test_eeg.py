@@ -14,6 +14,7 @@ from cmlreaders.readers.eeg import (
     NumpyEEGReader, RamulatorHDF5Reader, samples_to_milliseconds,
     SplitEEGReader,
 )
+from cmlreaders.readers import MontageReader
 
 
 @pytest.fixture
@@ -141,8 +142,8 @@ class TestFileReaders:
         ("R1363T", "FR1", 0, 178, True),  # all contacts sequential
         ("R1392N", "PAL1", 0, 112, False),  # missing some contacts in jacksheet
     ])
-    def test_ramulator_hdf5_reader(self, subject, experiment, session,
-                                   num_channels, sequential, rhino_root):
+    def test_ramulator_hdf5_reader_rhino(self, subject, experiment, session,
+                                         num_channels, sequential, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta(
             subject, experiment, session, rhino_root)
 
@@ -158,6 +159,33 @@ class TestFileReaders:
 
         df = pd.DataFrame({"contacts": contacts})
         assert sequential == all(df.index + 1 == contacts)
+
+    def test_ramulator_hdf5_reader(self):
+        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
+        ts, channels = reader.read()
+
+        time_steps = 3000
+        assert ts.shape == (1, len(channels), time_steps)
+
+    def test_ramulator_hdf5_rereference(self):
+        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
+        ts, contacts = reader.read()
+        pairs_file = resource_filename('cmlreaders.test.data', 'pairs.json')
+
+        pairs = MontageReader('pairs', subject='R1405E',
+                              file_path=pairs_file,).load()
+        new_ts = reader.rereference(ts, contacts, pairs)
+        assert (new_ts == ts).all()
+
+        pairs = pairs[:10]
+        new_ts = reader.rereference(ts, contacts, pairs)
+        assert (new_ts == ts[:, :10, :]).all()
+
+        pairs['contact_1'][0] = pairs.iloc[0].contact_2
+        with pytest.raises(exc.RereferencingNotPossibleError):
+            reader.rereference(ts, contacts, pairs)
 
 
 @pytest.mark.rhino
