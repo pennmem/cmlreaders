@@ -148,7 +148,7 @@ class BaseEEGReader(ABC):
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
-                 epochs: List[Tuple[int, int]],
+                 epochs: List[Tuple[int, Union[int, None]]],
                  channels: Optional[List[int]] = None,):
         self.filename = filename
         self.dtype = dtype
@@ -162,6 +162,45 @@ class BaseEEGReader(ABC):
     @abstractmethod
     def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
+
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame) -> np.ndarray:
+        """Attempt to rereference the EEG data using the specified scheme.
+
+        Parameters
+        ----------
+        data
+            Input timeseries data shaped as (epochs, channels, time).
+        contacts
+            List of contact numbers that index the data.
+        scheme
+            Bipolar pairs to use. This should be at a minimum a
+            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
+
+        Returns
+        -------
+        reref
+            Rereferenced timeseries.
+
+        Notes
+        -----
+        This method is meant to be used when loading data and so returns a raw
+        Numpy array. If used externally, a :class:`TimeSeries` will need to be
+        constructed manually.
+
+        """
+        contact_to_index = {
+            c: i
+            for i, c in enumerate(contacts)
+        }
+
+        c1 = [contact_to_index[c] for c in scheme.contact_1]
+        c2 = [contact_to_index[c] for c in scheme.contact_2]
+
+        reref = np.array(
+            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
+        )
+        return reref
 
 
 class NumpyEEGReader(BaseEEGReader):
@@ -242,6 +281,35 @@ class RamulatorHDF5Reader(BaseEEGReader):
             contacts = hfile["ports"][:]
 
             return data, contacts
+
+    def rereference(self, data: np.ndarray, contacts: List[int],
+                    scheme: pd.DataFrame):
+        if self.rereferencing_possible:
+            return BaseEEGReader.rereference(self, data, contacts, scheme)
+        else:
+            with h5py.File(self.filename, 'r') as hfile:
+                bpinfo = hfile['bipolar_info']
+                all_nums = [(int(a), int(b))for (a, b) in
+                            list(zip(bpinfo['ch0_label'][()],
+                                     bpinfo['ch1_label'][()])
+                                 )
+                            ]
+            scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
+            is_valid_channel = [channel in all_nums for channel in scheme_nums]
+
+            # FIXME:
+            if not all(is_valid_channel):
+                raise RereferencingNotPossibleError(
+                    'The following channels are missing: %s' % (
+                        ', '.join(label) for (label, valid) in
+                        zip(scheme.label, is_valid_channel)
+                        if not valid)
+                )
+
+            channel_to_index = {c: i for (i, c) in enumerate(contacts)}
+            channel_inds = [channel_to_index[c] for c in scheme.contact_1]
+
+            return data[:, channel_inds, :]
 
 
 class EEGReader(BaseCMLReader):
@@ -342,7 +410,7 @@ class EEGReader(BaseCMLReader):
             return SplitEEGReader
 
     def as_timeseries(self,
-                      epochs: Optional[List[Tuple[int, int, int]]] = None,
+                      epochs: Optional[List[Tuple[int, Union[int, None], int]]] = None,
                       contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
@@ -372,7 +440,7 @@ class EEGReader(BaseCMLReader):
 
         """
         if epochs is None:
-            epochs = [(0, -1, 0)]
+            epochs = [(0, None, 0)]
 
         ts = []
 
@@ -397,53 +465,12 @@ class EEGReader(BaseCMLReader):
             data, contacts = reader.read()
 
             if scheme is not None:
-                if not reader.rereferencing_possible:
-                    raise RereferencingNotPossibleError
-                data = self.rereference(data, contacts, scheme)
-                pairs = scheme[['contact_1', 'contact_2']].to_records().tolist()
+                data = reader.rereference(data, contacts, scheme)
+                pairs = scheme.label
 
             # TODO: tstart
             ts.append(
                 TimeSeries(data, sample_rate, epochs=epochs,
-                           contacts=contacts if scheme is None else pairs)
+                           channels=contacts if scheme is None else pairs)
             )
         return TimeSeries.concatenate(ts)
-
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame) -> np.ndarray:
-        """Attempt to rereference the EEG data using the specified scheme.
-
-        Parameters
-        ----------
-        data
-            Input timeseries data shaped as (epochs, channels, time).
-        contacts
-            List of contact numbers that index the data.
-        scheme
-            Bipolar pairs to use. This should be at a minimum a
-            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
-
-        Returns
-        -------
-        reref
-            Rereferenced timeseries.
-
-        Notes
-        -----
-        This method is meant to be used when loading data and so returns a raw
-        Numpy array. If used externally, a :class:`TimeSeries` will need to be
-        constructed manually.
-
-        """
-        contact_to_index = {
-            c: i
-            for i, c in enumerate(contacts)
-        }
-
-        c1 = [contact_to_index[c] for c in scheme.contact_1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2]
-
-        reref = np.array(
-            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
-        )
-        return reref

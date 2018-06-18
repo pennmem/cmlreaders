@@ -14,6 +14,7 @@ from cmlreaders.readers.eeg import (
     NumpyEEGReader, RamulatorHDF5Reader, samples_to_milliseconds,
     SplitEEGReader,
 )
+from cmlreaders.readers import MontageReader
 
 
 @pytest.fixture
@@ -141,8 +142,8 @@ class TestFileReaders:
         ("R1363T", "FR1", 0, 178, True),  # all contacts sequential
         ("R1392N", "PAL1", 0, 112, False),  # missing some contacts in jacksheet
     ])
-    def test_ramulator_hdf5_reader(self, subject, experiment, session,
-                                   num_channels, sequential, rhino_root):
+    def test_ramulator_hdf5_reader_rhino(self, subject, experiment, session,
+                                         num_channels, sequential, rhino_root):
         basename, sample_rate, dtype, filename = self.get_meta(
             subject, experiment, session, rhino_root)
 
@@ -158,6 +159,33 @@ class TestFileReaders:
 
         df = pd.DataFrame({"contacts": contacts})
         assert sequential == all(df.index + 1 == contacts)
+
+    def test_ramulator_hdf5_reader(self):
+        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
+        ts, channels = reader.read()
+
+        time_steps = 3000
+        assert ts.shape == (1, len(channels), time_steps)
+
+    def test_ramulator_hdf5_rereference(self):
+        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
+        ts, contacts = reader.read()
+        pairs_file = resource_filename('cmlreaders.test.data', 'pairs.json')
+
+        pairs = MontageReader('pairs', subject='R1405E',
+                              file_path=pairs_file,).load()
+        new_ts = reader.rereference(ts, contacts, pairs)
+        assert (new_ts == ts).all()
+
+        pairs = pairs[:10]
+        new_ts = reader.rereference(ts, contacts, pairs)
+        assert (new_ts == ts[:, :10, :]).all()
+
+        pairs['contact_1'][0] = pairs.iloc[0].contact_2
+        with pytest.raises(exc.RereferencingNotPossibleError):
+            reader.rereference(ts, contacts, pairs)
 
 
 @pytest.mark.rhino
@@ -195,9 +223,8 @@ class TestEEGReader:
             reader.load_eeg(events=word_events)
 
     @pytest.mark.parametrize("subject,reref_possible", [
-        ('R1387E', False),
-        # FIXME: re-enable this once rereferencing is fixed
-        # ('R1111M', True),
+        ('R1384J', False),
+        ('R1111M', True),
     ])
     def test_rereference(self, subject, reref_possible, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
@@ -210,13 +237,14 @@ class TestEEGReader:
 
         expected_samples = int(rate * rel_stop / 1000)
         scheme = reader.load('pairs')
+        print(scheme.label)
 
-        if not reref_possible:
-            with pytest.raises(exc.RereferencingNotPossibleError):
-                reader.load_eeg(epochs=epochs, scheme=scheme)
-
-        else:
+        if reref_possible:
             data = reader.load_eeg(epochs=epochs)
             assert data.shape == (1, 100, expected_samples)
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
+        else:
+            data_noreref = reader.load_eeg(epochs=epochs)
+            data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
+            assert (data_noreref.data == data_reref.data).all()

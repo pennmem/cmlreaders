@@ -42,7 +42,7 @@ class TestTimeSeries:
         for epoch in ts.epochs:
             assert epoch == (-1, -1)
 
-        assert_equal(ts.contacts, [i + 1 for i in range(ts.data.shape[1])])
+        assert_equal(ts.channels, [i + 1 for i in range(ts.data.shape[1])])
 
     @pytest.mark.parametrize("data", [
         np.random.random((1, 32, 100)),
@@ -62,11 +62,11 @@ class TestTimeSeries:
         data = np.random.random((11, 32, 100))
         contacts = [i + 1 for i in range(data.shape[1])]
 
-        ts = TimeSeries(data, 1000, contacts=contacts)
-        assert ts.contacts == contacts
+        ts = TimeSeries(data, 1000, channels=contacts)
+        assert ts.channels == contacts
 
         with pytest.raises(ValueError):
-            TimeSeries(data, 1000, contacts=[1, 2])
+            TimeSeries(data, 1000, channels=[1, 2])
 
     def test_resample(self):
         x = np.linspace(0, 4 * np.pi, 400)
