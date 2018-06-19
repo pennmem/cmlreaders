@@ -385,7 +385,7 @@ class BaseReportDataReader(BaseCMLReader):
     -----
     By default, a python class is returned. For report data read with this class
     a python object is the only supported return type. The returned class will
-    be `ramutils.reports.summary.Classifiersummary`
+    be `ramutils.reports.summary.ClassifierSummary`
 
     """
     data_types = ["classifier_summary"]

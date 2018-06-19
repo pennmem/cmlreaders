@@ -1,8 +1,13 @@
-import os
-import pytest
-import pandas as pd
-import numpy as np
 import functools
+import os
+from pkg_resources import resource_filename
+import pytest
+from unittest.mock import patch
+
+import numpy as np
+import pandas as pd
+
+from classiflib.container import ClassifierContainer
 
 from cmlreaders.readers import (
     BasicJSONReader, TextReader, CSVReader, EEGMetaReader,
@@ -11,10 +16,6 @@ from cmlreaders.readers import (
     ClassifierContainerReader
 )
 from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
-from pkg_resources import resource_filename
-from ramutils.reports.summary import ClassifierSummary, FRStimSessionSummary,\
-    MathSummary
-from classiflib.container import ClassifierContainer
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -257,20 +258,19 @@ class TestElectrodeCategoriesReader:
 
 
 class TestBaseReportDataReader:
+    @patch("ramutils.reports.summary.ClassifierSummary")
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
     @pytest.mark.parametrize("data_type", ['classifier_summary'])
     @pytest.mark.parametrize("subject,experiment,session", [
         ('R1409D', 'catFR1', '1'),
     ])
-    def test_as_methods(self, method, data_type, subject, experiment, session):
+    def test_as_methods(self, ClassifierSummary, method, data_type, subject, experiment, session,
+                        ):
         file_path = datafile(data_type + ".h5")
+
         reader = BaseReportDataReader(data_type, subject=subject,
                                       experiment=experiment, session=session,
                                       localization=0, file_path=file_path)
-
-        pyobj_expected_types = {
-            'classifier_summary': ClassifierSummary,
-        }
 
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -282,7 +282,7 @@ class TestBaseReportDataReader:
 
         data = callable_method()
         assert data is not None
-        assert type(data) == pyobj_expected_types[data_type]
+        ClassifierSummary.from_hdf.assert_called()
 
     @pytest.mark.parametrize("method", ['hdf'])
     @pytest.mark.parametrize("data_type", ["classifier_summary"])
@@ -303,34 +303,19 @@ class TestBaseReportDataReader:
 
 class TestReportSummaryReader:
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray', 'dict'])
-    @pytest.mark.parametrize("data_type", ['math_summary', "session_summary"])
+    @pytest.mark.parametrize("data_type", ["session_summary"])
     def test_as_methods(self, method, data_type):
         file_path = datafile(data_type + ".h5")
-        reader = ReportSummaryDataReader(data_type, subject='R1409D',
-                                         experiment='catFR5', session=1,
-                                         localization=0, file_path=file_path)
 
-        pyobj_expected_types = {
-            'math_summary': MathSummary,
-            'session_summary': FRStimSessionSummary
-        }
+        with patch("ramutils.reports.summary.FRStimSessionSummary") as cls:
+            reader = ReportSummaryDataReader(data_type, subject='R1409D',
+                                             experiment='catFR5', session=1,
+                                             localization=0, file_path=file_path)
 
-        expected_types = {
-            'dataframe': pd.DataFrame,
-            'recarray': np.recarray,
-            'dict': list,
-
-        }
-
-        method_name = "as_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        data = callable_method()
-        assert data is not None
-
-        if method == "pyobject":
-            assert type(data) == pyobj_expected_types[data_type]
-        else:
-            assert type(data) == expected_types[method]
+            method_name = "as_{}".format(method)
+            func = getattr(reader, method_name)
+            func()
+            cls.from_hdf.assert_called()
 
     def test_load_nonstim_session(self):
         file_path = datafile('session_summary' + ".h5")
