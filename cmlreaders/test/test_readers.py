@@ -7,8 +7,6 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from classiflib.container import ClassifierContainer
-
 from cmlreaders.readers import (
     BasicJSONReader, TextReader, CSVReader, EEGMetaReader,
     ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
@@ -350,25 +348,20 @@ class TestReportSummaryReader:
 
 
 class TestClassifierContainerReader:
+    @patch("classiflib.container.ClassifierContainer")
     @pytest.mark.parametrize("method", ['pyobject'])
     @pytest.mark.parametrize("data_type", [
         'baseline_classifier', 'used_classifier'])
-    def test_as_methods(self, method, data_type):
+    def test_as_methods(self, ClassifierContainer, method, data_type):
         file_path = datafile(data_type + ".zip")
         reader = ClassifierContainerReader(data_type, subject='R1389J',
                                            experiment='catFR5', session=1,
                                            localization=0, file_path=file_path)
 
-        pyobj_expected_types = {
-            'baseline_classifier': ClassifierContainer,
-            'used_classifier': ClassifierContainer,
-        }
-
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
-        data = callable_method()
-        assert data is not None
-        assert type(data) == pyobj_expected_types[data_type]
+        callable_method()
+        ClassifierContainer.load.assert_called()
 
     @pytest.mark.parametrize("method", ['binary'])
     @pytest.mark.parametrize("data_type", [
