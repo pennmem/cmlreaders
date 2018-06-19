@@ -1,6 +1,6 @@
 pytest
 pytest-cov
-pandas==0.22
+pandas>=0.22,!=0.23.0
 numpy
 scipy
 codecov
