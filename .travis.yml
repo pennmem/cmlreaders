@@ -18,7 +18,7 @@ install:
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy pandas
   - source activate test-environment
   - pip install -r requirements.txt
-  - conda install -y -c pennmem -c conda-forge classiflib ptsa=1
+  - conda install -y -c pennmem -c conda-forge classiflib ptsa=1 ramutils
   - python setup.py install
 
 script:
