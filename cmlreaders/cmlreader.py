@@ -107,7 +107,7 @@ class CMLReader(object):
         if len(df[which].unique()) != 1:
             return None
         else:
-            return df[which].unique()[0]
+            return int(df[which].unique()[0])
 
     @property
     def localization(self) -> int:

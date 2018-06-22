@@ -22,7 +22,7 @@ class TestCMLReader:
         subject = "R1405E"
         experiment = "FR1"
         session = 1
-        localization = 0
+        localization = 1  # session 1 used localization 1, not 0
 
         if file_type in ["electrode_categories", "classifier_summary",
                          "math_summary", "session_summary",
