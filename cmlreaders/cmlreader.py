@@ -83,8 +83,14 @@ class CMLReader(object):
                 "Can't determine protocol for subject id " + subject
             )
 
-    def _determine_localization_or_montage(self, which: str) -> int:
-        """Inner workings of localization/montage properties."""
+    def _determine_localization_or_montage(self, which: str) -> Optional[int]:
+        """Inner workings of localization/montage properties.
+
+        Returns
+        -------
+        Montage or localization number if all are the same, otherwise None.
+
+        """
         if which not in ["localization", "montage"]:
             raise ValueError
 
@@ -99,10 +105,9 @@ class CMLReader(object):
             df = df[df.session == self.session]
 
         if len(df[which].unique()) != 1:
-            raise MissingParameter(
-                "More than one {} found; specify which as a keyword argument"
-                .format(which)
-            )
+            return None
+        else:
+            return df[which].unique()[0]
 
     @property
     def localization(self) -> int:
