@@ -32,7 +32,7 @@ class CMLReader(object):
 
     """
     reader_names = {}
-    _index: pd.DataFrame = None
+    _index = None  # type: pd.DataFrame
 
     def __init__(self, subject: str,
                  experiment: Optional[str] = None,
