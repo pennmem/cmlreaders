@@ -262,8 +262,8 @@ class TestBaseReportDataReader:
     @pytest.mark.parametrize("subject,experiment,session", [
         ('R1409D', 'catFR1', '1'),
     ])
-    def test_as_methods(self, ClassifierSummary, method, data_type, subject, experiment, session,
-                        ):
+    def test_as_methods(self, ClassifierSummary, method, data_type, subject,
+                        experiment, session):
         file_path = datafile(data_type + ".h5")
 
         reader = BaseReportDataReader(data_type, subject=subject,
@@ -280,7 +280,7 @@ class TestBaseReportDataReader:
 
         data = callable_method()
         assert data is not None
-        ClassifierSummary.from_hdf.assert_called()
+        assert ClassifierSummary.from_hdf.call_count == 1
 
     @pytest.mark.parametrize("method", ['hdf'])
     @pytest.mark.parametrize("data_type", ["classifier_summary"])
@@ -313,7 +313,7 @@ class TestReportSummaryReader:
             method_name = "as_{}".format(method)
             func = getattr(reader, method_name)
             func()
-            cls.from_hdf.assert_called()
+            assert cls.from_hdf.call_count == 1
 
     def test_load_nonstim_session(self):
         file_path = datafile('session_summary' + ".h5")
@@ -361,7 +361,7 @@ class TestClassifierContainerReader:
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
         callable_method()
-        ClassifierContainer.load.assert_called()
+        assert ClassifierContainer.load.call_count == 1
 
     @pytest.mark.parametrize("method", ['binary'])
     @pytest.mark.parametrize("data_type", [
