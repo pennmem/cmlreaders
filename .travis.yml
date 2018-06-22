@@ -15,10 +15,10 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy pandas=0.22
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy pandas
   - source activate test-environment
   - pip install -r requirements.txt
-  - conda install -y -c pennmem -c conda-forge ramutils ptsa=1
+  - conda install -y -c pennmem -c conda-forge classiflib ptsa=1 ramutils
   - python setup.py install
 
 script:
