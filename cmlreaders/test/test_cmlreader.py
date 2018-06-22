@@ -1,14 +1,36 @@
 import functools
 import os
+from unittest.mock import patch
+
 from pkg_resources import resource_filename
 import pytest
 
 from cmlreaders import CMLReader
+from cmlreaders.data_index import read_index, _index_dict_to_dataframe
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 
 class TestCMLReader:
+    @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
+        ("R1278E", "catFR1", 0, 0, 1),
+        ("R1278E", "catFR1", None, 0, 1),
+        ("R1278E", "PAL1", None, 2, 2),
+        ("R1278E", "PAL3", 2, 2, 2),
+        ("R1278E", "TH1", 0, 0, 0),
+        ("R1278E", "TH1", None, 0, 0),
+    ])
+    def test_determine_localization_or_montage(self, subject, experiment,
+                                               session, localization, montage):
+        raw = read_index(datafile("r1.json"))
+
+        with patch.object(CMLReader, "_load_index",
+                          side_effect=setattr(CMLReader, "_index", _index_dict_to_dataframe(raw))):
+            reader = CMLReader(subject=subject, experiment=experiment,
+                               session=session)
+            assert reader.montage == montage
+            assert reader.localization == localization
+
     @pytest.mark.rhino
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
