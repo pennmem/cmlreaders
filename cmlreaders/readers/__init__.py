@@ -1,4 +1,8 @@
 # flake8: noqa
 
-from .readers import *
 from .eeg import EEGReader
+from .electrodes import (
+    ElectrodeCategoriesReader, LocalizationReader, MontageReader
+)
+from .readers import *
+from .reports import BaseReportDataReader, ReportSummaryDataReader
