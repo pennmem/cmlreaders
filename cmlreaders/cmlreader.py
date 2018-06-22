@@ -53,19 +53,18 @@ class CMLReader(object):
 
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
 
-    @classmethod
-    def _load_index(cls):
+    def _load_index(self):
         """Loads the data index. Used internally to determine montage and
         localization nubmers.
 
         """
-        if cls._index is None:
-            cls._index = get_data_index()
+        if CMLReader._index is None:
+            CMLReader._index = get_data_index(rootdir=self.rootdir)
 
             # Some subjects don't explicitly specify localization/montage
             # numbers in the index, so they appear as NaNs.
-            cls._index.montage.replace({np.nan: "0"}, inplace=True)
-            cls._index.localization.replace({np.nan: "0"}, inplace=True)
+            CMLReader._index.montage.replace({np.nan: "0"}, inplace=True)
+            CMLReader._index.localization.replace({np.nan: "0"}, inplace=True)
 
     @staticmethod
     def _get_protocol(subject: str) -> str:
