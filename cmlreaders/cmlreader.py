@@ -59,7 +59,7 @@ class CMLReader(object):
 
         """
         if CMLReader._index is None:
-            CMLReader._index = get_data_index(rootdir=self.rootdir)
+            CMLReader._index = get_data_index(self.protocol, rootdir=self.rootdir)
 
             # Some subjects don't explicitly specify localization/montage
             # numbers in the index, so they appear as NaNs.

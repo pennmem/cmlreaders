@@ -1,12 +1,11 @@
 import functools
 import os
-from unittest.mock import patch
 
 from pkg_resources import resource_filename
 import pytest
 
 from cmlreaders import CMLReader
-from cmlreaders.data_index import read_index, _index_dict_to_dataframe
+from cmlreaders.test.utils import patched_cmlreader
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -22,10 +21,7 @@ class TestCMLReader:
     ])
     def test_determine_localization_or_montage(self, subject, experiment,
                                                session, localization, montage):
-        raw = read_index(datafile("r1.json"))
-
-        with patch.object(CMLReader, "_load_index",
-                          side_effect=setattr(CMLReader, "_index", _index_dict_to_dataframe(raw))):
+        with patched_cmlreader():
             reader = CMLReader(subject=subject, experiment=experiment,
                                session=session)
             assert reader.montage == montage

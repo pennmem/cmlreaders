@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 from pkg_resources import resource_filename
 import pytest
 
@@ -15,14 +16,16 @@ from cmlreaders.readers.eeg import (
     SplitEEGReader,
 )
 from cmlreaders.readers import MontageReader
+from cmlreaders.test.utils import patched_cmlreader
 
 
 @pytest.fixture
 def events():
-    cml_reader = CMLReader()
-    path = resource_filename('cmlreaders.test.data', 'all_events.json')
-    reader = cml_reader.get_reader('events', file_path=path)
-    return reader.as_dataframe()
+    with patched_cmlreader():
+        cml_reader = CMLReader("R1389J")
+        path = resource_filename('cmlreaders.test.data', 'all_events.json')
+        reader = cml_reader.get_reader('events', file_path=path)
+        return reader.as_dataframe()
 
 
 @pytest.mark.parametrize("millis,rate,samples", [
