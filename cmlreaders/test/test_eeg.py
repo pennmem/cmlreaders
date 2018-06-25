@@ -98,7 +98,6 @@ class TestFileReaders:
 
         return basename, sample_rate, dtype, filename
 
-    @pytest.mark.only
     def test_npy_reader(self):
         filename = resource_filename("cmlreaders.test.data", "eeg.npy")
         reader = NumpyEEGReader(filename, np.int16, [(0, -1)])
@@ -251,3 +250,26 @@ class TestEEGReader:
             data_noreref = reader.load_eeg(epochs=epochs)
             data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert (data_noreref.data == data_reref.data).all()
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,region_key,region_name,expected_channels", [
+        ("R1384J", "ind.region", "insula", 10),  # Ramulator bipolar
+        ("R1286J", "ind.region", "precentral", 2),  # Ramulator monopolar
+        ("R1111M", "ind.region", "middletemporal", 18),  # "split" EEG
+    ])
+    def test_filter_channels(self, subject, region_key, region_name,
+                             expected_channels, rhino_root):
+        """Test that we can actually filter channels. This happens via
+        rereference, so it's really just a special case check of that.
+
+        """
+        reader = CMLReader(subject, "FR1", 0, rootdir=rhino_root)
+        pairs = reader.load("pairs")
+        scheme = pairs[pairs[region_key] == region_name]
+        all_events = reader.load("events")
+        events = all_events[all_events["type"] == "WORD"]
+
+        eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100,
+                              scheme=scheme)
+
+        assert eeg.shape[1] == expected_channels
