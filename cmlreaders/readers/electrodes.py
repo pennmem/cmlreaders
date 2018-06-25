@@ -36,7 +36,7 @@ class MontageReader(BaseCMLReader):
 
             # we're using fromfile, so we need to infer subject/data_type
             if not len(self.data_type):
-                self.subject = list(raw.keys())[0]
+                self.subject = [key for key in raw.keys() if key != "version"][0]
                 self.data_type = (
                     "contacts" if "contacts" in os.path.basename(self._file_path)
                     else "pairs"
