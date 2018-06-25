@@ -1,4 +1,5 @@
 import json
+import os.path
 from typing import List
 
 import pandas as pd
@@ -31,7 +32,17 @@ class MontageReader(BaseCMLReader):
         from multiprocessing import cpu_count
 
         with open(self._file_path) as f:
-            data = json.load(f)[self.subject][self.data_type]
+            raw = json.load(f)
+
+            # we're using fromfile, so we need to infer subject/data_type
+            if not len(self.data_type):
+                self.subject = list(raw.keys())[0]
+                self.data_type = (
+                    "contacts" if "contacts" in os.path.basename(self._file_path)
+                    else "pairs"
+                )
+
+            data = raw[self.subject][self.data_type]
 
         labels = [l for l in data]
 

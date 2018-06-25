@@ -379,3 +379,14 @@ class TestClassifierContainerReader:
         callable_method(exp_output, overwrite=True)
         assert os.path.exists(exp_output)
         os.remove(exp_output)
+
+
+@pytest.mark.parametrize("cls,path,dtype", [
+    (ElectrodeCategoriesReader, datafile("electrode_categories.txt"), dict),
+    (MontageReader, datafile("pairs.json"), pd.DataFrame),
+    (MontageReader, datafile("contacts.json"), pd.DataFrame),
+    (RamulatorEventLogReader, datafile("event_log.json"), pd.DataFrame),
+])
+def test_fromfile(cls, path, dtype):
+    data = cls.fromfile(path)
+    assert isinstance(data, dtype)

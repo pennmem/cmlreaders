@@ -1,4 +1,5 @@
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
@@ -71,6 +72,22 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.montage = montage
         self.data_type = data_type
         self.rootdir = rootdir
+
+    @classmethod
+    def fromfile(cls, path: Union[str, Path]):
+        """Directly load data from a file using the default representation.
+        This is equivalent to creating a reader with the ``file_path`` keyword
+        argument given but without the need to then call ``load`` or specify
+        other, unnecessary arguments.
+
+        Parameters
+        ----------
+        path
+            Path to the file to load.
+
+        """
+        reader = cls("", "", "", -1, file_path=str(path))
+        return reader.load()
 
     def load(self):
         """ Load data into memory """
