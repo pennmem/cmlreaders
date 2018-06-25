@@ -1,14 +1,32 @@
 import functools
 import os
+
 from pkg_resources import resource_filename
 import pytest
 
 from cmlreaders import CMLReader
+from cmlreaders.test.utils import patched_cmlreader
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 
 class TestCMLReader:
+    @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
+        ("R1278E", "catFR1", 0, 0, 1),
+        ("R1278E", "catFR1", None, 0, 1),
+        ("R1278E", "PAL1", None, 2, 2),
+        ("R1278E", "PAL3", 2, 2, 2),
+        ("R1278E", "TH1", 0, 0, 0),
+        ("R1278E", "TH1", None, 0, 0),
+    ])
+    def test_determine_localization_or_montage(self, subject, experiment,
+                                               session, localization, montage):
+        with patched_cmlreader():
+            reader = CMLReader(subject=subject, experiment=experiment,
+                               session=session)
+            assert reader.montage == montage
+            assert reader.localization == localization
+
     @pytest.mark.rhino
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
@@ -22,7 +40,7 @@ class TestCMLReader:
         subject = "R1405E"
         experiment = "FR1"
         session = 1
-        localization = 0
+        localization = 1  # session 1 used localization 1, not 0
 
         if file_type in ["electrode_categories", "classifier_summary",
                          "math_summary", "session_summary",

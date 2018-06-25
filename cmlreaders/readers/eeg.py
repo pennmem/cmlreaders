@@ -289,11 +289,11 @@ class RamulatorHDF5Reader(BaseEEGReader):
         else:
             with h5py.File(self.filename, 'r') as hfile:
                 bpinfo = hfile['bipolar_info']
-                all_nums = [(int(a), int(b))for (a, b) in
-                            list(zip(bpinfo['ch0_label'][()],
-                                     bpinfo['ch1_label'][()])
-                                 )
-                            ]
+                all_nums = [
+                    (int(a), int(b)) for (a, b) in list(
+                        zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
+                    )
+                ]
             scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
             is_valid_channel = [channel in all_nums for channel in scheme_nums]
 

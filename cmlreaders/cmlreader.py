@@ -1,8 +1,11 @@
 from typing import List, Tuple, Optional
+
+import numpy as np
 import pandas as pd
 
 from . import readers
-from .exc import IncompatibleParametersError
+from .data_index import get_data_index
+from .exc import IncompatibleParametersError, UnknownProtocolError
 from .util import get_root_dir
 
 
@@ -28,21 +31,96 @@ class CMLReader(object):
 
     """
     reader_names = {}
+    _index = None  # type: pd.DataFrame
 
-    def __init__(self, subject: Optional[str] =None,
+    def __init__(self, subject: str,
                  experiment: Optional[str] = None,
                  session: Optional[int] = None,
-                 localization: Optional[int] = 0,
-                 montage: Optional[int] = 0,
+                 localization: Optional[int] = None,
+                 montage: Optional[int] = None,
                  rootdir: Optional[str] = None):
 
         self.subject = subject
         self.experiment = experiment
         self.session = session
-        self.localization = localization
-        self.montage = montage
         self.rootdir = get_root_dir(rootdir)
+
+        self._localization = localization
+        self._montage = montage
+
+        self.protocol = self._get_protocol(self.subject)
+
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
+
+    def _load_index(self):
+        """Loads the data index. Used internally to determine montage and
+        localization nubmers.
+
+        """
+        if CMLReader._index is None:
+            CMLReader._index = get_data_index(self.protocol, rootdir=self.rootdir)
+
+            # Some subjects don't explicitly specify localization/montage
+            # numbers in the index, so they appear as NaNs.
+            CMLReader._index.montage.replace({np.nan: "0"}, inplace=True)
+            CMLReader._index.localization.replace({np.nan: "0"}, inplace=True)
+
+    @staticmethod
+    def _get_protocol(subject: str) -> str:
+        """Get the protocol name from the subject code.
+
+        This returns the ``<protocol> `` in ``/protocols/<protocol>``. For
+        example, it returns ``"r1"`` for RAM subjects.
+
+        """
+        if subject.startswith("R1"):
+            return "r1"
+        elif subject.startswith("LTP"):
+            return "ltp"
+        else:
+            raise UnknownProtocolError(
+                "Can't determine protocol for subject id " + subject
+            )
+
+    def _determine_localization_or_montage(self, which: str) -> Optional[int]:
+        """Inner workings of localization/montage properties.
+
+        Returns
+        -------
+        Montage or localization number if all are the same, otherwise None.
+
+        """
+        if which not in ["localization", "montage"]:
+            raise ValueError
+
+        self._load_index()
+
+        df = CMLReader._index[CMLReader._index["subject"] == self.subject]
+
+        if self.experiment is not None:
+            df = df[df.experiment == self.experiment]
+
+        if self.session is not None:
+            df = df[df.session == self.session]
+
+        if len(df[which].unique()) != 1:
+            return None
+        else:
+            return int(df[which].unique()[0])
+
+    @property
+    def localization(self) -> int:
+        """Determine the localization number."""
+        if self._localization is not None:
+            return self._localization
+        return self._determine_localization_or_montage("localization")
+
+    @property
+    def montage(self) -> int:
+        """Determine the montage number."""
+        if self._montage is not None:
+            return self._montage
+        return self._determine_localization_or_montage("montage")
 
     def get_reader(self, data_type, file_path=None):
         """ Return an instance of the reader class for the given data type """
