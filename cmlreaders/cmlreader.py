@@ -5,8 +5,7 @@ import pandas as pd
 
 from . import readers
 from .data_index import get_data_index
-from .exc import IncompatibleParametersError, MissingParameter, \
-    UnknownProtocolError
+from .exc import IncompatibleParametersError, UnknownProtocolError
 from .util import get_root_dir
 
 
