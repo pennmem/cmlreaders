@@ -6,6 +6,7 @@ Introduction
 
 Purpose
 ========
+
 CMLReaders is a library for easily finding, loading, and saving data that is
 specific to the Computational Memory Lab at the University of Pennsylvania.
 It abstracts away the need to remember a multitude of file locations, prevents
@@ -15,12 +16,14 @@ specific data types, see the :ref:`data_guide` section.
 
 Features
 ========
+
 * Easily find the location of a file on RHINO
 * Single API for loading data
 * Convert from one file output format to another
 
 Description
 ===========
+
 The :mod:`cmlreaders` library contains a number of lab-specific data readers.
 However, for the vast majority of use cases, users should be able to use
 :class:`cmlreaders.readers.CMLReader` to load data.

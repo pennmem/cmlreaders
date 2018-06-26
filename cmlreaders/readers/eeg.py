@@ -1,12 +1,17 @@
 from abc import abstractmethod, ABC
+from collections import OrderedDict
+import itertools
 import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
+import warnings
 
-from collections import OrderedDict
-import itertools
+with warnings.catch_warnings():  # noqa
+    # Some versions of h5py produce a FutureWarning from a numpy import; we can
+    # safely ignore it.
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import h5py
 
-import h5py
 import numpy as np
 import pandas as pd
 
@@ -370,7 +375,10 @@ class EEGReader(BaseCMLReader):
                                       basenames)
             kwargs['epochs'] = epochs
 
-        kwargs['epochs'] = [e if len(e) == 3
+        if "epochs" not in kwargs:
+            kwargs["epochs"] = [(0, -1)]
+
+        kwargs["epochs"] = [e if len(e) == 3
                             else e + (0,)
                             for e in kwargs['epochs']]
 

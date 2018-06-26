@@ -3,6 +3,7 @@ Developer's Guide
 
 Adding new search paths
 -----------------------
+
 All of the file path information is contained in the ``rhino_paths`` dictionary
 contained within :mod:`cmlreaders.constants`. The keys of the dictionary are the
 supported data types and the values are python lists whose elements correspond
@@ -14,6 +15,7 @@ new path in the desired location within the list of search paths.
 
 Adding new data types
 ---------------------
+
 To add support for a new data type, first add the data type shortcut name
 to :mod:`cmlreaders.constants` with a list of possible locations on rhino
 as the value. Next, add this data type to the appropriate list:
