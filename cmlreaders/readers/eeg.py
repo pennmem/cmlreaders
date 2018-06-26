@@ -1,12 +1,17 @@
 from abc import abstractmethod, ABC
+from collections import OrderedDict
+import itertools
 import json
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
+import warnings
 
-from collections import OrderedDict
-import itertools
+with warnings.catch_warnings():
+    # Some versions of h5py produce a FutureWarning from a numpy import; we can
+    # safely ignore it.
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import h5py
 
-import h5py
 import numpy as np
 import pandas as pd
 
