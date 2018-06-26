@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.5.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.4
+                0.5
               </div>
             
           
@@ -155,19 +155,15 @@
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">cmlreaders.base_reader</span> <span class="k">import</span> <span class="n">BaseCMLReader</span>
 <span class="kn">from</span> <span class="nn">cmlreaders.exc</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">MissingParameter</span><span class="p">,</span> <span class="n">UnmetOptionalDependencyError</span><span class="p">,</span> <span class="n">UnsupportedRepresentation</span><span class="p">,</span>
-    <span class="n">UnsupportedExperimentError</span>
 <span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TextReader&#39;</span><span class="p">,</span> <span class="s1">&#39;CSVReader&#39;</span><span class="p">,</span> <span class="s1">&#39;RamulatorEventLogReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;BasicJSONReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EventReader&#39;</span><span class="p">,</span> <span class="s1">&#39;MontageReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;LocalizationReader&#39;</span><span class="p">,</span> <span class="s1">&#39;ElectrodeCategoriesReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;BaseReportDataReader&#39;</span><span class="p">,</span> <span class="s1">&#39;ReportSummaryDataReader&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;BasicJSONReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EventReader&#39;</span><span class="p">,</span>
            <span class="s1">&#39;ClassifierContainerReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EEGMetaReader&#39;</span><span class="p">]</span>
 
 
@@ -178,7 +174,7 @@
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_x&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_y&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_z&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
                               <span class="s1">&#39;min_contact_num&#39;</span><span class="p">,</span> <span class="s1">&#39;max_contact_num&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;jacksheet&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_label&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;jacksheet&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;number&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">],</span>
         <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_label&#39;</span><span class="p">],</span>
         <span class="s1">&#39;good_leads&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_num&#39;</span><span class="p">],</span>
         <span class="s1">&#39;leads&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_num&#39;</span><span class="p">],</span>
@@ -194,14 +190,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
 
 <div class="viewcode-block" id="TextReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;jacksheet&quot;</span><span class="p">:</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>  <span class="c1"># read_csv&#39;s default value</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">df</span></div></div>
 
 
 <div class="viewcode-block" id="CSVReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.CSVReader">[docs]</a><span class="k">class</span> <span class="nc">CSVReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Generic reader class for loading csv files with headers &quot;&quot;&quot;</span>
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;prior_stim_results&#39;</span><span class="p">,</span> <span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;electrode_categories&#39;</span><span class="p">,</span> <span class="s1">&#39;target_selection_table&#39;</span><span class="p">]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prior_stim_results&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;target_selection_table&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -271,7 +274,7 @@
 <div class="viewcode-block" id="EEGMetaReader.as_dict"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EEGMetaReader.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">metafile</span><span class="p">:</span>
             <span class="n">sources_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">metafile</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metafile</span>
+            <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span>
         <span class="k">return</span> <span class="n">sources_info</span></div></div>
 
 
@@ -282,7 +285,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all_events&#39;</span><span class="p">,</span> <span class="s1">&#39;math_events&#39;</span><span class="p">,</span> <span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="s1">&#39;events&#39;</span><span class="p">]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all_events&#39;</span><span class="p">,</span> <span class="s1">&#39;math_events&#39;</span><span class="p">,</span> <span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="s1">&#39;events&#39;</span><span class="p">,</span> <span class="s1">&#39;ps4_events&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="EventReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
@@ -291,356 +294,13 @@
         <span class="k">return</span> <span class="n">df</span></div></div>
 
 
-<div class="viewcode-block" id="MontageReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.MontageReader">[docs]</a><span class="k">class</span> <span class="nc">MontageReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads montage files (contacts.json, pairs.json).</span>
-
-<span class="sd">    Returns a :class:`pd.DataFrame`.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pairs&#39;</span><span class="p">,</span> <span class="s1">&#39;contacts&#39;</span><span class="p">]</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_flatten_row</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="n">entry</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">atlases</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;atlases&#39;</span><span class="p">)</span>
-        <span class="n">atlas_row</span> <span class="o">=</span> <span class="n">json_normalize</span><span class="p">(</span><span class="n">atlases</span><span class="p">)</span>
-        <span class="n">atlas_row</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">atlas_row</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">row</span>
-
-<div class="viewcode-block" id="MontageReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.MontageReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="k">import</span> <span class="n">ProcessPoolExecutor</span> <span class="k">as</span> <span class="n">Pool</span>
-        <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-        <span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">cpu_count</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">]</span>
-
-        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
-
-        <span class="n">flatten</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flatten_row</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">cpu_count</span><span class="p">()))</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-            <span class="n">rows</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">flatten</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-
-        <span class="c1"># Drop useless atlas.id tags</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">col</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.id&#39;</span><span class="p">)]]</span>
-
-        <span class="c1"># rename poorly named columns</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;contacts&#39;</span><span class="p">:</span>
-            <span class="n">renames</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channel&#39;</span><span class="p">:</span> <span class="s1">&#39;contact&#39;</span><span class="p">}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">renames</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;channel_1&#39;</span><span class="p">:</span> <span class="s1">&#39;contact_1&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_2&#39;</span><span class="p">:</span> <span class="s1">&#39;contact_2&#39;</span><span class="p">}</span>
-        <span class="n">renames</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="s1">&#39;label&#39;</span><span class="p">})</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">renames</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># ensure that contact and label appear first</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;contacts&#39;</span><span class="p">:</span>
-            <span class="n">first</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;contact&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">first</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;contact_1&#39;</span><span class="p">,</span> <span class="s1">&#39;contact_2&#39;</span><span class="p">]</span>
-        <span class="n">first</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">first</span> <span class="o">+</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">first</span><span class="p">]]</span>
-
-        <span class="c1"># sort by contact</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;contact&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;contacts&#39;</span> <span class="k">else</span> <span class="s1">&#39;contact_1&#39;</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">df</span></div></div>
-
-
-<div class="viewcode-block" id="LocalizationReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.LocalizationReader">[docs]</a><span class="k">class</span> <span class="nc">LocalizationReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads data stored in localization.json.</span>
-
-<span class="sd">    Returns a :class:`pd.DataFrame`.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;localization&#39;</span><span class="p">]</span>
-
-<div class="viewcode-block" id="LocalizationReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.LocalizationReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">import</span> <span class="nn">itertools</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-        <span class="n">leads</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;leads&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-
-        <span class="k">for</span> <span class="n">lead</span> <span class="ow">in</span> <span class="n">leads</span><span class="p">:</span>
-            <span class="n">contacts</span> <span class="o">=</span> <span class="n">lead</span><span class="p">[</span><span class="s2">&quot;contacts&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">contacts</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">contacts</span> <span class="o">=</span> <span class="n">contacts</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">contacts</span><span class="p">:</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">lead</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]})</span>
-            <span class="n">pairs</span> <span class="o">=</span> <span class="n">lead</span><span class="p">[</span><span class="s2">&quot;pairs&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="n">pairs</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
-                <span class="n">p</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">])</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">lead</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]})</span>
-
-        <span class="n">flat_contact_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;contacts&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">leads</span><span class="p">]))</span>
-        <span class="n">flat_pairs_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;pairs&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">leads</span><span class="p">]))</span>
-        <span class="n">all_data</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">all_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">flat_contact_data</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">))</span>
-        <span class="n">all_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">flat_pairs_data</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;names&#39;</span><span class="p">))</span>
-        <span class="n">combined_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;contacts&#39;</span><span class="p">,</span> <span class="s1">&#39;pairs&#39;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">combined_df</span></div></div>
-
-
-<div class="viewcode-block" id="ElectrodeCategoriesReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ElectrodeCategoriesReader">[docs]</a><span class="k">class</span> <span class="nc">ElectrodeCategoriesReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads electrode_categories.txt and handles the many inconsistencies in</span>
-<span class="sd">    those files.</span>
-
-<span class="sd">    Returns a ``dict``.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;electrode_categories&quot;</span><span class="p">]</span>
-    <span class="n">default_representation</span> <span class="o">=</span> <span class="s1">&#39;dict&#39;</span>
-
-    <span class="k">def</span> <span class="nf">_read_categories</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary mapping categories to electrode from the</span>
-<span class="sd">        electrode_categories.txt file</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        groups: dict,</span>
-<span class="sd">            dictionary mapping relevant field values (bad channel, SOZ, etc.) to</span>
-<span class="sd">            the corresponding channels</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This function is only required because there&#39;s so much inconsistency in</span>
-<span class="sd">        where and how the data corresponding to bad electrodes are stored.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Used to indicate relevant strings in the text files</span>
-        <span class="n">relevant</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;seizure onset zone&#39;</span><span class="p">,</span> <span class="s1">&#39;seizure onset zones&#39;</span><span class="p">,</span> <span class="s1">&#39;seizure onset&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;interictal&#39;</span><span class="p">,</span> <span class="s1">&#39;interictal spiking&#39;</span><span class="p">,</span> <span class="s1">&#39;interictal spikes&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;ictal onset&#39;</span><span class="p">,</span> <span class="s1">&#39;ictal onset:&#39;</span><span class="p">,</span> <span class="s1">&#39;interictal spiking:&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;brain lesions&#39;</span><span class="p">,</span> <span class="s1">&#39;brain lesions:&#39;</span><span class="p">,</span> <span class="s1">&#39;octal onset zone&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;bad electrodes&#39;</span><span class="p">,</span> <span class="s1">&#39;bad electrodes:&#39;</span><span class="p">,</span> <span class="s1">&#39;broken leads&#39;</span><span class="p">,</span> <span class="s1">&#39;broken leads:&#39;</span>
-        <span class="p">}</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">ch_info</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="c1"># This will be used to initalize a before after kind of check to sort</span>
-        <span class="c1"># the groups</span>
-        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">groups</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Save the groups here</span>
-
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ch_info</span><span class="p">[</span><span class="mi">2</span><span class="p">:]):</span>
-            <span class="c1"># We skip to two because all files start with line one being subject</span>
-            <span class="c1"># followed by another line of &#39;&#39;, if the user wishes to access the</span>
-            <span class="c1"># information feel free to modify below. Blank spaces used to</span>
-            <span class="c1"># seperate, if we encountered one count increases</span>
-            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">continue</span>  <span class="c1"># Ensures &#39;&#39; isn&#39;t appended to dict[group_name]</span>
-
-            <span class="c1"># Ignore a line containing only &#39;-&#39; (sometimes found at the end of</span>
-            <span class="c1"># files)</span>
-            <span class="k">if</span> <span class="n">line</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="c1"># Check if the line is relevant if so add a blank list to the dict</span>
-            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">relevant</span><span class="p">:</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">group_name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                <span class="n">groups</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="c1"># Sanity check to ensure that they had a &#39;&#39; after the relevant</span>
-                <span class="k">if</span> <span class="n">ch_info</span><span class="p">[</span><span class="mi">2</span><span class="p">:][</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>  <span class="c1"># Skipping two for same reason</span>
-                    <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">continue</span>
-
-            <span class="c1"># Triggered when inside of a group e.g. they&#39;re channel names</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>  <span class="c1"># indicates start of group values</span>
-                <span class="n">groups</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">groups</span>
-
-    <span class="k">def</span> <span class="nf">_get_categories_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return electrode categories from relevant textfile; ensures that the</span>
-<span class="sd">        fields are consistent regardless of the actual field the RA entered into</span>
-<span class="sd">        the textfile</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        e_cat_reader: dict</span>
-<span class="sd">            dictionary mapping relevant field values (bad channel, SOZ, etc.)</span>
-<span class="sd">            to the corresponding channels</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-        <span class="n">convert</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;seizure onset zone&#39;</span><span class="p">:</span> <span class="s1">&#39;soz&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;seizure onset zones&#39;</span><span class="p">:</span> <span class="s1">&#39;soz&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;seizure onset&#39;</span><span class="p">:</span> <span class="s1">&#39;soz&#39;</span><span class="p">,</span>
-
-            <span class="c1"># Interictal activity</span>
-            <span class="s1">&#39;interictal&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;interictal spiking&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;interictal spikes&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;ictal onset&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;ictal onset:&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;interictal spiking:&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;octal onset zone&#39;</span><span class="p">:</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span>
-
-            <span class="c1"># Lesioned Tissue</span>
-            <span class="s1">&#39;brain lesions&#39;</span><span class="p">:</span> <span class="s1">&#39;brain_lesion&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;brain lesions:&#39;</span><span class="p">:</span> <span class="s1">&#39;brain_lesion&#39;</span><span class="p">,</span>
-
-            <span class="c1"># Bad channels</span>
-            <span class="s1">&#39;bad electrodes&#39;</span><span class="p">:</span> <span class="s1">&#39;bad_channel&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;bad electrodes:&#39;</span><span class="p">:</span> <span class="s1">&#39;bad_channel&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;broken leads&#39;</span><span class="p">:</span> <span class="s1">&#39;bad_channel&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;broken leads:&#39;</span><span class="p">:</span> <span class="s1">&#39;bad_channel&#39;</span>
-        <span class="p">}</span>
-
-        <span class="n">e_cat_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_categories</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">e_cat_reader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">e_cat_reader</span> <span class="o">=</span> <span class="p">{</span><span class="n">convert</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">e_cat_reader</span><span class="p">[</span><span class="n">v</span><span class="p">]])</span>
-                            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">e_cat_reader</span><span class="p">)}</span>
-
-        <span class="k">return</span> <span class="n">e_cat_reader</span>
-
-<div class="viewcode-block" id="ElectrodeCategoriesReader.as_dict"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ElectrodeCategoriesReader.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">categories</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">key</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_categories_dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-
-        <span class="c1"># make sure we have all the keys</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;soz&#39;</span><span class="p">,</span> <span class="s1">&#39;interictal&#39;</span><span class="p">,</span> <span class="s1">&#39;brain_lesion&#39;</span><span class="p">,</span> <span class="s1">&#39;bad_channel&#39;</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
-                <span class="n">categories</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">return</span> <span class="n">categories</span></div></div>
-
-
-<div class="viewcode-block" id="BaseReportDataReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseReportDataReader">[docs]</a><span class="k">class</span> <span class="nc">BaseReportDataReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reader class for classifier summary data produced in reporting pipeline</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    By default, a python class is returned. For report data read with this class</span>
-<span class="sd">    a python object is the only supported return type. The returned class will</span>
-<span class="sd">    be `ramutils.reports.summary.Classifiersummary`</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;classifier_summary&quot;</span><span class="p">]</span>
-    <span class="n">default_representation</span> <span class="o">=</span> <span class="s1">&#39;pyobject&#39;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span>
-                 <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">BaseReportDataReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-                                                   <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
-                                                   <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                                                   <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                                   <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                                                   <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">ramutils.reports.summary</span> <span class="k">import</span> <span class="n">ClassifierSummary</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UnmetOptionalDependencyError</span><span class="p">(</span><span class="s2">&quot;Install ramutils to use this reader&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">pyclass_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;classifier_summary&#39;</span><span class="p">:</span> <span class="n">ClassifierSummary</span><span class="p">,</span>
-        <span class="p">}</span>
-
-<div class="viewcode-block" id="BaseReportDataReader.as_pyobject"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseReportDataReader.as_pyobject">[docs]</a>    <span class="k">def</span> <span class="nf">as_pyobject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return data as a python object specific to this data type &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pyclass_mapping</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pyclass_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">]</span><span class="o">.</span><span class="n">from_hdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="BaseReportDataReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseReportDataReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">UnsupportedRepresentation</span><span class="p">(</span><span class="s2">&quot;Unable to represent this data as a dataframe&quot;</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">to_hdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-        <span class="n">pyobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_pyobject</span><span class="p">()</span>
-        <span class="n">pyobj</span><span class="o">.</span><span class="n">to_hdf</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ReportSummaryDataReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ReportSummaryDataReader">[docs]</a><span class="k">class</span> <span class="nc">ReportSummaryDataReader</span><span class="p">(</span><span class="n">BaseReportDataReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reader class for session and math summary data produced in the reporting</span>
-<span class="sd">        pipeline</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    By default, a python class is returned based on the type of data. It could</span>
-<span class="sd">    be one of</span>
-
-<span class="sd">    - `ramutils.reports.summary.MathSummary`</span>
-<span class="sd">    - `ramutils.reports.summary.FRStimSessionSummary`</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;session_summary&quot;</span><span class="p">,</span> <span class="s2">&quot;math_summary&quot;</span><span class="p">]</span>
-    <span class="n">default_representation</span> <span class="o">=</span> <span class="s2">&quot;pyobject&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span>
-                 <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">BaseReportDataReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-                                                   <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
-                                                   <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                                                   <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                                   <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                                                   <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">ramutils.reports.summary</span> <span class="k">import</span> <span class="n">FRStimSessionSummary</span><span class="p">,</span> \
-                <span class="n">MathSummary</span>
-            <span class="kn">from</span> <span class="nn">ramutils.utils</span> <span class="k">import</span> <span class="n">is_stim_experiment</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UnmetOptionalDependencyError</span><span class="p">(</span><span class="s2">&quot;Install ramutils to use this reader&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">pyclass_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;math_summary&#39;</span><span class="p">:</span> <span class="n">MathSummary</span><span class="p">,</span>
-            <span class="s1">&#39;fr_stim_summary&#39;</span><span class="p">:</span> <span class="n">FRStimSessionSummary</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_stim_experiment</span> <span class="o">=</span> <span class="n">is_stim_experiment</span>
-
-<div class="viewcode-block" id="ReportSummaryDataReader.as_pyobject"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ReportSummaryDataReader.as_pyobject">[docs]</a>    <span class="k">def</span> <span class="nf">as_pyobject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;math_summary&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ReportSummaryDataReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">as_pyobject</span><span class="p">()</span>
-
-        <span class="n">stim_experiment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_stim_experiment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">)</span>
-
-        <span class="c1"># TODO: Loading record-only data is a bit more complicated since it is</span>
-        <span class="c1"># not tied to a particular session</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">stim_experiment</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">UnsupportedExperimentError</span><span class="p">(</span><span class="s2">&quot;Only stim report data is currently supported. The readers in ramutils can still be used&quot;</span><span class="p">)</span>
-
-        <span class="n">summary_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pyclass_mapping</span><span class="p">[</span><span class="s1">&#39;fr_stim_summary&#39;</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">summary_obj</span><span class="o">.</span><span class="n">from_hdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ReportSummaryDataReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ReportSummaryDataReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">pyobj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_pyobject</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">pyobj</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span></div></div>
-
-
 <div class="viewcode-block" id="ClassifierContainerReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ClassifierContainerReader">[docs]</a><span class="k">class</span> <span class="nc">ClassifierContainerReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Reader class for loading a serialized classifier classifier</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    By default, a `classiflib.container.ClassifierContainer` class is returned</span>
+<span class="sd">    By default, a :class:`classiflib.container.ClassifierContainer` class is</span>
+<span class="sd">    returned.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -673,15 +333,15 @@
         <span class="k">raise</span> <span class="n">UnsupportedRepresentation</span><span class="p">(</span><span class="s2">&quot;Unable to represent classifier as a dataframe&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ClassifierContainerReader.to_binary"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ClassifierContainerReader.to_binary">[docs]</a>    <span class="k">def</span> <span class="nf">to_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Saves classifier to a serialized format as determined by  the file</span>
-<span class="sd">            extension. By default, if the file already exists, it will note be</span>
-<span class="sd">            overwritten.</span>
+        <span class="sd">&quot;&quot;&quot;Saves classifier to a serialized format as determined by  the file</span>
+<span class="sd">        extension. By default, if the file already exists, it will note be</span>
+<span class="sd">        overwritten.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        See :method:`classiflib.container.ClassifierContainer.save()` for more</span>
-<span class="sd">        details on supported output formats</span>
+<span class="sd">        See :meth:`classiflib.container.ClassifierContainer.save()` for more</span>
+<span class="sd">        details on supported output formats.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">as_pyobject</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 </pre></div>
@@ -696,7 +356,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -718,7 +378,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.4.0',
+            VERSION:'0.5.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -740,9 +400,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

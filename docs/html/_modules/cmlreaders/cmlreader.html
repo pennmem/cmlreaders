@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.5.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.4
+                0.5
               </div>
             
           
@@ -153,10 +153,14 @@
             
   <h1>Source code for cmlreaders.cmlreader</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">readers</span>
-<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">IncompatibleParametersError</span>
+<span class="kn">from</span> <span class="nn">.data_index</span> <span class="k">import</span> <span class="n">get_data_index</span>
+<span class="kn">from</span> <span class="nn">.exc</span> <span class="k">import</span> <span class="n">IncompatibleParametersError</span><span class="p">,</span> <span class="n">UnknownProtocolError</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_root_dir</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CMLReader&#39;</span><span class="p">]</span>
@@ -181,21 +185,96 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">reader_names</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_index</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: pd.DataFrame</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">experiment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                 <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                 <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
+                 <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="n">localization</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="n">montage</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">rootdir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span> <span class="o">=</span> <span class="n">get_root_dir</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_localization</span> <span class="o">=</span> <span class="n">localization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_montage</span> <span class="o">=</span> <span class="n">montage</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_protocol</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">readers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">def</span> <span class="nf">_load_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Loads the data index. Used internally to determine montage and</span>
+<span class="sd">        localization nubmers.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
+
+            <span class="c1"># Some subjects don&#39;t explicitly specify localization/montage</span>
+            <span class="c1"># numbers in the index, so they appear as NaNs.</span>
+            <span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span><span class="o">.</span><span class="n">montage</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span><span class="o">.</span><span class="n">localization</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_protocol</span><span class="p">(</span><span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the protocol name from the subject code.</span>
+
+<span class="sd">        This returns the ``&lt;protocol&gt; `` in ``/protocols/&lt;protocol&gt;``. For</span>
+<span class="sd">        example, it returns ``&quot;r1&quot;`` for RAM subjects.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">subject</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;R1&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;r1&quot;</span>
+        <span class="k">elif</span> <span class="n">subject</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LTP&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">&quot;ltp&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnknownProtocolError</span><span class="p">(</span>
+                <span class="s2">&quot;Can&#39;t determine protocol for subject id &quot;</span> <span class="o">+</span> <span class="n">subject</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_determine_localization_or_montage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Inner workings of localization/montage properties.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Montage or localization number if all are the same, otherwise None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;localization&quot;</span><span class="p">,</span> <span class="s2">&quot;montage&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_index</span><span class="p">()</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span><span class="p">[</span><span class="n">CMLReader</span><span class="o">.</span><span class="n">_index</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">experiment</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">session</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">which</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">which</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">localization</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determine the localization number.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_localization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_localization</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_localization_or_montage</span><span class="p">(</span><span class="s2">&quot;localization&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">montage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determine the montage number.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_montage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_montage</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_localization_or_montage</span><span class="p">(</span><span class="s2">&quot;montage&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CMLReader.get_reader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an instance of the reader class for the given data type &quot;&quot;&quot;</span>
@@ -231,8 +310,11 @@
                                       <span class="s2">&quot;requested file type&quot;</span><span class="p">)</span>
 
         <span class="c1"># By default we want task + math events when requesting events</span>
-        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;events&#39;</span><span class="p">:</span>
-            <span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;all_events&#39;</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;events&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS4&quot;</span><span class="p">):</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;all_events&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;ps4_events&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">data_type</span><span class="p">,</span>
                                        <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
@@ -245,8 +327,7 @@
 
 <div class="viewcode-block" id="CMLReader.load_eeg"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load_eeg">[docs]</a>    <span class="k">def</span> <span class="nf">load_eeg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">rel_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rel_stop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">contacts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">scheme</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load EEG data.</span>
 
@@ -262,16 +343,18 @@
 <span class="sd">            Stop time in ms relative to passed event onsets. This  parameter is</span>
 <span class="sd">            required when passing events and not used otherwise.</span>
 <span class="sd">        epochs</span>
-<span class="sd">            A list of ``(start, stop)`` tuples to specify epochs to retrieve</span>
-<span class="sd">            data from. Incompatible with passing ``events``.</span>
-<span class="sd">        contacts</span>
-<span class="sd">            Contacts to include when loading data. Any channel that includes</span>
-<span class="sd">            these contacts will be loaded. When not given (the default), load</span>
-<span class="sd">            all channels.</span>
+<span class="sd">            A list of tuples to specify epochs to retrieve data from. These can</span>
+<span class="sd">            be in one of two forms:</span>
+
+<span class="sd">            - (start_index, stop_index)</span>
+<span class="sd">            - (start_index, stop_index, file_number) when the EEG</span>
+<span class="sd">            for the session is is split over multiple recordings.</span>
+
+<span class="sd">            Incompatible with passing ``events``.</span>
 <span class="sd">        scheme</span>
-<span class="sd">            When specified, a bipolar scheme to rereference the data with. This</span>
-<span class="sd">            is only possible if the data were recorded in monopolar (a.k.a.</span>
-<span class="sd">            common reference) mode.</span>
+<span class="sd">            When specified, a bipolar scheme to rereference the data with and/or</span>
+<span class="sd">            filter by channel. Rereferencing is only possible if the data were</span>
+<span class="sd">            recorded in monopolar (a.k.a. common reference) mode.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -290,7 +373,6 @@
             <span class="k">raise</span> <span class="n">IncompatibleParametersError</span><span class="p">(</span><span class="s2">&quot;events and epochs are mutually exclusive&quot;</span><span class="p">)</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;contacts&#39;</span><span class="p">:</span> <span class="n">contacts</span><span class="p">,</span>
             <span class="s1">&#39;scheme&#39;</span><span class="p">:</span> <span class="n">scheme</span><span class="p">,</span>
         <span class="p">}</span>
 
@@ -324,7 +406,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -346,7 +428,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.4.0',
+            VERSION:'0.5.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -368,9 +450,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

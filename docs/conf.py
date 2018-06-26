@@ -17,6 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from datetime import datetime
 import os
 import sys
 
@@ -57,7 +58,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'CML Data Readers'
-copyright = '2017'
+copyright = '{}'.format(datetime.now().year)
 author = 'Penn Computational Memory Lab'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -80,7 +81,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = []
+exclude_patterns = [".ipynb_checkpoints/*"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

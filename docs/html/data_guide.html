@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Guide &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>Data Guide &mdash; CML Data Readers 0.5.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.4
+                0.5
               </div>
             
           
@@ -202,7 +202,8 @@ of the “r1” protocol, while scalp experiments are part of the “ltp” prot
 electrodes, this is considered a new localization. Localizations are 0-indexed.
 Data at this level changes whenever there is a new localization,</li>
 <li>montage: Any change to a subject’s montage results in a new montage number.
-Note: Montage numbers do not reset in the case of a new localization.</li>
+Montage changes can occur when when the set of contacts used for recording
+changes. Note: Montage numbers do not reset in the case of a new localization.</li>
 <li>session: Data that is unique to a single session of a particular experiment.
 This is the lowest level of data stored since localization/montage/etc. are
 fixed for the duration of a session.</li>
@@ -238,34 +239,6 @@ fixed for the duration of a session.</li>
 <td>&#160;</td>
 <td>protocol</td>
 </tr>
-<tr class="row-even"><td>target_selection_table</td>
-<td>Metadata for each contact. Used for selecting stimulation targets. Generated as part of the RAM reporting pipeline once a subject has completed a full set of record-only sessions. Used by the 3D brain visualization application.</td>
-<td>csv</td>
-<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
-<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,  <a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
-<td>localization</td>
-</tr>
-<tr class="row-odd"><td>baseline_classifier</td>
-<td>A serialized version of a RAM brain state classifier that has been trained using record-only data. When loaded, the trained model can be used to make out of sample predictions given new features (powers). Generated as part of the reporting pipeline and includes all channels by default.</td>
-<td>zip</td>
-<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
-<td><a class="reference external" href="https://github.com/pennmem/classiflib">classiflib</a>, <a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,</td>
-<td>localization</td>
-</tr>
-<tr class="row-even"><td>electrode_coordinates</td>
-<td>Table of contact metadata in long-form including contact name, type, freesurfer coordinates, atlas location, etc. Generated as part of the brain viz pipeline to be used in the 3D brain visualization.</td>
-<td>csv</td>
-<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
-<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
-<td>localization</td>
-</tr>
-<tr class="row-odd"><td>prior_stim_results</td>
-<td>Table of previously used stimulation targets with the memory modulation results along with coordinates in freesurfer space that have been mapped into a particular subject’s space. Used by the 3D brain visualization application to display prior stim locations/results.</td>
-<td>csv</td>
-<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
-<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
-<td>localization</td>
-</tr>
 <tr class="row-even"><td>localization</td>
 <td>Metadata for implanted electrodes. Includes coordinates from various spaces as well a locations based on different atlases for both contacts and pairs of contacts. Generated as part of the localization pipeline.</td>
 <td>json</td>
@@ -273,68 +246,96 @@ fixed for the duration of a session.</li>
 <td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>, <a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a>, <a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
 <td>localization</td>
 </tr>
+<tr class="row-odd"><td>target_selection_table</td>
+<td>Metadata for each contact. Used for selecting stimulation targets. Generated as part of the RAM reporting pipeline once a subject has completed a full set of record-only sessions. Used by the 3D brain visualization application.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,  <a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>montage</td>
+</tr>
+<tr class="row-even"><td>baseline_classifier</td>
+<td>A serialized version of a RAM brain state classifier that has been trained using record-only data. When loaded, the trained model can be used to make out of sample predictions given new features (powers). Generated as part of the reporting pipeline and includes all channels by default.</td>
+<td>zip</td>
+<td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/classiflib">classiflib</a>, <a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a>,</td>
+<td>montage</td>
+</tr>
+<tr class="row-odd"><td>electrode_coordinates</td>
+<td>Table of contact metadata in long-form including contact name, type, freesurfer coordinates, atlas location, etc. Generated as part of the brain viz pipeline to be used in the 3D brain visualization.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>montage</td>
+</tr>
+<tr class="row-even"><td>prior_stim_results</td>
+<td>Table of previously used stimulation targets with the memory modulation results along with coordinates in freesurfer space that have been mapped into a particular subject’s space. Used by the 3D brain visualization application to display prior stim locations/results.</td>
+<td>csv</td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
+<td><a class="reference external" href="https://github.com/pennmem/brain_viz_unity">brain_viz_unity</a></td>
+<td>montage</td>
+</tr>
 <tr class="row-odd"><td>voxel_coordinates</td>
 <td>Metadata for implanted electrodes including voxel coordinates of each contact. Generated using Vox Tool as part of the broader localization pipeline. Used by the neurorad pipeline to generate coordinates in other spaces, atlas locations, and other metadata.</td>
 <td>json</td>
 <td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
 <td><a class="reference external" href="https://github.com/pennmem/neurorad_pipeline">neurorad</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-even"><td>jacksheet</td>
 <td>Labels for all signals recorded from a subject. Typically this includes all EEG-related contacts, but can contain additional signals such as EKG or other reference channels. It is formmated as one label per line. It is used as part of the config generation pipeline.</td>
 <td>txt</td>
 <td>manual</td>
 <td><a class="reference external" href="https://github.com/pennmem/bptools">bptools</a>, <a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-odd"><td>area</td>
 <td>Surface area for each implanted depth electrode. Typically this file is manually generated. It is used by the config generation pipeline.</td>
 <td>txt</td>
 <td>manual</td>
 <td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-even"><td>leads</td>
 <td>Channel numbers of all contacts. One channel per line. In the old reporting/config generation pipelines, channels were manually removed from this file in order to remove them from classifier training and config generation. In the new pipeline, this is done by using the classifier_excluded_leads file instead.</td>
 <td>txt</td>
 <td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
 <td>&#160;</td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-odd"><td>good_leads</td>
 <td>Channel numbers of all contacts not identified as being bad channels. One channel per line</td>
 <td>txt</td>
 <td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
 <td>&#160;</td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-even"><td>classifier_excluded_leads</td>
 <td>Labels of contacts that should be excluded when training a classifier. One label per line. This is a manually-created file used by the config generation pipeline to allow arbitrary sets of contacts to be excluded from classifier training.</td>
 <td>txt</td>
 <td><a class="reference external" href="https://memory.psych.upenn.edu/InternalWiki/Neurorad_Pipeline_v2">localization</a></td>
 <td><a class="reference external" href="https://github.com/pennmem/ram_utils">ramutils</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-odd"><td>electrdode_categories</td>
 <td>Lists contacts in the seizure onset zone, exhibiting frequent interictal activity, residing in a brain lesion, or labelled as bad/broken by the clinical staff. Produced near the end of a patient’s time in the EMU and is primarily useful for post-hoc analysis.</td>
 <td>txt</td>
 <td>manual</td>
 <td>&#160;</td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-even"><td>matlab_bipolar_talstruct</td>
 <td>Legacy MATLAB talstruct files containing bipolar contact metadata. This file has been replaced by the pairs.json file.</td>
 <td>mat</td>
 <td>&#160;</td>
 <td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-odd"><td>matlab_monopolar_talstruct</td>
 <td>Legacy MATLAB talstruct files containing single contact metadata. This file has been replaced by contacts.json.</td>
 <td>mat</td>
 <td>&#160;</td>
 <td><a class="reference external" href="https://github.com/pennmem/brain_viz">brainviewer</a></td>
-<td>localization</td>
+<td>montage</td>
 </tr>
 <tr class="row-even"><td>pairs</td>
 <td>Metadata for neighboring contacts. Produced from localization.json in the current neurorad pipeline.</td>
@@ -432,7 +433,7 @@ fixed for the duration of a session.</li>
 <td>json</td>
 <td>&#160;</td>
 <td><a class="reference external" href="https://github.com/pennmem/event_creation">event_creation</a></td>
-<td>&#160;</td>
+<td>session</td>
 </tr>
 <tr class="row-even"><td>experiment_config</td>
 <td>Configuration file used by Ramulator to run an experiment. This file is unlikely to be used by analysts, but is helpful when determining what parameters were used for a particular session.</td>
@@ -500,7 +501,7 @@ fixed for the duration of a session.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -522,7 +523,7 @@ fixed for the duration of a session.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.0',
+            VERSION:'0.5.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -544,9 +545,7 @@ fixed for the duration of a session.</li>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

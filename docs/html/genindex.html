@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>Index &mdash; CML Data Readers 0.5.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.4
+                0.5
               </div>
             
           
@@ -176,8 +176,6 @@
       <li><a href="api.html#cmlreaders.readers.eeg.EEGReader.as_dataframe">as_dataframe() (cmlreaders.readers.eeg.EEGReader method)</a>
 
       <ul>
-        <li><a href="api.html#cmlreaders.readers.readers.BaseReportDataReader.as_dataframe">(cmlreaders.readers.readers.BaseReportDataReader method)</a>
-</li>
         <li><a href="api.html#cmlreaders.readers.readers.BasicJSONReader.as_dataframe">(cmlreaders.readers.readers.BasicJSONReader method)</a>
 </li>
         <li><a href="api.html#cmlreaders.readers.readers.CSVReader.as_dataframe">(cmlreaders.readers.readers.CSVReader method)</a>
@@ -186,13 +184,7 @@
 </li>
         <li><a href="api.html#cmlreaders.readers.readers.EventReader.as_dataframe">(cmlreaders.readers.readers.EventReader method)</a>
 </li>
-        <li><a href="api.html#cmlreaders.readers.readers.LocalizationReader.as_dataframe">(cmlreaders.readers.readers.LocalizationReader method)</a>
-</li>
-        <li><a href="api.html#cmlreaders.readers.readers.MontageReader.as_dataframe">(cmlreaders.readers.readers.MontageReader method)</a>
-</li>
         <li><a href="api.html#cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe">(cmlreaders.readers.readers.RamulatorEventLogReader method)</a>
-</li>
-        <li><a href="api.html#cmlreaders.readers.readers.ReportSummaryDataReader.as_dataframe">(cmlreaders.readers.readers.ReportSummaryDataReader method)</a>
 </li>
         <li><a href="api.html#cmlreaders.readers.readers.TextReader.as_dataframe">(cmlreaders.readers.readers.TextReader method)</a>
 </li>
@@ -204,15 +196,7 @@
       <ul>
         <li><a href="api.html#cmlreaders.readers.readers.EEGMetaReader.as_dict">(cmlreaders.readers.readers.EEGMetaReader method)</a>
 </li>
-        <li><a href="api.html#cmlreaders.readers.readers.ElectrodeCategoriesReader.as_dict">(cmlreaders.readers.readers.ElectrodeCategoriesReader method)</a>
-</li>
         <li><a href="api.html#cmlreaders.readers.readers.RamulatorEventLogReader.as_dict">(cmlreaders.readers.readers.RamulatorEventLogReader method)</a>
-</li>
-      </ul></li>
-      <li><a href="api.html#cmlreaders.readers.readers.BaseReportDataReader.as_pyobject">as_pyobject() (cmlreaders.readers.readers.BaseReportDataReader method)</a>
-
-      <ul>
-        <li><a href="api.html#cmlreaders.readers.readers.ReportSummaryDataReader.as_pyobject">(cmlreaders.readers.readers.ReportSummaryDataReader method)</a>
 </li>
       </ul></li>
       <li><a href="api.html#cmlreaders.readers.eeg.EEGReader.as_recarray">as_recarray() (cmlreaders.readers.eeg.EEGReader method)</a>
@@ -224,10 +208,6 @@
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#cmlreaders.readers.readers.BaseReportDataReader">BaseReportDataReader (class in cmlreaders.readers.readers)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.readers.BasicJSONReader">BasicJSONReader (class in cmlreaders.readers.readers)</a>
 </li>
@@ -257,11 +237,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.readers.EEGMetaReader">EEGMetaReader (class in cmlreaders.readers.readers)</a>
 </li>
-      <li><a href="api.html#cmlreaders.readers.eeg.EEGReader">EEGReader (class in cmlreaders.readers.eeg)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#cmlreaders.readers.readers.ElectrodeCategoriesReader">ElectrodeCategoriesReader (class in cmlreaders.readers.readers)</a>
+      <li><a href="api.html#cmlreaders.readers.eeg.EEGReader">EEGReader (class in cmlreaders.readers.eeg)</a>
 </li>
       <li><a href="api.html#cmlreaders.readers.readers.EventReader">EventReader (class in cmlreaders.readers.readers)</a>
 </li>
@@ -297,9 +275,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.CMLReader.load_eeg">load_eeg() (cmlreaders.CMLReader method)</a>
 </li>
-      <li><a href="api.html#cmlreaders.PathFinder.localization_files">localization_files (cmlreaders.PathFinder attribute)</a>
+      <li><a href="api.html#cmlreaders.CMLReader.localization">localization (cmlreaders.CMLReader attribute)</a>
 </li>
-      <li><a href="api.html#cmlreaders.readers.readers.LocalizationReader">LocalizationReader (class in cmlreaders.readers.readers)</a>
+      <li><a href="api.html#cmlreaders.PathFinder.localization_files">localization_files (cmlreaders.PathFinder attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -313,9 +291,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#cmlreaders.PathFinder.montage_files">montage_files (cmlreaders.PathFinder attribute)</a>
+      <li><a href="api.html#cmlreaders.CMLReader.montage">montage (cmlreaders.CMLReader attribute)</a>
 </li>
-      <li><a href="api.html#cmlreaders.readers.readers.MontageReader">MontageReader (class in cmlreaders.readers.readers)</a>
+      <li><a href="api.html#cmlreaders.PathFinder.montage_files">montage_files (cmlreaders.PathFinder attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -333,13 +311,9 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.readers.RamulatorEventLogReader">RamulatorEventLogReader (class in cmlreaders.readers.readers)</a>
 </li>
-      <li><a href="api.html#cmlreaders.readers.readers.ReportSummaryDataReader">ReportSummaryDataReader (class in cmlreaders.readers.readers)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.PathFinder.requestable_files">requestable_files (cmlreaders.PathFinder attribute)</a>
-</li>
-      <li><a href="api.html#cmlreaders.readers.eeg.EEGReader.rereference">rereference() (cmlreaders.readers.eeg.EEGReader method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -380,7 +354,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -402,7 +376,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.0',
+            VERSION:'0.5.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -424,9 +398,7 @@
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
