@@ -174,7 +174,6 @@ class CMLReader(object):
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,
                  epochs: Optional[List[Tuple[int, ...]]] = None,
-                 contacts: Optional[pd.DataFrame] = None,
                  scheme: Optional[pd.DataFrame] = None):
         """Load EEG data.
 
@@ -198,14 +197,10 @@ class CMLReader(object):
             for the session is is split over multiple recordings.
 
             Incompatible with passing ``events``.
-        contacts
-            Contacts to include when loading data. Any channel that includes
-            these contacts will be loaded. When not given (the default), load
-            all channels.
         scheme
-            When specified, a bipolar scheme to rereference the data with. This
-            is only possible if the data were recorded in monopolar (a.k.a.
-            common reference) mode.
+            When specified, a bipolar scheme to rereference the data with and/or
+            filter by channel. Rereferencing is only possible if the data were
+            recorded in monopolar (a.k.a. common reference) mode.
 
         Returns
         -------
@@ -224,7 +219,6 @@ class CMLReader(object):
             raise IncompatibleParametersError("events and epochs are mutually exclusive")
 
         kwargs = {
-            'contacts': contacts,
             'scheme': scheme,
         }
 

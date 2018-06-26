@@ -192,14 +192,17 @@ class TestFileReaders:
 
 @pytest.mark.rhino
 class TestEEGReader:
-    @pytest.mark.parametrize('subject', ['R1298E', 'R1387E'])
-    def test_eeg_reader(self, subject, rhino_root):
-        """Note: R1387E uses Ramulator's HDF5 format, R1298E uses split EEG."""
+    @pytest.mark.parametrize("subject,index,channel", [
+        ("R1298E", 87, "CH88"),  # Split EEG
+        ("R1387E", 13, "CH14"),  # Ramulator HDF5
+    ])
+    def test_eeg_reader(self, subject, index, channel, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         eeg = reader.load_eeg(epochs=[(0, 100), (100, 200)])
         assert len(eeg.time) == 100
         assert len(eeg.epochs) == 2
+        assert eeg.channels[index] == channel
 
     @pytest.mark.parametrize('subject', ['R1161E', 'R1387E'])
     def test_eeg_reader_with_events(self, subject, rhino_root):
@@ -249,7 +252,7 @@ class TestEEGReader:
         else:
             data_noreref = reader.load_eeg(epochs=epochs)
             data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
-            assert (data_noreref.data == data_reref.data).all()
+            assert_equal(data_noreref.data, data_reref.data)
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,region_key,region_name,expected_channels", [

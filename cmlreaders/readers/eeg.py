@@ -167,7 +167,7 @@ class BaseEEGReader(ABC):
         data
             Input timeseries data shaped as (epochs, channels, time).
         contacts
-            List of contact numbers that index the data.
+            List of contact numbers (1-based) that index the data.
         scheme
             Bipolar pairs to use. This should be at a minimum a
             :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
@@ -397,7 +397,6 @@ class EEGReader(BaseCMLReader):
 
     def as_timeseries(self,
                       epochs: Optional[List[Tuple[int, Union[int, None], int]]] = None,
-                      contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
 
@@ -405,10 +404,8 @@ class EEGReader(BaseCMLReader):
         -----------------
         epochs
             When given, specify which epochs to read in ms.
-        contacts
-            Contacts to include when reading EEG data.
         scheme
-            When given, attempt to rereference the data.
+            When given, attempt to rereference and/or filter the data.
 
         Returns
         -------
@@ -438,25 +435,23 @@ class EEGReader(BaseCMLReader):
             eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
-            if contacts is not None:
-                raise NotImplementedError("filtering contacts is not yet implemented")
-
             tlens = np.array([e[1] - e[0] for e in epochs])
             if not np.all(tlens == tlens[0]):
                 raise ValueError("Epoch lengths are not all the same!")
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=epochs)  # TODO: channels
+                                  epochs=epochs)
             data, contacts = reader.read()
 
             if scheme is not None:
                 data = reader.rereference(data, contacts, scheme)
-                pairs = scheme.label
+                channels = scheme.label.tolist()
+            else:
+                channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
             # TODO: tstart
             ts.append(
-                TimeSeries(data, sample_rate, epochs=epochs,
-                           channels=contacts if scheme is None else pairs)
+                TimeSeries(data, sample_rate, epochs=epochs, channels=channels)
             )
         return TimeSeries.concatenate(ts)
