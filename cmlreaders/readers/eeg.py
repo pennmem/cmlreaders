@@ -136,9 +136,6 @@ class BaseEEGReader(ABC):
     epochs
         Epochs to include. Epochs are defined with start and stop sample
         counts.
-    channels
-        A list of channel indices (1-based) to include when reading. When not
-        given, read all available channels.
 
     Notes
     -----
@@ -148,13 +145,11 @@ class BaseEEGReader(ABC):
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
-                 epochs: List[Tuple[int, Union[int, None]]],
-                 channels: Optional[List[int]] = None,):
+                 epochs: List[Tuple[int, Union[int, None]]]):
         self.filename = filename
         self.dtype = dtype
 
         self.epochs = epochs
-        self.channels = channels
 
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
@@ -172,7 +167,7 @@ class BaseEEGReader(ABC):
         data
             Input timeseries data shaped as (epochs, channels, time).
         contacts
-            List of contact numbers that index the data.
+            List of contact numbers (1-based) that index the data.
         scheme
             Bipolar pairs to use. This should be at a minimum a
             :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
@@ -214,9 +209,6 @@ class NumpyEEGReader(BaseEEGReader):
 
     """
     def read(self) -> Tuple[np.ndarray, List[int]]:
-        if self.channels is not None:
-            raise NotImplementedError("FIXME: we can only read all channels now")
-
         raw = np.load(self.filename)
         data = np.array([raw[:, e[0]:(e[1] if e[1] > 0 else None)]
                          for e in self.epochs])
@@ -234,16 +226,12 @@ class SplitEEGReader(BaseEEGReader):
         return np.array(mmap[epoch[0]:epoch[1]])
 
     def read(self) -> Tuple[np.ndarray, List[int]]:
-        if self.channels is None:
-            basename = Path(self.filename).name
-            files = sorted(Path(self.filename).parent.glob(basename + '.*'))
-            contacts = [int(f.name.split(".")[-1]) for f in files]
-        else:
-            raise NotImplementedError("FIXME: we can only read all channels now")
+        basename = Path(self.filename).name
+        files = sorted(Path(self.filename).parent.glob(basename + '.*'))
+        contacts = [int(f.name.split(".")[-1]) for f in files]
 
         memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
 
-        # FIXME
         data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
             for epoch in self.epochs
@@ -260,9 +248,6 @@ class EDFReader(BaseEEGReader):
 class RamulatorHDF5Reader(BaseEEGReader):
     """Reads Ramulator HDF5 EEG files."""
     def read(self) -> Tuple[np.ndarray, List[int]]:
-        if self.channels is not None:
-            raise NotImplementedError("FIXME: we can only read all channels now")
-
         with h5py.File(self.filename, 'r') as hfile:
             try:
                 self.rereferencing_possible = bool(hfile['monopolar_possible'][0])
@@ -297,7 +282,6 @@ class RamulatorHDF5Reader(BaseEEGReader):
             scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
             is_valid_channel = [channel in all_nums for channel in scheme_nums]
 
-            # FIXME:
             if not all(is_valid_channel):
                 raise RereferencingNotPossibleError(
                     'The following channels are missing: %s' % (
@@ -322,12 +306,14 @@ class EEGReader(BaseCMLReader):
     All examples start by defining a reader::
 
         >>> from cmlreaders import CMLReader
-        >>> reader = CMLReader('R1111M', experiment='FR1', session=0)
+        >>> reader = CMLReader("R1111M", experiment="FR1", session=0)
 
-    Loading a subset of EEG based on brain region::
+    Loading a subset of EEG based on brain region (this automatically
+    re-references)::
 
-        >>> contacts = reader.load('contacts')
-        >>> eeg = reader.load_eeg(contacts=contacts[contacts.region == 'MTL'])
+        >>> pairs = reader.load("pairs")
+        >>> filtered = pairs[pairs["avg.region"] == "middletemporal"]
+        >>> eeg = reader.load_eeg(scheme=pairs)
 
     Loading from explicitly specified epochs (units are samples)::
 
@@ -341,8 +327,8 @@ class EEGReader(BaseCMLReader):
         >>> eeg = reader.load_eeg(epochs=epochs)
 
     Loading EEG from -100 ms to +100 ms relative to a set of events:
-        >>> events = reader.load('events')
-        >>> eeg = reader.load_eeg(events,rel_start=-100, rel_stop=100)
+        >>> events = reader.load("events")
+        >>> eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100)
 
     Loading an entire session::
 
@@ -411,7 +397,6 @@ class EEGReader(BaseCMLReader):
 
     def as_timeseries(self,
                       epochs: Optional[List[Tuple[int, Union[int, None], int]]] = None,
-                      contacts: Optional[pd.DataFrame] = None,
                       scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
         """Read the timeseries.
 
@@ -419,10 +404,8 @@ class EEGReader(BaseCMLReader):
         -----------------
         epochs
             When given, specify which epochs to read in ms.
-        contacts
-            Contacts to include when reading EEG data.
         scheme
-            When given, attempt to rereference the data.
+            When given, attempt to rereference and/or filter the data.
 
         Returns
         -------
@@ -452,25 +435,23 @@ class EEGReader(BaseCMLReader):
             eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
-            if contacts is not None:
-                raise NotImplementedError("filtering contacts is not yet implemented")
-
             tlens = np.array([e[1] - e[0] for e in epochs])
             if not np.all(tlens == tlens[0]):
                 raise ValueError("Epoch lengths are not all the same!")
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=epochs)  # TODO: channels
+                                  epochs=epochs)
             data, contacts = reader.read()
 
             if scheme is not None:
                 data = reader.rereference(data, contacts, scheme)
-                pairs = scheme.label
+                channels = scheme.label.tolist()
+            else:
+                channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
             # TODO: tstart
             ts.append(
-                TimeSeries(data, sample_rate, epochs=epochs,
-                           channels=contacts if scheme is None else pairs)
+                TimeSeries(data, sample_rate, epochs=epochs, channels=channels)
             )
         return TimeSeries.concatenate(ts)

@@ -11,6 +11,9 @@ def set_cml_root(path):
 
     if path is not None:
         os.environ["CML_ROOT"] = path
+    else:
+        # We need to remove an existing environment variable if present
+        os.environ.pop("CML_ROOT", None)
     yield
     os.environ = orig
 

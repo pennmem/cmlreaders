@@ -14,10 +14,8 @@ class TimeSeries(object):
         Sample rate in Hz.
     epochs
         Optional list of tuples defining epochs in ms.
-    contacts
-        Optional list of contact numbers (these are the same as the jackbox
-        numbers). When not given, this will default to a list ranged like
-        ``[1, data.shape[1]]``.
+    channels
+        A list of labels for each channel.
     tstart
         Start time for each epoch in ms (default: 0).
     attrs
@@ -32,7 +30,7 @@ class TimeSeries(object):
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, int]]] = None,
-                 channels: Optional[List[int]] = None,
+                 channels: Optional[List[str]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):
         if len(data.shape) == 2:
