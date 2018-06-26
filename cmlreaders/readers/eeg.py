@@ -375,7 +375,10 @@ class EEGReader(BaseCMLReader):
                                       basenames)
             kwargs['epochs'] = epochs
 
-        kwargs['epochs'] = [e if len(e) == 3
+        if "epochs" not in kwargs:
+            kwargs["epochs"] = [(0, -1)]
+
+        kwargs["epochs"] = [e if len(e) == 3
                             else e + (0,)
                             for e in kwargs['epochs']]
 
