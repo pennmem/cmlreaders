@@ -227,11 +227,12 @@ class TestEEGReader:
         with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events)
 
-    @pytest.mark.parametrize("subject,reref_possible", [
-        ('R1384J', False),
-        ('R1111M', True),
+    @pytest.mark.parametrize("subject,reref_possible,index,channel", [
+        ("R1384J", False, 43, "LS12-LS1"),
+        ("R1111M", True, 43, "LPOG23-LPOG31"),
     ])
-    def test_rereference(self, subject, reref_possible, rhino_root):
+    def test_rereference(self, subject, reref_possible, index, channel,
+                         rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         rate = reader.load("sources")["sample_rate"]
@@ -249,10 +250,12 @@ class TestEEGReader:
             assert data.shape == (1, 100, expected_samples)
             data = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
+            assert data.channels[index] == channel
         else:
             data_noreref = reader.load_eeg(epochs=epochs)
             data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
             assert_equal(data_noreref.data, data_reref.data)
+            assert data_reref.channels[index] == channel
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,region_key,region_name,expected_channels", [
