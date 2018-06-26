@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
 import warnings
 
-with warnings.catch_warnings():
+with warnings.catch_warnings():  # noqa
     # Some versions of h5py produce a FutureWarning from a numpy import; we can
     # safely ignore it.
     warnings.filterwarnings("ignore", category=FutureWarning)
