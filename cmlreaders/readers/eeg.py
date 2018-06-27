@@ -21,6 +21,7 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
+from cmlreaders.util import DefaultTuple
 
 
 __all__ = [
@@ -434,6 +435,7 @@ class EEGReader(BaseCMLReader):
         """
         if epochs is None:
             epochs = [(0, None)]
+        epochs = DefaultTuple(epochs)
 
         ts = []
 
