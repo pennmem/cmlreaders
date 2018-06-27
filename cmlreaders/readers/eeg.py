@@ -376,7 +376,7 @@ class EEGReader(BaseCMLReader):
             kwargs['epochs'] = epochs
 
         if "epochs" not in kwargs:
-            kwargs["epochs"] = [(0, -1)]
+            kwargs["epochs"] = [(0, None)]
 
         kwargs["epochs"] = [e if len(e) == 3
                             else e + (0,)
@@ -411,9 +411,11 @@ class EEGReader(BaseCMLReader):
         Keyword arguments
         -----------------
         epochs
-            When given, specify which epochs to read in ms.
+            When given, specify which epochs to read in ms. When omitted, read
+            an entire session.
         scheme
-            When given, attempt to rereference and/or filter the data.
+            When given, attempt to rereference and/or filter the data. This
+            parameter should be a :class:`pd.DataFrame` à la ``pairs.json``.
 
         Returns
         -------
@@ -431,7 +433,7 @@ class EEGReader(BaseCMLReader):
 
         """
         if epochs is None:
-            epochs = [(0, None, 0)]
+            epochs = [(0, None)]
 
         ts = []
 
