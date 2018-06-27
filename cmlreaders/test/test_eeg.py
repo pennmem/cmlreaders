@@ -240,7 +240,7 @@ class TestEEGReader:
     def test_read_whole_session(self, subject, rhino_root):
         reader = CMLReader(subject=subject, experiment="FR1", session=0,
                            rootdir=rhino_root)
-        eeg = reader.load_eeg()
+        reader.load_eeg()
 
     @pytest.mark.parametrize('subject', ['R1161E', 'R1387E'])
     def test_eeg_reader_with_events(self, subject, rhino_root):
