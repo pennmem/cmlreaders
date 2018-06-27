@@ -1,3 +1,4 @@
+from functools import partial
 import json
 from pathlib import Path
 
@@ -100,7 +101,7 @@ class TestFileReaders:
 
     def test_npy_reader(self):
         filename = resource_filename("cmlreaders.test.data", "eeg.npy")
-        reader = NumpyEEGReader(filename, np.int16, [(0, -1)])
+        reader = NumpyEEGReader(filename, np.int16, [(0, -1)], None)
         ts, contacts = reader.read()
         assert ts.shape == (1, 32, 1000)
 
@@ -115,7 +116,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, dtype, epochs)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs, None)
         ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
@@ -129,7 +130,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, dtype, epochs)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs, None)
         ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 123, 102)
@@ -153,7 +154,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs)
+        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs, None)
         ts, contacts = eeg_reader.read()
 
         time_steps = 200
@@ -164,30 +165,37 @@ class TestFileReaders:
 
     def test_ramulator_hdf5_reader(self):
         filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
-        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)], None)
         ts, channels = reader.read()
 
         time_steps = 3000
         assert ts.shape == (1, len(channels), time_steps)
 
     def test_ramulator_hdf5_rereference(self):
-        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
-        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)])
-        ts, contacts = reader.read()
         pairs_file = resource_filename('cmlreaders.test.data', 'pairs.json')
-
         pairs = MontageReader('pairs', subject='R1405E',
                               file_path=pairs_file,).load()
-        new_ts = reader.rereference(ts, contacts, pairs)
+
+        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+
+        make_reader = partial(RamulatorHDF5Reader, filename, np.int16, [(0, None)])
+        reader = make_reader(pairs)
+        ts, contacts = reader.read()
+
+        new_ts = reader.rereference(ts, contacts)
         assert (new_ts == ts).all()
 
         pairs = pairs[:10]
-        new_ts = reader.rereference(ts, contacts, pairs)
+        reader = make_reader(pairs)
+        ts, contacts = reader.read()
+        new_ts = reader.rereference(ts, contacts)
         assert (new_ts == ts[:, :10, :]).all()
 
         pairs['contact_1'][0] = pairs.iloc[0].contact_2
+        reader = make_reader(pairs)
+        ts, contacts = reader.read()
         with pytest.raises(exc.RereferencingNotPossibleError):
-            reader.rereference(ts, contacts, pairs)
+            reader.rereference(ts, contacts)
 
 
 @pytest.mark.rhino

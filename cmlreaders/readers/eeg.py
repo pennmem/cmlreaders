@@ -142,6 +142,9 @@ class BaseEEGReader(ABC):
     epochs
         Epochs to include. Epochs are defined with start and stop sample
         counts.
+    scheme
+        Scheme data to use for rereferencing/channel filtering. This should be
+        loaded/manipulated from ``pairs.json`` data.
 
     Notes
     -----
@@ -151,11 +154,12 @@ class BaseEEGReader(ABC):
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
-                 epochs: List[Tuple[int, Union[int, None]]]):
+                 epochs: List[Tuple[int, Union[int, None]]],
+                 scheme: Union[pd.DataFrame, None]):
         self.filename = filename
         self.dtype = dtype
-
         self.epochs = epochs
+        self.scheme = scheme
 
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
@@ -164,8 +168,7 @@ class BaseEEGReader(ABC):
     def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
 
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame) -> np.ndarray:
+    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
@@ -174,9 +177,6 @@ class BaseEEGReader(ABC):
             Input timeseries data shaped as (epochs, channels, time).
         contacts
             List of contact numbers (1-based) that index the data.
-        scheme
-            Bipolar pairs to use. This should be at a minimum a
-            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
 
         Returns
         -------
@@ -195,8 +195,8 @@ class BaseEEGReader(ABC):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in scheme.contact_1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2]
+        c1 = [contact_to_index[c] for c in self.scheme["contact_1"]]
+        c2 = [contact_to_index[c] for c in self.scheme["contact_2"]]
 
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
@@ -273,33 +273,38 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             return data, contacts
 
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame):
+    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
+        """Overrides the default rereferencing to first check validity of the
+        passed scheme or if rereferencing is even possible in the first place.
+
+        """
         if self.rereferencing_possible:
-            return BaseEEGReader.rereference(self, data, contacts, scheme)
-        else:
-            with h5py.File(self.filename, 'r') as hfile:
-                bpinfo = hfile['bipolar_info']
-                all_nums = [
-                    (int(a), int(b)) for (a, b) in list(
-                        zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
-                    )
-                ]
-            scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
-            is_valid_channel = [channel in all_nums for channel in scheme_nums]
+            return BaseEEGReader.rereference(self, data, contacts)
 
-            if not all(is_valid_channel):
-                raise RereferencingNotPossibleError(
-                    'The following channels are missing: %s' % (
-                        ', '.join(label) for (label, valid) in
-                        zip(scheme.label, is_valid_channel)
-                        if not valid)
+        with h5py.File(self.filename, 'r') as hfile:
+            bpinfo = hfile['bipolar_info']
+            all_nums = [
+                (int(a), int(b)) for (a, b) in list(
+                    zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
                 )
+            ]
+        scheme_nums = list(zip(self.scheme["contact_1"],
+                               self.scheme["contact_2"]))
+        is_valid_channel = [channel in all_nums for channel in scheme_nums]
 
-            channel_to_index = {c: i for (i, c) in enumerate(contacts)}
-            channel_inds = [channel_to_index[c] for c in scheme.contact_1]
+        if not all(is_valid_channel):
+            raise RereferencingNotPossibleError(
+                'The following channels are missing: %s' % (
+                    ', '.join(label) for (label, valid) in
+                    zip(self.scheme["label"], is_valid_channel)
+                    if not valid)
+            )
 
-            return data[:, channel_inds, :]
+        channel_to_index = {c: i for (i, c) in enumerate(contacts)}
+        channel_inds = [channel_to_index[c]
+                        for c in self.scheme["contact_1"]]
+
+        return data[:, channel_inds, :]
 
 
 class EEGReader(BaseCMLReader):
@@ -454,11 +459,12 @@ class EEGReader(BaseCMLReader):
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=epochs)
+                                  epochs=epochs,
+                                  scheme=scheme)
             data, contacts = reader.read()
 
             if scheme is not None:
-                data = reader.rereference(data, contacts, scheme)
+                data = reader.rereference(data, contacts)
                 channels = scheme.label.tolist()
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
