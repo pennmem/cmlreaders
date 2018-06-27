@@ -445,9 +445,10 @@ class EEGReader(BaseCMLReader):
             eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
-            tlens = np.array([e[1] - e[0] for e in epochs])
-            if not np.all(tlens == tlens[0]):
-                raise ValueError("Epoch lengths are not all the same!")
+            if len(epochs) > 1:
+                tlens = np.array([e[1] - e[0] for e in epochs])
+                if not np.all(tlens == tlens[0]):
+                    raise ValueError("Epoch lengths are not all the same!")
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
