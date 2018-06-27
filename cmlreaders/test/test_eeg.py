@@ -13,8 +13,8 @@ from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
     events_to_epochs, milliseconds_to_events, milliseconds_to_samples,
-    NumpyEEGReader, RamulatorHDF5Reader, samples_to_milliseconds,
-    SplitEEGReader,
+    BaseEEGReader, NumpyEEGReader, RamulatorHDF5Reader,
+    samples_to_milliseconds, SplitEEGReader,
 )
 from cmlreaders.readers import MontageReader
 from cmlreaders.test.utils import patched_cmlreader
@@ -80,6 +80,30 @@ def test_events_to_epochs_simple():
     assert epochs[0][1] == 110
     assert epochs[1][0] == 190
     assert epochs[1][1] == 210
+
+
+class TestBaseEEGReader:
+    @pytest.mark.parametrize("use_scheme", [True, False])
+    def test_include_contact(self, use_scheme):
+        class DummyReader(BaseEEGReader):
+            def read(self):
+                return
+
+        scheme = pd.DataFrame({
+            "contact_1": list(range(1, 10)),
+            "contact_2": list(range(2, 11)),
+        }) if use_scheme else None
+
+        reader = DummyReader("", np.int16, [(0, None)], scheme=scheme)
+
+        if use_scheme:
+            assert len(reader._unique_contacts) == 10
+
+        for i in range(1, 20):
+            if i <= 10 or not use_scheme:
+                assert reader.include_contact(i)
+            else:
+                assert not reader.include_contact(i)
 
 
 class TestFileReaders:
@@ -271,14 +295,15 @@ class TestEEGReader:
             assert_equal(data_noreref.data, data_reref.data)
             assert data_reref.channels[index] == channel
 
+    @pytest.mark.only
     @pytest.mark.rhino
-    @pytest.mark.parametrize("subject,region_key,region_name,expected_channels", [
-        ("R1384J", "ind.region", "insula", 10),  # Ramulator bipolar
-        ("R1286J", "ind.region", "precentral", 2),  # Ramulator monopolar
-        ("R1111M", "ind.region", "middletemporal", 18),  # "split" EEG
+    @pytest.mark.parametrize("subject,region_key,region_name,expected_channels,tlen", [
+        ("R1384J", "ind.region", "insula", 10, 200),  # Ramulator bipolar
+        ("R1286J", "ind.region", "precentral", 2, 200),  # Ramulator monopolar (but will load from split...)
+        ("R1111M", "ind.region", "middletemporal", 18, 100),  # "split" EEG
     ])
     def test_filter_channels(self, subject, region_key, region_name,
-                             expected_channels, rhino_root):
+                             expected_channels, tlen, rhino_root):
         """Test that we can actually filter channels. This happens via
         rereference, so it's really just a special case check of that.
 
@@ -292,4 +317,6 @@ class TestEEGReader:
         eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100,
                               scheme=scheme)
 
+        assert eeg.shape[0] == len(events)
         assert eeg.shape[1] == expected_channels
+        assert eeg.shape[2] == tlen

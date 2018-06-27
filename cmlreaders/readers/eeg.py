@@ -161,8 +161,23 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.scheme = scheme
 
+        self._unique_contacts = np.union1d(
+            self.scheme["contact_1"],
+            self.scheme["contact_2"]
+        ) if self.scheme is not None else None
+
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
+
+    def include_contact(self, contact_num: int):
+        """Filter to determine if we need to include a contact number when
+        reading data.
+
+        """
+        if self._unique_contacts is not None:
+            return contact_num in self._unique_contacts
+        else:
+            return True
 
     @abstractmethod
     def read(self) -> Tuple[np.ndarray, List[int]]:
@@ -195,8 +210,10 @@ class BaseEEGReader(ABC):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in self.scheme["contact_1"]]
-        c2 = [contact_to_index[c] for c in self.scheme["contact_2"]]
+        c1 = [contact_to_index[c] for c in self.scheme["contact_1"]
+              if c in contact_to_index]
+        c2 = [contact_to_index[c] for c in self.scheme["contact_2"]
+              if c in contact_to_index]
 
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
@@ -234,9 +251,15 @@ class SplitEEGReader(BaseEEGReader):
     def read(self) -> Tuple[np.ndarray, List[int]]:
         basename = Path(self.filename).name
         files = sorted(Path(self.filename).parent.glob(basename + '.*'))
-        contacts = [int(f.name.split(".")[-1]) for f in files]
 
-        memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
+        contacts = []
+        memmaps = []
+
+        for c, f in enumerate(files, 1):
+            if not self.include_contact(c):
+                continue
+            contacts.append(int(f.name.split(".")[-1]))
+            memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
 
         data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
@@ -263,6 +286,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 pass
 
             ts = hfile['/timeseries']
+
+            # FIXME: only select channels we care about
 
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
                 data = np.array([ts[epoch[0]:epoch[1], :].T for epoch in self.epochs])
