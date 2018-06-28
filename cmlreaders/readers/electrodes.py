@@ -1,7 +1,5 @@
-from functools import partial
 import json
 import os.path
-from typing import List
 
 import pandas as pd
 from pandas.io.json import json_normalize
@@ -18,15 +16,6 @@ class MontageReader(BaseCMLReader):
 
     data_types = ['pairs', 'contacts']
 
-    @staticmethod
-    def _flatten_row(data: dict, labels: List[str], i: int) -> pd.DataFrame:
-        entry = data[labels[i]].copy()
-        atlases = entry.pop('atlases')
-        atlas_row = json_normalize(atlases)
-        atlas_row.index = [i]
-        row = pd.concat([pd.DataFrame(entry, index=[i]), atlas_row], axis=1)
-        return row
-
     def as_dataframe(self):
         with open(self._file_path) as f:
             raw = json.load(f)
@@ -39,36 +28,43 @@ class MontageReader(BaseCMLReader):
                     else "pairs"
                 )
 
-            data = raw[self.subject][self.data_type]
+            pairs = raw[self.subject][self.data_type]
 
-        labels = [l for l in data]
+        records = []
+        for pair, data in pairs.items():
+            atlases = data.pop("atlases", {})
 
-        flatten = partial(self._flatten_row, data, labels)
-        rows = [flatten(i) for i in range(len(labels))]
-        df = pd.concat(rows)
+            for atlas_label, atlas_data in atlases.items():
+                data.update({
+                    "{}.{}".format(atlas_label, key): value
+                    for key, value in atlas_data.items()
+                    if not key.endswith("id")  # this just duplicates the key
+                })
 
-        # Drop useless atlas.id tags
-        df = df[[col for col in df.columns if not col.endswith('.id')]]
+            records.append(data)
+
+        df = pd.DataFrame(records)
 
         # rename poorly named columns
-        if self.data_type == 'contacts':
-            renames = {'channel': 'contact'}
+        if self.data_type == "contacts":
+            renames = {"channel": "contact"}
         else:
-            renames = {'channel_1': 'contact_1', 'channel_2': 'contact_2'}
-        renames.update({'code': 'label'})
+            renames = {"channel_1": "contact_1", "channel_2": "contact_2"}
+        renames.update({"code": "label"})
         df = df.rename(renames, axis=1)
 
         # ensure that contact and label appear first
         names = df.columns
-        if self.data_type == 'contacts':
-            first = ['contact']
+        if self.data_type == "contacts":
+            first = ["contact", "label", "type"]
         else:
-            first = ['contact_1', 'contact_2']
-        first += ['label']
+            first = ["contact_1", "contact_2",
+                     "label", "is_stim_only",
+                     "type_1", "type_2"]
         df = df[first + [name for name in names if name not in first]]
 
         # sort by contact
-        key = 'contact' if self.data_type == 'contacts' else 'contact_1'
+        key = "contact" if self.data_type == "contacts" else "contact_1"
         df = df.sort_values(by=key).reset_index(drop=True)
 
         return df

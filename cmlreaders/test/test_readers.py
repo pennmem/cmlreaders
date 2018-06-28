@@ -221,8 +221,9 @@ class TestEventReader:
 class TestMontageReader:
     @pytest.mark.parametrize('kind', ['contacts', 'pairs'])
     def test_load(self, kind):
+        subject = "R1405E"
         path = datafile(kind + '.json')
-        reader = MontageReader(kind, subject='R1405E', file_path=path)
+        reader = MontageReader(kind, subject=subject, file_path=path)
         df = reader.load()
 
         if kind == 'contacts':
@@ -230,6 +231,10 @@ class TestMontageReader:
         else:
             assert 'contact_1' in df.columns
             assert 'contact_2' in df.columns
+
+        reference = pd.read_csv(datafile(subject + "_" + kind + ".csv"),
+                                index_col=0)
+        assert all(reference == df)
 
 
 class TestLocalizationReader:
