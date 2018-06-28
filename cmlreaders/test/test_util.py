@@ -1,8 +1,10 @@
 from contextlib import contextmanager
 import os
+from random import shuffle
+
 import pytest
 
-from cmlreaders.util import get_root_dir, is_rerefable
+from cmlreaders.util import DefaultTuple, get_root_dir, is_rerefable
 
 
 @contextmanager
@@ -46,3 +48,18 @@ def test_get_root_dir(path, with_env_var):
 ])
 def test_isrerefable(subject, experiment, session, result, rhino_root):
     assert is_rerefable(subject, experiment, session, rootdir=rhino_root) == result
+
+
+class TestDefaultTuple:
+    def test_getitem(self):
+        invals = list(range(4)) + [None]
+        shuffle(invals)
+        index = invals.index(None)
+
+        # use default... default
+        dtuple = DefaultTuple(invals)
+        assert dtuple[index] == 0
+
+        # use a custom default
+        dtuple = DefaultTuple(invals, default="hi")
+        assert dtuple[index] == "hi"

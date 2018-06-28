@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Iterable, Optional, Union
 
 
 def get_root_dir(path: Union[str, Path] = None) -> str:
@@ -57,3 +57,29 @@ def is_rerefable(subject: str, experiment: str, session: int,
             return False
 
     return True
+
+
+class DefaultTuple(tuple):
+    """A tuple that will return a default value if an entry is None.
+
+    Parameters
+    ----------
+    iterable
+        Iterable to initialize the tuple with.
+    default
+        Default value to return when an item is None (default: 0).
+
+    """
+    __default = 0
+
+    def __new__(cls, iterable: Iterable, default: Any = 0):
+        self = super().__new__(cls, iterable)
+        self.__default = default
+        return self
+
+    def __getitem__(self, item):
+        value = super().__getitem__(item)
+        if value is None:
+            return self.__default
+        else:
+            return value

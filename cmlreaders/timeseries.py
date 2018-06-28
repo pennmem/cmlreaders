@@ -29,7 +29,7 @@ class TimeSeries(object):
 
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
-                 epochs: Optional[List[Tuple[int, int]]] = None,
+                 epochs: Optional[List[Tuple[int, ...]]] = None,
                  channels: Optional[List[str]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):

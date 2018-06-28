@@ -1,3 +1,4 @@
+from functools import partial
 import json
 import os.path
 from typing import List
@@ -27,10 +28,6 @@ class MontageReader(BaseCMLReader):
         return row
 
     def as_dataframe(self):
-        from concurrent.futures import ProcessPoolExecutor as Pool
-        from functools import partial
-        from multiprocessing import cpu_count
-
         with open(self._file_path) as f:
             raw = json.load(f)
 
@@ -47,8 +44,7 @@ class MontageReader(BaseCMLReader):
         labels = [l for l in data]
 
         flatten = partial(self._flatten_row, data, labels)
-        with Pool(min(4, cpu_count())) as pool:
-            rows = pool.map(flatten, range(len(labels)))
+        rows = [flatten(i) for i in range(len(labels))]
         df = pd.concat(rows)
 
         # Drop useless atlas.id tags

@@ -21,6 +21,7 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
+from cmlreaders.util import DefaultTuple
 
 
 __all__ = [
@@ -141,6 +142,9 @@ class BaseEEGReader(ABC):
     epochs
         Epochs to include. Epochs are defined with start and stop sample
         counts.
+    scheme
+        Scheme data to use for rereferencing/channel filtering. This should be
+        loaded/manipulated from ``pairs.json`` data.
 
     Notes
     -----
@@ -150,21 +154,36 @@ class BaseEEGReader(ABC):
 
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
-                 epochs: List[Tuple[int, Union[int, None]]]):
+                 epochs: List[Tuple[int, Union[int, None]]],
+                 scheme: Union[pd.DataFrame, None]):
         self.filename = filename
         self.dtype = dtype
-
         self.epochs = epochs
+        self.scheme = scheme
+
+        self._unique_contacts = np.union1d(
+            self.scheme["contact_1"],
+            self.scheme["contact_2"]
+        ) if self.scheme is not None else None
 
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
+
+    def include_contact(self, contact_num: int):
+        """Filter to determine if we need to include a contact number when
+        reading data.
+
+        """
+        if self._unique_contacts is not None:
+            return contact_num in self._unique_contacts
+        else:
+            return True
 
     @abstractmethod
     def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
 
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame) -> np.ndarray:
+    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
@@ -173,9 +192,6 @@ class BaseEEGReader(ABC):
             Input timeseries data shaped as (epochs, channels, time).
         contacts
             List of contact numbers (1-based) that index the data.
-        scheme
-            Bipolar pairs to use. This should be at a minimum a
-            :class:`pd.DataFrame` with columns ``contact_1`` and ``contact_2``.
 
         Returns
         -------
@@ -194,8 +210,10 @@ class BaseEEGReader(ABC):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in scheme.contact_1]
-        c2 = [contact_to_index[c] for c in scheme.contact_2]
+        c1 = [contact_to_index[c] for c in self.scheme["contact_1"]
+              if c in contact_to_index]
+        c2 = [contact_to_index[c] for c in self.scheme["contact_2"]
+              if c in contact_to_index]
 
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
@@ -233,9 +251,15 @@ class SplitEEGReader(BaseEEGReader):
     def read(self) -> Tuple[np.ndarray, List[int]]:
         basename = Path(self.filename).name
         files = sorted(Path(self.filename).parent.glob(basename + '.*'))
-        contacts = [int(f.name.split(".")[-1]) for f in files]
 
-        memmaps = [np.memmap(f, dtype=self.dtype, mode='r') for f in files]
+        contacts = []
+        memmaps = []
+
+        for c, f in enumerate(files, 1):
+            if not self.include_contact(c):
+                continue
+            contacts.append(int(f.name.split(".")[-1]))
+            memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
 
         data = np.array([
             [self._read_epoch(mmap, epoch) for mmap in memmaps]
@@ -263,6 +287,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             ts = hfile['/timeseries']
 
+            # FIXME: only select channels we care about
+
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
                 data = np.array([ts[epoch[0]:epoch[1], :].T for epoch in self.epochs])
             else:
@@ -272,33 +298,38 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             return data, contacts
 
-    def rereference(self, data: np.ndarray, contacts: List[int],
-                    scheme: pd.DataFrame):
+    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
+        """Overrides the default rereferencing to first check validity of the
+        passed scheme or if rereferencing is even possible in the first place.
+
+        """
         if self.rereferencing_possible:
-            return BaseEEGReader.rereference(self, data, contacts, scheme)
-        else:
-            with h5py.File(self.filename, 'r') as hfile:
-                bpinfo = hfile['bipolar_info']
-                all_nums = [
-                    (int(a), int(b)) for (a, b) in list(
-                        zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
-                    )
-                ]
-            scheme_nums = list(zip(scheme['contact_1'], scheme['contact_2']))
-            is_valid_channel = [channel in all_nums for channel in scheme_nums]
+            return BaseEEGReader.rereference(self, data, contacts)
 
-            if not all(is_valid_channel):
-                raise RereferencingNotPossibleError(
-                    'The following channels are missing: %s' % (
-                        ', '.join(label) for (label, valid) in
-                        zip(scheme.label, is_valid_channel)
-                        if not valid)
+        with h5py.File(self.filename, 'r') as hfile:
+            bpinfo = hfile['bipolar_info']
+            all_nums = [
+                (int(a), int(b)) for (a, b) in list(
+                    zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
                 )
+            ]
+        scheme_nums = list(zip(self.scheme["contact_1"],
+                               self.scheme["contact_2"]))
+        is_valid_channel = [channel in all_nums for channel in scheme_nums]
 
-            channel_to_index = {c: i for (i, c) in enumerate(contacts)}
-            channel_inds = [channel_to_index[c] for c in scheme.contact_1]
+        if not all(is_valid_channel):
+            raise RereferencingNotPossibleError(
+                'The following channels are missing: %s' % (
+                    ', '.join(label) for (label, valid) in
+                    zip(self.scheme["label"], is_valid_channel)
+                    if not valid)
+            )
 
-            return data[:, channel_inds, :]
+        channel_to_index = {c: i for (i, c) in enumerate(contacts)}
+        channel_inds = [channel_to_index[c]
+                        for c in self.scheme["contact_1"]]
+
+        return data[:, channel_inds, :]
 
 
 class EEGReader(BaseCMLReader):
@@ -376,7 +407,7 @@ class EEGReader(BaseCMLReader):
             kwargs['epochs'] = epochs
 
         if "epochs" not in kwargs:
-            kwargs["epochs"] = [(0, -1)]
+            kwargs["epochs"] = [(0, None)]
 
         kwargs["epochs"] = [e if len(e) == 3
                             else e + (0,)
@@ -411,9 +442,11 @@ class EEGReader(BaseCMLReader):
         Keyword arguments
         -----------------
         epochs
-            When given, specify which epochs to read in ms.
+            When given, specify which epochs to read in ms. When omitted, read
+            an entire session.
         scheme
-            When given, attempt to rereference and/or filter the data.
+            When given, attempt to rereference and/or filter the data. This
+            parameter should be a :class:`pd.DataFrame` à la ``pairs.json``.
 
         Returns
         -------
@@ -431,7 +464,8 @@ class EEGReader(BaseCMLReader):
 
         """
         if epochs is None:
-            epochs = [(0, None, 0)]
+            epochs = [(0, None)]
+        epochs = DefaultTuple(epochs)
 
         ts = []
 
@@ -443,23 +477,33 @@ class EEGReader(BaseCMLReader):
             eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
-            tlens = np.array([e[1] - e[0] for e in epochs])
-            if not np.all(tlens == tlens[0]):
-                raise ValueError("Epoch lengths are not all the same!")
+            if len(epochs) > 1:
+                tlens = np.array([e[1] - e[0] for e in epochs])
+                if not np.all(tlens == tlens[0]):
+                    raise ValueError("Epoch lengths are not all the same!")
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=epochs)
+                                  epochs=epochs,
+                                  scheme=scheme)
             data, contacts = reader.read()
 
             if scheme is not None:
-                data = reader.rereference(data, contacts, scheme)
+                data = reader.rereference(data, contacts)
                 channels = scheme.label.tolist()
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
             # TODO: tstart
             ts.append(
-                TimeSeries(data, sample_rate, epochs=epochs, channels=channels)
+                TimeSeries(
+                    data,
+                    sample_rate,
+                    epochs=epochs,
+                    channels=channels,
+                )
             )
-        return TimeSeries.concatenate(ts)
+
+        ts = TimeSeries.concatenate(ts)
+        ts.attrs["rereferencing_possible"] = reader.rereferencing_possible
+        return ts
