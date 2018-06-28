@@ -102,9 +102,10 @@ class LocalizationReader(BaseCMLReader):
 
         flat_contact_data = list(itertools.chain(*[x["contacts"] for x in leads]))
         flat_pairs_data = list(itertools.chain(*[x["pairs"] for x in leads]))
-        all_data = []
-        all_data.append(pd.io.json.json_normalize(flat_contact_data).set_index('name'))
-        all_data.append(pd.io.json.json_normalize(flat_pairs_data).set_index('names'))
+        all_data = [
+            json_normalize(flat_contact_data).set_index('name'),
+            json_normalize(flat_pairs_data).set_index('names')
+        ]
         combined_df = pd.concat(all_data, keys=['contacts', 'pairs'])
         return combined_df
 
