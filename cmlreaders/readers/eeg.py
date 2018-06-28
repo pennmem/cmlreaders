@@ -501,9 +501,9 @@ class EEGReader(BaseCMLReader):
                     sample_rate,
                     epochs=epochs,
                     channels=channels,
-                    attrs={
-                       "rereferencing_possible": reader.rereferencing_possible,
-                    }
                 )
             )
-        return TimeSeries.concatenate(ts)
+
+        ts = TimeSeries.concatenate(ts)
+        ts.attrs["rereferencing_possible"] = reader.rereferencing_possible
+        return ts

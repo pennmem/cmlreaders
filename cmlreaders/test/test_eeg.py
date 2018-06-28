@@ -320,3 +320,6 @@ class TestEEGReader:
         assert eeg.shape[0] == len(events)
         assert eeg.shape[1] == expected_channels
         assert eeg.shape[2] == tlen
+        assert eeg.attrs["rereferencing_possible"] is (
+            True if subject != "R1384J" else False
+        )
