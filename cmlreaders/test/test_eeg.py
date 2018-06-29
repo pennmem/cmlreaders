@@ -1,10 +1,13 @@
 from functools import partial
 import json
 from pathlib import Path
+import tempfile
+from unittest.mock import patch
 
 from pkg_resources import resource_filename
 import pytest
 
+import h5py
 import numpy as np
 from numpy.testing import assert_equal
 import pandas as pd
@@ -13,7 +16,7 @@ from cmlreaders import CMLReader, PathFinder
 from cmlreaders import exc
 from cmlreaders.readers.eeg import (
     events_to_epochs, milliseconds_to_events, milliseconds_to_samples,
-    BaseEEGReader, NumpyEEGReader, RamulatorHDF5Reader,
+    BaseEEGReader, EEGReader, NumpyEEGReader, RamulatorHDF5Reader,
     samples_to_milliseconds, SplitEEGReader,
 )
 from cmlreaders.readers import MontageReader
@@ -323,3 +326,135 @@ class TestEEGReader:
         assert eeg.attrs["rereferencing_possible"] is (
             True if subject != "R1384J" else False
         )
+
+
+class TestRereference:
+    def setup_method(self):
+        size = 1000
+        t = np.arange(size)
+
+        self.data = np.empty((3, size), dtype=np.int16)
+        self.data[0] = 1000 * np.sin(t)
+        self.data[1] = 1000 * np.cos(t)
+        self.data[2] = np.array([1000] * size)
+
+        self.anodes = [0, 0, 1]
+        self.cathodes = [1, 2, 2]
+
+        self.contact_labels = ["sine", "cosine", "constant"]
+        self.pair_labels = ["sine-cosine", "sine-constant", "cosine-constant"]
+        self.contact_nums = [i for i in range(1, len(self.contact_labels) + 1)]
+
+        self.rootdir = Path(tempfile.mkdtemp())
+
+    def teardown_method(self):
+        import shutil
+        shutil.rmtree(self.rootdir.name, ignore_errors=True)
+
+    @property
+    def sources_path(self) -> str:
+        return str(self.rootdir.joinpath("sources.json"))
+
+    @property
+    def reref_data(self) -> np.ndarray:
+        return self.data[self.anodes] - self.data[self.cathodes]
+
+    def make_sources(self, name: str) -> dict:
+        return {
+            name: {
+                "data_format": "int16",
+                "n_samples": self.data.shape[1],
+                "name": name,
+                "sample_rate": 1000,
+                "source_file": "na",
+                "start_time_ms": 1490441398781,
+                "start_time_str": "25Mar17_1129",
+                "path": "./sources.json",
+            }
+        }
+
+    def prepare_dirs(self, name: str) -> Path:
+        """Prepare directories for writing EEG data. Returns path to write EEG
+        data files to.
+
+        """
+        sources = self.make_sources(name)
+
+        with self.rootdir.joinpath("sources.json").open("w") as outfile:
+            json.dump(sources, outfile, indent=2)
+
+        eeg_dir = self.rootdir.joinpath("noreref")
+        eeg_dir.mkdir()
+        return eeg_dir
+
+    def to_split_eeg(self):
+        """Save files as raw binary "split" EEG files."""
+        prefix = "split"
+        eeg_dir = self.prepare_dirs(prefix)
+
+        for channel in range(self.data.shape[0]):
+            filepath = eeg_dir.joinpath(prefix + ".{:03d}".format(channel + 1))
+            with filepath.open("w") as eegfile:
+                self.data[channel].tofile(eegfile.name)
+
+    def to_ramulator_hdf5(self, rerefable: bool):
+        """Save files in the Ramulator HDF5 format."""
+        name = "eeg_timeseries.h5"
+        eeg_dir = self.prepare_dirs(name)
+
+        with h5py.File(eeg_dir.joinpath(name), "w") as hfile:
+            if not rerefable:
+                # these names are *all* incorrect, but that's the format we
+                # have, so we have no choice but to go with it...
+                bpinfo = {
+                    "contact_name": [
+                        b"sine-cosine",
+                        b"sine-constant",
+                        b"cosine-constant",
+                    ],
+                    "ch0_label": [
+                        "{:03d}".format(e + 1).encode() for e in self.anodes
+                    ],
+                    "ch1_label": [
+                        "{:03d}".format(e + 1).encode() for e in self.cathodes
+                    ]
+                }
+
+                bpgroup = hfile.create_group("bipolar_info")
+                for key, value in bpinfo.items():
+                    bpgroup[key] = value
+
+                hfile.create_dataset("monopolar_possible", dtype=np.int, data=[0])
+                data = self.reref_data.transpose()
+            else:
+                hfile.create_dataset("monopolar_possible", dtype=np.int, data=[1])
+                data = self.data.transpose()
+
+            hfile["ports"] = [i + 1 for i in range(3)]
+            ts = hfile.create_dataset("timeseries", data=data)
+            ts.attrs["orient"] = b"row"
+
+    @pytest.mark.only
+    @pytest.mark.parametrize("reader_class,rerefable", [
+        (SplitEEGReader, True),
+        (RamulatorHDF5Reader, True),
+        (RamulatorHDF5Reader, False),
+    ])
+    def test_rereference(self, reader_class, rerefable):
+        """Test rereferencing without rhino by using known, fake data."""
+        if reader_class == SplitEEGReader:
+            self.to_split_eeg()
+
+        if reader_class == RamulatorHDF5Reader:
+            self.to_ramulator_hdf5(rerefable)
+
+        scheme = pd.DataFrame({
+            "contact_1": [1 + a for a in self.anodes],
+            "contact_2": [1 + c for c in self.cathodes],
+            "label": self.pair_labels,
+        })
+
+        with patch.object(PathFinder, "find", return_value=self.sources_path):
+            reader = EEGReader("eeg")
+            eeg = reader.load(scheme=scheme)
+            assert_equal(eeg.data[0], self.reref_data)
