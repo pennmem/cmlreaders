@@ -122,6 +122,13 @@ class CMLReader(object):
             return self._montage
         return self._determine_localization_or_montage("montage")
 
+    @property
+    def path_finder(self):
+        """Return a path finder using the proper kwargs."""
+        from .path_finder import PathFinder
+        return PathFinder(self.subject, self.experiment, self.session,
+                          self.localization, self.montage, self.rootdir)
+
     def get_reader(self, data_type, file_path=None):
         """ Return an instance of the reader class for the given data type """
 
