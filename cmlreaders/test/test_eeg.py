@@ -434,7 +434,6 @@ class TestRereference:
             ts = hfile.create_dataset("timeseries", data=data)
             ts.attrs["orient"] = b"row"
 
-    @pytest.mark.only
     @pytest.mark.parametrize("reader_class,rerefable", [
         (SplitEEGReader, True),
         (RamulatorHDF5Reader, True),

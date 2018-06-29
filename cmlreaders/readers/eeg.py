@@ -330,7 +330,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
             )
 
         # allow a subset of channels
-        channel_inds = [a == b for a, b in zip(all_nums, scheme_nums)]
+        channel_inds = [chan in scheme_nums for chan in all_nums]
         return data[:, channel_inds, :]
 
 
