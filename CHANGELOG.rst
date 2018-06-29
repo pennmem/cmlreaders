@@ -1,6 +1,21 @@
 Changes
 =======
 
+Version 0.6.0
+-------------
+
+**2018-06-29**
+
+This release fixes several bugs with EEG reading when passing a referencing
+scheme and improves performance when loading pairs/contacts data. Highlights:
+
+* Adds and improves existing test cases for rereferencing EEG data
+* Improved load speed of ``pairs.json``/``contacts.json`` by about 2 orders of
+  magnitude (#89)
+* Speeds up loading of split EEG data when specifying a referencing scheme by
+  only loading the required data (#85)
+
+
 Version 0.5.0
 -------------
 
