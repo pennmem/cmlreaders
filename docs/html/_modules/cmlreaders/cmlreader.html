@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.5.0 documentation</title>
+  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.6.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.5
+                0.6
               </div>
             
           
@@ -276,6 +276,13 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_montage</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_localization_or_montage</span><span class="p">(</span><span class="s2">&quot;montage&quot;</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path_finder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a path finder using the proper kwargs.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.path_finder</span> <span class="k">import</span> <span class="n">PathFinder</span>
+        <span class="k">return</span> <span class="n">PathFinder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
+
 <div class="viewcode-block" id="CMLReader.get_reader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an instance of the reader class for the given data type &quot;&quot;&quot;</span>
 
@@ -428,7 +435,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.5.0',
+            VERSION:'0.6.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.5.0 documentation</title>
+  <title>API &mdash; CML Data Readers 0.6.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.5
+                0.6
               </div>
             
           
@@ -290,6 +290,12 @@ used without passing <code class="docutils literal notranslate"><span class="pre
 <dd><p>Determine the montage number.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="cmlreaders.CMLReader.path_finder">
+<code class="descname">path_finder</code><a class="headerlink" href="#cmlreaders.CMLReader.path_finder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a path finder using the proper kwargs.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -471,8 +477,10 @@ session (units are relative to the start of each file):</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
 <tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>epochs</strong> – When given, specify which epochs to read in ms.</li>
-<li><strong>scheme</strong> – When given, attempt to rereference and/or filter the data.</li>
+<li><strong>epochs</strong> – When given, specify which epochs to read in ms. When omitted, read
+an entire session.</li>
+<li><strong>scheme</strong> – When given, attempt to rereference and/or filter the data. This
+parameter should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> à la <code class="docutils literal notranslate"><span class="pre">pairs.json</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -668,7 +676,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.5.0',
+            VERSION:'0.6.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
