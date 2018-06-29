@@ -320,9 +320,12 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if not all(is_valid_channel):
             raise RereferencingNotPossibleError(
                 'The following channels are missing: %s' % (
-                    ', '.join(label) for (label, valid) in
-                    zip(self.scheme["label"], is_valid_channel)
-                    if not valid)
+                    ', '.join(
+                        label for (label, valid) in
+                        zip(self.scheme["label"], is_valid_channel)
+                        if not valid
+                    )
+                )
             )
 
         channel_to_index = {c: i for (i, c) in enumerate(contacts)}

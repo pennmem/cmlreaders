@@ -196,11 +196,12 @@ class TestFileReaders:
         assert ts.shape == (1, len(channels), time_steps)
 
     def test_ramulator_hdf5_rereference(self):
-        pairs_file = resource_filename('cmlreaders.test.data', 'pairs.json')
-        pairs = MontageReader('pairs', subject='R1405E',
+        pairs_file = resource_filename("cmlreaders.test.data",
+                                       "R1405E_pairs_loc1_mon1.json")
+        pairs = MontageReader("pairs", subject="R1405E",
                               file_path=pairs_file,).load()
 
-        filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
+        filename = resource_filename("cmlreaders.test.data", "eeg.h5")
 
         make_reader = partial(RamulatorHDF5Reader, filename, np.int16, [(0, None)])
         reader = make_reader(pairs)
