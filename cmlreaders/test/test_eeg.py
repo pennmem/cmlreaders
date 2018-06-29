@@ -296,11 +296,10 @@ class TestEEGReader:
             assert_equal(data_noreref.data, data_reref.data)
             assert data_reref.channels[index] == channel
 
-    @pytest.mark.only
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,region_key,region_name,expected_channels,tlen", [
         ("R1384J", "ind.region", "insula", 10, 200),  # Ramulator bipolar
-        ("R1286J", "ind.region", "precentral", 2, 200),  # Ramulator monopolar (but will load from split...)
+        ("R1288P", "ind.region", "lateralorbitofrontal", 5, 200),  # Ramulator monopolar (but will load from split...)
         ("R1111M", "ind.region", "middletemporal", 18, 100),  # "split" EEG
     ])
     def test_filter_channels(self, subject, region_key, region_name,

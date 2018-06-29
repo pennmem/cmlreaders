@@ -255,10 +255,11 @@ class SplitEEGReader(BaseEEGReader):
         contacts = []
         memmaps = []
 
-        for c, f in enumerate(files, 1):
-            if not self.include_contact(c):
+        for f in files:
+            contact_num = int(f.name.split(".")[-1])
+            if not self.include_contact(contact_num):
                 continue
-            contacts.append(int(f.name.split(".")[-1]))
+            contacts.append(contact_num)
             memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
 
         data = np.array([
