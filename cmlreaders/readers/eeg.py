@@ -255,10 +255,11 @@ class SplitEEGReader(BaseEEGReader):
         contacts = []
         memmaps = []
 
-        for c, f in enumerate(files, 1):
-            if not self.include_contact(c):
+        for f in files:
+            contact_num = int(f.name.split(".")[-1])
+            if not self.include_contact(contact_num):
                 continue
-            contacts.append(int(f.name.split(".")[-1]))
+            contacts.append(contact_num)
             memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
 
         data = np.array([
@@ -288,7 +289,6 @@ class RamulatorHDF5Reader(BaseEEGReader):
             ts = hfile['/timeseries']
 
             # FIXME: only select channels we care about
-
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
                 data = np.array([ts[epoch[0]:epoch[1], :].T for epoch in self.epochs])
             else:
@@ -310,9 +310,10 @@ class RamulatorHDF5Reader(BaseEEGReader):
             bpinfo = hfile['bipolar_info']
             all_nums = [
                 (int(a), int(b)) for (a, b) in list(
-                    zip(bpinfo['ch0_label'][()], bpinfo['ch1_label'][()])
+                    zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
                 )
             ]
+
         scheme_nums = list(zip(self.scheme["contact_1"],
                                self.scheme["contact_2"]))
         is_valid_channel = [channel in all_nums for channel in scheme_nums]
@@ -320,15 +321,16 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if not all(is_valid_channel):
             raise RereferencingNotPossibleError(
                 'The following channels are missing: %s' % (
-                    ', '.join(label) for (label, valid) in
-                    zip(self.scheme["label"], is_valid_channel)
-                    if not valid)
+                    ', '.join(
+                        label for (label, valid) in
+                        zip(self.scheme["label"], is_valid_channel)
+                        if not valid
+                    )
+                )
             )
 
-        channel_to_index = {c: i for (i, c) in enumerate(contacts)}
-        channel_inds = [channel_to_index[c]
-                        for c in self.scheme["contact_1"]]
-
+        # allow a subset of channels
+        channel_inds = [chan in scheme_nums for chan in all_nums]
         return data[:, channel_inds, :]
 
 
