@@ -32,7 +32,6 @@ class CMLReader(object):
 
     """
     reader_names = {}
-    _index = None  # type: pd.DataFrame
 
     def __init__(self, subject: str,
                  experiment: Optional[str] = None,
@@ -53,22 +52,24 @@ class CMLReader(object):
 
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
 
-    def _load_index(self):
+    def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and
         localization nubmers.
 
         """
-        self._index = get_data_index(self.protocol, rootdir=self.rootdir)
+        index = get_data_index(self.protocol, rootdir=self.rootdir)
 
         # Some subjects don't explicitly specify localization/montage
         # numbers in the index, so they appear as NaNs.
         try:
-            self._index["montage"].replace({np.nan: "0"}, inplace=True)
-            self._index["localization"].replace({np.nan: "0"}, inplace=True)
+            index["montage"].replace({np.nan: "0"}, inplace=True)
+            index["localization"].replace({np.nan: "0"}, inplace=True)
         except KeyError:
             # We're using a protocol that doesn't include localization data
             # (e.g., ltp)
             pass
+
+        return index
 
     @staticmethod
     def _get_protocol(subject: str) -> str:
@@ -98,9 +99,8 @@ class CMLReader(object):
         if which not in ["localization", "montage"]:
             raise ValueError
 
-        self._load_index()
-
-        df = CMLReader._index[CMLReader._index["subject"] == self.subject]
+        index = self._load_index()
+        df = index[index["subject"] == self.subject]
 
         if self.experiment is not None:
             df = df[df.experiment == self.experiment]

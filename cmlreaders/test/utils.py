@@ -13,5 +13,5 @@ def patched_cmlreader():
     raw = read_index(resource_filename("cmlreaders.test.data", "r1.json"))
 
     with patch.object(CMLReader, "_load_index",
-                      side_effect=setattr(CMLReader, "_index", _index_dict_to_dataframe(raw))):
+                      return_value=_index_dict_to_dataframe(raw)):
         yield
