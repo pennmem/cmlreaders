@@ -1,0 +1,7167 @@
+{
+  "R1006P_1": {
+    "code": "R1006P_1", 
+    "id": "r1.6.0_1", 
+    "pairs": {
+      "AF1-AF2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiorfrontal", 
+            "x": 8.935, 
+            "y": 67.56, 
+            "z": 14.235
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiorfrontal", 
+            "x": 9.3127615, 
+            "y": 65.601372, 
+            "z": 14.2953905
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiorfrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorfrontal", 
+            "x": 6.55, 
+            "y": 50.39, 
+            "z": 42.385
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorfrontal", 
+            "x": 6.4839355, 
+            "y": 50.5125315, 
+            "z": 42.626934
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 8.786, 
+            "y": 69.3172, 
+            "z": 18.88715
+          }
+        }, 
+        "channel_1": 66, 
+        "channel_2": 67, 
+        "code": "AF1-AF2", 
+        "id": "af.1-af.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AF2-AF3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiorfrontal", 
+            "x": 15.285, 
+            "y": 62.995, 
+            "z": 21.4
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiorfrontal", 
+            "x": 14.8835485, 
+            "y": 62.1669485, 
+            "z": 20.9241745
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 12.54, 
+            "y": 44.41, 
+            "z": 47.555
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 11.895638, 
+            "y": 43.851328, 
+            "z": 47.5844175
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 15.3114, 
+            "y": 64.56795, 
+            "z": 25.89295
+          }
+        }, 
+        "channel_1": 67, 
+        "channel_2": 68, 
+        "code": "AF2-AF3", 
+        "id": "af.2-af.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AF3-AF4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 21.18, 
+            "y": 56.68, 
+            "z": 27.33
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 21.763136, 
+            "y": 56.375885, 
+            "z": 27.1965025
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 18.175, 
+            "y": 37.24, 
+            "z": 51.11
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 17.5527035, 
+            "y": 36.3437445, 
+            "z": 50.835993
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 21.3205, 
+            "y": 58.14275, 
+            "z": 31.55085
+          }
+        }, 
+        "channel_1": 68, 
+        "channel_2": 69, 
+        "code": "AF3-AF4", 
+        "id": "af.3-af.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AF4-AF5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 26.075, 
+            "y": 48.57, 
+            "z": 32.01
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 25.407754, 
+            "y": 50.8954715, 
+            "z": 31.23555
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiorfrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorfrontal", 
+            "x": 22.945, 
+            "y": 28.835, 
+            "z": 53
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorfrontal", 
+            "x": 23.7093515, 
+            "y": 28.7777175, 
+            "z": 53.3019125
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 26.25245, 
+            "y": 50.0251, 
+            "z": 35.83305
+          }
+        }, 
+        "channel_1": 69, 
+        "channel_2": 70, 
+        "code": "AF4-AF5", 
+        "id": "af.4-af.5", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AF5-AF6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 29.445, 
+            "y": 39.505, 
+            "z": 35.73
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 29.5932845, 
+            "y": 39.742895, 
+            "z": 36.475587
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 26.325, 
+            "y": 19.84, 
+            "z": 53.73
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 27.4407425, 
+            "y": 18.75985, 
+            "z": 53.7368355
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 29.58695, 
+            "y": 41.065, 
+            "z": 39.08515
+          }
+        }, 
+        "channel_1": 70, 
+        "channel_2": 71, 
+        "code": "AF5-AF6", 
+        "id": "af.5-af.6", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AST1-AST2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": 25.38, 
+            "y": -4.11, 
+            "z": -41.01
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": 26.7699115, 
+            "y": -3.897429, 
+            "z": -40.202753
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "fusiform", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": 24.805, 
+            "y": 4.09, 
+            "z": -27.365
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": 24.785162, 
+            "y": 4.110974, 
+            "z": -26.441267
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 23.58585, 
+            "y": -1.095542, 
+            "z": -37.62305
+          }
+        }, 
+        "channel_1": 78, 
+        "channel_2": 79, 
+        "code": "AST1-AST2", 
+        "id": "ast.1-ast.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AST2-AST3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 35.575, 
+            "y": -5.465, 
+            "z": -39.97
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": 35.973559, 
+            "y": -4.95925, 
+            "z": -40.7447185
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 34.38, 
+            "y": 2.845, 
+            "z": -26.61
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 33.454401, 
+            "y": 2.606281, 
+            "z": -26.809918
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 34.04095, 
+            "y": -2.96975, 
+            "z": -36.69935
+          }
+        }, 
+        "channel_1": 79, 
+        "channel_2": 80, 
+        "code": "AST2-AST3", 
+        "id": "ast.2-ast.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "AST3-AST4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 44.795, 
+            "y": -6.345, 
+            "z": -35.245
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": 45.546915, 
+            "y": -6.083834, 
+            "z": -36.052471
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 42.985, 
+            "y": 0.9, 
+            "z": -22.47
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 42.817881, 
+            "y": 1.1641595, 
+            "z": -23.3589475
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 43.55275, 
+            "y": -4.332345, 
+            "z": -32.34875
+          }
+        }, 
+        "channel_1": 80, 
+        "channel_2": 81, 
+        "code": "AST3-AST4", 
+        "id": "ast.3-ast.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "DA1-DA2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 19.025, 
+            "y": -10.545, 
+            "z": -11.535
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 19.025, 
+            "y": -10.545, 
+            "z": -11.535
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 18.67, 
+            "y": -10.455, 
+            "z": -3.175
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 18.67, 
+            "y": -10.455, 
+            "z": -3.175
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Right Amy", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 17.31405, 
+            "y": -6.99294, 
+            "z": -10.67925
+          }
+        }, 
+        "channel_1": 108, 
+        "channel_2": 109, 
+        "code": "DA1-DA2", 
+        "id": "da.1-da.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DA2-DA3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 24.485, 
+            "y": -10.7, 
+            "z": -12.785
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 24.485, 
+            "y": -10.7, 
+            "z": -12.785
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 23.805, 
+            "y": -10.085, 
+            "z": -4.215
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 23.805, 
+            "y": -10.085, 
+            "z": -4.215
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 22.902, 
+            "y": -7.44608, 
+            "z": -11.8305
+          }
+        }, 
+        "channel_1": 109, 
+        "channel_2": 110, 
+        "code": "DA2-DA3", 
+        "id": "da.2-da.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DA3-DA4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 29.455, 
+            "y": -10.15, 
+            "z": -14.255
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 29.455, 
+            "y": -10.15, 
+            "z": -14.255
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 28.46, 
+            "y": -9.045, 
+            "z": -5.255
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 28.46, 
+            "y": -9.045, 
+            "z": -5.255
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 27.99595, 
+            "y": -7.187315, 
+            "z": -13.1512
+          }
+        }, 
+        "channel_1": 110, 
+        "channel_2": 111, 
+        "code": "DA3-DA4", 
+        "id": "da.3-da.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DEC1-DEC2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 17.015, 
+            "y": -17.985, 
+            "z": -16.345
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 17.015, 
+            "y": -17.985, 
+            "z": -16.345
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 17.08, 
+            "y": -15.63, 
+            "z": -9.675
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 17.08, 
+            "y": -15.63, 
+            "z": -9.675
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Right Sub", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 15.0504, 
+            "y": -14.0927, 
+            "z": -15.49945
+          }
+        }, 
+        "channel_1": 104, 
+        "channel_2": 105, 
+        "code": "DEC1-DEC2", 
+        "id": "dec.1-dec.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DEC2-DEC3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 22.305, 
+            "y": -17.45, 
+            "z": -15.025
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 22.305, 
+            "y": -17.45, 
+            "z": -15.025
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 21.995, 
+            "y": -15.42, 
+            "z": -8.23
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 21.995, 
+            "y": -15.42, 
+            "z": -8.23
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Right DG", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 20.50675, 
+            "y": -13.8679, 
+            "z": -14.2377
+          }
+        }, 
+        "channel_1": 105, 
+        "channel_2": 106, 
+        "code": "DEC2-DEC3", 
+        "id": "dec.2-dec.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DEC3-DEC4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 27.5, 
+            "y": -17.14, 
+            "z": -13.65
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 27.5, 
+            "y": -17.14, 
+            "z": -13.65
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 26.835, 
+            "y": -15.425, 
+            "z": -6.805
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 26.835, 
+            "y": -15.425, 
+            "z": -6.805
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Right DG", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 25.86395, 
+            "y": -13.85425, 
+            "z": -12.93845
+          }
+        }, 
+        "channel_1": 106, 
+        "channel_2": 107, 
+        "code": "DEC3-DEC4", 
+        "id": "dec.3-dec.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DH1-DH2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 31.97, 
+            "y": -18.265, 
+            "z": -8.075
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 31.97, 
+            "y": -18.265, 
+            "z": -8.075
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 30.99, 
+            "y": -17.955, 
+            "z": -2.08
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 30.99, 
+            "y": -17.955, 
+            "z": -2.08
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 30.50645, 
+            "y": -15.1905, 
+            "z": -7.82423
+          }
+        }, 
+        "channel_1": 112, 
+        "channel_2": 113, 
+        "code": "DH1-DH2", 
+        "id": "dh.1-dh.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DH2-DH3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "insula", 
+            "x": 37.735, 
+            "y": -17.65, 
+            "z": -7.85
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "insula", 
+            "x": 37.735, 
+            "y": -17.65, 
+            "z": -7.85
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 36.37, 
+            "y": -17.335, 
+            "z": -1.575
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 36.37, 
+            "y": -17.335, 
+            "z": -1.575
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 36.44465, 
+            "y": -14.913, 
+            "z": -7.570715
+          }
+        }, 
+        "channel_1": 113, 
+        "channel_2": 114, 
+        "code": "DH2-DH3", 
+        "id": "dh.2-dh.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DH3-DH4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 42.83, 
+            "y": -17.165, 
+            "z": -7.08
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 42.83, 
+            "y": -17.165, 
+            "z": -7.08
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 41.115, 
+            "y": -17.01, 
+            "z": -0.64
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 41.115, 
+            "y": -17.01, 
+            "z": -0.64
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 41.6965, 
+            "y": -14.727, 
+            "z": -6.823145
+          }
+        }, 
+        "channel_1": 114, 
+        "channel_2": 115, 
+        "code": "DH3-DH4", 
+        "id": "dh.3-dh.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHAA1-DHAA2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lingual", 
+            "x": 28.67, 
+            "y": -50.2, 
+            "z": -0.435
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lingual", 
+            "x": 28.67, 
+            "y": -50.2, 
+            "z": -0.435
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "lingual", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lingual", 
+            "x": 28.765, 
+            "y": -48.405, 
+            "z": -4.71
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lingual", 
+            "x": 28.765, 
+            "y": -48.405, 
+            "z": -4.71
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 26.6048, 
+            "y": -45.96055, 
+            "z": -2.32358
+          }
+        }, 
+        "channel_1": 124, 
+        "channel_2": 125, 
+        "code": "DHAA1-DHAA2", 
+        "id": "dhaa.1-dhaa.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHAA2-DHAA3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lingual", 
+            "x": 33.86, 
+            "y": -49.89, 
+            "z": 0.94
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lingual", 
+            "x": 33.86, 
+            "y": -49.89, 
+            "z": 0.94
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lingual", 
+            "x": 33.605, 
+            "y": -48.41, 
+            "z": -3.28
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lingual", 
+            "x": 33.605, 
+            "y": -48.41, 
+            "z": -3.28
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 31.96195, 
+            "y": -45.9465, 
+            "z": -1.024402
+          }
+        }, 
+        "channel_1": 125, 
+        "channel_2": 126, 
+        "code": "DHAA2-DHAA3", 
+        "id": "dhaa.2-dhaa.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHAA3-DHAA4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "bankssts", 
+            "x": 39.18, 
+            "y": -49.495, 
+            "z": 1.745
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "bankssts", 
+            "x": 39.18, 
+            "y": -49.495, 
+            "z": 1.745
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 38.565, 
+            "y": -48.17, 
+            "z": -2.335
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 38.565, 
+            "y": -48.17, 
+            "z": -2.335
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 37.4446, 
+            "y": -45.85745, 
+            "z": -0.24522085
+          }
+        }, 
+        "channel_1": 126, 
+        "channel_2": 127, 
+        "code": "DHAA3-DHAA4", 
+        "id": "dhaa.3-dhaa.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHI1-DHI2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": 30.825, 
+            "y": -21.43, 
+            "z": -8.425
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": 30.825, 
+            "y": -21.43, 
+            "z": -8.425
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 30.015, 
+            "y": -20.665, 
+            "z": -3.34
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 30.015, 
+            "y": -20.665, 
+            "z": -3.34
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Right CA1", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 29.2694, 
+            "y": -18.1985, 
+            "z": -8.30389
+          }
+        }, 
+        "channel_1": 116, 
+        "channel_2": 117, 
+        "code": "DHI1-DHI2", 
+        "id": "dhi.1-dhi.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHI2-DHI3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "insula", 
+            "x": 35.735, 
+            "y": -21.39, 
+            "z": -7.55
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "insula", 
+            "x": 35.735, 
+            "y": -21.39, 
+            "z": -7.55
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 34.605, 
+            "y": -20.77, 
+            "z": -2.445
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 34.605, 
+            "y": -20.77, 
+            "z": -2.445
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 34.3228, 
+            "y": -18.4338, 
+            "z": -7.48154
+          }
+        }, 
+        "channel_1": 117, 
+        "channel_2": 118, 
+        "code": "DHI2-DHI3", 
+        "id": "dhi.2-dhi.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHI3-DHI4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 40.55, 
+            "y": -21.575, 
+            "z": -6.625
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 40.55, 
+            "y": -21.575, 
+            "z": -6.625
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": null, 
+            "x": 39.11, 
+            "y": -21.09, 
+            "z": -1.575
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": null, 
+            "x": 39.11, 
+            "y": -21.09, 
+            "z": -1.575
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 39.277, 
+            "y": -18.87915, 
+            "z": -6.621895
+          }
+        }, 
+        "channel_1": 118, 
+        "channel_2": 119, 
+        "code": "DHI3-DHI4", 
+        "id": "dhi.3-dhi.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHT1-DHT2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lingual", 
+            "x": 26.78, 
+            "y": -47.115, 
+            "z": 11.345
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lingual", 
+            "x": 26.78, 
+            "y": -47.115, 
+            "z": 11.345
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "lingual", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lingual", 
+            "x": 26.755, 
+            "y": -49.23, 
+            "z": 6.63
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lingual", 
+            "x": 26.755, 
+            "y": -49.23, 
+            "z": 6.63
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 24.878, 
+            "y": -42.84555, 
+            "z": 9.3498
+          }
+        }, 
+        "channel_1": 120, 
+        "channel_2": 121, 
+        "code": "DHT1-DHT2", 
+        "id": "dht.1-dht.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHT2-DHT3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lingual", 
+            "x": 32.125, 
+            "y": -48.145, 
+            "z": 11.975
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lingual", 
+            "x": 32.125, 
+            "y": -48.145, 
+            "z": 11.975
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiorparietal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "bankssts", 
+            "x": 31.78, 
+            "y": -50.19, 
+            "z": 7.005
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "bankssts", 
+            "x": 31.78, 
+            "y": -50.19, 
+            "z": 7.005
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 30.35255, 
+            "y": -44.1364, 
+            "z": 9.942245
+          }
+        }, 
+        "channel_1": 121, 
+        "channel_2": 122, 
+        "code": "DHT2-DHT3", 
+        "id": "dht.2-dht.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "DHT3-DHT4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "bankssts", 
+            "x": 37.47, 
+            "y": -49.175, 
+            "z": 12.61
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "bankssts", 
+            "x": 37.47, 
+            "y": -49.175, 
+            "z": 12.61
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiorparietal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": 36.805, 
+            "y": -51.15, 
+            "z": 7.38
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": 36.805, 
+            "y": -51.15, 
+            "z": 7.38
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 35.82715, 
+            "y": -45.4272, 
+            "z": 10.5347
+          }
+        }, 
+        "channel_1": 122, 
+        "channel_2": 123, 
+        "code": "DHT3-DHT4", 
+        "id": "dht.3-dht.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "D", 
+        "type_2": "D"
+      }, 
+      "G1-G2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 44.375, 
+            "y": -10.855, 
+            "z": -31.87
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": 46.8289225, 
+            "y": -9.11049, 
+            "z": -34.078828
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 42.685, 
+            "y": -4.075, 
+            "z": -20.8
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 40.95483, 
+            "y": -5.1294575, 
+            "z": -20.7337535
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 43.07895, 
+            "y": -8.680285, 
+            "z": -29.4498
+          }
+        }, 
+        "channel_1": 2, 
+        "channel_2": 3, 
+        "code": "G1-G2", 
+        "id": "g.1-g.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G1-G9": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 42.405, 
+            "y": -3.39, 
+            "z": -31.755
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 45.3687725, 
+            "y": -0.3357465, 
+            "z": -32.5973525
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 40.615, 
+            "y": 2.41, 
+            "z": -18.555
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 38.762537, 
+            "y": 0.8527315, 
+            "z": -17.8312455
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 41.20025, 
+            "y": -1.33911, 
+            "z": -28.9851
+          }
+        }, 
+        "channel_1": 2, 
+        "channel_2": 10, 
+        "code": "G1-G9", 
+        "id": "g.1-g.9", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G10-G11": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 53.12, 
+            "y": -8.505, 
+            "z": -20.28
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 55.7080175, 
+            "y": -7.046553, 
+            "z": -20.087534
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 50.66, 
+            "y": -5.225, 
+            "z": -9.62
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 51.5396765, 
+            "y": -5.7708395, 
+            "z": -10.4716635
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 52.25685, 
+            "y": -6.89954, 
+            "z": -18.59235
+          }
+        }, 
+        "channel_1": 11, 
+        "channel_2": 12, 
+        "code": "G10-G11", 
+        "id": "g.10-g.11", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G11-G12": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 57.84, 
+            "y": -15.53, 
+            "z": -13.69
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 58.26881, 
+            "y": -14.8345005, 
+            "z": -13.7626705
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 55.21, 
+            "y": -13.245, 
+            "z": -5.71
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 56.3228395, 
+            "y": -12.990754, 
+            "z": -6.190557
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 57.05115, 
+            "y": -13.97365, 
+            "z": -12.82261
+          }
+        }, 
+        "channel_1": 12, 
+        "channel_2": 13, 
+        "code": "G11-G12", 
+        "id": "g.11-g.12", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G12-G13": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 62.11, 
+            "y": -22.78, 
+            "z": -6.515
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 61.88076, 
+            "y": -23.2386285, 
+            "z": -7.12554
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 59.335, 
+            "y": -21.645, 
+            "z": -1.36
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 58.6040265, 
+            "y": -20.632086, 
+            "z": -0.26458
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 61.38995, 
+            "y": -21.236, 
+            "z": -6.52719
+          }
+        }, 
+        "channel_1": 13, 
+        "channel_2": 14, 
+        "code": "G12-G13", 
+        "id": "g.12-g.13", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G13-G14": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 64.485, 
+            "y": -29.945, 
+            "z": 1.065
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 64.60503, 
+            "y": -30.308719, 
+            "z": 0.388691
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 61.675, 
+            "y": -30.135, 
+            "z": 3.33
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 59.748848, 
+            "y": -29.918187, 
+            "z": 6.169056
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 63.78915, 
+            "y": -28.3111, 
+            "z": 0.22752
+          }
+        }, 
+        "channel_1": 14, 
+        "channel_2": 15, 
+        "code": "G13-G14", 
+        "id": "g.13-g.14", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G14-G15": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 64.905, 
+            "y": -37.39, 
+            "z": 8.59
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 64.8578835, 
+            "y": -37.17157, 
+            "z": 8.6787265
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 62.2, 
+            "y": -38.905, 
+            "z": 7.845
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 61.621771, 
+            "y": -39.5105435, 
+            "z": 9.070082
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 64.17585, 
+            "y": -35.5337, 
+            "z": 7.2092
+          }
+        }, 
+        "channel_1": 15, 
+        "channel_2": 16, 
+        "code": "G14-G15", 
+        "id": "g.14-g.15", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G15-G16": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "bankssts", 
+            "x": 63.595, 
+            "y": -45.205, 
+            "z": 16.095
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "bankssts", 
+            "x": 63.0615425, 
+            "y": -43.8206785, 
+            "z": 16.2336625
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 61.12, 
+            "y": -48.035, 
+            "z": 12.2
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 61.174139, 
+            "y": -48.047571, 
+            "z": 12.072125
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 62.781, 
+            "y": -43.0059, 
+            "z": 14.35285
+          }
+        }, 
+        "channel_1": 16, 
+        "channel_2": 17, 
+        "code": "G15-G16", 
+        "id": "g.15-g.16", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G17-G18": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 42.915, 
+            "y": 9.68, 
+            "z": -29.08
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 44.6690025, 
+            "y": 9.7683535, 
+            "z": -30.5708015
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 40.665, 
+            "y": 13.13, 
+            "z": -12.34
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 41.280331, 
+            "y": 13.549279, 
+            "z": -12.7385005
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 42.0124, 
+            "y": 11.291725, 
+            "z": -25.86915
+          }
+        }, 
+        "channel_1": 18, 
+        "channel_2": 19, 
+        "code": "G17-G18", 
+        "id": "g.17-g.18", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G17-G25": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "temporalpole", 
+            "x": 38.835, 
+            "y": 16.68, 
+            "z": -30.095
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 39.9161265, 
+            "y": 14.4307235, 
+            "z": -30.9823485
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 36.645, 
+            "y": 19.48, 
+            "z": -11.275
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 36.9731905, 
+            "y": 20.59466, 
+            "z": -11.706838
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 37.94295, 
+            "y": 18.29645, 
+            "z": -26.47355
+          }
+        }, 
+        "channel_1": 18, 
+        "channel_2": 26, 
+        "code": "G17-G25", 
+        "id": "g.17-g.25", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G18-G19": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 48.56, 
+            "y": 5.12, 
+            "z": -20.86
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 51.27454, 
+            "y": 4.396302, 
+            "z": -23.1647735
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 45.985, 
+            "y": 6.825, 
+            "z": -6.245
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 46.170647, 
+            "y": 6.7436895, 
+            "z": -7.419895
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 47.82515, 
+            "y": 6.557045, 
+            "z": -18.4734
+          }
+        }, 
+        "channel_1": 19, 
+        "channel_2": 20, 
+        "code": "G18-G19", 
+        "id": "g.18-g.19", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G18-G26": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 44.65, 
+            "y": 11.275, 
+            "z": -21.635
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 46.1568735, 
+            "y": 10.0291965, 
+            "z": -23.388743
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 42.15, 
+            "y": 12.375, 
+            "z": -5.22
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 44.611935, 
+            "y": 12.9161575, 
+            "z": -4.920698
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 43.91975, 
+            "y": 12.736275, 
+            "z": -18.9024
+          }
+        }, 
+        "channel_1": 19, 
+        "channel_2": 27, 
+        "code": "G18-G26", 
+        "id": "g.18-g.26", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G19-G20": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 53.6, 
+            "y": 0.155, 
+            "z": -13.13
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 56.3868565, 
+            "y": -1.1984135, 
+            "z": -15.3976555
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 50.755, 
+            "y": 0.285, 
+            "z": -0.71
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 50.728451, 
+            "y": 0.117814, 
+            "z": -0.9750315
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 53.0042, 
+            "y": 1.45995, 
+            "z": -11.548625
+          }
+        }, 
+        "channel_1": 20, 
+        "channel_2": 21, 
+        "code": "G19-G20", 
+        "id": "g.19-g.20", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G19-G27": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 49.845, 
+            "y": 6.89, 
+            "z": -13.495
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 51.9491635, 
+            "y": 5.8831855, 
+            "z": -15.3706185
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 47.04, 
+            "y": 6.23, 
+            "z": 0.85
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 46.3886185, 
+            "y": 4.9668705, 
+            "z": 0.712338
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 49.27085, 
+            "y": 8.19567, 
+            "z": -11.57014
+          }
+        }, 
+        "channel_1": 20, 
+        "channel_2": 28, 
+        "code": "G19-G27", 
+        "id": "g.19-g.27", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G2-G10": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 49.195, 
+            "y": -9.66, 
+            "z": -26.325
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 52.4674935, 
+            "y": -8.6771145, 
+            "z": -27.004276
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 47.095, 
+            "y": -4.545, 
+            "z": -15.42
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 47.206932, 
+            "y": -5.1490345, 
+            "z": -16.7963785
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 48.12645, 
+            "y": -7.79244, 
+            "z": -24.25235
+          }
+        }, 
+        "channel_1": 3, 
+        "channel_2": 11, 
+        "code": "G2-G10", 
+        "id": "g.2-g.10", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G2-G3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 50.94, 
+            "y": -17.035, 
+            "z": -26.48
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 53.519865, 
+            "y": -16.3960825, 
+            "z": -27.5919855
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 48.955, 
+            "y": -10.945, 
+            "z": -17.675
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 49.0720655, 
+            "y": -10.7545615, 
+            "z": -18.1875235
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 49.77435, 
+            "y": -15.0371, 
+            "z": -24.7485
+          }
+        }, 
+        "channel_1": 3, 
+        "channel_2": 4, 
+        "code": "G2-G3", 
+        "id": "g.2-g.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G20-G21": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 57.305, 
+            "y": -6.11, 
+            "z": -5.145
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 58.812115, 
+            "y": -6.180603, 
+            "z": -4.240683
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 54.315, 
+            "y": -7.5, 
+            "z": 4.635
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 54.3768595, 
+            "y": -7.859249, 
+            "z": 2.6998425
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.7964, 
+            "y": -4.819685, 
+            "z": -4.457532
+          }
+        }, 
+        "channel_1": 21, 
+        "channel_2": 22, 
+        "code": "G20-G21", 
+        "id": "g.20-g.21", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G20-G28": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 54.505, 
+            "y": 1.43, 
+            "z": -6.21
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 55.3106635, 
+            "y": 0.8715265, 
+            "z": -6.602382
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 51.475, 
+            "y": -0.62, 
+            "z": 5.83
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 50.8600405, 
+            "y": -1.096088, 
+            "z": 7.0180365
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 54.0471, 
+            "y": 2.639045, 
+            "z": -5.084705
+          }
+        }, 
+        "channel_1": 21, 
+        "channel_2": 29, 
+        "code": "G20-G28", 
+        "id": "g.20-g.28", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G21-G22": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 59.89, 
+            "y": -12.33, 
+            "z": 3.31
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 60.379921, 
+            "y": -11.866133, 
+            "z": 4.8624405
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 56.82, 
+            "y": -15.415, 
+            "z": 10.38
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 56.9068965, 
+            "y": -15.383795, 
+            "z": 9.131297
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.4406, 
+            "y": -10.981815, 
+            "z": 3.353533
+          }
+        }, 
+        "channel_1": 22, 
+        "channel_2": 23, 
+        "code": "G21-G22", 
+        "id": "g.21-g.22", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G21-G29": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 58.175, 
+            "y": -4.7, 
+            "z": 2.29
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 58.459923, 
+            "y": -3.964142, 
+            "z": 4.2462525
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 54.995, 
+            "y": -8.435, 
+            "z": 11.675
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 55.2780205, 
+            "y": -8.368012, 
+            "z": 9.9415925
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 57.81285, 
+            "y": -3.491385, 
+            "z": 2.759023
+          }
+        }, 
+        "channel_1": 22, 
+        "channel_2": 30, 
+        "code": "G21-G29", 
+        "id": "g.21-g.29", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G22-G23": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 61.33, 
+            "y": -19.005, 
+            "z": 11.25
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 60.7719075, 
+            "y": -18.224864, 
+            "z": 11.4021315
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 58.265, 
+            "y": -23.605, 
+            "z": 15.515
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 57.7729875, 
+            "y": -23.37565, 
+            "z": 16.9575525
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 60.8903, 
+            "y": -17.5077, 
+            "z": 10.96409
+          }
+        }, 
+        "channel_1": 23, 
+        "channel_2": 24, 
+        "code": "G22-G23", 
+        "id": "g.22-g.23", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G22-G30": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 60.125, 
+            "y": -11.185, 
+            "z": 10.77
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 61.0687505, 
+            "y": -9.6113935, 
+            "z": 12.229735
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 56.91, 
+            "y": -16.615, 
+            "z": 17.35
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 55.894806, 
+            "y": -15.542686, 
+            "z": 17.3300795
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.7971, 
+            "y": -9.862875, 
+            "z": 10.92684
+          }
+        }, 
+        "channel_1": 23, 
+        "channel_2": 31, 
+        "code": "G22-G30", 
+        "id": "g.22-g.30", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G23-G24": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 61.9, 
+            "y": -25.87, 
+            "z": 19.18
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 60.5784145, 
+            "y": -24.3946825, 
+            "z": 20.1634475
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 58.905, 
+            "y": -31.975, 
+            "z": 20.57
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 58.194477, 
+            "y": -32.094919, 
+            "z": 21.055556
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 61.4491, 
+            "y": -24.1615, 
+            "z": 18.60215
+          }
+        }, 
+        "channel_1": 24, 
+        "channel_2": 25, 
+        "code": "G23-G24", 
+        "id": "g.23-g.24", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G23-G31": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 60.375, 
+            "y": -18.185, 
+            "z": 18.715
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 61.4947735, 
+            "y": -18.7577245, 
+            "z": 20.593727
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 57.255, 
+            "y": -25.115, 
+            "z": 22.375
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 57.4063895, 
+            "y": -24.544876, 
+            "z": 24.529102
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 60.0259, 
+            "y": -16.63015, 
+            "z": 18.57105
+          }
+        }, 
+        "channel_1": 24, 
+        "channel_2": 32, 
+        "code": "G23-G31", 
+        "id": "g.23-g.31", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G24-G32": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 60.21, 
+            "y": -25.15, 
+            "z": 26.07
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 60.149683, 
+            "y": -24.516545, 
+            "z": 26.776105
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "supramarginal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 57.22, 
+            "y": -33.42, 
+            "z": 26.87
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 56.9341145, 
+            "y": -33.600853, 
+            "z": 26.421311
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.8194, 
+            "y": -23.3413, 
+            "z": 25.6173
+          }
+        }, 
+        "channel_1": 25, 
+        "channel_2": 33, 
+        "code": "G24-G32", 
+        "id": "g.24-g.32", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G25-G26": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 40.57, 
+            "y": 18.275, 
+            "z": -22.65
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 41.4039975, 
+            "y": 14.6915665, 
+            "z": -23.80029
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 38.13, 
+            "y": 18.725, 
+            "z": -4.155
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 40.3047945, 
+            "y": 19.9615385, 
+            "z": -3.8890355
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 39.8503, 
+            "y": 19.741, 
+            "z": -19.5068
+          }
+        }, 
+        "channel_1": 26, 
+        "channel_2": 27, 
+        "code": "G25-G26", 
+        "id": "g.25-g.26", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G26-G27": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 45.935, 
+            "y": 13.045, 
+            "z": -14.27
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 46.831497, 
+            "y": 11.51608, 
+            "z": -15.594588
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 43.205, 
+            "y": 11.78, 
+            "z": 1.875
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 44.8299065, 
+            "y": 11.1393385, 
+            "z": 3.211535
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 45.36545, 
+            "y": 14.3749, 
+            "z": -11.99914
+          }
+        }, 
+        "channel_1": 27, 
+        "channel_2": 28, 
+        "code": "G26-G27", 
+        "id": "g.26-g.27", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G27-G28": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 50.75, 
+            "y": 8.165, 
+            "z": -6.575
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": 50.8729705, 
+            "y": 7.9531255, 
+            "z": -6.575345
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 47.76, 
+            "y": 5.325, 
+            "z": 7.39
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 46.520208, 
+            "y": 3.7529685, 
+            "z": 8.705406
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 50.31375, 
+            "y": 9.374765, 
+            "z": -5.10622
+          }
+        }, 
+        "channel_1": 28, 
+        "channel_2": 29, 
+        "code": "G27-G28", 
+        "id": "g.27-g.28", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G28-G29": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 55.375, 
+            "y": 2.84, 
+            "z": 1.225
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 54.9584715, 
+            "y": 3.0879875, 
+            "z": 1.8845535
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": 52.155, 
+            "y": -1.555, 
+            "z": 12.87
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": 51.7612015, 
+            "y": -1.604851, 
+            "z": 14.2597865
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 55.06355, 
+            "y": 3.967345, 
+            "z": 2.13185
+          }
+        }, 
+        "channel_1": 29, 
+        "channel_2": 30, 
+        "code": "G28-G29", 
+        "id": "g.28-g.29", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G29-G30": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 58.41, 
+            "y": -3.555, 
+            "z": 9.75
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 59.1487525, 
+            "y": -1.7094025, 
+            "z": 11.613547
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 55.085, 
+            "y": -9.635, 
+            "z": 18.645
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 54.26593, 
+            "y": -8.526903, 
+            "z": 18.140375
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.16935, 
+            "y": -2.372445, 
+            "z": 10.33233
+          }
+        }, 
+        "channel_1": 30, 
+        "channel_2": 31, 
+        "code": "G29-G30", 
+        "id": "g.29-g.30", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G3-G11": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 54.865, 
+            "y": -15.88, 
+            "z": -20.435
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 56.760389, 
+            "y": -14.765521, 
+            "z": -20.6752435
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 52.52, 
+            "y": -11.625, 
+            "z": -11.875
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 53.40481, 
+            "y": -11.3763665, 
+            "z": -11.8628085
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 53.90475, 
+            "y": -14.1442, 
+            "z": -19.0885
+          }
+        }, 
+        "channel_1": 4, 
+        "channel_2": 12, 
+        "code": "G3-G11", 
+        "id": "g.3-g.11", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G3-G4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 56.65, 
+            "y": -23.79, 
+            "z": -20.445
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 58.811674, 
+            "y": -23.897847, 
+            "z": -21.879384
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 54.43, 
+            "y": -18.54, 
+            "z": -14.16
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 54.5207235, 
+            "y": -18.394089, 
+            "z": -13.9085105
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 55.5851, 
+            "y": -21.9061, 
+            "z": -19.4785
+          }
+        }, 
+        "channel_1": 4, 
+        "channel_2": 5, 
+        "code": "G3-G4", 
+        "id": "g.3-g.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G30-G31": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 59.17, 
+            "y": -10.365, 
+            "z": 18.235
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 61.7916165, 
+            "y": -10.144254, 
+            "z": 21.4213305
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 55.9, 
+            "y": -18.125, 
+            "z": 24.21
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 55.528208, 
+            "y": -16.711912, 
+            "z": 24.901629
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.9327, 
+            "y": -8.985325, 
+            "z": 18.5338
+          }
+        }, 
+        "channel_1": 31, 
+        "channel_2": 32, 
+        "code": "G30-G31", 
+        "id": "g.30-g.31", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G31-G32": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 58.685, 
+            "y": -17.465, 
+            "z": 25.605
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 61.066042, 
+            "y": -18.879587, 
+            "z": 27.2063845
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 55.57, 
+            "y": -26.56, 
+            "z": 28.675
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 56.146027, 
+            "y": -26.05081, 
+            "z": 29.894857
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.3962, 
+            "y": -15.80995, 
+            "z": 25.5862
+          }
+        }, 
+        "channel_1": 32, 
+        "channel_2": 33, 
+        "code": "G31-G32", 
+        "id": "g.31-g.32", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G33-G34": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 48.265, 
+            "y": 30.885, 
+            "z": -2.22
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 49.1944675, 
+            "y": 32.7317335, 
+            "z": -3.0145145
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 44.69, 
+            "y": 23.97, 
+            "z": 17.87
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 44.6525495, 
+            "y": 24.0136045, 
+            "z": 17.2641795
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 48.2531, 
+            "y": 31.5315, 
+            "z": 0.188555
+          }
+        }, 
+        "channel_1": 34, 
+        "channel_2": 35, 
+        "code": "G33-G34", 
+        "id": "g.33-g.34", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G33-G41": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 45.085, 
+            "y": 37.385, 
+            "z": -0.274999999999999
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 47.047205, 
+            "y": 39.314596, 
+            "z": -0.558425499999999
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 41.495, 
+            "y": 29.03, 
+            "z": 21.43
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 41.745268, 
+            "y": 27.811741, 
+            "z": 20.952103
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 45.13935, 
+            "y": 38.0111, 
+            "z": 2.53043
+          }
+        }, 
+        "channel_1": 34, 
+        "channel_2": 42, 
+        "code": "G33-G41", 
+        "id": "g.33-g.41", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G34-G35": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 51.755, 
+            "y": 22.145, 
+            "z": 3.085
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 51.7199, 
+            "y": 21.8558895, 
+            "z": 3.0866875
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 48.16, 
+            "y": 14.795, 
+            "z": 20.1
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 47.8749465, 
+            "y": 15.8408135, 
+            "z": 21.716181
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 51.7395, 
+            "y": 22.8874, 
+            "z": 5.054885
+          }
+        }, 
+        "channel_1": 35, 
+        "channel_2": 36, 
+        "code": "G34-G35", 
+        "id": "g.34-g.35", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G34-G42": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 49.98, 
+            "y": 29.27, 
+            "z": 4.405
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 51.0298825, 
+            "y": 29.9183315, 
+            "z": 4.861731
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 46.265, 
+            "y": 20.625, 
+            "z": 23.325
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 46.8199615, 
+            "y": 20.262273, 
+            "z": 23.6845705
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 50.07135, 
+            "y": 29.8939, 
+            "z": 6.80472
+          }
+        }, 
+        "channel_1": 35, 
+        "channel_2": 43, 
+        "code": "G34-G42", 
+        "id": "g.34-g.42", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G35-G36": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parsopercularis", 
+            "x": 54.83, 
+            "y": 13.05, 
+            "z": 8.455
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parsopercularis", 
+            "x": 54.630316, 
+            "y": 12.326283, 
+            "z": 8.693264
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsopercularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parsopercularis", 
+            "x": 51.25, 
+            "y": 5.275, 
+            "z": 22.275
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parsopercularis", 
+            "x": 51.1390265, 
+            "y": 6.8998695, 
+            "z": 24.044385
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 54.79665, 
+            "y": 13.91958, 
+            "z": 9.974015
+          }
+        }, 
+        "channel_1": 36, 
+        "channel_2": 37, 
+        "code": "G35-G36", 
+        "id": "g.35-g.36", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G35-G43": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 52.57, 
+            "y": 20.485, 
+            "z": 10.215
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 53.3784905, 
+            "y": 21.755701, 
+            "z": 11.002534
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsopercularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parsopercularis", 
+            "x": 48.885, 
+            "y": 11.24, 
+            "z": 25.97
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parsopercularis", 
+            "x": 49.1847975, 
+            "y": 11.1620715, 
+            "z": 26.8971035
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 52.6405, 
+            "y": 21.2576, 
+            "z": 12.185015
+          }
+        }, 
+        "channel_1": 36, 
+        "channel_2": 44, 
+        "code": "G35-G43", 
+        "id": "g.35-g.43", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G36-G37": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 58.185, 
+            "y": 4.625, 
+            "z": 13.665
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 59.020779, 
+            "y": 4.5136375, 
+            "z": 13.533603
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 54.58, 
+            "y": -3.6, 
+            "z": 24.515
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 54.6409775, 
+            "y": -2.4936025, 
+            "z": 24.718175
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.15135, 
+            "y": 5.582855, 
+            "z": 14.77355
+          }
+        }, 
+        "channel_1": 37, 
+        "channel_2": 38, 
+        "code": "G36-G37", 
+        "id": "g.36-g.37", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G36-G44": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parsopercularis", 
+            "x": 56.06, 
+            "y": 11.745, 
+            "z": 15.52
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parsopercularis", 
+            "x": 55.5074905, 
+            "y": 11.8953385, 
+            "z": 14.900239
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 52.35, 
+            "y": 2.065, 
+            "z": 28.205
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 52.4264295, 
+            "y": 1.9830455, 
+            "z": 28.269373
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.1269, 
+            "y": 12.61388, 
+            "z": 17.05835
+          }
+        }, 
+        "channel_1": 37, 
+        "channel_2": 45, 
+        "code": "G36-G44", 
+        "id": "g.36-g.44", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G37-G38": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 59.725, 
+            "y": -4.39, 
+            "z": 18.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 60.576033, 
+            "y": -2.001276, 
+            "z": 18.725877
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 56.225, 
+            "y": -13.05, 
+            "z": 26.57
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 56.7138155, 
+            "y": -12.8801055, 
+            "z": 27.3851045
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.6252, 
+            "y": -3.22404, 
+            "z": 19.56755
+          }
+        }, 
+        "channel_1": 38, 
+        "channel_2": 39, 
+        "code": "G37-G38", 
+        "id": "g.37-g.38", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G37-G45": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 58.065, 
+            "y": 3.45, 
+            "z": 21.16
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 58.943165, 
+            "y": 4.9695545, 
+            "z": 20.7770215
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 54.41, 
+            "y": -6.855, 
+            "z": 30.83
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 55.2698345, 
+            "y": -6.8444825, 
+            "z": 31.051509
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.1029, 
+            "y": 4.478835, 
+            "z": 22.29615
+          }
+        }, 
+        "channel_1": 38, 
+        "channel_2": 46, 
+        "code": "G37-G45", 
+        "id": "g.37-g.45", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G38-G39": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 59.67, 
+            "y": -14.085, 
+            "z": 24.225
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 59.8794175, 
+            "y": -11.9905055, 
+            "z": 24.344452
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 56.4, 
+            "y": -23.16, 
+            "z": 28.46
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 56.8094445, 
+            "y": -23.3469715, 
+            "z": 29.3063415
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.4491, 
+            "y": -12.597915, 
+            "z": 24.3904
+          }
+        }, 
+        "channel_1": 39, 
+        "channel_2": 40, 
+        "code": "G38-G39", 
+        "id": "g.38-g.39", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G38-G46": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 58.725, 
+            "y": -6.645, 
+            "z": 26.075
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 58.380211, 
+            "y": -4.851995, 
+            "z": 26.140027
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 55.265, 
+            "y": -17.18, 
+            "z": 32.26
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 56.59815, 
+            "y": -16.6760415, 
+            "z": 33.404131
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.64545, 
+            "y": -5.324005, 
+            "z": 26.69205
+          }
+        }, 
+        "channel_1": 39, 
+        "channel_2": 47, 
+        "code": "G38-G46", 
+        "id": "g.38-g.46", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G39-G40": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 59.215, 
+            "y": -23.245, 
+            "z": 29.925
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 60.764597, 
+            "y": -24.2040005, 
+            "z": 29.7591905
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "supramarginal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 56.185, 
+            "y": -32.92, 
+            "z": 30.84
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 55.9361935, 
+            "y": -33.8100775, 
+            "z": 31.0057125
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.8842, 
+            "y": -21.42995, 
+            "z": 29.6343
+          }
+        }, 
+        "channel_1": 40, 
+        "channel_2": 41, 
+        "code": "G39-G40", 
+        "id": "g.39-g.40", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G39-G47": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 58.275, 
+            "y": -15.8, 
+            "z": 31.775
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 59.876083, 
+            "y": -16.885192, 
+            "z": 32.2824985
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 55.05, 
+            "y": -26.94, 
+            "z": 34.64
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 55.8737755, 
+            "y": -26.714473, 
+            "z": 35.24663
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.0806, 
+            "y": -14.1558, 
+            "z": 31.9359
+          }
+        }, 
+        "channel_1": 40, 
+        "channel_2": 48, 
+        "code": "G39-G47", 
+        "id": "g.39-g.47", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G4-G12": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 59.625, 
+            "y": -23.44, 
+            "z": -13.7
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 60.320095, 
+            "y": -23.9668265, 
+            "z": -14.966811
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 57.12, 
+            "y": -20.16, 
+            "z": -7.995
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 57.438753, 
+            "y": -20.0084765, 
+            "z": -8.236259
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 58.7315, 
+            "y": -21.73555, 
+            "z": -13.21261
+          }
+        }, 
+        "channel_1": 5, 
+        "channel_2": 13, 
+        "code": "G4-G12", 
+        "id": "g.4-g.12", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G4-G5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 60.92, 
+            "y": -31.04, 
+            "z": -13.27
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 63.487049, 
+            "y": -31.672249, 
+            "z": -15.3372615
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 58.555, 
+            "y": -26.94, 
+            "z": -9.81
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 58.2940615, 
+            "y": -25.9986925, 
+            "z": -9.852509
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.9239, 
+            "y": -29.1685, 
+            "z": -13.183095
+          }
+        }, 
+        "channel_1": 5, 
+        "channel_2": 6, 
+        "code": "G4-G5", 
+        "id": "g.4-g.5", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G40-G48": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 56.8, 
+            "y": -25.335, 
+            "z": 36.4
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 58.5480385, 
+            "y": -26.9924615, 
+            "z": 35.820299
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "supramarginal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 53.9, 
+            "y": -36.735, 
+            "z": 35.93
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 54.5823785, 
+            "y": -38.554836, 
+            "z": 35.403858
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.4466, 
+            "y": -23.29665, 
+            "z": 36.0642
+          }
+        }, 
+        "channel_1": 41, 
+        "channel_2": 49, 
+        "code": "G40-G48", 
+        "id": "g.40-g.48", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G41-G42": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 46.8, 
+            "y": 35.77, 
+            "z": 6.35
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 48.88262, 
+            "y": 36.501194, 
+            "z": 7.31782
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 43.07, 
+            "y": 25.685, 
+            "z": 26.885
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 43.91268, 
+            "y": 24.0604095, 
+            "z": 27.372494
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 46.9576, 
+            "y": 36.3735, 
+            "z": 9.146595
+          }
+        }, 
+        "channel_1": 42, 
+        "channel_2": 43, 
+        "code": "G41-G42", 
+        "id": "g.41-g.42", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G42-G43": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parstriangularis", 
+            "x": 50.795, 
+            "y": 27.61, 
+            "z": 11.535
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parstriangularis", 
+            "x": 52.688473, 
+            "y": 29.818143, 
+            "z": 12.7775775
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsopercularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parsopercularis", 
+            "x": 46.99, 
+            "y": 17.07, 
+            "z": 29.195
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parsopercularis", 
+            "x": 48.1298125, 
+            "y": 15.583531, 
+            "z": 28.865493
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 50.97235, 
+            "y": 28.2641, 
+            "z": 13.93485
+          }
+        }, 
+        "channel_1": 43, 
+        "channel_2": 44, 
+        "code": "G42-G43", 
+        "id": "g.42-g.43", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G43-G44": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parsopercularis", 
+            "x": 53.8, 
+            "y": 19.18, 
+            "z": 17.28
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parsopercularis", 
+            "x": 54.255665, 
+            "y": 21.3247565, 
+            "z": 17.209509
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsopercularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 49.985, 
+            "y": 8.03, 
+            "z": 31.9
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 50.4722005, 
+            "y": 6.2452475, 
+            "z": 31.1220915
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 53.97075, 
+            "y": 19.9519, 
+            "z": 19.26935
+          }
+        }, 
+        "channel_1": 44, 
+        "channel_2": 45, 
+        "code": "G43-G44", 
+        "id": "g.43-g.44", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G44-G45": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 55.94, 
+            "y": 10.57, 
+            "z": 23.015
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 55.4298765, 
+            "y": 12.3512555, 
+            "z": 22.1436575
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 52.18, 
+            "y": -1.19, 
+            "z": 34.52
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 53.0552865, 
+            "y": -2.3678345, 
+            "z": 34.602707
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.07845, 
+            "y": 11.50986, 
+            "z": 24.58095
+          }
+        }, 
+        "channel_1": 45, 
+        "channel_2": 46, 
+        "code": "G44-G45", 
+        "id": "g.44-g.45", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G45-G46": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 57.065, 
+            "y": 1.195, 
+            "z": 28.325
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 56.747343, 
+            "y": 2.1188355, 
+            "z": 28.1911715
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 53.45, 
+            "y": -10.985, 
+            "z": 36.52
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 55.154169, 
+            "y": -10.6404185, 
+            "z": 37.0705355
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 57.12315, 
+            "y": 2.37887, 
+            "z": 29.42065
+          }
+        }, 
+        "channel_1": 46, 
+        "channel_2": 47, 
+        "code": "G45-G46", 
+        "id": "g.45-g.46", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G46-G47": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 57.33, 
+            "y": -8.36, 
+            "z": 33.625
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 58.3768765, 
+            "y": -9.7466815, 
+            "z": 34.0780735
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 53.915, 
+            "y": -20.96, 
+            "z": 38.44
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 55.662481, 
+            "y": -20.043543, 
+            "z": 39.3444195
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 57.27695, 
+            "y": -6.88189, 
+            "z": 34.23755
+          }
+        }, 
+        "channel_1": 47, 
+        "channel_2": 48, 
+        "code": "G46-G47", 
+        "id": "g.46-g.47", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G47-G48": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 55.86, 
+            "y": -17.89, 
+            "z": 38.25
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 57.6595245, 
+            "y": -19.673653, 
+            "z": 38.343607
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "supramarginal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 52.765, 
+            "y": -30.755, 
+            "z": 39.73
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 54.5199605, 
+            "y": -31.4592315, 
+            "z": 39.6447755
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 55.643, 
+            "y": -16.0225, 
+            "z": 38.3658
+          }
+        }, 
+        "channel_1": 48, 
+        "channel_2": 49, 
+        "code": "G47-G48", 
+        "id": "g.47-g.48", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G49-G50": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 40.23, 
+            "y": 37.875, 
+            "z": 26.375
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 40.8277835, 
+            "y": 38.683575, 
+            "z": 27.3029125
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 36.6, 
+            "y": 21.445, 
+            "z": 45.165
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 36.8048475, 
+            "y": 22.6905805, 
+            "z": 45.356129
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 40.5117, 
+            "y": 38.8579, 
+            "z": 29.5388
+          }
+        }, 
+        "channel_1": 50, 
+        "channel_2": 51, 
+        "code": "G49-G50", 
+        "id": "g.49-g.50", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G49-G57": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 34.73, 
+            "y": 42.81, 
+            "z": 29.13
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 32.441613, 
+            "y": 45.5251315, 
+            "z": 27.730795
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 31.265, 
+            "y": 24.835, 
+            "z": 48.94
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 30.9212595, 
+            "y": 25.766999, 
+            "z": 48.676304
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 34.99475, 
+            "y": 43.95345, 
+            "z": 32.6038
+          }
+        }, 
+        "channel_1": 50, 
+        "channel_2": 58, 
+        "code": "G49-G57", 
+        "id": "g.49-g.57", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G5-G13": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 63.405, 
+            "y": -30.38, 
+            "z": -6.085
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 65.047714, 
+            "y": -30.944051, 
+            "z": -7.4959905
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 60.77, 
+            "y": -28.425, 
+            "z": -3.175
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 59.459335, 
+            "y": -26.622302, 
+            "z": -1.88083
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 62.58235, 
+            "y": -28.66895, 
+            "z": -6.497675
+          }
+        }, 
+        "channel_1": 6, 
+        "channel_2": 14, 
+        "code": "G5-G13", 
+        "id": "g.5-g.13", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G5-G6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 63.965, 
+            "y": -38.075, 
+            "z": -6.23
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 65.6981315, 
+            "y": -38.083649, 
+            "z": -6.927771
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 61.53, 
+            "y": -35.14, 
+            "z": -5.55
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 61.7999725, 
+            "y": -33.947817, 
+            "z": -6.117343
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 63.00945, 
+            "y": -36.1566, 
+            "z": -7.008415
+          }
+        }, 
+        "channel_1": 6, 
+        "channel_2": 7, 
+        "code": "G5-G6", 
+        "id": "g.5-g.6", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G50-G51": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 44.44, 
+            "y": 28.495, 
+            "z": 29.13
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 45.499653, 
+            "y": 29.2250405, 
+            "z": 30.3551255
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 40.79, 
+            "y": 12.48, 
+            "z": 44.96
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 41.0017415, 
+            "y": 12.732991, 
+            "z": 44.8868105
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 44.69035, 
+            "y": 29.54125, 
+            "z": 31.79495
+          }
+        }, 
+        "channel_1": 51, 
+        "channel_2": 52, 
+        "code": "G50-G51", 
+        "id": "g.50-g.51", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G50-G58": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 38.885, 
+            "y": 33.065, 
+            "z": 31.425
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 39.6084235, 
+            "y": 32.4668535, 
+            "z": 34.4808835
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 35.415, 
+            "y": 15.685, 
+            "z": 48.22
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 35.811804, 
+            "y": 15.5088785, 
+            "z": 48.629984
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 39.1005, 
+            "y": 34.2888, 
+            "z": 34.37105
+          }
+        }, 
+        "channel_1": 51, 
+        "channel_2": 59, 
+        "code": "G50-G58", 
+        "id": "g.50-g.58", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G51-G52": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 48.39, 
+            "y": 19.34, 
+            "z": 32.365
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 46.3151835, 
+            "y": 21.5625515, 
+            "z": 31.1107635
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 44.725, 
+            "y": 3.565, 
+            "z": 45.24
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 44.304638, 
+            "y": 2.6378875, 
+            "z": 44.663559
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 48.61195, 
+            "y": 20.45915, 
+            "z": 34.5462
+          }
+        }, 
+        "channel_1": 52, 
+        "channel_2": 53, 
+        "code": "G51-G52", 
+        "id": "g.51-g.52", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G51-G59": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 43.285, 
+            "y": 23.74, 
+            "z": 34.73
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 44.1038645, 
+            "y": 23.580381, 
+            "z": 35.1160765
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 39.78, 
+            "y": 6.605, 
+            "z": 48.52
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 38.922684, 
+            "y": 6.729629, 
+            "z": 49.143856
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 43.4837, 
+            "y": 25.0127, 
+            "z": 37.19015
+          }
+        }, 
+        "channel_1": 52, 
+        "channel_2": 60, 
+        "code": "G51-G59", 
+        "id": "g.51-g.59", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G52-G53": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 52.28, 
+            "y": 9.825, 
+            "z": 35.135
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 49.684326, 
+            "y": 11.891247, 
+            "z": 33.487187
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 48.62, 
+            "y": -5.535, 
+            "z": 45
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 47.931938, 
+            "y": -7.198221, 
+            "z": 44.4330465
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 52.46065, 
+            "y": 11.02905, 
+            "z": 36.8085
+          }
+        }, 
+        "channel_1": 53, 
+        "channel_2": 54, 
+        "code": "G52-G53", 
+        "id": "g.52-g.53", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G52-G60": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "caudalmiddlefrontal", 
+            "x": 48.065, 
+            "y": 14.9, 
+            "z": 38.49
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 44.7189235, 
+            "y": 17.5737375, 
+            "z": 37.4832025
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 44.475, 
+            "y": -2.16, 
+            "z": 49.38
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 43.8408585, 
+            "y": -2.9725425, 
+            "z": 48.881525
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 48.26985, 
+            "y": 16.1987, 
+            "z": 40.4936
+          }
+        }, 
+        "channel_1": 53, 
+        "channel_2": 61, 
+        "code": "G52-G60", 
+        "id": "g.52-g.60", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G53-G54": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 54.96, 
+            "y": -0.51, 
+            "z": 36.93
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 55.3566705, 
+            "y": -1.8574935, 
+            "z": 36.31793
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 51.42, 
+            "y": -15.095, 
+            "z": 43.63
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 51.3555335, 
+            "y": -16.216851, 
+            "z": 42.920794
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 55.04195, 
+            "y": 0.86985, 
+            "z": 38.0357
+          }
+        }, 
+        "channel_1": 54, 
+        "channel_2": 55, 
+        "code": "G53-G54", 
+        "id": "g.53-g.54", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G53-G61": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 51.345, 
+            "y": 4.98, 
+            "z": 40.77
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 51.0328635, 
+            "y": 4.017508, 
+            "z": 40.3039015
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 47.825, 
+            "y": -11.49, 
+            "z": 48.575
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 47.6409775, 
+            "y": -12.945435, 
+            "z": 48.445496
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 51.48485, 
+            "y": 6.4039, 
+            "z": 42.23865
+          }
+        }, 
+        "channel_1": 54, 
+        "channel_2": 62, 
+        "code": "G53-G61", 
+        "id": "g.53-g.61", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G54-G55": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 56.14, 
+            "y": -10.905, 
+            "z": 38.085
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 56.944069, 
+            "y": -12.143244, 
+            "z": 37.8217295
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 52.82, 
+            "y": -24.555, 
+            "z": 41.64
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 52.9646645, 
+            "y": -24.6157435, 
+            "z": 41.058613
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.0663, 
+            "y": -9.2665, 
+            "z": 38.60835
+          }
+        }, 
+        "channel_1": 55, 
+        "channel_2": 56, 
+        "code": "G54-G55", 
+        "id": "g.54-g.55", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G54-G62": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 53.39, 
+            "y": -5.63, 
+            "z": 42.595
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 53.5812095, 
+            "y": -6.566044, 
+            "z": 42.1297455
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 50.035, 
+            "y": -21.315, 
+            "z": 47.14
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 50.5672835, 
+            "y": -21.750593, 
+            "z": 46.5882855
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 53.40605, 
+            "y": -3.98212, 
+            "z": 43.47705
+          }
+        }, 
+        "channel_1": 55, 
+        "channel_2": 63, 
+        "code": "G54-G62", 
+        "id": "g.54-g.62", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G55-G56": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 56.865, 
+            "y": -21.125, 
+            "z": 39.165
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 56.7288475, 
+            "y": -20.6194895, 
+            "z": 39.5511245
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "supramarginal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 53.795, 
+            "y": -33.85, 
+            "z": 39.625
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 53.5828725, 
+            "y": -33.590264, 
+            "z": 39.6436365
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 56.629, 
+            "y": -19.209, 
+            "z": 39.1126
+          }
+        }, 
+        "channel_1": 56, 
+        "channel_2": 57, 
+        "code": "G55-G56", 
+        "id": "g.55-g.56", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G55-G63": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 54.575, 
+            "y": -16.02, 
+            "z": 43.75
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 56.151018, 
+            "y": -16.4729225, 
+            "z": 44.5493375
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 51.435, 
+            "y": -30.775, 
+            "z": 45.145
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 50.787468, 
+            "y": -30.806981, 
+            "z": 44.943651
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 54.4304, 
+            "y": -14.11875, 
+            "z": 44.0492
+          }
+        }, 
+        "channel_1": 56, 
+        "channel_2": 64, 
+        "code": "G55-G63", 
+        "id": "g.55-g.63", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G56-G64": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": 54.015, 
+            "y": -26.39, 
+            "z": 44.235
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": 52.1432895, 
+            "y": -25.0465125, 
+            "z": 44.5182135
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": 51.22, 
+            "y": -40.05, 
+            "z": 42.53
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": 51.461691, 
+            "y": -39.9981095, 
+            "z": 42.5602395
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 53.667, 
+            "y": -24.1349, 
+            "z": 43.9338
+          }
+        }, 
+        "channel_1": 57, 
+        "channel_2": 66, 
+        "code": "G56-G64", 
+        "id": "g.56-g.64", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G57-G58": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 33.385, 
+            "y": 38, 
+            "z": 34.18
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 31.222253, 
+            "y": 39.30841, 
+            "z": 34.908766
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "rostralmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "rostralmiddlefrontal", 
+            "x": 30.08, 
+            "y": 19.075, 
+            "z": 51.995
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 29.928216, 
+            "y": 18.585297, 
+            "z": 51.950159
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 33.58355, 
+            "y": 39.38435, 
+            "z": 37.43605
+          }
+        }, 
+        "channel_1": 58, 
+        "channel_2": 59, 
+        "code": "G57-G58", 
+        "id": "g.57-g.58", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G58-G59": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 37.73, 
+            "y": 28.31, 
+            "z": 37.025
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 38.212635, 
+            "y": 26.822194, 
+            "z": 39.2418345
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 34.405, 
+            "y": 9.81, 
+            "z": 51.78
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 33.7327465, 
+            "y": 9.5055165, 
+            "z": 52.8870295
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 37.89385, 
+            "y": 29.76025, 
+            "z": 39.76625
+          }
+        }, 
+        "channel_1": 59, 
+        "channel_2": 60, 
+        "code": "G58-G59", 
+        "id": "g.58-g.59", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G59-G60": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "caudalmiddlefrontal", 
+            "x": 42.96, 
+            "y": 19.3, 
+            "z": 40.855
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 42.5076045, 
+            "y": 19.591567, 
+            "z": 41.4885155
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 39.53, 
+            "y": 0.88, 
+            "z": 52.66
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 38.4589045, 
+            "y": 1.119199, 
+            "z": 53.361822
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 43.1416, 
+            "y": 20.75225, 
+            "z": 43.13755
+          }
+        }, 
+        "channel_1": 60, 
+        "channel_2": 61, 
+        "code": "G59-G60", 
+        "id": "g.59-g.60", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G6-G14": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 65.045, 
+            "y": -37.64, 
+            "z": 0.92
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 65.2554475, 
+            "y": -37.448317, 
+            "z": 0.9569105
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 62.435, 
+            "y": -36.85, 
+            "z": 0.955
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 62.0894855, 
+            "y": -37.243702, 
+            "z": 1.932543
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 64.21625, 
+            "y": -35.79875, 
+            "z": -0.28322
+          }
+        }, 
+        "channel_1": 7, 
+        "channel_2": 15, 
+        "code": "G6-G14", 
+        "id": "g.6-g.14", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G6-G7": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 63.935, 
+            "y": -45.345, 
+            "z": 1.215
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 64.163889, 
+            "y": -45.2140315, 
+            "z": 1.5083055
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 61.63, 
+            "y": -43.745, 
+            "z": -1.06
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 62.109375, 
+            "y": -43.868151, 
+            "z": -1.903085
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 62.9346, 
+            "y": -43.20235, 
+            "z": -0.434145
+          }
+        }, 
+        "channel_1": 7, 
+        "channel_2": 8, 
+        "code": "G6-G7", 
+        "id": "g.6-g.7", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G60-G61": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "caudalmiddlefrontal", 
+            "x": 47.13, 
+            "y": 10.055, 
+            "z": 44.125
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 46.067461, 
+            "y": 9.6999985, 
+            "z": 44.299917
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "caudalmiddlefrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "caudalmiddlefrontal", 
+            "x": 43.68, 
+            "y": -8.115, 
+            "z": 52.955
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "caudalmiddlefrontal", 
+            "x": 43.549898, 
+            "y": -8.7197565, 
+            "z": 52.8939745
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 47.29405, 
+            "y": 11.57355, 
+            "z": 45.92375
+          }
+        }, 
+        "channel_1": 61, 
+        "channel_2": 62, 
+        "code": "G60-G61", 
+        "id": "g.60-g.61", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G61-G62": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precentral", 
+            "x": 49.775, 
+            "y": -0.14, 
+            "z": 46.435
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precentral", 
+            "x": 49.2574025, 
+            "y": -0.6910425, 
+            "z": 46.115717
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precentral", 
+            "x": 46.44, 
+            "y": -17.71, 
+            "z": 52.085
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precentral", 
+            "x": 46.8527275, 
+            "y": -18.479177, 
+            "z": 52.1129875
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 49.84895, 
+            "y": 1.55193, 
+            "z": 47.68
+          }
+        }, 
+        "channel_1": 62, 
+        "channel_2": 63, 
+        "code": "G61-G62", 
+        "id": "g.61-g.62", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G62-G63": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 51.825, 
+            "y": -10.745, 
+            "z": 48.26
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 52.7881585, 
+            "y": -10.8957225, 
+            "z": 48.8573535
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "postcentral", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 48.65, 
+            "y": -27.535, 
+            "z": 50.645
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 48.390087, 
+            "y": -27.9418305, 
+            "z": 50.4733235
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 51.77015, 
+            "y": -8.83437, 
+            "z": 48.9179
+          }
+        }, 
+        "channel_1": 63, 
+        "channel_2": 64, 
+        "code": "G62-G63", 
+        "id": "g.62-g.63", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G63-G64": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": 51.725, 
+            "y": -21.285, 
+            "z": 48.82
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": 51.56546, 
+            "y": -20.8999455, 
+            "z": 49.5164265
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": 48.86, 
+            "y": -36.975, 
+            "z": 48.05
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": 48.6662865, 
+            "y": -37.2148265, 
+            "z": 47.860254
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 51.4684, 
+            "y": -19.04465, 
+            "z": 48.8704
+          }
+        }, 
+        "channel_1": 64, 
+        "channel_2": 65, 
+        "code": "G63-G64", 
+        "id": "g.63-g.64", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G7-G15": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "bankssts", 
+            "x": 63.795, 
+            "y": -45.095, 
+            "z": 8.885
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "bankssts", 
+            "x": 63.766325, 
+            "y": -44.9372845, 
+            "z": 9.2301215
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 61.395, 
+            "y": -45.8, 
+            "z": 5.83
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 61.6416605, 
+            "y": -46.1349925, 
+            "z": 5.234454
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 62.8942, 
+            "y": -42.9373, 
+            "z": 7.058275
+          }
+        }, 
+        "channel_1": 8, 
+        "channel_2": 16, 
+        "code": "G7-G15", 
+        "id": "g.7-g.15", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G7-G8": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": 61.045, 
+            "y": -52.545, 
+            "z": 8.45
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 61.3487565, 
+            "y": -52.5309355, 
+            "z": 8.692315
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 59.05, 
+            "y": -52.295, 
+            "z": 3.205
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 59.7656535, 
+            "y": -53.1604825, 
+            "z": 2.7349155
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.924, 
+            "y": -50.01075, 
+            "z": 6.17845
+          }
+        }, 
+        "channel_1": 8, 
+        "channel_2": 9, 
+        "code": "G7-G8", 
+        "id": "g.7-g.8", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G8-G16": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": 60.845, 
+            "y": -52.655, 
+            "z": 15.66
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": 60.643974, 
+            "y": -51.4143295, 
+            "z": 15.695856
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 58.775, 
+            "y": -54.53, 
+            "z": 9.575
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 59.298132, 
+            "y": -55.073061, 
+            "z": 9.5725865
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 59.8108, 
+            "y": -50.07935, 
+            "z": 13.473025
+          }
+        }, 
+        "channel_1": 9, 
+        "channel_2": 17, 
+        "code": "G8-G16", 
+        "id": "g.8-g.16", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "G9-G10": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": 47.225, 
+            "y": -2.195, 
+            "z": -26.21
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": 51.0073435, 
+            "y": 0.097629, 
+            "z": -25.5228005
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "middletemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": 45.025, 
+            "y": 1.94, 
+            "z": -13.175
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": 45.014639, 
+            "y": 0.8331545, 
+            "z": -13.8938705
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 46.24775, 
+            "y": -0.451265, 
+            "z": -23.78765
+          }
+        }, 
+        "channel_1": 10, 
+        "channel_2": 11, 
+        "code": "G9-G10", 
+        "id": "g.9-g.10", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "G", 
+        "type_2": "G"
+      }, 
+      "MST1-MST2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": 24.39, 
+            "y": -6.695, 
+            "z": -40.95
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": 26.7923395, 
+            "y": -5.3754015, 
+            "z": -39.081442
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "fusiform", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": 23.955, 
+            "y": 1.77, 
+            "z": -28.09
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": 24.346555, 
+            "y": 3.688861, 
+            "z": -26.384183
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 22.5209, 
+            "y": -3.546447, 
+            "z": -37.6949
+          }
+        }, 
+        "channel_1": 82, 
+        "channel_2": 83, 
+        "code": "MST1-MST2", 
+        "id": "mst.1-mst.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "MST2-MST3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": 33.445, 
+            "y": -11.22, 
+            "z": -40.255
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": 33.873629, 
+            "y": -11.3048435, 
+            "z": -40.0938265
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 32.56, 
+            "y": -2.19, 
+            "z": -28.6
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 32.5753525, 
+            "y": -0.698082, 
+            "z": -27.0618885
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 31.73895, 
+            "y": -8.428145, 
+            "z": -37.251
+          }
+        }, 
+        "channel_1": 83, 
+        "channel_2": 84, 
+        "code": "MST2-MST3", 
+        "id": "mst.2-mst.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "MST3-MST4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": 43.225, 
+            "y": -13.085, 
+            "z": -36.335
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": 44.1194115, 
+            "y": -13.1312735, 
+            "z": -36.7043075
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiortemporal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": 41.73, 
+            "y": -4.745, 
+            "z": -25.45
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": 41.9888, 
+            "y": -5.0940125, 
+            "z": -25.4709975
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 41.7973, 
+            "y": -10.77415, 
+            "z": -33.69595
+          }
+        }, 
+        "channel_1": 84, 
+        "channel_2": 85, 
+        "code": "MST3-MST4", 
+        "id": "mst.3-mst.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "O1-O2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "cuneus", 
+            "x": 7.2, 
+            "y": -72.59, 
+            "z": 26.14
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "cuneus", 
+            "x": 7.022205, 
+            "y": -71.60685, 
+            "z": 27.1530755
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precuneus", 
+            "x": 9, 
+            "y": -76.515, 
+            "z": 11.905
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precuneus", 
+            "x": 8.2998895, 
+            "y": -76.5561105, 
+            "z": 11.6727575
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 4.47576, 
+            "y": -66.40135, 
+            "z": 22.81385
+          }
+        }, 
+        "channel_1": 90, 
+        "channel_2": 91, 
+        "code": "O1-O2", 
+        "id": "o.1-o.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "O2-O3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "cuneus", 
+            "x": 11.035, 
+            "y": -82.315, 
+            "z": 25.64
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "cuneus", 
+            "x": 12.5427005, 
+            "y": -82.5552635, 
+            "z": 27.746466
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "cuneus", 
+            "x": 12.89, 
+            "y": -84.83, 
+            "z": 8.7
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "cuneus", 
+            "x": 12.645906, 
+            "y": -84.9681285, 
+            "z": 8.671672
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 8.21919, 
+            "y": -76.04345, 
+            "z": 21.75345
+          }
+        }, 
+        "channel_1": 91, 
+        "channel_2": 92, 
+        "code": "O2-O3", 
+        "id": "o.2-o.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "O3-O4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": 17.755, 
+            "y": -89.535, 
+            "z": 24.675
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": 19.2800305, 
+            "y": -91.249897, 
+            "z": 25.4765815
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "cuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "cuneus", 
+            "x": 19.41, 
+            "y": -90.73, 
+            "z": 5.87
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "cuneus", 
+            "x": 19.333572, 
+            "y": -91.14769, 
+            "z": 5.7251335
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 14.9671, 
+            "y": -83.41875, 
+            "z": 20.37345
+          }
+        }, 
+        "channel_1": 92, 
+        "channel_2": 93, 
+        "code": "O3-O4", 
+        "id": "o.3-o.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "O4-O5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": 27.005, 
+            "y": -92.175, 
+            "z": 22.125
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": 26.5980245, 
+            "y": -91.9290165, 
+            "z": 21.5795055
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "cuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "cuneus", 
+            "x": 28.185, 
+            "y": -92.065, 
+            "z": 3.025
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "cuneus", 
+            "x": 27.789503, 
+            "y": -92.4800605, 
+            "z": 2.7988935
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 24.38555, 
+            "y": -86.49725, 
+            "z": 17.65505
+          }
+        }, 
+        "channel_1": 93, 
+        "channel_2": 94, 
+        "code": "O4-O5", 
+        "id": "o.4-o.5", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "O5-O6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": 36.26, 
+            "y": -90.42, 
+            "z": 18.415
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": 34.4384915, 
+            "y": -88.544659, 
+            "z": 17.6701565
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "lateraloccipital", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": 36.85, 
+            "y": -89.195, 
+            "z": 0.44
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": 36.971807, 
+            "y": -89.718586, 
+            "z": 0.1891985
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 33.8749, 
+            "y": -85.3206, 
+            "z": 14.0191
+          }
+        }, 
+        "channel_1": 94, 
+        "channel_2": 95, 
+        "code": "O5-O6", 
+        "id": "o.5-o.6", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "OF1-OF2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateralorbitofrontal", 
+            "x": 12.835, 
+            "y": 40.565, 
+            "z": -23.75
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateralorbitofrontal", 
+            "x": 13.595966, 
+            "y": 40.776846, 
+            "z": -23.863022
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "lateralorbitofrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateralorbitofrontal", 
+            "x": 11.495, 
+            "y": 37.98, 
+            "z": 0.79
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateralorbitofrontal", 
+            "x": 12.106931, 
+            "y": 37.6518325, 
+            "z": 0.555579
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 11.783335, 
+            "y": 42.87365, 
+            "z": -19.5064
+          }
+        }, 
+        "channel_1": 72, 
+        "channel_2": 73, 
+        "code": "OF1-OF2", 
+        "id": "of.1-of.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "OF2-OF3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateralorbitofrontal", 
+            "x": 21.49, 
+            "y": 43.385, 
+            "z": -18.38
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateralorbitofrontal", 
+            "x": 23.1192215, 
+            "y": 46.0040665, 
+            "z": -18.116678
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "lateralorbitofrontal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateralorbitofrontal", 
+            "x": 19.445, 
+            "y": 39.085, 
+            "z": 6.58
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateralorbitofrontal", 
+            "x": 19.903703, 
+            "y": 38.7626705, 
+            "z": 5.3275855
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 20.79105, 
+            "y": 45.1229, 
+            "z": -14.37745
+          }
+        }, 
+        "channel_1": 73, 
+        "channel_2": 74, 
+        "code": "OF2-OF3", 
+        "id": "of.2-of.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "OF3-OF4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateralorbitofrontal", 
+            "x": 31.17, 
+            "y": 46.33, 
+            "z": -14.08
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parsorbitalis", 
+            "x": 32.6723545, 
+            "y": 48.6159245, 
+            "z": -14.518491
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsorbitalis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parsorbitalis", 
+            "x": 28.365, 
+            "y": 40.65, 
+            "z": 11.475
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parsorbitalis", 
+            "x": 28.619218, 
+            "y": 40.5647145, 
+            "z": 10.1555705
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 30.84135, 
+            "y": 47.4416, 
+            "z": -10.23051
+          }
+        }, 
+        "channel_1": 74, 
+        "channel_2": 75, 
+        "code": "OF3-OF4", 
+        "id": "of.3-of.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "OF4-OF5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parsorbitalis", 
+            "x": 38.55, 
+            "y": 48.215, 
+            "z": -7.995
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parsorbitalis", 
+            "x": 39.8683165, 
+            "y": 47.8350715, 
+            "z": -8.6420385
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parsorbitalis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parsorbitalis", 
+            "x": 35.145, 
+            "y": 40.685, 
+            "z": 17.6
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parsorbitalis", 
+            "x": 35.3961315, 
+            "y": 40.6207965, 
+            "z": 17.3214605
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 38.53505, 
+            "y": 48.85805, 
+            "z": -4.4130885
+          }
+        }, 
+        "channel_1": 75, 
+        "channel_2": 76, 
+        "code": "OF4-OF5", 
+        "id": "of.4-of.5", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "OF5-OF6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "rostralmiddlefrontal", 
+            "x": 41.43, 
+            "y": 48.19, 
+            "z": 1.61
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "rostralmiddlefrontal", 
+            "x": 42.2775155, 
+            "y": 47.9774895, 
+            "z": 1.839236
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parstriangularis", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parstriangularis", 
+            "x": 37.72, 
+            "y": 37.89, 
+            "z": 26.195
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parstriangularis", 
+            "x": 38.232466, 
+            "y": 37.804455, 
+            "z": 26.183565
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 41.6147, 
+            "y": 48.69805, 
+            "z": 5.0512715
+          }
+        }, 
+        "channel_1": 76, 
+        "channel_2": 77, 
+        "code": "OF5-OF6", 
+        "id": "of.5-of.6", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "P1-P2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precuneus", 
+            "x": 5.445, 
+            "y": -62.25, 
+            "z": 28.28
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precuneus", 
+            "x": 3.98682, 
+            "y": -63.1466405, 
+            "z": 28.3590835
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "precuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precuneus", 
+            "x": 7.01, 
+            "y": -68.095, 
+            "z": 16.795
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precuneus", 
+            "x": 7.054183, 
+            "y": -68.301895, 
+            "z": 16.4585375
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 2.89677, 
+            "y": -56.2794, 
+            "z": 25.57545
+          }
+        }, 
+        "channel_1": 96, 
+        "channel_2": 97, 
+        "code": "P1-P2", 
+        "id": "p.1-p.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "P2-P6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiorparietal", 
+            "x": 18.55, 
+            "y": -70.63, 
+            "z": 41.88
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiorparietal", 
+            "x": 19.9741405, 
+            "y": -70.4893605, 
+            "z": 38.9437255
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": 19.37, 
+            "y": -79.17, 
+            "z": 26.72
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": 18.4803165, 
+            "y": -78.697708, 
+            "z": 26.5627935
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 16.3708, 
+            "y": -65.0739, 
+            "z": 38.8995
+          }
+        }, 
+        "channel_1": 98, 
+        "channel_2": 102, 
+        "code": "P2-P6", 
+        "id": "p.2-p.6", 
+        "is_explicit": true, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "P6-P7": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": 34.975, 
+            "y": -70.71, 
+            "z": 51.305
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": 37.591545, 
+            "y": -69.3261375, 
+            "z": 47.6882625
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "inferiorparietal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": 34.64, 
+            "y": -81.62, 
+            "z": 35.43
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": 34.0255145, 
+            "y": -81.4394075, 
+            "z": 34.6681385
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 33.3575, 
+            "y": -66.021, 
+            "z": 48.48205
+          }
+        }, 
+        "channel_1": 101, 
+        "channel_2": 102, 
+        "code": "P6-P7", 
+        "id": "p.6-p.7", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "P7-P8": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": 41.56, 
+            "y": -61.88, 
+            "z": 49.425
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": 40.9097675, 
+            "y": -62.029766, 
+            "z": 49.474796
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "superiorparietal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": 40.56, 
+            "y": -73.125, 
+            "z": 36.48
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": 40.835409, 
+            "y": -73.8471375, 
+            "z": 35.841139
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 40.2615, 
+            "y": -57.8303, 
+            "z": 47.102
+          }
+        }, 
+        "channel_1": 102, 
+        "channel_2": 103, 
+        "code": "P7-P8", 
+        "id": "p.7-p.8", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "PST1-PST2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parahippocampal", 
+            "x": 19.61, 
+            "y": -32.79, 
+            "z": -16.15
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parahippocampal", 
+            "x": 21.1452275, 
+            "y": -34.425028, 
+            "z": -17.200707
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "parahippocampal", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parahippocampal", 
+            "x": 19.945, 
+            "y": -28.65, 
+            "z": -13.775
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parahippocampal", 
+            "x": 21.855915, 
+            "y": -28.145643, 
+            "z": -12.695512
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 17.42905, 
+            "y": -28.5758, 
+            "z": -16.0295
+          }
+        }, 
+        "channel_1": 86, 
+        "channel_2": 87, 
+        "code": "PST1-PST2", 
+        "id": "pst.1-pst.2", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "PST2-PST3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parahippocampal", 
+            "x": 29.455, 
+            "y": -34.23, 
+            "z": -19.53
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parahippocampal", 
+            "x": 28.533963, 
+            "y": -35.4096735, 
+            "z": -23.580142
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "fusiform", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": 29.255, 
+            "y": -28.675, 
+            "z": -16.99
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": 29.0847615, 
+            "y": -28.4327145, 
+            "z": -16.196885
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 27.469, 
+            "y": -30.5142, 
+            "z": -19.20545
+          }
+        }, 
+        "channel_1": 87, 
+        "channel_2": 88, 
+        "code": "PST2-PST3", 
+        "id": "pst.2-pst.3", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }, 
+      "PST3-PST4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": 39.645, 
+            "y": -35.43, 
+            "z": -21.29
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": 40.0247515, 
+            "y": -35.815193, 
+            "z": -26.7185545
+          }, 
+          "dk": {
+            "id": "dk", 
+            "region": "fusiform", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": 38.865, 
+            "y": -28.955, 
+            "z": -18.69
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": 39.2921675, 
+            "y": -28.824524, 
+            "z": -17.8098755
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": 37.8917, 
+            "y": -32.2402, 
+            "z": -20.8703
+          }
+        }, 
+        "channel_1": 88, 
+        "channel_2": 89, 
+        "code": "PST3-PST4", 
+        "id": "pst.3-pst.4", 
+        "is_explicit": false, 
+        "is_stim_only": false, 
+        "type_1": "S", 
+        "type_2": "S"
+      }
+    }
+  }
+}
