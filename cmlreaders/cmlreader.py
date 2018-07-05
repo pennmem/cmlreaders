@@ -62,8 +62,13 @@ class CMLReader(object):
 
             # Some subjects don't explicitly specify localization/montage
             # numbers in the index, so they appear as NaNs.
-            CMLReader._index.montage.replace({np.nan: "0"}, inplace=True)
-            CMLReader._index.localization.replace({np.nan: "0"}, inplace=True)
+            try:
+                CMLReader._index["montage"].replace({np.nan: "0"}, inplace=True)
+                CMLReader._index["localization"].replace({np.nan: "0"}, inplace=True)
+            except KeyError:
+                # We're using a protocol that doesn't include localization data
+                # (e.g., ltp)
+                pass
 
     @staticmethod
     def _get_protocol(subject: str) -> str:
