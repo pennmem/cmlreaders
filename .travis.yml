@@ -8,11 +8,11 @@ notifications:
 env:
   - PYTHON_VERSION=3.5
   - PYTHON_VERSION=3.6
-  - PYTHON_VERSION=3.7
+  # disabled until all conda packages exist for Python 3.7
+  # - PYTHON_VERSION=3.7
 
 # conda setup copied from the conda docs
 install:
-  - sudo apt-get update
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
