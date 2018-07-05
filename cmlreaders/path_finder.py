@@ -58,7 +58,13 @@ class PathFinder(object):
         self.experiment = experiment
         self.session = str(session)
 
-        # Stringify localization and montage only if they are given
+        if self.subject is None:
+            self.protocol = None
+        elif self.subject.startswith("R1"):
+            self.protocol = "r1"
+        elif self.subject.startswith("LTP"):
+            self.protocol = "ltp"
+
         self.localization = str(localization)
         self.montage = str(montage)
 
@@ -146,6 +152,7 @@ class PathFinder(object):
                 return ramulator_session_folder
 
         expected_path = self._find_single_path(paths_to_check,
+                                               protocol=self.protocol,
                                                subject=self.subject,
                                                subject_montage=subject_montage,
                                                timestamped_dir=timestamped_dir,
