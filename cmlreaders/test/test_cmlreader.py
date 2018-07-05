@@ -70,10 +70,11 @@ class TestCMLReader:
         'all_events.json', 'math_events.json', 'task_events.json'
     ])
     def test_load(self, file_type):
-        data_type = os.path.splitext(file_type)[0]
-        reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
-                           session=1)
-        reader.load(data_type=data_type, file_path=datafile(file_type))
+        with patched_cmlreader():
+            data_type = os.path.splitext(file_type)[0]
+            reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
+                               session=1)
+            reader.load(data_type=data_type, file_path=datafile(file_type))
 
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
@@ -84,16 +85,18 @@ class TestCMLReader:
         'task_events'
     ])
     def test_get_reader(self, file_type):
-        reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                           session=0, montage=0)
-        reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
-        assert type(reader_obj) == reader.readers[file_type]
+        with patched_cmlreader():
+            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
+                               session=0, montage=0)
+            reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
+            assert type(reader_obj) == reader.readers[file_type]
 
     def test_load_unimplemented(self):
-        reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                           session=0, montage=0)
-        with pytest.raises(NotImplementedError):
-            reader.load("fake_data")
+        with patched_cmlreader():
+            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
+                               session=0, montage=0)
+            with pytest.raises(NotImplementedError):
+                reader.load("fake_data")
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,experiment,session", [
