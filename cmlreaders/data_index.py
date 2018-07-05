@@ -68,4 +68,11 @@ def get_data_index(kind: str = "all", rootdir: str = None) -> pd.DataFrame:
         data.append(read_index(finder.find("r1_index")))
 
     df = pd.concat([_index_dict_to_dataframe(d) for d in data])
+
+    if kind != "ltp":
+        # make sure localization and montage are integers
+        for key in ["localization", "montage"]:
+            df.loc[df[key].isnull(), key] = 0
+            df[key] = df[key].astype(int)
+
     return df

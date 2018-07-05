@@ -26,3 +26,6 @@ def test_get_data_index(kind, rhino_root):
     if kind in ["ltp", "all"]:
         assert any(df.subject == "LTP093")
         assert df[df.subject == 'LTP093'].experiment.count() == 24
+    if kind != "ltp":
+        assert df["localization"].dtype == int
+        assert df["montage"].dtype == int
