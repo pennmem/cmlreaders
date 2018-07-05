@@ -13,10 +13,13 @@ __all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
            'ClassifierContainerReader', 'EEGMetaReader']
 
 
+# TODO: separate into a base class so that we can use this for ltp
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """
     data_types = ['voxel_coordinates', 'jacksheet', 'classifier_excluded_leads',
                   'good_leads', 'leads', 'area']
+    protocols = ["r1"]
+
     headers = {
         'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
                               'min_contact_num', 'max_contact_num'],
@@ -44,6 +47,7 @@ class TextReader(BaseCMLReader):
         return df
 
 
+# TODO: separate into a base class so that we can use this for ltp
 class CSVReader(BaseCMLReader):
     """ Generic reader class for loading csv files with headers """
     data_types = [
@@ -51,6 +55,7 @@ class CSVReader(BaseCMLReader):
         "prior_stim_results",
         "target_selection_table",
     ]
+    protocols = ["r1"]
 
     def __init__(self, data_type, subject, localization, experiment=None,
                  file_path=None, rootdir="/", **kwargs):
@@ -69,9 +74,9 @@ class CSVReader(BaseCMLReader):
 
 
 class RamulatorEventLogReader(BaseCMLReader):
-    """ Reader for Ramulator event log """
-
-    data_types = ['experiment_log']
+    """Reader for Ramulator event log"""
+    data_types = ["experiment_log"]
+    protocols = ["r1"]
 
     def __init__(self, data_type, subject, experiment, session, file_path=None,
                  rootdir="/", **kwargs):
@@ -101,7 +106,6 @@ class BasicJSONReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
-
     data_types = []
 
     def as_dataframe(self):
@@ -149,8 +153,8 @@ class ClassifierContainerReader(BaseCMLReader):
     returned.
 
     """
-
     data_types = ["used_classifier", "baseline_classifier"]
+    protocols = ["r1"]
     default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,

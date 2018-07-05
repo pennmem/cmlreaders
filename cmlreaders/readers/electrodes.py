@@ -76,8 +76,8 @@ class LocalizationReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
-
-    data_types = ['localization']
+    data_types = ["localization"]
+    protocols = ["r1"]
 
     def as_dataframe(self):
         import itertools
@@ -117,9 +117,9 @@ class ElectrodeCategoriesReader(BaseCMLReader):
     Returns a ``dict``.
 
     """
-
     data_types = ["electrode_categories"]
-    default_representation = 'dict'
+    protocols = ["r1"]
+    default_representation = "dict"
 
     def _read_categories(self) -> dict:
         """Returns a dictionary mapping categories to electrode from the

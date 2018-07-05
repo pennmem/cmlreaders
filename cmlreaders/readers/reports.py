@@ -2,9 +2,9 @@ from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
 
 
-class BaseReportDataReader(BaseCMLReader):
-    """
-        Reader class for classifier summary data produced in reporting pipeline
+class BaseRAMReportDataReader(BaseCMLReader):
+    """Reader class for classifier summary data produced in the RAM reporting
+    pipeline.
 
     Notes
     -----
@@ -13,17 +13,19 @@ class BaseReportDataReader(BaseCMLReader):
     be `ramutils.reports.summary.ClassifierSummary`
 
     """
+    # FIXME: make classifier summary reader be a subclass
     data_types = ["classifier_summary"]
-    default_representation = 'pyobject'
+    protocols = ["r1"]
+    default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,
                  file_path=None, rootdir="/", **kwargs):
-        super(BaseReportDataReader, self).__init__(data_type, subject=subject,
-                                                   experiment=experiment,
-                                                   session=session,
-                                                   localization=localization,
-                                                   file_path=file_path,
-                                                   rootdir=rootdir)
+        super(BaseRAMReportDataReader, self).__init__(data_type, subject=subject,
+                                                      experiment=experiment,
+                                                      session=session,
+                                                      localization=localization,
+                                                      file_path=file_path,
+                                                      rootdir=rootdir)
         self.data_type = data_type
 
         try:
@@ -48,7 +50,7 @@ class BaseReportDataReader(BaseCMLReader):
         pyobj.to_hdf(file_name)
 
 
-class ReportSummaryDataReader(BaseReportDataReader):
+class RAMReportSummaryDataReader(BaseRAMReportDataReader):
     """
         Reader class for session and math summary data produced in the reporting
         pipeline
@@ -68,12 +70,12 @@ class ReportSummaryDataReader(BaseReportDataReader):
 
     def __init__(self, data_type, subject, experiment, session, localization,
                  file_path=None, rootdir="/", **kwargs):
-        super(BaseReportDataReader, self).__init__(data_type, subject=subject,
-                                                   experiment=experiment,
-                                                   session=session,
-                                                   localization=localization,
-                                                   file_path=file_path,
-                                                   rootdir=rootdir)
+        super(BaseRAMReportDataReader, self).__init__(data_type, subject=subject,
+                                                      experiment=experiment,
+                                                      session=session,
+                                                      localization=localization,
+                                                      file_path=file_path,
+                                                      rootdir=rootdir)
         self.data_type = data_type
         self.subject = subject
         self.experiment = experiment
@@ -95,7 +97,7 @@ class ReportSummaryDataReader(BaseReportDataReader):
 
     def as_pyobject(self):
         if self.data_type == 'math_summary':
-            return super(ReportSummaryDataReader, self).as_pyobject()
+            return super(RAMReportSummaryDataReader, self).as_pyobject()
 
         stim_experiment = self.is_stim_experiment(self.experiment)
 

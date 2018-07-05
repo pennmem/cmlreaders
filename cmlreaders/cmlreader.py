@@ -51,6 +51,7 @@ class CMLReader(object):
         self.protocol = self._get_protocol(self.subject)
 
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
+        self.reader_protocols = {k: getattr(readers, v).protocols for k, v in self.reader_names.items()}
 
     def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and

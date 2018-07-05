@@ -5,4 +5,4 @@ from .electrodes import (
     ElectrodeCategoriesReader, LocalizationReader, MontageReader
 )
 from .readers import *
-from .reports import BaseReportDataReader, ReportSummaryDataReader
+from .reports import BaseRAMReportDataReader, RAMReportSummaryDataReader
