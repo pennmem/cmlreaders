@@ -218,7 +218,6 @@ class TestEventReader:
         assert df.columns[0] == 'eegoffset'
 
 
-@pytest.mark.only
 class TestMontageReader:
     @pytest.mark.parametrize("kind", ["contacts", "pairs"])
     @pytest.mark.parametrize("subject,localization,montage", [
