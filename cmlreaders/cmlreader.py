@@ -5,7 +5,8 @@ import pandas as pd
 
 from . import readers
 from .data_index import get_data_index
-from .exc import IncompatibleParametersError, UnknownProtocolError
+from .exc import IncompatibleParametersError, UnknownProtocolError, \
+    UnsupportedProtocolError
 from .util import get_root_dir
 
 
@@ -173,14 +174,22 @@ class CMLReader(object):
             else:
                 data_type = "ps4_events"
 
-        return self.readers[data_type](data_type,
-                                       subject=self.subject,
-                                       experiment=self.experiment,
-                                       session=self.session,
-                                       localization=self.localization,
-                                       montage=self.montage,
-                                       file_path=file_path,
-                                       rootdir=self.rootdir).load(**kwargs)
+        cls = self.readers[data_type]
+        if self.protocol not in cls.protocols:
+            raise UnsupportedProtocolError(
+                "Data type {} is not supported under protocol {}".format(
+                    data_type, self.protocol
+                )
+            )
+
+        return cls(data_type,
+                   subject=self.subject,
+                   experiment=self.experiment,
+                   session=self.session,
+                   localization=self.localization,
+                   montage=self.montage,
+                   file_path=file_path,
+                   rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,

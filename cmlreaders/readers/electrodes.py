@@ -13,8 +13,8 @@ class MontageReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
-
-    data_types = ['pairs', 'contacts']
+    data_types = ["pairs", "contacts"]
+    protocols = ["r1"]
 
     def as_dataframe(self):
         with open(self._file_path) as f:

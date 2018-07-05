@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional, Union
 
+from .constants import PROTOCOLS
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
 from .cmlreader import CMLReader
@@ -32,7 +33,7 @@ class _MetaReader(type):
 
 
 class BaseCMLReader(object, metaclass=_MetaReader):
-    """ Base class for CML data readers
+    """Base class for CML data readers
 
     Notes
     -----
@@ -43,9 +44,14 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     `data_types` as a class variable containing all of the data types that
     should use the reader.
 
+    By default, readers are assumed to work with all protocol types. If only a
+    subset of protocols support a data type, then they should be specified using
+    the ``protocols`` variable.
+
     """
     data_types = []
     default_representation = "dataframe"
+    protocols = PROTOCOLS
 
     def __init__(self, data_type: str, subject: Optional[str] = None,
                  experiment: Optional[str] = None,

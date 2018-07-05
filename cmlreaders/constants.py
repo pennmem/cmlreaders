@@ -1,3 +1,8 @@
+# supported protocols
+PROTOCOLS = (
+    "r1",
+    "ltp",
+)
 
 rhino_paths = {
     # data indices
