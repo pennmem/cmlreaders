@@ -102,6 +102,9 @@ class CMLReader(object):
         index = self._load_index()
         df = index[index["subject"] == self.subject]
 
+        if which not in df:
+            return None
+
         if self.experiment is not None:
             df = df[df.experiment == self.experiment]
 
