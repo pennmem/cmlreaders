@@ -57,19 +57,24 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     default_representation = "dataframe"
     protocols = PROTOCOLS
 
+    # We set this default value here for easier mocking in tests.
+    _file_path = None
+
     def __init__(self, data_type: str, subject: Optional[str] = None,
                  experiment: Optional[str] = None,
                  session: Optional[int] = None,
                  localization: Optional[int] = 0, montage: Optional[int] = 0,
                  file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
 
-        self._file_path = file_path
+        # This is for mocking in tests, do not remove!
+        if self._file_path is None:
+            self._file_path = file_path
 
         # When no file path is given, look it up using PathFinder unless we're
         # loading EEG data. EEG data is treated differently because of the way
         # it is stored on rhino: sometimes it is split into one file per channel
         # and other times it is a single HDF5 or EDF/BDF file.
-        if file_path is None and data_type != 'eeg':
+        if self._file_path is None and data_type != 'eeg':
             finder = PathFinder(subject=subject, experiment=experiment,
                                 session=session, localization=localization,
                                 montage=montage, rootdir=rootdir)

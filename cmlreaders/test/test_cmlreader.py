@@ -1,5 +1,5 @@
+from contextlib import ExitStack
 import functools
-import operator
 import os
 from unittest.mock import patch
 
@@ -136,20 +136,28 @@ class TestLoadMontage:
         else:
             assert "category" not in df.columns
 
-    @pytest.mark.filterwarnings("ignore::RuntimeWarning")  # from PathFinder finding multiple files
     @pytest.mark.parametrize("kind", ["contacts", "pairs"])
     @pytest.mark.parametrize("read_categories", [True, False])
     def test_read_categories(self, kind, read_categories):
-        from cmlreaders.readers.electrodes import ElectrodeCategoriesReader
+        from cmlreaders.path_finder import PathFinder
+        from cmlreaders.readers.electrodes import (
+            ElectrodeCategoriesReader, MontageReader
+        )
 
         cpath = datafile("R1111M_electrode_categories.txt")
         categories = ElectrodeCategoriesReader.fromfile(cpath)
+        mpath = datafile("R1111M_{}.json".format(kind))
 
-        with patched_cmlreader():
-            with patch.object(ElectrodeCategoriesReader, "load",
-                              return_value=categories):
-                reader = CMLReader("R1111M", "FR1", 0, 0, 0)
-                df = reader.load(kind, read_categories=read_categories)
+        with ExitStack() as stack:
+            stack.enter_context(patched_cmlreader())
+            stack.enter_context(patch.object(PathFinder, "find", return_value=""))
+            stack.enter_context(patch.object(ElectrodeCategoriesReader, "load",
+                                return_value=categories))
+            stack.enter_context(patch.object(MontageReader, "_file_path",
+                                             mpath))
+
+            reader = CMLReader("R1111M", "FR1", 0, 0, 0)
+            df = reader.load(kind, read_categories=read_categories)
 
         self.assert_categories_correct(df, categories, read_categories)
 

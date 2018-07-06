@@ -39,14 +39,14 @@ class MontageReader(BaseCMLReader):
 
         """
         category_reader = ElectrodeCategoriesReader(
-                data_type="electrode_categories",
-                subject=self.subject,
-                experiment=self.experiment,
-                session=self.session,
-                localization=self.localization,
-                montage=self.montage,
-                rootdir=self.rootdir,
-            )
+            data_type="electrode_categories",
+            subject=self.subject,
+            experiment=self.experiment,
+            session=self.session,
+            localization=self.localization,
+            montage=self.montage,
+            rootdir=self.rootdir,
+        )
         categories = category_reader.load()
 
         column = [None] * len(df)
