@@ -8,11 +8,6 @@ from cmlreaders.exc import (
 )
 
 
-__all__ = ['TextReader', 'RAMCSVReader', 'RamulatorEventLogReader',
-           'BaseJSONReader', 'EventReader',
-           'ClassifierContainerReader', 'EEGMetaReader']
-
-
 # TODO: separate into a base class so that we can use this for ltp
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """

@@ -10,6 +10,12 @@ CML Reader
 .. autoclass:: cmlreaders.CMLReader
     :members:
 
+Unit conversions
+================
+
+.. automodule:: cmlreaders.convert
+    :members:
+
 Custom Readers
 ==============
 
@@ -40,6 +46,3 @@ Path and File Constants
 :class:`cmlreaders.PathFinder` internally uses the :mod:`cmlreaders.constants`
 module. The usefulness of :class:`cmlreaders.PathFinder` relies on these
 constants being well-maintained.
-
-
-
