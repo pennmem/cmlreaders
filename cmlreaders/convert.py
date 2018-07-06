@@ -1,5 +1,3 @@
-"""Unit conversions."""
-
 from typing import List, Optional, Tuple, Union
 import pandas as pd
 

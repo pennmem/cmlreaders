@@ -218,7 +218,7 @@ class CMLReader(object):
 
             - (start_index, stop_index)
             - (start_index, stop_index, file_number) when the EEG
-            for the session is is split over multiple recordings.
+              for the session is is split over multiple recordings.
 
             Incompatible with passing ``events``.
         scheme
