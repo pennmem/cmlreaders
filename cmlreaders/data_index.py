@@ -1,7 +1,8 @@
+from functools import lru_cache
 import json
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import pandas as pd
 
@@ -36,7 +37,9 @@ def _index_dict_to_dataframe(data: Dict) -> pd.DataFrame:
     return df
 
 
-def get_data_index(kind: str = "all", rootdir: str = None) -> pd.DataFrame:
+@lru_cache()
+def get_data_index(kind: str = "all",
+                   rootdir: Optional[str] = None) -> pd.DataFrame:
     """Get an index to all available data.
 
     Parameters
