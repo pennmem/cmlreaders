@@ -24,13 +24,6 @@ from cmlreaders.timeseries import TimeSeries
 from cmlreaders.util import DefaultTuple
 
 
-__all__ = [
-    "EEGReader",
-    "milliseconds_to_events",
-    "milliseconds_to_samples",
-]
-
-
 def milliseconds_to_samples(millis: Union[int, float],
                             sample_rate: Union[int, float]) -> int:
     """Covert times in milliseconds to number of samples.
