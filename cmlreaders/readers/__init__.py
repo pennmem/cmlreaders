@@ -4,7 +4,7 @@ def _import_readers():
 
     loader = pkgutil.get_loader("cmlreaders")
     module_info = [info for info in pkgutil.walk_packages(loader.path)
-                   if info.name.startswith("cmlreaders.readers.")]
+                   if info[1].startswith("cmlreaders.readers.")]
     modules = [
         importlib.import_module("." + info.name.split(".")[-1],
                                 package="cmlreaders.readers")
