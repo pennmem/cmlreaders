@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.6.0 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.7.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.6
+                0.7
               </div>
             
           
@@ -162,15 +162,13 @@
 <span class="p">)</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TextReader&#39;</span><span class="p">,</span> <span class="s1">&#39;CSVReader&#39;</span><span class="p">,</span> <span class="s1">&#39;RamulatorEventLogReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;BasicJSONReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EventReader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;ClassifierContainerReader&#39;</span><span class="p">,</span> <span class="s1">&#39;EEGMetaReader&#39;</span><span class="p">]</span>
-
-
+<span class="c1"># TODO: separate into a base class so that we can use this for ltp</span>
 <div class="viewcode-block" id="TextReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader">[docs]</a><span class="k">class</span> <span class="nc">TextReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Generic reader class for reading RAM text files &quot;&quot;&quot;</span>
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">,</span> <span class="s1">&#39;jacksheet&#39;</span><span class="p">,</span> <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">,</span>
                   <span class="s1">&#39;good_leads&#39;</span><span class="p">,</span> <span class="s1">&#39;leads&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">]</span>
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
+
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_x&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_y&#39;</span><span class="p">,</span> <span class="s1">&#39;vox_z&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
                               <span class="s1">&#39;min_contact_num&#39;</span><span class="p">,</span> <span class="s1">&#39;max_contact_num&#39;</span><span class="p">],</span>
@@ -198,13 +196,21 @@
         <span class="k">return</span> <span class="n">df</span></div></div>
 
 
-<div class="viewcode-block" id="CSVReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.CSVReader">[docs]</a><span class="k">class</span> <span class="nc">CSVReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Generic reader class for loading csv files with headers &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BaseCSVReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseCSVReader">[docs]</a><span class="k">class</span> <span class="nc">BaseCSVReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for reading CSV files.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="BaseCSVReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseCSVReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span></div></div>
+
+
+<div class="viewcode-block" id="RAMCSVReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.RAMCSVReader">[docs]</a><span class="k">class</span> <span class="nc">RAMCSVReader</span><span class="p">(</span><span class="n">BaseCSVReader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CSV reader type for RAM data.&quot;&quot;&quot;</span>
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;electrode_coordinates&quot;</span><span class="p">,</span>
         <span class="s2">&quot;prior_stim_results&quot;</span><span class="p">,</span>
         <span class="s2">&quot;target_selection_table&quot;</span><span class="p">,</span>
     <span class="p">]</span>
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -212,20 +218,17 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;target_selection_table&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">experiment</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingParameter</span><span class="p">(</span><span class="s2">&quot;Experiment required with target_selection_&quot;</span>
                                    <span class="s2">&quot;table data type&quot;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">CSVReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-                                        <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                        <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
-                                        <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CSVReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.CSVReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">df</span></div></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                         <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
+                         <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                         <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="RamulatorEventLogReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.RamulatorEventLogReader">[docs]</a><span class="k">class</span> <span class="nc">RamulatorEventLogReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reader for Ramulator event log &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;experiment_log&#39;</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Reader for Ramulator event log&quot;&quot;&quot;</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;experiment_log&quot;</span><span class="p">]</span>
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -249,16 +252,15 @@
         <span class="k">return</span> <span class="n">raw_dict</span></div></div>
 
 
-<div class="viewcode-block" id="BasicJSONReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BasicJSONReader">[docs]</a><span class="k">class</span> <span class="nc">BasicJSONReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseJSONReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseJSONReader">[docs]</a><span class="k">class</span> <span class="nc">BaseJSONReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generic reader class for loading simple JSON files.</span>
 
 <span class="sd">    Returns a :class:`pd.DataFrame`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="BasicJSONReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BasicJSONReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseJSONReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseJSONReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span></div></div>
 
 
@@ -278,14 +280,15 @@
         <span class="k">return</span> <span class="n">sources_info</span></div></div>
 
 
-<div class="viewcode-block" id="EventReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader">[docs]</a><span class="k">class</span> <span class="nc">EventReader</span><span class="p">(</span><span class="n">BasicJSONReader</span><span class="p">):</span>
+<div class="viewcode-block" id="EventReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader">[docs]</a><span class="k">class</span> <span class="nc">EventReader</span><span class="p">(</span><span class="n">BaseJSONReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reader for all experiment events.</span>
 
 <span class="sd">    Returns a :class:`pd.DataFrame`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;all_events&#39;</span><span class="p">,</span> <span class="s1">&#39;math_events&#39;</span><span class="p">,</span> <span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="s1">&#39;events&#39;</span><span class="p">,</span> <span class="s1">&#39;ps4_events&#39;</span><span class="p">]</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;all_events&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="s2">&quot;math_events&quot;</span><span class="p">,</span> <span class="s2">&quot;ps4_events&quot;</span><span class="p">,</span> <span class="s2">&quot;task_events&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
 <div class="viewcode-block" id="EventReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
@@ -303,8 +306,8 @@
 <span class="sd">    returned.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;used_classifier&quot;</span><span class="p">,</span> <span class="s2">&quot;baseline_classifier&quot;</span><span class="p">]</span>
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
     <span class="n">default_representation</span> <span class="o">=</span> <span class="s2">&quot;pyobject&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span>
@@ -378,7 +381,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

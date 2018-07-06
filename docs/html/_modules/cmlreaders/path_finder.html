@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.6.0 documentation</title>
+  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.7.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.6
+                0.7
               </div>
             
           
@@ -212,7 +212,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
 
-        <span class="c1"># Stringify localization and montage only if they are given</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;R1&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;r1&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LTP&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;ltp&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
 
@@ -300,6 +306,7 @@
                 <span class="k">return</span> <span class="n">ramulator_session_folder</span>
 
         <span class="n">expected_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_single_path</span><span class="p">(</span><span class="n">paths_to_check</span><span class="p">,</span>
+                                               <span class="n">protocol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span>
                                                <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
                                                <span class="n">subject_montage</span><span class="o">=</span><span class="n">subject_montage</span><span class="p">,</span>
                                                <span class="n">timestamped_dir</span><span class="o">=</span><span class="n">timestamped_dir</span><span class="p">,</span>
@@ -397,7 +404,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
