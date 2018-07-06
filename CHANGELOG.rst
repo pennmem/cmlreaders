@@ -1,6 +1,29 @@
 Changes
 =======
 
+Version 0.7.0
+-------------
+
+**2018-07-06**
+
+User-facing changes:
+
+* Localization and montage numbers are now converted to integers instead of
+  being strings (#91)
+* Fixed loading of montage data for subjects with a montage number other than
+  0 (#95)
+* Added preliminary support for loading ltp data (#97)
+
+Other changes:
+
+* CI testing updated to use an environment variable to specify what Python
+  version to run (#93)
+* Test data gets written to a temporary directory instead of polluting the
+  ``cmlreaders.test.data`` package (#96)
+* Reader classes are automatically discovered instead of having to specify them
+  in ``cmlreaders/readers/__init__.py`` (#99)
+
+
 Version 0.6.0
 -------------
 
