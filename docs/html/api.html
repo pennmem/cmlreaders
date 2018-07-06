@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.6.0 documentation</title>
+  <title>API &mdash; CML Data Readers 0.7.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.6
+                0.7
               </div>
             
           
@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cml-reader">CML Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cmlreaders.convert">Unit conversions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cmlreaders.readers.readers">Custom Readers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pathfinder">PathFinder</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#path-and-file-constants">Path and File Constants</a></li>
@@ -250,9 +251,9 @@ required when passing events and not used otherwise.</li>
 be in one of two forms:</p>
 <ul>
 <li>(start_index, stop_index)</li>
-<li>(start_index, stop_index, file_number) when the EEG</li>
+<li>(start_index, stop_index, file_number) when the EEG
+for the session is is split over multiple recordings.</li>
 </ul>
-<p>for the session is is split over multiple recordings.</p>
 <p>Incompatible with passing <code class="docutils literal notranslate"><span class="pre">events</span></code>.</p>
 </li>
 <li><strong>scheme</strong> – When specified, a bipolar scheme to rereference the data with and/or
@@ -299,71 +300,131 @@ used without passing <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 </div>
+<div class="section" id="module-cmlreaders.convert">
+<span id="unit-conversions"></span><h2>Unit conversions<a class="headerlink" href="#module-cmlreaders.convert" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cmlreaders.convert.events_to_epochs">
+<code class="descclassname">cmlreaders.convert.</code><code class="descname">events_to_epochs</code><span class="sig-paren">(</span><em>events: pandas.core.frame.DataFrame, rel_start: int, rel_stop: int, sample_rate: Union[int, float], basenames: Union[typing.List[str], NoneType] = None</em><span class="sig-paren">)</span> &#x2192; List[Tuple[[int, int], int]]<a class="reference internal" href="_modules/cmlreaders/convert.html#events_to_epochs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.convert.events_to_epochs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert events to epochs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – Events to read.</li>
+<li><strong>rel_start</strong> – Start time relative to events in ms.</li>
+<li><strong>rel_stop</strong> – Stop time relative to events in ms.</li>
+<li><strong>sample_rate</strong> – Sample rate in Hz.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of tuples giving absolute start and stop times in number of
+samples.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">epochs</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cmlreaders.convert.milliseconds_to_events">
+<code class="descclassname">cmlreaders.convert.</code><code class="descname">milliseconds_to_events</code><span class="sig-paren">(</span><em>onsets: List[Union[int, float]], sample_rate: Union[int, float]</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/cmlreaders/convert.html#milliseconds_to_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.convert.milliseconds_to_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take times and produce a minimal events <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> to load
+EEG data with.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>onsets</strong> – Onset times in ms.</li>
+<li><strong>sample_rate</strong> – Sample rate in samples per second.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> with <code class="docutils literal notranslate"><span class="pre">eegoffset</span></code> as the only column.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">events</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cmlreaders.convert.milliseconds_to_samples">
+<code class="descclassname">cmlreaders.convert.</code><code class="descname">milliseconds_to_samples</code><span class="sig-paren">(</span><em>millis: Union[int, float], sample_rate: Union[int, float]</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cmlreaders/convert.html#milliseconds_to_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.convert.milliseconds_to_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Covert times in milliseconds to number of samples.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>millis</strong> – Time in ms.</li>
+<li><strong>sample_rate</strong> – Sample rate in samples per second.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number of samples.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="cmlreaders.convert.samples_to_milliseconds">
+<code class="descclassname">cmlreaders.convert.</code><code class="descname">samples_to_milliseconds</code><span class="sig-paren">(</span><em>samples: int, sample_rate: Union[int, float]</em><span class="sig-paren">)</span> &#x2192; Union[int, float]<a class="reference internal" href="_modules/cmlreaders/convert.html#samples_to_milliseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.convert.samples_to_milliseconds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert samples to milliseconds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>samples</strong> – Number of samples.</li>
+<li><strong>sample_rate</strong> – Sample rate in samples per second.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Samples converted to milliseconds.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-cmlreaders.readers.readers">
 <span id="custom-readers"></span><h2>Custom Readers<a class="headerlink" href="#module-cmlreaders.readers.readers" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="cmlreaders.readers.readers.TextReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic reader class for reading RAM text files</p>
+<dt id="cmlreaders.readers.readers.BaseCSVReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">BaseCSVReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseCSVReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseCSVReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for reading CSV files.</p>
 <dl class="method">
-<dt id="cmlreaders.readers.readers.TextReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.readers.readers.BaseCSVReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseCSVReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseCSVReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data as dataframe</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="cmlreaders.readers.readers.CSVReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">CSVReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>experiment=None</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#CSVReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.CSVReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generic reader class for loading csv files with headers</p>
-<dl class="method">
-<dt id="cmlreaders.readers.readers.CSVReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#CSVReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.CSVReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="cmlreaders.readers.readers.RamulatorEventLogReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">RamulatorEventLogReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reader for Ramulator event log</p>
-<dl class="method">
-<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as a list of dictionaries</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="cmlreaders.readers.readers.BasicJSONReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">BasicJSONReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BasicJSONReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BasicJSONReader" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.readers.readers.BaseJSONReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">BaseJSONReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseJSONReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseJSONReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic reader class for loading simple JSON files.</p>
 <p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
 <dl class="method">
-<dt id="cmlreaders.readers.readers.BasicJSONReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BasicJSONReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BasicJSONReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as dataframe</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="cmlreaders.readers.readers.EventReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">EventReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reader for all experiment events.</p>
-<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
-<dl class="method">
-<dt id="cmlreaders.readers.readers.EventReader.as_dataframe">
-<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dt id="cmlreaders.readers.readers.BaseJSONReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#BaseJSONReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.BaseJSONReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data as dataframe</p>
 </dd></dl>
 
@@ -408,7 +469,135 @@ details on supported output formats.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="cmlreaders.readers.readers.EventReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">EventReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reader for all experiment events.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.EventReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.RAMCSVReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">RAMCSVReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>experiment=None</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RAMCSVReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RAMCSVReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>CSV reader type for RAM data.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">RamulatorEventLogReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>experiment</em>, <em>session</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reader for Ramulator event log</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.readers.RamulatorEventLogReader.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#RamulatorEventLogReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.RamulatorEventLogReader.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a list of dictionaries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.readers.TextReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generic reader class for reading RAM text files</p>
+<dl class="method">
+<dt id="cmlreaders.readers.readers.TextReader.as_dataframe">
+<code class="descname">as_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader.as_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader.as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as dataframe</p>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-cmlreaders.readers.eeg"></span><dl class="class">
+<dt id="cmlreaders.readers.eeg.BaseEEGReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">BaseEEGReader</code><span class="sig-paren">(</span><em>filename: str, dtype: Type[numpy.dtype], epochs: List[Tuple[int, Union[int, NoneType]]], scheme: Union[pandas.core.frame.DataFrame, NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#BaseEEGReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.BaseEEGReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for actually reading EEG data. Subclasses will be used by
+<a class="reference internal" href="#cmlreaders.readers.eeg.EEGReader" title="cmlreaders.readers.eeg.EEGReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">EEGReader</span></code></a> to actually read the format-specific EEG data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> – Base name for EEG file(s) including absolute path</li>
+<li><strong>dtype</strong> – numpy dtype to use for reading data</li>
+<li><strong>epochs</strong> – Epochs to include. Epochs are defined with start and stop sample
+counts.</li>
+<li><strong>scheme</strong> – Scheme data to use for rereferencing/channel filtering. This should be
+loaded/manipulated from <code class="docutils literal notranslate"><span class="pre">pairs.json</span></code> data.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The <a class="reference internal" href="#cmlreaders.readers.eeg.BaseEEGReader.read" title="cmlreaders.readers.eeg.BaseEEGReader.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a> method must be implemented by subclasses to return a tuple
+containing a 3-D array with dimensions (epochs x channels x time) and a
+list of contact numbers.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.BaseEEGReader.include_contact">
+<code class="descname">include_contact</code><span class="sig-paren">(</span><em>contact_num: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#BaseEEGReader.include_contact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.BaseEEGReader.include_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter to determine if we need to include a contact number when
+reading data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.BaseEEGReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List[int]]<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#BaseEEGReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.BaseEEGReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.BaseEEGReader.rereference">
+<code class="descname">rereference</code><span class="sig-paren">(</span><em>data: numpy.ndarray, contacts: List[int]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#BaseEEGReader.rereference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.BaseEEGReader.rereference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to rereference the EEG data using the specified scheme.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> – Input timeseries data shaped as (epochs, channels, time).</li>
+<li><strong>contacts</strong> – List of contact numbers (1-based) that index the data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Rereferenced timeseries.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">reref</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This method is meant to be used when loading data and so returns a raw
+Numpy array. If used externally, a <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code> will need to be
+constructed manually.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.eeg.EDFReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">EDFReader</code><span class="sig-paren">(</span><em>filename: str, dtype: Type[numpy.dtype], epochs: List[Tuple[int, Union[int, NoneType]]], scheme: Union[pandas.core.frame.DataFrame, NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EDFReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EDFReader" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="cmlreaders.readers.eeg.EDFReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List[int]]<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EDFReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EDFReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="cmlreaders.readers.eeg.EEGReader">
 <em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">EEGReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads EEG data.</p>
@@ -512,53 +701,52 @@ to pass along to <a class="reference internal" href="#cmlreaders.readers.eeg.EEG
 
 </dd></dl>
 
-<dl class="function">
-<dt id="cmlreaders.readers.eeg.milliseconds_to_events">
-<code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">milliseconds_to_events</code><span class="sig-paren">(</span><em>onsets: List[Union[int, float]], sample_rate: Union[int, float]</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#milliseconds_to_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.milliseconds_to_events" title="Permalink to this definition">¶</a></dt>
-<dd><p>Take times and produce a minimal events <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> to load
-EEG data with.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>onsets</strong> – Onset times in ms.</li>
-<li><strong>sample_rate</strong> – Sample rate in samples per second.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> with <code class="docutils literal notranslate"><span class="pre">eegoffset</span></code> as the only column.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">events</p>
-</td>
-</tr>
-</tbody>
-</table>
+<dl class="class">
+<dt id="cmlreaders.readers.eeg.NumpyEEGReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">NumpyEEGReader</code><span class="sig-paren">(</span><em>filename: str, dtype: Type[numpy.dtype], epochs: List[Tuple[int, Union[int, NoneType]]], scheme: Union[pandas.core.frame.DataFrame, NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#NumpyEEGReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.NumpyEEGReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read EEG data stored in Numpy’s .npy format.</p>
+<p class="rubric">Notes</p>
+<p>This reader is currently only used to do some testing so lacks some features
+such as being able to determine what contact numbers it’s actually using.
+Instead, it will just give contacts as a sequential list of ints.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.NumpyEEGReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List[int]]<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#NumpyEEGReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.NumpyEEGReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="cmlreaders.readers.eeg.milliseconds_to_samples">
-<code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">milliseconds_to_samples</code><span class="sig-paren">(</span><em>millis: Union[int, float], sample_rate: Union[int, float]</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#milliseconds_to_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.milliseconds_to_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Covert times in milliseconds to number of samples.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>millis</strong> – Time in ms.</li>
-<li><strong>sample_rate</strong> – Sample rate in samples per second.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Number of samples.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.eeg.RamulatorHDF5Reader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">RamulatorHDF5Reader</code><span class="sig-paren">(</span><em>filename: str, dtype: Type[numpy.dtype], epochs: List[Tuple[int, Union[int, NoneType]]], scheme: Union[pandas.core.frame.DataFrame, NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#RamulatorHDF5Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.RamulatorHDF5Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads Ramulator HDF5 EEG files.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.RamulatorHDF5Reader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List[int]]<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#RamulatorHDF5Reader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.RamulatorHDF5Reader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.RamulatorHDF5Reader.rereference">
+<code class="descname">rereference</code><span class="sig-paren">(</span><em>data: numpy.ndarray, contacts: List[int]</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#RamulatorHDF5Reader.rereference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.RamulatorHDF5Reader.rereference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overrides the default rereferencing to first check validity of the
+passed scheme or if rereferencing is even possible in the first place.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cmlreaders.readers.eeg.SplitEEGReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">SplitEEGReader</code><span class="sig-paren">(</span><em>filename: str, dtype: Type[numpy.dtype], epochs: List[Tuple[int, Union[int, NoneType]]], scheme: Union[pandas.core.frame.DataFrame, NoneType]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#SplitEEGReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.SplitEEGReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read so-called split EEG data (that is, raw binary data stored as one
+channel per file).</p>
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.SplitEEGReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, List[int]]<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#SplitEEGReader.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.SplitEEGReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the data.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -676,7 +864,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -56,6 +56,16 @@ to the ``data_types`` list.
         def as_dict(self):
             return {'for': 'great justice'}
 
+By default, all known protocols (e.g., ``r1``, ``ltp``) are assumed to be
+supported. If a reader only works for a subset, specify the ``protocols`` class
+variable:
+
+.. code-block:: python
+
+    class RamThingReader(BaseCMLReader):
+        data_types = ["ram_thing"]
+        protocols = ["r1"]
+
 Once the reader works, test cases for the data types using the new reader
 should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
 to the test cases that should already exist for the new reader. For examples,

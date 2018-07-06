@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; CML Data Readers 0.6.0 documentation</title>
+  <title>Index &mdash; CML Data Readers 0.7.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.6
+                0.7
               </div>
             
           
@@ -162,8 +162,10 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -176,9 +178,9 @@
       <li><a href="api.html#cmlreaders.readers.eeg.EEGReader.as_dataframe">as_dataframe() (cmlreaders.readers.eeg.EEGReader method)</a>
 
       <ul>
-        <li><a href="api.html#cmlreaders.readers.readers.BasicJSONReader.as_dataframe">(cmlreaders.readers.readers.BasicJSONReader method)</a>
+        <li><a href="api.html#cmlreaders.readers.readers.BaseCSVReader.as_dataframe">(cmlreaders.readers.readers.BaseCSVReader method)</a>
 </li>
-        <li><a href="api.html#cmlreaders.readers.readers.CSVReader.as_dataframe">(cmlreaders.readers.readers.CSVReader method)</a>
+        <li><a href="api.html#cmlreaders.readers.readers.BaseJSONReader.as_dataframe">(cmlreaders.readers.readers.BaseJSONReader method)</a>
 </li>
         <li><a href="api.html#cmlreaders.readers.readers.ClassifierContainerReader.as_dataframe">(cmlreaders.readers.readers.ClassifierContainerReader method)</a>
 </li>
@@ -209,7 +211,13 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#cmlreaders.readers.readers.BasicJSONReader">BasicJSONReader (class in cmlreaders.readers.readers)</a>
+      <li><a href="api.html#cmlreaders.readers.readers.BaseCSVReader">BaseCSVReader (class in cmlreaders.readers.readers)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.eeg.BaseEEGReader">BaseEEGReader (class in cmlreaders.readers.eeg)</a>
+</li>
+      <li><a href="api.html#cmlreaders.readers.readers.BaseJSONReader">BaseJSONReader (class in cmlreaders.readers.readers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -223,11 +231,11 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#module-cmlreaders.convert">cmlreaders.convert (module)</a>
+</li>
       <li><a href="api.html#module-cmlreaders.readers.eeg">cmlreaders.readers.eeg (module)</a>
 </li>
       <li><a href="api.html#module-cmlreaders.readers.readers">cmlreaders.readers.readers (module)</a>
-</li>
-      <li><a href="api.html#cmlreaders.readers.readers.CSVReader">CSVReader (class in cmlreaders.readers.readers)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -235,6 +243,8 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.eeg.EDFReader">EDFReader (class in cmlreaders.readers.eeg)</a>
+</li>
       <li><a href="api.html#cmlreaders.readers.readers.EEGMetaReader">EEGMetaReader (class in cmlreaders.readers.readers)</a>
 </li>
   </ul></td>
@@ -242,6 +252,8 @@
       <li><a href="api.html#cmlreaders.readers.eeg.EEGReader">EEGReader (class in cmlreaders.readers.eeg)</a>
 </li>
       <li><a href="api.html#cmlreaders.readers.readers.EventReader">EventReader (class in cmlreaders.readers.readers)</a>
+</li>
+      <li><a href="api.html#cmlreaders.convert.events_to_epochs">events_to_epochs() (in module cmlreaders.convert)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -258,6 +270,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.CMLReader.get_reader">get_reader() (cmlreaders.CMLReader method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.eeg.BaseEEGReader.include_contact">include_contact() (cmlreaders.readers.eeg.BaseEEGReader method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -285,15 +305,23 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api.html#cmlreaders.readers.eeg.milliseconds_to_events">milliseconds_to_events() (in module cmlreaders.readers.eeg)</a>
+      <li><a href="api.html#cmlreaders.convert.milliseconds_to_events">milliseconds_to_events() (in module cmlreaders.convert)</a>
 </li>
-      <li><a href="api.html#cmlreaders.readers.eeg.milliseconds_to_samples">milliseconds_to_samples() (in module cmlreaders.readers.eeg)</a>
+      <li><a href="api.html#cmlreaders.convert.milliseconds_to_samples">milliseconds_to_samples() (in module cmlreaders.convert)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.CMLReader.montage">montage (cmlreaders.CMLReader attribute)</a>
 </li>
       <li><a href="api.html#cmlreaders.PathFinder.montage_files">montage_files (cmlreaders.PathFinder attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.eeg.NumpyEEGReader">NumpyEEGReader (class in cmlreaders.readers.eeg)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -313,22 +341,48 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.readers.RAMCSVReader">RAMCSVReader (class in cmlreaders.readers.readers)</a>
+</li>
       <li><a href="api.html#cmlreaders.readers.readers.RamulatorEventLogReader">RamulatorEventLogReader (class in cmlreaders.readers.readers)</a>
 </li>
+      <li><a href="api.html#cmlreaders.readers.eeg.RamulatorHDF5Reader">RamulatorHDF5Reader (class in cmlreaders.readers.eeg)</a>
+</li>
+      <li><a href="api.html#cmlreaders.readers.eeg.BaseEEGReader.read">read() (cmlreaders.readers.eeg.BaseEEGReader method)</a>
+
+      <ul>
+        <li><a href="api.html#cmlreaders.readers.eeg.EDFReader.read">(cmlreaders.readers.eeg.EDFReader method)</a>
+</li>
+        <li><a href="api.html#cmlreaders.readers.eeg.NumpyEEGReader.read">(cmlreaders.readers.eeg.NumpyEEGReader method)</a>
+</li>
+        <li><a href="api.html#cmlreaders.readers.eeg.RamulatorHDF5Reader.read">(cmlreaders.readers.eeg.RamulatorHDF5Reader method)</a>
+</li>
+        <li><a href="api.html#cmlreaders.readers.eeg.SplitEEGReader.read">(cmlreaders.readers.eeg.SplitEEGReader method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.PathFinder.requestable_files">requestable_files (cmlreaders.PathFinder attribute)</a>
 </li>
+      <li><a href="api.html#cmlreaders.readers.eeg.BaseEEGReader.rereference">rereference() (cmlreaders.readers.eeg.BaseEEGReader method)</a>
+
+      <ul>
+        <li><a href="api.html#cmlreaders.readers.eeg.RamulatorHDF5Reader.rereference">(cmlreaders.readers.eeg.RamulatorHDF5Reader method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.convert.samples_to_milliseconds">samples_to_milliseconds() (in module cmlreaders.convert)</a>
+</li>
       <li><a href="api.html#cmlreaders.PathFinder.session_files">session_files (cmlreaders.PathFinder attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api.html#cmlreaders.readers.eeg.SplitEEGReader">SplitEEGReader (class in cmlreaders.readers.eeg)</a>
+</li>
       <li><a href="api.html#cmlreaders.PathFinder.subject_files">subject_files (cmlreaders.PathFinder attribute)</a>
 </li>
   </ul></td>
@@ -380,7 +434,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.0',
+            VERSION:'0.7.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
