@@ -8,8 +8,8 @@ from cmlreaders.exc import (
 )
 
 
-__all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
-           'BasicJSONReader', 'EventReader',
+__all__ = ['TextReader', 'RAMCSVReader', 'RamulatorEventLogReader',
+           'BaseJSONReader', 'EventReader',
            'ClassifierContainerReader', 'EEGMetaReader']
 
 
@@ -47,9 +47,15 @@ class TextReader(BaseCMLReader):
         return df
 
 
-# TODO: separate into a base class so that we can use this for ltp
-class CSVReader(BaseCMLReader):
-    """ Generic reader class for loading csv files with headers """
+class BaseCSVReader(BaseCMLReader):
+    """Base class for reading CSV files."""
+    def as_dataframe(self):
+        df = pd.read_csv(self._file_path)
+        return df
+
+
+class RAMCSVReader(BaseCSVReader):
+    """CSV reader type for RAM data."""
     data_types = [
         "electrode_coordinates",
         "prior_stim_results",
@@ -63,14 +69,11 @@ class CSVReader(BaseCMLReader):
         if (data_type == 'target_selection_table') and experiment is None:
             raise MissingParameter("Experiment required with target_selection_"
                                    "table data type")
-        super(CSVReader, self).__init__(data_type, subject=subject,
-                                        localization=localization,
-                                        experiment=experiment,
-                                        file_path=file_path, rootdir=rootdir)
 
-    def as_dataframe(self):
-        df = pd.read_csv(self._file_path)
-        return df
+        super().__init__(data_type, subject=subject,
+                         localization=localization,
+                         experiment=experiment,
+                         file_path=file_path, rootdir=rootdir)
 
 
 class RamulatorEventLogReader(BaseCMLReader):
@@ -100,7 +103,7 @@ class RamulatorEventLogReader(BaseCMLReader):
         return raw_dict
 
 
-class BasicJSONReader(BaseCMLReader):
+class BaseJSONReader(BaseCMLReader):
     """Generic reader class for loading simple JSON files.
 
     Returns a :class:`pd.DataFrame`.
@@ -128,14 +131,15 @@ class EEGMetaReader(BaseCMLReader):
         return sources_info
 
 
-class EventReader(BasicJSONReader):
+class EventReader(BaseJSONReader):
     """Reader for all experiment events.
 
     Returns a :class:`pd.DataFrame`.
 
     """
-
-    data_types = ['all_events', 'math_events', 'task_events', 'events', 'ps4_events']
+    data_types = [
+        "all_events", "events", "math_events", "ps4_events", "task_events",
+    ]
 
     def as_dataframe(self):
         df = super().as_dataframe()
