@@ -8,13 +8,62 @@ from cmlreaders.base_reader import BaseCMLReader
 
 
 class MontageReader(BaseCMLReader):
-    """Reads montage files (contacts.json, pairs.json).
+    """Reads montage files (contacts.json, pairs.json). When loading via
+    :meth:`CMLReader.load`, pass ``read_categories=True`` to additionally load
+    electrode category information.
 
     Returns a :class:`pd.DataFrame`.
 
     """
     data_types = ["pairs", "contacts"]
     protocols = ["r1"]
+
+    read_categories = False
+
+    def load(self, read_categories: bool = False):
+        self.read_categories = read_categories
+        return super().load()
+
+    def _insert_categories(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Inserts electrode category information into the loaded DataFrame.
+
+        Parameters
+        ----------
+        df
+            Montage DataFrame.
+
+        Returns
+        -------
+        DataFrame updated with a column named ``category`` containing a comma
+        separated list of category names.
+
+        """
+        category_reader = ElectrodeCategoriesReader(
+                data_type="electrode_categories",
+                subject=self.subject,
+                experiment=self.experiment,
+                session=self.session,
+                localization=self.localization,
+                montage=self.montage,
+                rootdir=self.rootdir,
+            )
+        categories = category_reader.load()
+
+        column = [None] * len(df)
+
+        for i, label in enumerate(df["label"]):
+            if self.data_type == "contacts":
+                cat = [key for key in categories if label in categories[key]]
+            else:
+                l1, l2 = label.split("-")
+                cat = [key for key in categories
+                       if l1 in categories[key] or l2 in categories[key]]
+
+            column[i] = ",".join(cat) if len(cat) else None
+
+        df["category"] = column
+
+        return df
 
     def as_dataframe(self):
         with open(self._file_path) as f:
@@ -66,6 +115,9 @@ class MontageReader(BaseCMLReader):
         # sort by contact
         key = "contact" if self.data_type == "contacts" else "contact_1"
         df = df.sort_values(by=key).reset_index(drop=True)
+
+        if self.read_categories:
+            df = self._insert_categories(df)
 
         return df
 

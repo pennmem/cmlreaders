@@ -1,5 +1,7 @@
 import functools
+import operator
 import os
+from unittest.mock import patch
 
 from pkg_resources import resource_filename
 import pytest
@@ -119,3 +121,49 @@ class TestCMLReader:
         events = reader.load("events")
         ps4_events = reader.load("ps4_events")
         assert all(events == ps4_events)
+
+
+class TestLoadMontage:
+    @staticmethod
+    def assert_categories_correct(df, categories, read_categories):
+        if read_categories:
+            assert "category" in df.columns
+            for category, labels in categories.items():
+                mask = df["label"].isin(labels)
+                cat_labels = [cats.split(",") for cats in df[mask]["category"]]
+                for cat_label in cat_labels:
+                    assert category in cat_label
+        else:
+            assert "category" not in df.columns
+
+    @pytest.mark.filterwarnings("ignore::RuntimeWarning")  # from PathFinder finding multiple files
+    @pytest.mark.parametrize("kind", ["contacts", "pairs"])
+    @pytest.mark.parametrize("read_categories", [True, False])
+    def test_read_categories(self, kind, read_categories):
+        from cmlreaders.readers.electrodes import ElectrodeCategoriesReader
+
+        cpath = datafile("R1111M_electrode_categories.txt")
+        categories = ElectrodeCategoriesReader.fromfile(cpath)
+
+        with patched_cmlreader():
+            with patch.object(ElectrodeCategoriesReader, "load",
+                              return_value=categories):
+                reader = CMLReader("R1111M", "FR1", 0, 0, 0)
+                df = reader.load(kind, read_categories=read_categories)
+
+        self.assert_categories_correct(df, categories, read_categories)
+
+    @pytest.mark.filterwarnings("ignore::RuntimeWarning")  # from PathFinder finding multiple files
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("kind", ["contacts", "pairs"])
+    @pytest.mark.parametrize("read_categories", [True, False])
+    def test_read_categories_rhino(self, kind, read_categories, rhino_root):
+        reader = CMLReader("R1111M", "FR1", 0, 0, 0, rootdir=rhino_root)
+        df = reader.load(kind, read_categories=read_categories)
+
+        if read_categories:
+            categories = reader.load("electrode_categories")
+        else:
+            categories = None
+
+        self.assert_categories_correct(df, categories, read_categories)
