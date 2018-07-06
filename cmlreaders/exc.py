@@ -17,6 +17,13 @@ class UnknownProtocolError(CMLReaderException):
     """Raised when an unknown protocol (e.g., "r2") is found."""
 
 
+class UnsupportedProtocolError(CMLReaderException):
+    """Raised when trying to load data for a protocol that doesn't support that
+    data type.
+
+    """
+
+
 class MissingParameter(CMLReaderException):
     """ Raised when a required parameter is missing """
 

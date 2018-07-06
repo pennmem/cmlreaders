@@ -4,7 +4,7 @@ import os
 from pkg_resources import resource_filename
 import pytest
 
-from cmlreaders import CMLReader
+from cmlreaders import CMLReader, exc
 from cmlreaders.test.utils import patched_cmlreader
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
@@ -18,6 +18,7 @@ class TestCMLReader:
         ("R1278E", "PAL3", 2, 2, 2),
         ("R1278E", "TH1", 0, 0, 0),
         ("R1278E", "TH1", None, 0, 0),
+        ("LTP093", "ltpFR2", 0, None, None)
     ])
     def test_determine_localization_or_montage(self, subject, experiment,
                                                session, localization, montage):
@@ -28,6 +29,10 @@ class TestCMLReader:
             assert reader.localization == localization
 
     @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,experiment,session,localization", [
+        ("R1405E", "FR1", 1, 1),
+        ("LTP093", "ltpFR2", 0, None),
+    ])
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
@@ -36,11 +41,18 @@ class TestCMLReader:
         'baseline_classifier', 'used_classifier', 'events', 'all_events',
         'task_events', 'math_events'
     ])
-    def test_load_from_rhino(self, file_type, rhino_root):
-        subject = "R1405E"
-        experiment = "FR1"
-        session = 1
-        localization = 1  # session 1 used localization 1, not 0
+    def test_load_from_rhino(self, subject, experiment, session, localization,
+                             file_type, rhino_root):
+        if subject.startswith("LTP"):
+            reader = CMLReader(subject=subject,
+                               experiment=experiment,
+                               session=session,
+                               localization=localization,
+                               rootdir=rhino_root)
+            if "ltp" not in reader.reader_protocols[file_type]:
+                with pytest.raises(exc.UnsupportedProtocolError):
+                    reader.load(file_type)
+                return
 
         if file_type in ["electrode_categories", "classifier_summary",
                          "math_summary", "session_summary",
@@ -70,10 +82,11 @@ class TestCMLReader:
         'all_events.json', 'math_events.json', 'task_events.json'
     ])
     def test_load(self, file_type):
-        data_type = os.path.splitext(file_type)[0]
-        reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
-                           session=1)
-        reader.load(data_type=data_type, file_path=datafile(file_type))
+        with patched_cmlreader():
+            data_type = os.path.splitext(file_type)[0]
+            reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
+                               session=1)
+            reader.load(data_type=data_type, file_path=datafile(file_type))
 
     @pytest.mark.parametrize("file_type", [
         'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
@@ -84,16 +97,18 @@ class TestCMLReader:
         'task_events'
     ])
     def test_get_reader(self, file_type):
-        reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                           session=0, montage=0)
-        reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
-        assert type(reader_obj) == reader.readers[file_type]
+        with patched_cmlreader():
+            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
+                               session=0, montage=0)
+            reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
+            assert type(reader_obj) == reader.readers[file_type]
 
     def test_load_unimplemented(self):
-        reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                           session=0, montage=0)
-        with pytest.raises(NotImplementedError):
-            reader.load("fake_data")
+        with patched_cmlreader():
+            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
+                               session=0, montage=0)
+            with pytest.raises(NotImplementedError):
+                reader.load("fake_data")
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,experiment,session", [

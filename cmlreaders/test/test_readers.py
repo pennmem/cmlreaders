@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 
 from cmlreaders.readers import (
-    BasicJSONReader, TextReader, CSVReader, EEGMetaReader,
+    BaseJSONReader, TextReader, RAMCSVReader, EEGMetaReader,
     ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
-    RamulatorEventLogReader, ReportSummaryDataReader, BaseReportDataReader,
+    RamulatorEventLogReader, RAMReportSummaryDataReader, BaseRAMReportDataReader,
     ClassifierContainerReader
 )
 from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
@@ -85,8 +85,7 @@ class TestTextReader:
         assert reread_data is not None
 
 
-class TestCSVReader:
-
+class TestRAMCSVReader:
     @pytest.mark.parametrize("method", ["dataframe", "recarray", "dict"])
     @pytest.mark.parametrize("data_type", [
         'electrode_coordinates', 'prior_stim_results', 'target_selection_table'
@@ -96,8 +95,8 @@ class TestCSVReader:
     ])
     def test_as_methods(self, method, data_type, subject, localization):
         file_path = datafile(data_type + ".csv")
-        reader = CSVReader(data_type, subject, localization, experiment="FR1",
-                           file_path=file_path)
+        reader = RAMCSVReader(data_type, subject, localization,
+                              experiment="FR1", file_path=file_path)
         expected_types = {
             'dataframe': pd.DataFrame,
             'recarray': np.recarray,
@@ -120,8 +119,9 @@ class TestCSVReader:
                         rhino_root, tmpdir):
         # Load the test data
         file_path = datafile(data_type + ".csv")
-        reader = CSVReader(data_type, subject, localization, experiment="FR1",
-                           file_path=file_path, rootdir=rhino_root)
+        reader = RAMCSVReader(data_type, subject, localization,
+                              experiment="FR1", file_path=file_path,
+                              rootdir=rhino_root)
 
         # Save as specified format
         method_name = "to_{}".format(method)
@@ -131,8 +131,8 @@ class TestCSVReader:
         assert os.path.exists(exp_output)
 
         # Check that data can be reloaded
-        re_reader = CSVReader(data_type, subject, localization,
-                              experiment="FR1", file_path=exp_output)
+        re_reader = RAMCSVReader(data_type, subject, localization,
+                                 experiment="FR1", file_path=exp_output)
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
 
@@ -187,10 +187,10 @@ class TestRamulatorEventLogReader:
         # test reloading for some
 
 
-class TestBasicJSONReader:
+class TestBaseJSONReader:
     def test_load(self):
         path = datafile('index.json')
-        reader = BasicJSONReader('index.json', file_path=path)
+        reader = BaseJSONReader('index.json', file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
 
@@ -284,9 +284,9 @@ class TestBaseReportDataReader:
                         experiment, session):
         file_path = datafile(data_type + ".h5")
 
-        reader = BaseReportDataReader(data_type, subject=subject,
-                                      experiment=experiment, session=session,
-                                      localization=0, file_path=file_path)
+        reader = BaseRAMReportDataReader(data_type, subject=subject,
+                                         experiment=experiment, session=session,
+                                         localization=0, file_path=file_path)
 
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -305,9 +305,9 @@ class TestBaseReportDataReader:
     def test_to_methods(self, method, data_type, tmpdir):
         # Load the test data
         file_path = datafile(data_type + ".h5")
-        reader = BaseReportDataReader(data_type, subject='R1409D',
-                                      experiment='catFR1', session=1,
-                                      localization=0, file_path=file_path)
+        reader = BaseRAMReportDataReader(data_type, subject='R1409D',
+                                         experiment='catFR1', session=1,
+                                         localization=0, file_path=file_path)
         # Save as specified format
         method_name = "to_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -323,9 +323,9 @@ class TestReportSummaryReader:
         file_path = datafile(data_type + ".h5")
 
         with patch("ramutils.reports.summary.FRStimSessionSummary") as cls:
-            reader = ReportSummaryDataReader(data_type, subject='R1409D',
-                                             experiment='catFR5', session=1,
-                                             localization=0, file_path=file_path)
+            reader = RAMReportSummaryDataReader(data_type, subject='R1409D',
+                                                experiment='catFR5', session=1,
+                                                localization=0, file_path=file_path)
 
             method_name = "as_{}".format(method)
             func = getattr(reader, method_name)
@@ -334,9 +334,9 @@ class TestReportSummaryReader:
 
     def test_load_nonstim_session(self):
         file_path = datafile('session_summary' + ".h5")
-        reader = ReportSummaryDataReader('session_summary', subject='R1409D',
-                                         experiment='catFR1', session=1,
-                                         localization=0, file_path=file_path)
+        reader = RAMReportSummaryDataReader('session_summary', subject='R1409D',
+                                            experiment='catFR1', session=1,
+                                            localization=0, file_path=file_path)
         with pytest.raises(UnsupportedExperimentError):
             reader.as_pyobject()
 
@@ -346,9 +346,9 @@ class TestReportSummaryReader:
     def test_to_methods(self, method, data_type, tmpdir):
         # Load the test data
         file_path = datafile(data_type + ".h5")
-        reader = ReportSummaryDataReader(data_type, subject='R1409D',
-                                         experiment='catFR5', session=1,
-                                         localization=0, file_path=file_path)
+        reader = RAMReportSummaryDataReader(data_type, subject='R1409D',
+                                            experiment='catFR5', session=1,
+                                            localization=0, file_path=file_path)
         # Save as specified format
         method_name = "to_{}".format(method)
         callable_method = getattr(reader, method_name)

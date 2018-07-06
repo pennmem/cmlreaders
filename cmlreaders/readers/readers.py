@@ -8,15 +8,18 @@ from cmlreaders.exc import (
 )
 
 
-__all__ = ['TextReader', 'CSVReader', 'RamulatorEventLogReader',
-           'BasicJSONReader', 'EventReader',
+__all__ = ['TextReader', 'RAMCSVReader', 'RamulatorEventLogReader',
+           'BaseJSONReader', 'EventReader',
            'ClassifierContainerReader', 'EEGMetaReader']
 
 
+# TODO: separate into a base class so that we can use this for ltp
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """
     data_types = ['voxel_coordinates', 'jacksheet', 'classifier_excluded_leads',
                   'good_leads', 'leads', 'area']
+    protocols = ["r1"]
+
     headers = {
         'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
                               'min_contact_num', 'max_contact_num'],
@@ -44,13 +47,21 @@ class TextReader(BaseCMLReader):
         return df
 
 
-class CSVReader(BaseCMLReader):
-    """ Generic reader class for loading csv files with headers """
+class BaseCSVReader(BaseCMLReader):
+    """Base class for reading CSV files."""
+    def as_dataframe(self):
+        df = pd.read_csv(self._file_path)
+        return df
+
+
+class RAMCSVReader(BaseCSVReader):
+    """CSV reader type for RAM data."""
     data_types = [
         "electrode_coordinates",
         "prior_stim_results",
         "target_selection_table",
     ]
+    protocols = ["r1"]
 
     def __init__(self, data_type, subject, localization, experiment=None,
                  file_path=None, rootdir="/", **kwargs):
@@ -58,20 +69,17 @@ class CSVReader(BaseCMLReader):
         if (data_type == 'target_selection_table') and experiment is None:
             raise MissingParameter("Experiment required with target_selection_"
                                    "table data type")
-        super(CSVReader, self).__init__(data_type, subject=subject,
-                                        localization=localization,
-                                        experiment=experiment,
-                                        file_path=file_path, rootdir=rootdir)
 
-    def as_dataframe(self):
-        df = pd.read_csv(self._file_path)
-        return df
+        super().__init__(data_type, subject=subject,
+                         localization=localization,
+                         experiment=experiment,
+                         file_path=file_path, rootdir=rootdir)
 
 
 class RamulatorEventLogReader(BaseCMLReader):
-    """ Reader for Ramulator event log """
-
-    data_types = ['experiment_log']
+    """Reader for Ramulator event log"""
+    data_types = ["experiment_log"]
+    protocols = ["r1"]
 
     def __init__(self, data_type, subject, experiment, session, file_path=None,
                  rootdir="/", **kwargs):
@@ -95,13 +103,12 @@ class RamulatorEventLogReader(BaseCMLReader):
         return raw_dict
 
 
-class BasicJSONReader(BaseCMLReader):
+class BaseJSONReader(BaseCMLReader):
     """Generic reader class for loading simple JSON files.
 
     Returns a :class:`pd.DataFrame`.
 
     """
-
     data_types = []
 
     def as_dataframe(self):
@@ -124,14 +131,15 @@ class EEGMetaReader(BaseCMLReader):
         return sources_info
 
 
-class EventReader(BasicJSONReader):
+class EventReader(BaseJSONReader):
     """Reader for all experiment events.
 
     Returns a :class:`pd.DataFrame`.
 
     """
-
-    data_types = ['all_events', 'math_events', 'task_events', 'events', 'ps4_events']
+    data_types = [
+        "all_events", "events", "math_events", "ps4_events", "task_events",
+    ]
 
     def as_dataframe(self):
         df = super().as_dataframe()
@@ -149,8 +157,8 @@ class ClassifierContainerReader(BaseCMLReader):
     returned.
 
     """
-
     data_types = ["used_classifier", "baseline_classifier"]
+    protocols = ["r1"]
     default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,

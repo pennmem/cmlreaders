@@ -1,3 +1,8 @@
+# supported protocols
+PROTOCOLS = (
+    "r1",
+    "ltp",
+)
 
 rhino_paths = {
     # data indices
@@ -6,7 +11,7 @@ rhino_paths = {
 
     # Localization-level (subject + localization_
     'localization': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
     ],
 
     # Montage-level (subject + montage)
@@ -47,10 +52,10 @@ rhino_paths = {
         'data10/RAM/subjects/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat'
     ],
     'pairs': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
     ],
     'contacts': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json',
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json',
     ],
 
     # Report Data
@@ -72,11 +77,11 @@ rhino_paths = {
     ],
 
     # Session Data
-    'all_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
-    'task_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
-    'math_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
-    'ps4_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
-    'sources': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
+    'all_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
+    'task_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
+    'math_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
+    'ps4_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
+    'sources': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
 
     # Ramulator-related information
     'experiment_log': [

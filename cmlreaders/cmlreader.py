@@ -5,7 +5,8 @@ import pandas as pd
 
 from . import readers
 from .data_index import get_data_index
-from .exc import IncompatibleParametersError, UnknownProtocolError
+from .exc import IncompatibleParametersError, UnknownProtocolError, \
+    UnsupportedProtocolError
 from .util import get_root_dir
 
 
@@ -31,7 +32,6 @@ class CMLReader(object):
 
     """
     reader_names = {}
-    _index = None  # type: pd.DataFrame
 
     def __init__(self, subject: str,
                  experiment: Optional[str] = None,
@@ -51,19 +51,26 @@ class CMLReader(object):
         self.protocol = self._get_protocol(self.subject)
 
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
+        self.reader_protocols = {k: getattr(readers, v).protocols for k, v in self.reader_names.items()}
 
-    def _load_index(self):
+    def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and
         localization nubmers.
 
         """
-        if CMLReader._index is None:
-            CMLReader._index = get_data_index(self.protocol, rootdir=self.rootdir)
+        index = get_data_index(self.protocol, rootdir=self.rootdir)
 
-            # Some subjects don't explicitly specify localization/montage
-            # numbers in the index, so they appear as NaNs.
-            CMLReader._index.montage.replace({np.nan: "0"}, inplace=True)
-            CMLReader._index.localization.replace({np.nan: "0"}, inplace=True)
+        # Some subjects don't explicitly specify localization/montage
+        # numbers in the index, so they appear as NaNs.
+        try:
+            index["montage"].replace({np.nan: "0"}, inplace=True)
+            index["localization"].replace({np.nan: "0"}, inplace=True)
+        except KeyError:
+            # We're using a protocol that doesn't include localization data
+            # (e.g., ltp)
+            pass
+
+        return index
 
     @staticmethod
     def _get_protocol(subject: str) -> str:
@@ -93,9 +100,11 @@ class CMLReader(object):
         if which not in ["localization", "montage"]:
             raise ValueError
 
-        self._load_index()
+        index = self._load_index()
+        df = index[index["subject"] == self.subject]
 
-        df = CMLReader._index[CMLReader._index["subject"] == self.subject]
+        if which not in df:
+            return None
 
         if self.experiment is not None:
             df = df[df.experiment == self.experiment]
@@ -169,14 +178,22 @@ class CMLReader(object):
             else:
                 data_type = "ps4_events"
 
-        return self.readers[data_type](data_type,
-                                       subject=self.subject,
-                                       experiment=self.experiment,
-                                       session=self.session,
-                                       localization=self.localization,
-                                       montage=self.montage,
-                                       file_path=file_path,
-                                       rootdir=self.rootdir).load(**kwargs)
+        cls = self.readers[data_type]
+        if self.protocol not in cls.protocols:
+            raise UnsupportedProtocolError(
+                "Data type {} is not supported under protocol {}".format(
+                    data_type, self.protocol
+                )
+            )
+
+        return cls(data_type,
+                   subject=self.subject,
+                   experiment=self.experiment,
+                   session=self.session,
+                   localization=self.localization,
+                   montage=self.montage,
+                   file_path=file_path,
+                   rootdir=self.rootdir).load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,
