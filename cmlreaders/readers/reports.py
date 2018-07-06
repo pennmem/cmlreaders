@@ -3,6 +3,54 @@ from cmlreaders.base_reader import BaseCMLReader
 
 
 class BaseRAMReportDataReader(BaseCMLReader):
+    """Base class for all RAM report data readers."""
+    protocols = ["r1"]
+    default_representation = "pyobject"
+
+    def __init__(self, data_type, subject, experiment, session, localization,
+                 file_path=None, rootdir="/", **kwargs):
+        super().__init__(data_type, subject=subject,
+                         experiment=experiment,
+                         session=session,
+                         localization=localization,
+                         file_path=file_path,
+                         rootdir=rootdir)
+
+        self.data_type = data_type
+
+        try:
+            from ramutils.reports.summary import (
+                ClassifierSummary,
+                FRStimSessionSummary,
+                MathSummary,
+            )
+            from ramutils.utils import is_stim_experiment
+            self.is_stim_experiment = is_stim_experiment
+        except ImportError:
+            raise exc.UnmetOptionalDependencyError(
+                "Install ramutils to use this reader"
+            )
+
+        self.pyclass_mapping = {
+            'classifier_summary': ClassifierSummary,
+            'fr_stim_summary': FRStimSessionSummary,
+            'math_summary': MathSummary,
+        }
+
+    def as_pyobject(self):
+        """Return data as a python object specific to this data type."""
+        if self.data_type in self.pyclass_mapping:
+            return self.pyclass_mapping[self.data_type].from_hdf(self._file_path)
+
+    def as_dataframe(self):
+        raise exc.UnsupportedRepresentation("Unable to represent this data as a dataframe")
+
+    def to_hdf(self, file_name):
+        pyobj = self.as_pyobject()
+        pyobj.to_hdf(file_name)
+
+
+class RAMReportClassifierSummaryReader(BaseRAMReportDataReader):
     """Reader class for classifier summary data produced in the RAM reporting
     pipeline.
 
@@ -13,41 +61,7 @@ class BaseRAMReportDataReader(BaseCMLReader):
     be `ramutils.reports.summary.ClassifierSummary`
 
     """
-    # FIXME: make classifier summary reader be a subclass
     data_types = ["classifier_summary"]
-    protocols = ["r1"]
-    default_representation = "pyobject"
-
-    def __init__(self, data_type, subject, experiment, session, localization,
-                 file_path=None, rootdir="/", **kwargs):
-        super(BaseRAMReportDataReader, self).__init__(data_type, subject=subject,
-                                                      experiment=experiment,
-                                                      session=session,
-                                                      localization=localization,
-                                                      file_path=file_path,
-                                                      rootdir=rootdir)
-        self.data_type = data_type
-
-        try:
-            from ramutils.reports.summary import ClassifierSummary
-        except ImportError:
-            raise exc.UnmetOptionalDependencyError("Install ramutils to use this reader")
-
-        self.pyclass_mapping = {
-            'classifier_summary': ClassifierSummary,
-        }
-
-    def as_pyobject(self):
-        """ Return data as a python object specific to this data type """
-        if self.data_type in self.pyclass_mapping:
-            return self.pyclass_mapping[self.data_type].from_hdf(self._file_path)
-
-    def as_dataframe(self):
-        raise exc.UnsupportedRepresentation("Unable to represent this data as a dataframe")
-
-    def to_hdf(self, file_name):
-        pyobj = self.as_pyobject()
-        pyobj.to_hdf(file_name)
 
 
 class RAMReportSummaryDataReader(BaseRAMReportDataReader):
@@ -64,47 +78,34 @@ class RAMReportSummaryDataReader(BaseRAMReportDataReader):
     - `ramutils.reports.summary.FRStimSessionSummary`
 
     """
-
     data_types = ["session_summary", "math_summary"]
-    default_representation = "pyobject"
 
     def __init__(self, data_type, subject, experiment, session, localization,
                  file_path=None, rootdir="/", **kwargs):
-        super(BaseRAMReportDataReader, self).__init__(data_type, subject=subject,
-                                                      experiment=experiment,
-                                                      session=session,
-                                                      localization=localization,
-                                                      file_path=file_path,
-                                                      rootdir=rootdir)
+        super().__init__(data_type, subject=subject,
+                         experiment=experiment,
+                         session=session,
+                         localization=localization,
+                         file_path=file_path,
+                         rootdir=rootdir)
         self.data_type = data_type
         self.subject = subject
         self.experiment = experiment
         self.session = session
 
-        try:
-            from ramutils.reports.summary import FRStimSessionSummary, \
-                MathSummary
-            from ramutils.utils import is_stim_experiment
-        except ImportError:
-            raise exc.UnmetOptionalDependencyError("Install ramutils to use this reader")
-
-        self.pyclass_mapping = {
-            'math_summary': MathSummary,
-            'fr_stim_summary': FRStimSessionSummary,
-        }
-
-        self.is_stim_experiment = is_stim_experiment
-
     def as_pyobject(self):
-        if self.data_type == 'math_summary':
-            return super(RAMReportSummaryDataReader, self).as_pyobject()
+        if self.data_type == "math_summary":
+            return super().as_pyobject()
 
         stim_experiment = self.is_stim_experiment(self.experiment)
 
         # TODO: Loading record-only data is a bit more complicated since it is
         # not tied to a particular session
         if not stim_experiment:
-            raise exc.UnsupportedExperimentError("Only stim report data is currently supported. The readers in ramutils can still be used")
+            raise exc.UnsupportedExperimentError(
+                "Only stim report data is currently supported."
+                "The readers in ramutils can still be used"
+            )
 
         summary_obj = self.pyclass_mapping['fr_stim_summary']
 
