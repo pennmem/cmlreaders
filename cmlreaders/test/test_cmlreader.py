@@ -175,3 +175,15 @@ class TestLoadMontage:
             categories = None
 
         self.assert_categories_correct(df, categories, read_categories)
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("kind", ["contacts", "pairs"])
+    def test_read_categories_missing(self, kind, rhino_root):
+        """Try reading with electrode category info when that can't be found."""
+        subject, experiment, session = "R1132C", "TH1", 0
+        localization, montage = 0, 0
+        reader = CMLReader(subject, experiment, session, localization, montage,
+                           rootdir=rhino_root)
+
+        with pytest.raises(exc.MissingDataError):
+            reader.load(kind, read_categories=True)

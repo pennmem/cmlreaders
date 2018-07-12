@@ -28,6 +28,10 @@ class MissingParameter(CMLReaderException):
     """ Raised when a required parameter is missing """
 
 
+class MissingDataError(CMLReaderException):
+    """Raised when some required data cannot be found."""
+
+
 class RereferencingNotPossibleError(CMLReaderException):
     """ Raised when the requested EEG referencing scheme is not possible """
 

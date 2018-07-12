@@ -4,6 +4,7 @@ import os.path
 import pandas as pd
 from pandas.io.json import json_normalize
 
+from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
 
 
@@ -38,16 +39,23 @@ class MontageReader(BaseCMLReader):
         separated list of category names.
 
         """
-        category_reader = ElectrodeCategoriesReader(
-            data_type="electrode_categories",
-            subject=self.subject,
-            experiment=self.experiment,
-            session=self.session,
-            localization=self.localization,
-            montage=self.montage,
-            rootdir=self.rootdir,
-        )
-        categories = category_reader.load()
+        try:
+            category_reader = ElectrodeCategoriesReader(
+                data_type="electrode_categories",
+                subject=self.subject,
+                experiment=self.experiment,
+                session=self.session,
+                localization=self.localization,
+                montage=self.montage,
+                rootdir=self.rootdir,
+            )
+            categories = category_reader.load()
+        except IOError:
+            raise exc.MissingDataError(
+                "Cannot find electrode category information for " +
+                "{}, {} session {},".format(self.subject, self.experiment, self.session) +
+                "localization {}, montage {}".format(self.localization, self.montage)
+            )
 
         column = [None] * len(df)
 
