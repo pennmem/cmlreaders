@@ -1,22 +1,26 @@
-def _import_readers():
+from typing import Dict, Type
+
+
+def _import_readers() -> Dict[str, Type]:
     import importlib
     import pkgutil
+    import sys
 
-    loader = pkgutil.get_loader("cmlreaders")
-    module_info = [info for info in pkgutil.walk_packages(loader.path)
-                   if info[1].startswith("cmlreaders.readers.")]
-    modules = [
-        importlib.import_module("." + info[1].split(".")[-1],
-                                package="cmlreaders.readers")
-        for info in module_info
-    ]
+    pkg = sys.modules[__name__]
+    classes = {}
 
-    for module in modules:
-        things = [getattr(module, thing) for thing in dir(module)
-                  if thing.endswith("Reader")]
+    for module_finder, name, ispkg in pkgutil.iter_modules(pkg.__path__):
+        module_name = ".".join([pkg.__name__, name])
+        module = importlib.import_module(module_name)
+        classes.update({
+            cls: getattr(module, cls)
+            for cls in dir(module)
+            if cls.endswith("Reader")
+        })
 
-        for thing in things:
-            globals()[thing.__name__] = thing
+    return classes
 
 
-_import_readers()
+_types = _import_readers()
+globals().update(_types)
+__all__ = list(_types.keys())
