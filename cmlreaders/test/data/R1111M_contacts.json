@@ -1,0 +1,5892 @@
+{
+  "R1111M": {
+    "code": "R1111M", 
+    "contacts": {
+      "LAS1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -37.75, 
+            "y": -0.39, 
+            "z": -49.04
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -37.215374, 
+            "y": -2.538025, 
+            "z": -45.324986
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -30.91, 
+            "y": 11.93, 
+            "z": -62.69
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -31.035929, 
+            "y": 12.609047, 
+            "z": -64.219955
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -37.8057, 
+            "y": -7.87787, 
+            "z": -48.4416452126503
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -39.4045, 
+            "y": -2.17344, 
+            "z": -41.4689
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 354, 
+            "y": 227, 
+            "z": 40
+          }
+        }, 
+        "channel": 89, 
+        "code": "LAS1", 
+        "description": null, 
+        "id": "las.1", 
+        "type": "S"
+      }, 
+      "LAS2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -47.47, 
+            "y": 2.64, 
+            "z": -45.47
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -43.434654, 
+            "y": 0.583841, 
+            "z": -40.424248
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -39.98, 
+            "y": 15.4, 
+            "z": -59.79
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -40.199287, 
+            "y": 15.752787, 
+            "z": -59.326641
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -50.5854, 
+            "y": 1.79209, 
+            "z": -47.0338020285934
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -49.4715, 
+            "y": 0.229909, 
+            "z": -38.614
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 373, 
+            "y": 221, 
+            "z": 44
+          }
+        }, 
+        "channel": 90, 
+        "code": "LAS2", 
+        "description": null, 
+        "id": "las.2", 
+        "type": "S"
+      }, 
+      "LAS3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -54.47, 
+            "y": 4.47, 
+            "z": -37.34
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -52.181797, 
+            "y": 3.895153, 
+            "z": -33.961624
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -46.57, 
+            "y": 17.84, 
+            "z": -52.71
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -46.830616, 
+            "y": 17.163284, 
+            "z": -52.561615
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -58.6413, 
+            "y": 8.22933, 
+            "z": -35.190290931938
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -56.6553, 
+            "y": 1.92469, 
+            "z": -31.8486
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 387, 
+            "y": 217, 
+            "z": 54
+          }
+        }, 
+        "channel": 91, 
+        "code": "LAS3", 
+        "description": null, 
+        "id": "las.3", 
+        "type": "S"
+      }, 
+      "LAS4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -57.26, 
+            "y": 6.18, 
+            "z": -27.01
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -55.30135, 
+            "y": 4.356496, 
+            "z": -26.786236
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -49.23, 
+            "y": 20.12, 
+            "z": -43.6
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -50.065029, 
+            "y": 18.973141, 
+            "z": -43.087276
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -62.1655, 
+            "y": 9.16565, 
+            "z": -25.8334314541237
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -59.4822, 
+            "y": 3.92384, 
+            "z": -23.2239
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 393, 
+            "y": 213, 
+            "z": 67
+          }
+        }, 
+        "channel": 92, 
+        "code": "LAS4", 
+        "description": null, 
+        "id": "las.4", 
+        "type": "S"
+      }, 
+      "LOAD1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "cuneus", 
+            "x": -11.03, 
+            "y": -66.42, 
+            "z": 15.49
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "cuneus", 
+            "x": -11.03, 
+            "y": -66.42, 
+            "z": 15.49
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "cuneus", 
+            "x": -9.06, 
+            "y": -49.07, 
+            "z": -0.98
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "cuneus", 
+            "x": -9.06, 
+            "y": -49.07, 
+            "z": -0.98
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -8.97106, 
+            "y": -63.8962, 
+            "z": 17.4511945835526
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -8.84914, 
+            "y": -59.8747, 
+            "z": 18.0853
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 305, 
+            "y": 352, 
+            "z": 127
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left Cun cuneus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 65, 
+        "code": "LOAD1", 
+        "description": "None", 
+        "id": "load.1", 
+        "type": "D"
+      }, 
+      "LOAD2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "cuneus", 
+            "x": -16.23, 
+            "y": -66.35, 
+            "z": 14.89
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "cuneus", 
+            "x": -16.23, 
+            "y": -66.35, 
+            "z": 14.89
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "cuneus", 
+            "x": -13.95, 
+            "y": -48.83, 
+            "z": -1.59
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "cuneus", 
+            "x": -13.95, 
+            "y": -48.83, 
+            "z": -1.59
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -14.3115, 
+            "y": -65.0295, 
+            "z": 14.7350294868148
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -14.2064, 
+            "y": -60.2073, 
+            "z": 17.5268
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 315, 
+            "y": 352, 
+            "z": 126
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left Cerebral White Matter", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 66, 
+        "code": "LOAD2", 
+        "description": "None", 
+        "id": "load.2", 
+        "type": "D"
+      }, 
+      "LOAD3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "precuneus", 
+            "x": -20.95, 
+            "y": -67.27, 
+            "z": 13.44
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "precuneus", 
+            "x": -20.95, 
+            "y": -67.27, 
+            "z": 13.44
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precuneus", 
+            "x": -18.42, 
+            "y": -49.6, 
+            "z": -2.9
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precuneus", 
+            "x": -18.42, 
+            "y": -49.6, 
+            "z": -2.9
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -18.603, 
+            "y": -66.0104, 
+            "z": 12.5439485790735
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -19.0373, 
+            "y": -61.5046, 
+            "z": 16.2514
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 324, 
+            "y": 354, 
+            "z": 124
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left Calc calcarine cortex", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 67, 
+        "code": "LOAD3", 
+        "description": "None", 
+        "id": "load.3", 
+        "type": "D"
+      }, 
+      "LOAD4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "pericalcarine", 
+            "x": -26.16, 
+            "y": -67.2, 
+            "z": 12.84
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "pericalcarine", 
+            "x": -26.16, 
+            "y": -67.2, 
+            "z": 12.84
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "precuneus", 
+            "x": -23.3, 
+            "y": -49.36, 
+            "z": -3.51
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "precuneus", 
+            "x": -23.3, 
+            "y": -49.36, 
+            "z": -3.51
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -23.3127, 
+            "y": -65.579, 
+            "z": 11.2398691601455
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -24.3946, 
+            "y": -61.8371, 
+            "z": 15.693
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 334, 
+            "y": 354, 
+            "z": 123
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left Calc calcarine cortex", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 68, 
+        "code": "LOAD4", 
+        "description": "None", 
+        "id": "load.4", 
+        "type": "D"
+      }, 
+      "LOPD1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -31.06, 
+            "y": -81.53, 
+            "z": 61.71
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -31.06, 
+            "y": -81.53, 
+            "z": 61.71
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -28.98, 
+            "y": -60.39, 
+            "z": 40.92
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -28.98, 
+            "y": -60.39, 
+            "z": 40.92
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -25.1934, 
+            "y": -78.5996, 
+            "z": 65.1623688157675
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -28.4157, 
+            "y": -73.0383, 
+            "z": 61.7241
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 346, 
+            "y": 379, 
+            "z": 186
+          }
+        }, 
+        "channel": 69, 
+        "code": "LOPD1", 
+        "description": null, 
+        "id": "lopd.1", 
+        "type": "D"
+      }, 
+      "LOPD2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -30.2, 
+            "y": -82.36, 
+            "z": 56.17
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -30.2, 
+            "y": -82.36, 
+            "z": 56.17
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -28.14, 
+            "y": -61.51, 
+            "z": 36.02
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -28.14, 
+            "y": -61.51, 
+            "z": 36.02
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -23.9865, 
+            "y": -79.6683, 
+            "z": 60.3965126799661
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -27.5509, 
+            "y": -74.1006, 
+            "z": 56.6522
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 344, 
+            "y": 381, 
+            "z": 179
+          }
+        }, 
+        "channel": 70, 
+        "code": "LOPD2", 
+        "description": null, 
+        "id": "lopd.2", 
+        "type": "D"
+      }, 
+      "LOPD3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -29.31, 
+            "y": -83.23, 
+            "z": 51.42
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -29.31, 
+            "y": -83.23, 
+            "z": 51.42
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -27.3, 
+            "y": -62.62, 
+            "z": 31.83
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -27.3, 
+            "y": -62.62, 
+            "z": 31.83
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -23.1943, 
+            "y": -80.6287, 
+            "z": 56.0579474306234
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -26.6539, 
+            "y": -75.1413, 
+            "z": 52.3034
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 342, 
+            "y": 383, 
+            "z": 173
+          }
+        }, 
+        "channel": 71, 
+        "code": "LOPD3", 
+        "description": null, 
+        "id": "lopd.3", 
+        "type": "D"
+      }, 
+      "LOPD4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -28.45, 
+            "y": -84.07, 
+            "z": 45.88
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -28.45, 
+            "y": -84.07, 
+            "z": 45.88
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -26.46, 
+            "y": -63.74, 
+            "z": 26.93
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -26.46, 
+            "y": -63.74, 
+            "z": 26.93
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -23.0969, 
+            "y": -82.2786, 
+            "z": 50.1065430927049
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -25.7891, 
+            "y": -76.2035, 
+            "z": 47.2316
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 340, 
+            "y": 385, 
+            "z": 166
+          }
+        }, 
+        "channel": 72, 
+        "code": "LOPD4", 
+        "description": null, 
+        "id": "lopd.4", 
+        "type": "D"
+      }, 
+      "LOS1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -27.18, 
+            "y": -78.17, 
+            "z": 51.54
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -32.511497, 
+            "y": -77.65667, 
+            "z": 46.818111
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -25.09, 
+            "y": -57.84, 
+            "z": 31.7
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -25.0194, 
+            "y": -57.457333, 
+            "z": 31.772768
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -22.5393, 
+            "y": -78.4082, 
+            "z": 56.5469798863576
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -24.6557, 
+            "y": -70.1454, 
+            "z": 52.1253
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 338, 
+            "y": 373, 
+            "z": 173
+          }
+        }, 
+        "channel": 73, 
+        "code": "LOS1", 
+        "description": null, 
+        "id": "los.1", 
+        "type": "S"
+      }, 
+      "LOS2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -29.59, 
+            "y": -82.91, 
+            "z": 42.05
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -31.413456, 
+            "y": -82.3629, 
+            "z": 40.696274
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -27.45, 
+            "y": -62.78, 
+            "z": 23.43
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -26.224512, 
+            "y": -60.720276, 
+            "z": 22.134829
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -28.6333, 
+            "y": -84.617, 
+            "z": 45.9145206835323
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -27.0422, 
+            "y": -75.3986, 
+            "z": 43.6267
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 342, 
+            "y": 383, 
+            "z": 161
+          }
+        }, 
+        "channel": 74, 
+        "code": "LOS2", 
+        "description": null, 
+        "id": "los.2", 
+        "type": "S"
+      }, 
+      "LOS3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -31.99, 
+            "y": -87.64, 
+            "z": 32.56
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -32.379238, 
+            "y": -87.706802, 
+            "z": 32.676003
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -29.81, 
+            "y": -67.72, 
+            "z": 15.17
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -30.960451, 
+            "y": -67.867989, 
+            "z": 15.566014
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -29.1354, 
+            "y": -89.4549, 
+            "z": 34.4955627499504
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -29.4289, 
+            "y": -80.6518, 
+            "z": 35.1282
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 346, 
+            "y": 393, 
+            "z": 149
+          }
+        }, 
+        "channel": 75, 
+        "code": "LOS3", 
+        "description": null, 
+        "id": "los.3", 
+        "type": "S"
+      }, 
+      "LOS4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -33.37, 
+            "y": -91.35, 
+            "z": 22.29
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -33.117699, 
+            "y": -92.099899, 
+            "z": 22.745924
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -31.15, 
+            "y": -71.74, 
+            "z": 6.17
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -31.529146, 
+            "y": -71.677513, 
+            "z": 6.321814
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -29.3292, 
+            "y": -92.2963, 
+            "z": 26.1238049741066
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -30.8094, 
+            "y": -84.8899, 
+            "z": 25.8513
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 348, 
+            "y": 401, 
+            "z": 136
+          }
+        }, 
+        "channel": 76, 
+        "code": "LOS4", 
+        "description": null, 
+        "id": "los.4", 
+        "type": "S"
+      }, 
+      "LOS5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -34.74, 
+            "y": -94.54, 
+            "z": 12.05
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -33.548279, 
+            "y": -92.960831, 
+            "z": 12.873337
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -32.47, 
+            "y": -75.28, 
+            "z": -2.84
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -32.240349, 
+            "y": -73.731613, 
+            "z": -4.266127
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -30.7996, 
+            "y": -94.0059, 
+            "z": 16.3406317884022
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -32.203, 
+            "y": -88.641, 
+            "z": 16.563
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 350, 
+            "y": 408, 
+            "z": 123
+          }
+        }, 
+        "channel": 77, 
+        "code": "LOS5", 
+        "description": null, 
+        "id": "los.5", 
+        "type": "S"
+      }, 
+      "LOS6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -35.07, 
+            "y": -97.24, 
+            "z": 1.78
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -35.672096, 
+            "y": -93.202393, 
+            "z": -0.518011
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -32.78, 
+            "y": -78.38, 
+            "z": -11.88
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -32.150497, 
+            "y": -78.710419, 
+            "z": -13.262165
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -35.112, 
+            "y": -96.6241, 
+            "z": 6.48450907261771
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -32.5448, 
+            "y": -91.8425, 
+            "z": 7.23065
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 350, 
+            "y": 414, 
+            "z": 110
+          }
+        }, 
+        "channel": 78, 
+        "code": "LOS6", 
+        "description": null, 
+        "id": "los.6", 
+        "type": "S"
+      }, 
+      "LOS7": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -33.31, 
+            "y": -95.87, 
+            "z": -9.17
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -33.590797, 
+            "y": -95.946213, 
+            "z": -9.05489
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -30.96, 
+            "y": -77.7, 
+            "z": -21.73
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -30.987967, 
+            "y": -79.201347, 
+            "z": -21.525892
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -32.0246, 
+            "y": -98.9719, 
+            "z": -8.09969720431302
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -30.8944, 
+            "y": -91.0113, 
+            "z": -2.32665
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 346, 
+            "y": 412, 
+            "z": 96
+          }
+        }, 
+        "channel": 79, 
+        "code": "LOS7", 
+        "description": null, 
+        "id": "los.7", 
+        "type": "S"
+      }, 
+      "LOS8": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -28.27, 
+            "y": -90.09, 
+            "z": -16.15
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -28.248501, 
+            "y": -88.147049, 
+            "z": -18.450373
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -25.92, 
+            "y": -72.71, 
+            "z": -28.22
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -26.256718, 
+            "y": -73.347588, 
+            "z": -28.171661
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -28.117, 
+            "y": -93.5276, 
+            "z": -16.0115333125299
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -26.0057, 
+            "y": -85.5062, 
+            "z": -8.55667
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 336, 
+            "y": 401, 
+            "z": 87
+          }
+        }, 
+        "channel": 80, 
+        "code": "LOS8", 
+        "description": null, 
+        "id": "los.8", 
+        "type": "S"
+      }, 
+      "LPOG1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -65.25, 
+            "y": -18.69, 
+            "z": -26.16
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -62.897453, 
+            "y": -17.809998, 
+            "z": -22.942427
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -57.75, 
+            "y": -3.36, 
+            "z": -41.59
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -57.792236, 
+            "y": -3.336416, 
+            "z": -41.818466
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -67.9554, 
+            "y": -20.4363, 
+            "z": -26.3189200784193
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -66.7592, 
+            "y": -20.3747, 
+            "z": -21.0694
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 408, 
+            "y": 262, 
+            "z": 69
+          }
+        }, 
+        "channel": 1, 
+        "code": "LPOG1", 
+        "description": null, 
+        "id": "lpog.1", 
+        "type": "G"
+      }, 
+      "LPOG10": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -67.08, 
+            "y": -28.72, 
+            "z": -14.77
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -65.999489, 
+            "y": -28.459887, 
+            "z": -13.91275
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -59.99, 
+            "y": -12.32, 
+            "z": -30.87
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -59.71627, 
+            "y": -12.625202, 
+            "z": -30.141062
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -70.5576, 
+            "y": -29.4826, 
+            "z": -16.4156232704692
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -68.1533, 
+            "y": -29.4797, 
+            "z": -10.8698
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 412, 
+            "y": 281, 
+            "z": 84
+          }
+        }, 
+        "channel": 10, 
+        "code": "LPOG10", 
+        "description": null, 
+        "id": "lpog.10", 
+        "type": "G"
+      }, 
+      "LPOG11": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -66.78, 
+            "y": -29.07, 
+            "z": -4.62
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -64.530373, 
+            "y": -30.144566, 
+            "z": -7.351939
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -59.83, 
+            "y": -12.15, 
+            "z": -21.78
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -59.667892, 
+            "y": -12.44673, 
+            "z": -22.209066
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -70.9269, 
+            "y": -28.2764, 
+            "z": -5.41478008174413
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -67.7324, 
+            "y": -29.2419, 
+            "z": -2.28661
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 412, 
+            "y": 281, 
+            "z": 97
+          }
+        }, 
+        "channel": 11, 
+        "code": "LPOG11", 
+        "description": null, 
+        "id": "lpog.11", 
+        "type": "G"
+      }, 
+      "LPOG12": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -64.37, 
+            "y": -28.45, 
+            "z": 6.27
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -64.927444, 
+            "y": -27.015501, 
+            "z": 9.287645
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "bankssts", 
+            "x": -57.65, 
+            "y": -11.08, 
+            "z": -12.03
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "bankssts", 
+            "x": -57.637703, 
+            "y": -11.565278, 
+            "z": -12.758179
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -69.8368, 
+            "y": -27.358, 
+            "z": 4.35613471619532
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -65.1756, 
+            "y": -27.8607, 
+            "z": 7.39166
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 408, 
+            "y": 279, 
+            "z": 111
+          }
+        }, 
+        "channel": 12, 
+        "code": "LPOG12", 
+        "description": null, 
+        "id": "lpog.12", 
+        "type": "G"
+      }, 
+      "LPOG13": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -62.98, 
+            "y": -27.33, 
+            "z": 18
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -62.611794, 
+            "y": -27.042103, 
+            "z": 18.479534
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -56.4, 
+            "y": -9.47, 
+            "z": -1.58
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -56.922863, 
+            "y": -10.193739, 
+            "z": -3.078379
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -69.0815, 
+            "y": -21.3542, 
+            "z": 17.9075346925403
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -63.6646, 
+            "y": -26.0155, 
+            "z": 18.1709
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 406, 
+            "y": 276, 
+            "z": 126
+          }
+        }, 
+        "channel": 13, 
+        "code": "LPOG13", 
+        "description": null, 
+        "id": "lpog.13", 
+        "type": "G"
+      }, 
+      "LPOG14": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -61.09, 
+            "y": -26.71, 
+            "z": 28.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -61.32835, 
+            "y": -25.9205, 
+            "z": 29.656027
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -54.71, 
+            "y": -8.38, 
+            "z": 8.17
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -55.528934, 
+            "y": -10.71718, 
+            "z": 8.409287
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -66.5874, 
+            "y": -20.0973, 
+            "z": 27.6220982878666
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -61.6402, 
+            "y": -24.6476, 
+            "z": 28.2219
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 403, 
+            "y": 274, 
+            "z": 140
+          }
+        }, 
+        "channel": 14, 
+        "code": "LPOG14", 
+        "description": null, 
+        "id": "lpog.14", 
+        "type": "G"
+      }, 
+      "LPOG15": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -58.71, 
+            "y": -26.06, 
+            "z": 39.02
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -58.664082, 
+            "y": -27.276085, 
+            "z": 38.441757
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -52.54, 
+            "y": -7.33, 
+            "z": 17.21
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -52.551723, 
+            "y": -7.34012, 
+            "z": 17.177391
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -64.0203, 
+            "y": -21.7455, 
+            "z": 36.0039149519151
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -59.1158, 
+            "y": -23.2701, 
+            "z": 37.5333
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 399, 
+            "y": 272, 
+            "z": 153
+          }
+        }, 
+        "channel": 15, 
+        "code": "LPOG15", 
+        "description": null, 
+        "id": "lpog.15", 
+        "type": "G"
+      }, 
+      "LPOG16": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": -52.2, 
+            "y": -27.48, 
+            "z": 48.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": -50.803608, 
+            "y": -26.596148, 
+            "z": 48.870583
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -46.58, 
+            "y": -8.43, 
+            "z": 26.23
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -46.438381, 
+            "y": -8.590581, 
+            "z": 27.053247
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -56.7917, 
+            "y": -25.169, 
+            "z": 49.1448872455812
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -52.2786, 
+            "y": -23.5923, 
+            "z": 46.7581
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 387, 
+            "y": 274, 
+            "z": 166
+          }
+        }, 
+        "channel": 16, 
+        "code": "LPOG16", 
+        "description": null, 
+        "id": "lpog.16", 
+        "type": "G"
+      }, 
+      "LPOG17": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -66.46, 
+            "y": -39.55, 
+            "z": -25.38
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -58.83292, 
+            "y": -38.721371, 
+            "z": -24.450508
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -59.74, 
+            "y": -23.27, 
+            "z": -39.77
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -58.908134, 
+            "y": -22.949051, 
+            "z": -39.423523
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -64.3096, 
+            "y": -37.3819, 
+            "z": -25.4729084828442
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -67.2193, 
+            "y": -40.3712, 
+            "z": -19.2111
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 410, 
+            "y": 303, 
+            "z": 71
+          }
+        }, 
+        "channel": 17, 
+        "code": "LPOG17", 
+        "description": null, 
+        "id": "lpog.17", 
+        "type": "G"
+      }, 
+      "LPOG18": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -68.23, 
+            "y": -39.88, 
+            "z": -15.17
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -65.153473, 
+            "y": -38.950787, 
+            "z": -14.106103
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -61.52, 
+            "y": -23, 
+            "z": -30.64
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -60.947514, 
+            "y": -23.330729, 
+            "z": -30.422342
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -69.4028, 
+            "y": -38.7675, 
+            "z": -14.7551515322489
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -68.9285, 
+            "y": -40.2581, 
+            "z": -10.5672
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 414, 
+            "y": 303, 
+            "z": 84
+          }
+        }, 
+        "channel": 18, 
+        "code": "LPOG18", 
+        "description": null, 
+        "id": "lpog.18", 
+        "type": "G"
+      }, 
+      "LPOG19": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -66.84, 
+            "y": -39.28, 
+            "z": -3.46
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -64.990738, 
+            "y": -39.738625, 
+            "z": -5.543077
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -60.3, 
+            "y": -21.87, 
+            "z": -20.18
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -61.342773, 
+            "y": -22.440992, 
+            "z": -21.672371
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -70.305, 
+            "y": -36.9321, 
+            "z": -3.41197297136329
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -67.4042, 
+            "y": -38.947, 
+            "z": -0.718563
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 412, 
+            "y": 301, 
+            "z": 99
+          }
+        }, 
+        "channel": 19, 
+        "code": "LPOG19", 
+        "description": null, 
+        "id": "lpog.19", 
+        "type": "G"
+      }, 
+      "LPOG2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -67.03, 
+            "y": -17.97, 
+            "z": -16.69
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -66.109444, 
+            "y": -18.183006, 
+            "z": -16.230663
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -59.5, 
+            "y": -2.12, 
+            "z": -33.18
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -57.971119, 
+            "y": 0.602984, 
+            "z": -31.919569
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -71.3723, 
+            "y": -19.8873, 
+            "z": -17.0332228381427
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -68.527, 
+            "y": -19.3056, 
+            "z": -13.1105
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 412, 
+            "y": 260, 
+            "z": 81
+          }
+        }, 
+        "channel": 2, 
+        "code": "LPOG2", 
+        "description": null, 
+        "id": "lpog.2", 
+        "type": "G"
+      }, 
+      "LPOG20": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -65.47, 
+            "y": -38.65, 
+            "z": 7.47
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -66.616409, 
+            "y": -39.069767, 
+            "z": 7.204119
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -59.1, 
+            "y": -20.75, 
+            "z": -10.42
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -61.97892, 
+            "y": -21.635832, 
+            "z": -9.218927
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -70.1201, 
+            "y": -35.932, 
+            "z": 8.79390879218749
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -65.9124, 
+            "y": -37.6231, 
+            "z": 9.09535
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 410, 
+            "y": 299, 
+            "z": 113
+          }
+        }, 
+        "channel": 20, 
+        "code": "LPOG20", 
+        "description": null, 
+        "id": "lpog.20", 
+        "type": "G"
+      }, 
+      "LPOG21": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -64.1, 
+            "y": -38.02, 
+            "z": 18.39
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -63.570267, 
+            "y": -38.473694, 
+            "z": 15.748537
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -57.89, 
+            "y": -19.64, 
+            "z": -0.66
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -57.457279, 
+            "y": -20.210859, 
+            "z": -1.436282
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -68.4036, 
+            "y": -32.3519, 
+            "z": 20.6897255814085
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -64.4205, 
+            "y": -36.2863, 
+            "z": 19.1629
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 408, 
+            "y": 297, 
+            "z": 127
+          }
+        }, 
+        "channel": 21, 
+        "code": "LPOG21", 
+        "description": null, 
+        "id": "lpog.21", 
+        "type": "G"
+      }, 
+      "LPOG22": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -61.18, 
+            "y": -37.4, 
+            "z": 29.27
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -61.230228, 
+            "y": -37.729465, 
+            "z": 28.948076
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -55.23, 
+            "y": -18.6, 
+            "z": 9.08
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -54.469318, 
+            "y": -20.570013, 
+            "z": 10.848234
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -67.3892, 
+            "y": -32.3432, 
+            "z": 30.2570547945267
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -61.3312, 
+            "y": -34.8563, 
+            "z": 29.181
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 403, 
+            "y": 295, 
+            "z": 141
+          }
+        }, 
+        "channel": 22, 
+        "code": "LPOG22", 
+        "description": null, 
+        "id": "lpog.22", 
+        "type": "G"
+      }, 
+      "LPOG23": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -57.76, 
+            "y": -36.76, 
+            "z": 39.35
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -60.474815, 
+            "y": -37.250786, 
+            "z": 41.36179
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -52.09, 
+            "y": -17.6, 
+            "z": 18.1
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -52.083843, 
+            "y": -17.742958, 
+            "z": 18.579393
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -63.5228, 
+            "y": -32.3858, 
+            "z": 39.8302476308566
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -57.7418, 
+            "y": -33.4166, 
+            "z": 38.4594
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 397, 
+            "y": 293, 
+            "z": 154
+          }
+        }, 
+        "channel": 23, 
+        "code": "LPOG23", 
+        "description": null, 
+        "id": "lpog.23", 
+        "type": "G"
+      }, 
+      "LPOG24": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -53.27, 
+            "y": -37.2, 
+            "z": 50.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -53.215847, 
+            "y": -37.293251, 
+            "z": 50.78019
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -47.99, 
+            "y": -17.6, 
+            "z": 28.53
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -47.036915, 
+            "y": -19.354448, 
+            "z": 29.14674
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -55.2324, 
+            "y": -35.9795, 
+            "z": 55.293529599862
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -52.9963, 
+            "y": -32.846, 
+            "z": 49.1736
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 389, 
+            "y": 293, 
+            "z": 169
+          }
+        }, 
+        "channel": 24, 
+        "code": "LPOG24", 
+        "description": null, 
+        "id": "lpog.24", 
+        "type": "G"
+      }, 
+      "LPOG25": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -64.45, 
+            "y": -50.29, 
+            "z": -24.31
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -59.498684, 
+            "y": -51.46909, 
+            "z": -19.697884
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -58.29, 
+            "y": -33.59, 
+            "z": -38.19
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -58.511257, 
+            "y": -33.3797, 
+            "z": -37.417263
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -63.3834, 
+            "y": -49.8825, 
+            "z": -24.6216821312534
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -64.7479, 
+            "y": -50.4388, 
+            "z": -17.6914
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 406, 
+            "y": 324, 
+            "z": 73
+          }
+        }, 
+        "channel": 25, 
+        "code": "LPOG25", 
+        "description": null, 
+        "id": "lpog.25", 
+        "type": "G"
+      }, 
+      "LPOG26": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -66.22, 
+            "y": -50.62, 
+            "z": -14.1
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -60.438206, 
+            "y": -50.644363, 
+            "z": -14.87674
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -60.07, 
+            "y": -33.31, 
+            "z": -29.06
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -60.974133, 
+            "y": -33.717491, 
+            "z": -27.74474
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -67.2035, 
+            "y": -50.7545, 
+            "z": -14.6487758321677
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -66.457, 
+            "y": -50.3257, 
+            "z": -9.04751
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 410, 
+            "y": 324, 
+            "z": 86
+          }
+        }, 
+        "channel": 26, 
+        "code": "LPOG26", 
+        "description": null, 
+        "id": "lpog.26", 
+        "type": "G"
+      }, 
+      "LPOG27": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -65.89, 
+            "y": -49.98, 
+            "z": -3.13
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -65.2397, 
+            "y": -50.340446, 
+            "z": -3.177054
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -59.85, 
+            "y": -32.14, 
+            "z": -19.29
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -60.161205, 
+            "y": -32.412258, 
+            "z": -17.799038
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -68.4314, 
+            "y": -49.5314, 
+            "z": -3.35301715681588
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -66.0302, 
+            "y": -49.0953, 
+            "z": 0.171292
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 410, 
+            "y": 322, 
+            "z": 100
+          }
+        }, 
+        "channel": 27, 
+        "code": "LPOG27", 
+        "description": null, 
+        "id": "lpog.27", 
+        "type": "G"
+      }, 
+      "LPOG28": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "bankssts", 
+            "x": -63.48, 
+            "y": -48.85, 
+            "z": 7.78
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "bankssts", 
+            "x": -62.683247, 
+            "y": -47.971882, 
+            "z": 9.1221
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "bankssts", 
+            "x": -57.64, 
+            "y": -30.59, 
+            "z": -9.55
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "bankssts", 
+            "x": -57.941399, 
+            "y": -30.670212, 
+            "z": -9.407056
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -67.5063, 
+            "y": -46.5642, 
+            "z": 8.80380711058999
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -63.4865, 
+            "y": -47.2201, 
+            "z": 9.9773
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 406, 
+            "y": 319, 
+            "z": 114
+          }
+        }, 
+        "channel": 28, 
+        "code": "LPOG28", 
+        "description": null, 
+        "id": "lpog.28", 
+        "type": "G"
+      }, 
+      "LPOG29": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -63.13, 
+            "y": -48.23, 
+            "z": 19.52
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -64.441612, 
+            "y": -47.425461, 
+            "z": 19.757565
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -57.4, 
+            "y": -29.41, 
+            "z": 0.92
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -56.651535, 
+            "y": -28.352633, 
+            "z": -1.104599
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -66.955, 
+            "y": -43.5705, 
+            "z": 19.8372817127907
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -63.0273, 
+            "y": -45.9242, 
+            "z": 20.8008
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 406, 
+            "y": 317, 
+            "z": 129
+          }
+        }, 
+        "channel": 29, 
+        "code": "LPOG29", 
+        "description": null, 
+        "id": "lpog.29", 
+        "type": "G"
+      }, 
+      "LPOG3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -65.64, 
+            "y": -17.37, 
+            "z": -4.98
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -64.343948, 
+            "y": -17.615404, 
+            "z": -3.716486
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -58.28, 
+            "y": -1, 
+            "z": -22.72
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -58.323139, 
+            "y": -0.654878, 
+            "z": -23.346525
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -69.4694, 
+            "y": -16.8739, 
+            "z": -5.83700733752756
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -67.0028, 
+            "y": -17.9946, 
+            "z": -3.26183
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 410, 
+            "y": 258, 
+            "z": 96
+          }
+        }, 
+        "channel": 3, 
+        "code": "LPOG3", 
+        "description": null, 
+        "id": "lpog.3", 
+        "type": "G"
+      }, 
+      "LPOG30": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -61.24, 
+            "y": -47.61, 
+            "z": 30.43
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -62.988449, 
+            "y": -48.378056, 
+            "z": 31.022753
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -55.71, 
+            "y": -28.32, 
+            "z": 10.67
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -56.088531, 
+            "y": -29.951029, 
+            "z": 10.333611
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -65.8898, 
+            "y": -44.1367, 
+            "z": 30.4815565350758
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -61.003, 
+            "y": -44.5564, 
+            "z": 30.8517
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 403, 
+            "y": 315, 
+            "z": 143
+          }
+        }, 
+        "channel": 30, 
+        "code": "LPOG30", 
+        "description": null, 
+        "id": "lpog.30", 
+        "type": "G"
+      }, 
+      "LPOG31": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -58.86, 
+            "y": -46.96, 
+            "z": 40.55
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -59.000427, 
+            "y": -46.655449, 
+            "z": 40.305355
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -53.54, 
+            "y": -27.27, 
+            "z": 19.72
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -57.103188, 
+            "y": -28.385599, 
+            "z": 21.264698
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -61.8336, 
+            "y": -42.7914, 
+            "z": 41.2462536484366
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -58.4785, 
+            "y": -43.1789, 
+            "z": 40.1632
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 399, 
+            "y": 313, 
+            "z": 156
+          }
+        }, 
+        "channel": 31, 
+        "code": "LPOG31", 
+        "description": null, 
+        "id": "lpog.31", 
+        "type": "G"
+      }, 
+      "LPOG32": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -54.41, 
+            "y": -47.35, 
+            "z": 50.55
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -53.355797, 
+            "y": -46.812416, 
+            "z": 49.186172
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -49.47, 
+            "y": -27.3, 
+            "z": 28.75
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -50.98671, 
+            "y": -28.021345, 
+            "z": 29.488197
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -53.441, 
+            "y": -44.0448, 
+            "z": 54.1022128698745
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -53.7977, 
+            "y": -42.6513, 
+            "z": 49.4312
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 391, 
+            "y": 313, 
+            "z": 169
+          }
+        }, 
+        "channel": 32, 
+        "code": "LPOG32", 
+        "description": null, 
+        "id": "lpog.32", 
+        "type": "G"
+      }, 
+      "LPOG33": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -58.81, 
+            "y": -58.49, 
+            "z": -24.04
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -56.733181, 
+            "y": -56.775658, 
+            "z": -20.976702
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -53.32, 
+            "y": -41.65, 
+            "z": -37.43
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -51.838387, 
+            "y": -43.848843, 
+            "z": -38.24654
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -56.6581, 
+            "y": -58.1525, 
+            "z": -24.8135340863095
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -58.6474, 
+            "y": -57.871, 
+            "z": -17
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 395, 
+            "y": 340, 
+            "z": 74
+          }
+        }, 
+        "channel": 33, 
+        "code": "LPOG33", 
+        "description": null, 
+        "id": "lpog.33", 
+        "type": "G"
+      }, 
+      "LPOG34": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -61.65, 
+            "y": -60.84, 
+            "z": -13.87
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -58.664524, 
+            "y": -60.140484, 
+            "z": -13.157271
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -56.18, 
+            "y": -43.27, 
+            "z": -28.24
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -55.689892, 
+            "y": -43.705448, 
+            "z": -28.46233
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -60.6823, 
+            "y": -59.2929, 
+            "z": -13.7575894239221
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -61.3688, 
+            "y": -59.7686, 
+            "z": -8.27621
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 401, 
+            "y": 344, 
+            "z": 87
+          }
+        }, 
+        "channel": 34, 
+        "code": "LPOG34", 
+        "description": null, 
+        "id": "lpog.34", 
+        "type": "G"
+      }, 
+      "LPOG35": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -61.31, 
+            "y": -60.2, 
+            "z": -2.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -60.192848, 
+            "y": -59.094307, 
+            "z": -1.445118
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -55.95, 
+            "y": -42.11, 
+            "z": -18.46
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -54.839169, 
+            "y": -44.285904, 
+            "z": -20.484764
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -63.4413, 
+            "y": -61.5285, 
+            "z": -2.64079814765114
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -60.9419, 
+            "y": -58.5383, 
+            "z": 0.942555
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 401, 
+            "y": 342, 
+            "z": 101
+          }
+        }, 
+        "channel": 35, 
+        "code": "LPOG35", 
+        "description": null, 
+        "id": "lpog.35", 
+        "type": "G"
+      }, 
+      "LPOG36": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -59.92, 
+            "y": -59.6, 
+            "z": 8.8
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -59.736992, 
+            "y": -59.576317, 
+            "z": 8.959225
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -54.73, 
+            "y": -40.98, 
+            "z": -8
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -55.04673, 
+            "y": -41.073795, 
+            "z": -8.799468
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -62.8046, 
+            "y": -61.1197, 
+            "z": 9.40167090042796
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -59.4177, 
+            "y": -57.1896, 
+            "z": 11.5441
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 399, 
+            "y": 340, 
+            "z": 116
+          }
+        }, 
+        "channel": 36, 
+        "code": "LPOG36", 
+        "description": null, 
+        "id": "lpog.36", 
+        "type": "G"
+      }, 
+      "LPOG37": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -58.55, 
+            "y": -58.97, 
+            "z": 19.73
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -58.35762, 
+            "y": -57.145798, 
+            "z": 19.726805
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -53.53, 
+            "y": -39.87, 
+            "z": 1.75
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -52.707638, 
+            "y": -40.216789, 
+            "z": 0.344246
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -61.9177, 
+            "y": -60.419, 
+            "z": 21.7193663203966
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -57.9258, 
+            "y": -55.8528, 
+            "z": 21.6117
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 397, 
+            "y": 338, 
+            "z": 130
+          }
+        }, 
+        "channel": 37, 
+        "code": "LPOG37", 
+        "description": null, 
+        "id": "lpog.37", 
+        "type": "G"
+      }, 
+      "LPOG38": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -58.23, 
+            "y": -57.28, 
+            "z": 29.95
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -56.695854, 
+            "y": -55.214973, 
+            "z": 28.380308
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -53.26, 
+            "y": -37.74, 
+            "z": 10.81
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -54.992168, 
+            "y": -39.005146, 
+            "z": 12.786964
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -61.3598, 
+            "y": -55.6273, 
+            "z": 31.1921399981407
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -57.5577, 
+            "y": -53.6255, 
+            "z": 30.9664
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 397, 
+            "y": 334, 
+            "z": 143
+          }
+        }, 
+        "channel": 38, 
+        "code": "LPOG38", 
+        "description": null, 
+        "id": "lpog.38", 
+        "type": "G"
+      }, 
+      "LPOG39": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -56.86, 
+            "y": -56.65, 
+            "z": 40.88
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -53.552849, 
+            "y": -56.694176, 
+            "z": 40.089233
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -52.06, 
+            "y": -36.62, 
+            "z": 20.57
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -52.901062, 
+            "y": -36.513653, 
+            "z": 21.344128
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -58.7055, 
+            "y": -53.7327, 
+            "z": 43.9290667991376
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -56.0658, 
+            "y": -52.2888, 
+            "z": 41.0339
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 395, 
+            "y": 332, 
+            "z": 157
+          }
+        }, 
+        "channel": 39, 
+        "code": "LPOG39", 
+        "description": null, 
+        "id": "lpog.39", 
+        "type": "G"
+      }, 
+      "LPOG4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -61.69, 
+            "y": -17.78, 
+            "z": 5.82
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -61.797974, 
+            "y": -18.243324, 
+            "z": 5.439895
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -54.69, 
+            "y": -0.98, 
+            "z": -12.98
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -56.340431, 
+            "y": -1.066761, 
+            "z": -10.554823
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -68.4177, 
+            "y": -13.6191, 
+            "z": 6.59919515178433
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -62.8222, 
+            "y": -17.4965, 
+            "z": 6.35027
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 403, 
+            "y": 258, 
+            "z": 110
+          }
+        }, 
+        "channel": 4, 
+        "code": "LPOG4", 
+        "description": null, 
+        "id": "lpog.4", 
+        "type": "G"
+      }, 
+      "LPOG40": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "supramarginal", 
+            "x": -54.45, 
+            "y": -55.02, 
+            "z": 51.81
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "supramarginal", 
+            "x": -50.795513, 
+            "y": -52.29319, 
+            "z": 47.849148
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "supramarginal", 
+            "x": -49.83, 
+            "y": -34.59, 
+            "z": 30.29
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "supramarginal", 
+            "x": -48.499901, 
+            "y": -34.103798, 
+            "z": 30.338615
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -51.5195, 
+            "y": -51.7808, 
+            "z": 55.0448472598954
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -53.5353, 
+            "y": -49.9156, 
+            "z": 51.0459
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 391, 
+            "y": 328, 
+            "z": 171
+          }
+        }, 
+        "channel": 40, 
+        "code": "LPOG40", 
+        "description": null, 
+        "id": "lpog.40", 
+        "type": "G"
+      }, 
+      "LPOG41": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -51.57, 
+            "y": -65.74, 
+            "z": -22.23
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -53.241066, 
+            "y": -62.654781, 
+            "z": -16.893286
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": -46.81, 
+            "y": -48.79, 
+            "z": -35.31
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -47.017708, 
+            "y": -49.06678, 
+            "z": -35.256969
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -47.6532, 
+            "y": -64.6244, 
+            "z": -20.9482481120029
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -50.9108, 
+            "y": -64.1989, 
+            "z": -15.0583
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 381, 
+            "y": 354, 
+            "z": 77
+          }
+        }, 
+        "channel": 41, 
+        "code": "LPOG41", 
+        "description": null, 
+        "id": "lpog.41", 
+        "type": "G"
+      }, 
+      "LPOG42": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -55.47, 
+            "y": -69.08, 
+            "z": -12.84
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -54.741898, 
+            "y": -66.312775, 
+            "z": -11.753535
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -50.71, 
+            "y": -51.35, 
+            "z": -26.78
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -48.212963, 
+            "y": -51.157825, 
+            "z": -27.830112
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -55.5975, 
+            "y": -69.7024, 
+            "z": -11.6895359034912
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -54.7033, 
+            "y": -67.1513, 
+            "z": -6.93971
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 389, 
+            "y": 360, 
+            "z": 89
+          }
+        }, 
+        "channel": 42, 
+        "code": "LPOG42", 
+        "description": null, 
+        "id": "lpog.42", 
+        "type": "G"
+      }, 
+      "LPOG43": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -57.22, 
+            "y": -69.43, 
+            "z": -1.85
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -54.761211, 
+            "y": -66.740372, 
+            "z": -1.416828
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -52.48, 
+            "y": -51.06, 
+            "z": -16.95
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -54.762543, 
+            "y": -51.522419, 
+            "z": -16.083292
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -56.4011, 
+            "y": -72.6211, 
+            "z": -0.278294368324822
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -56.38, 
+            "y": -67.0199, 
+            "z": 2.36445
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 393, 
+            "y": 360, 
+            "z": 103
+          }
+        }, 
+        "channel": 43, 
+        "code": "LPOG43", 
+        "description": null, 
+        "id": "lpog.43", 
+        "type": "G"
+      }, 
+      "LPOG44": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -54.83, 
+            "y": -67.77, 
+            "z": 8.3
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -54.624756, 
+            "y": -66.515694, 
+            "z": 7.814377
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -50.26, 
+            "y": -49.04, 
+            "z": -7.93
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -50.153168, 
+            "y": -48.993343, 
+            "z": -8.458884
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -56.6735, 
+            "y": -70.9268, 
+            "z": 12.2821493033474
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -53.882, 
+            "y": -64.6728, 
+            "z": 11.5594
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 389, 
+            "y": 356, 
+            "z": 116
+          }
+        }, 
+        "channel": 44, 
+        "code": "LPOG44", 
+        "description": null, 
+        "id": "lpog.44", 
+        "type": "G"
+      }, 
+      "LPOG45": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -53.46, 
+            "y": -67.14, 
+            "z": 19.23
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -52.687962, 
+            "y": -63.450558, 
+            "z": 13.365304
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -49.05, 
+            "y": -47.92, 
+            "z": 1.83
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -48.327343, 
+            "y": -50.344173, 
+            "z": 0.476759
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -56.07, 
+            "y": -69.9955, 
+            "z": 22.6766592148697
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -52.3901, 
+            "y": -63.3362, 
+            "z": 21.6267
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 387, 
+            "y": 354, 
+            "z": 130
+          }
+        }, 
+        "channel": 45, 
+        "code": "LPOG45", 
+        "description": null, 
+        "id": "lpog.45", 
+        "type": "G"
+      }, 
+      "LPOG46": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -52.09, 
+            "y": -66.51, 
+            "z": 30.16
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -50.5634, 
+            "y": -64.625557, 
+            "z": 31.479271
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -47.85, 
+            "y": -46.81, 
+            "z": 11.59
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -49.316971, 
+            "y": -46.590996, 
+            "z": 11.206053
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -53.5233, 
+            "y": -66.9793, 
+            "z": 33.7832981734209
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -50.8983, 
+            "y": -61.9994, 
+            "z": 31.6943
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 385, 
+            "y": 352, 
+            "z": 144
+          }
+        }, 
+        "channel": 46, 
+        "code": "LPOG46", 
+        "description": null, 
+        "id": "lpog.46", 
+        "type": "G"
+      }, 
+      "LPOG47": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -50.69, 
+            "y": -64.89, 
+            "z": 41.91
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -51.361259, 
+            "y": -65.355537, 
+            "z": 41.960838
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -46.58, 
+            "y": -44.7, 
+            "z": 22.03
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -48.776211, 
+            "y": -45.384853, 
+            "z": 23.918661
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -51.037, 
+            "y": -64.8607, 
+            "z": 46.0915610320853
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -49.4004, 
+            "y": -59.6669, 
+            "z": 42.4622
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 383, 
+            "y": 348, 
+            "z": 159
+          }
+        }, 
+        "channel": 47, 
+        "code": "LPOG47", 
+        "description": null, 
+        "id": "lpog.47", 
+        "type": "G"
+      }, 
+      "LPOG48": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -48.27, 
+            "y": -63.25, 
+            "z": 52.84
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -45.623177, 
+            "y": -65.223358, 
+            "z": 47.569008
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -44.35, 
+            "y": -42.66, 
+            "z": 31.75
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -43.44458, 
+            "y": -43.026699, 
+            "z": 31.569799
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -45.7013, 
+            "y": -61.538, 
+            "z": 56.1811835086054
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -46.87, 
+            "y": -57.2938, 
+            "z": 52.4743
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 379, 
+            "y": 344, 
+            "z": 173
+          }
+        }, 
+        "channel": 48, 
+        "code": "LPOG48", 
+        "description": null, 
+        "id": "lpog.48", 
+        "type": "G"
+      }, 
+      "LPOG49": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": -40.67, 
+            "y": -73.57, 
+            "z": -19.77
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -40.426285, 
+            "y": -74.049347, 
+            "z": -21.262926
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": -36.9, 
+            "y": -56.58, 
+            "z": -32.54
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -35.925831, 
+            "y": -56.140556, 
+            "z": -33.49308
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -38.5389, 
+            "y": -73.0514, 
+            "z": -19.3607169146969
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -39.4014, 
+            "y": -70.7773, 
+            "z": -12.5502
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 360, 
+            "y": 369, 
+            "z": 81
+          }
+        }, 
+        "channel": 49, 
+        "code": "LPOG49", 
+        "description": null, 
+        "id": "lpog.49", 
+        "type": "G"
+      }, 
+      "LPOG5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": -59.29, 
+            "y": -17.16, 
+            "z": 16.71
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": -60.685299, 
+            "y": -19.301018, 
+            "z": 15.988436
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -52.51, 
+            "y": 0.08, 
+            "z": -3.24
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -52.411266, 
+            "y": -0.601788, 
+            "z": -2.722061
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -68.5695, 
+            "y": -14.288, 
+            "z": 16.2207500009408
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -60.2654, 
+            "y": -16.0975, 
+            "z": 16.3848
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 399, 
+            "y": 256, 
+            "z": 124
+          }
+        }, 
+        "channel": 5, 
+        "code": "LPOG5", 
+        "description": null, 
+        "id": "lpog.5", 
+        "type": "G"
+      }, 
+      "LPOG50": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": -48.28, 
+            "y": -77.8, 
+            "z": -12.65
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -43.72591, 
+            "y": -75.481987, 
+            "z": -15.218046
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -44.3, 
+            "y": -59.98, 
+            "z": -26.03
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -45.929474, 
+            "y": -61.19305, 
+            "z": -25.696037
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -48.2592, 
+            "y": -78.9289, 
+            "z": -13.0338717718277
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -46.992, 
+            "y": -74.9771, 
+            "z": -6.28141
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 375, 
+            "y": 377, 
+            "z": 90
+          }
+        }, 
+        "channel": 50, 
+        "code": "LPOG50", 
+        "description": null, 
+        "id": "lpog.50", 
+        "type": "G"
+      }, 
+      "LPOG51": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -50.04, 
+            "y": -79.17, 
+            "z": -1.69
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -46.507381, 
+            "y": -79.063881, 
+            "z": -2.442149
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -46.12, 
+            "y": -60.67, 
+            "z": -16.18
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -46.507679, 
+            "y": -62.241306, 
+            "z": -16.645475
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -48.5356, 
+            "y": -79.9601, 
+            "z": -1.56304633498969
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -48.6425, 
+            "y": -75.8198, 
+            "z": 3.04755
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 379, 
+            "y": 379, 
+            "z": 104
+          }
+        }, 
+        "channel": 51, 
+        "code": "LPOG51", 
+        "description": null, 
+        "id": "lpog.51", 
+        "type": "G"
+      }, 
+      "LPOG52": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -49.73, 
+            "y": -78.51, 
+            "z": 8.49
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -47.648273, 
+            "y": -78.510513, 
+            "z": 9.182006
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -45.9, 
+            "y": -59.51, 
+            "z": -7.11
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -47.44342, 
+            "y": -60.228577, 
+            "z": -6.139381
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -47.5633, 
+            "y": -79.7953, 
+            "z": 12.8722962245166
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -48.2479, 
+            "y": -74.5703, 
+            "z": 12.3538
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 379, 
+            "y": 377, 
+            "z": 117
+          }
+        }, 
+        "channel": 52, 
+        "code": "LPOG52", 
+        "description": null, 
+        "id": "lpog.52", 
+        "type": "G"
+      }, 
+      "LPOG53": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -47.32, 
+            "y": -76.87, 
+            "z": 19.42
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -45.857319, 
+            "y": -77.610153, 
+            "z": 18.432442
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -43.67, 
+            "y": -57.47, 
+            "z": 2.62
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -42.811958, 
+            "y": -56.865231, 
+            "z": -0.237472
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -46.7718, 
+            "y": -79.2613, 
+            "z": 23.5811611886342
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -45.7175, 
+            "y": -72.1971, 
+            "z": 22.3657
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 375, 
+            "y": 373, 
+            "z": 131
+          }
+        }, 
+        "channel": 53, 
+        "code": "LPOG53", 
+        "description": null, 
+        "id": "lpog.53", 
+        "type": "G"
+      }, 
+      "LPOG54": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -45.92, 
+            "y": -75.25, 
+            "z": 31.17
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -47.021816, 
+            "y": -74.764145, 
+            "z": 31.494713
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -42.4, 
+            "y": -55.37, 
+            "z": 13.06
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -43.357403, 
+            "y": -57.336044, 
+            "z": 13.681945
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -44.7986, 
+            "y": -77.7591, 
+            "z": 35.3825349467553
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -44.2196, 
+            "y": -69.8647, 
+            "z": 33.1338
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 373, 
+            "y": 369, 
+            "z": 146
+          }
+        }, 
+        "channel": 54, 
+        "code": "LPOG54", 
+        "description": null, 
+        "id": "lpog.54", 
+        "type": "G"
+      }, 
+      "LPOG55": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -44.54, 
+            "y": -73.6, 
+            "z": 42.14
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -43.034195, 
+            "y": -72.707184, 
+            "z": 42.4543
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -41.15, 
+            "y": -53.28, 
+            "z": 22.8
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -40.820114, 
+            "y": -53.115265, 
+            "z": 23.285994
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -42.5309, 
+            "y": -75.2895, 
+            "z": 46.0994313818139
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -42.7541, 
+            "y": -67.5537, 
+            "z": 43.1788
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 371, 
+            "y": 365, 
+            "z": 160
+          }
+        }, 
+        "channel": 55, 
+        "code": "LPOG55", 
+        "description": null, 
+        "id": "lpog.55", 
+        "type": "G"
+      }, 
+      "LPOG56": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -43.16, 
+            "y": -72.47, 
+            "z": 53.09
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -40.606899, 
+            "y": -71.541107, 
+            "z": 49.949409
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -39.92, 
+            "y": -51.68, 
+            "z": 32.55
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -38.596401, 
+            "y": -49.447033, 
+            "z": 31.913225
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -37.5394, 
+            "y": -69.1367, 
+            "z": 57.0471184861067
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -41.2755, 
+            "y": -65.7298, 
+            "z": 53.235
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 369, 
+            "y": 362, 
+            "z": 174
+          }
+        }, 
+        "channel": 56, 
+        "code": "LPOG56", 
+        "description": null, 
+        "id": "lpog.56", 
+        "type": "G"
+      }, 
+      "LPOG57": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": -34.47, 
+            "y": -81.83, 
+            "z": -17.96
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -34.438576, 
+            "y": -81.905182, 
+            "z": -18.163172
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": -31.41, 
+            "y": -64.65, 
+            "z": -30.38
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -31.737059, 
+            "y": -64.538841, 
+            "z": -30.912981
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -33.1661, 
+            "y": -82.8932, 
+            "z": -16.9072031291979
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -32.7036, 
+            "y": -78.1417, 
+            "z": -10.5534
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 348, 
+            "y": 385, 
+            "z": 84
+          }
+        }, 
+        "channel": 57, 
+        "code": "LPOG57", 
+        "description": null, 
+        "id": "lpog.57", 
+        "type": "G"
+      }, 
+      "LPOG58": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -41.62, 
+            "y": -87.03, 
+            "z": -12.45
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -42.602234, 
+            "y": -87.268555, 
+            "z": -12.776503
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -38.4, 
+            "y": -69.07, 
+            "z": -25.26
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -37.01907, 
+            "y": -69.493118, 
+            "z": -26.381598
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -40.4719, 
+            "y": -87.5334, 
+            "z": -14.3541115255449
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -39.8002, 
+            "y": -83.321, 
+            "z": -5.59556
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 362, 
+            "y": 395, 
+            "z": 91
+          }
+        }, 
+        "channel": 58, 
+        "code": "LPOG58", 
+        "description": null, 
+        "id": "lpog.58", 
+        "type": "G"
+      }, 
+      "LPOG59": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -44.96, 
+            "y": -88.36, 
+            "z": -2.23
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -44.54459, 
+            "y": -88.140106, 
+            "z": -1.693185
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -41.7, 
+            "y": -69.69, 
+            "z": -16.09
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -41.579926, 
+            "y": -69.814812, 
+            "z": -15.476809
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -42.1346, 
+            "y": -85.9523, 
+            "z": -1.33280212479268
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -43.0804, 
+            "y": -84.2757, 
+            "z": 3.11864
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 369, 
+            "y": 397, 
+            "z": 104
+          }
+        }, 
+        "channel": 59, 
+        "code": "LPOG59", 
+        "description": null, 
+        "id": "lpog.59", 
+        "type": "G"
+      }, 
+      "LPOG6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": -57.9, 
+            "y": -16.55, 
+            "z": 28.42
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": -59.303391, 
+            "y": -18.137476, 
+            "z": 28.840101
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -51.29, 
+            "y": 1.21, 
+            "z": 7.22
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -52.456177, 
+            "y": -0.483954, 
+            "z": 8.005964
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -66.3854, 
+            "y": -9.64415, 
+            "z": 27.9437463780634
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -58.7412, 
+            "y": -14.7395, 
+            "z": 27.1753
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 397, 
+            "y": 254, 
+            "z": 139
+          }
+        }, 
+        "channel": 6, 
+        "code": "LPOG6", 
+        "description": null, 
+        "id": "lpog.6", 
+        "type": "G"
+      }, 
+      "LPOG60": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "lateraloccipital", 
+            "x": -43.56, 
+            "y": -86.74, 
+            "z": 9.52
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "lateraloccipital", 
+            "x": -43.909626, 
+            "y": -87.798897, 
+            "z": 10.420806
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "lateraloccipital", 
+            "x": -40.43, 
+            "y": -67.59, 
+            "z": -5.65
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "lateraloccipital", 
+            "x": -39.927433, 
+            "y": -67.02047, 
+            "z": -7.7865
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -42.2775, 
+            "y": -87.4996, 
+            "z": 14.3361459333161
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -41.5825, 
+            "y": -81.9484, 
+            "z": 13.782
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 367, 
+            "y": 393, 
+            "z": 119
+          }
+        }, 
+        "channel": 60, 
+        "code": "LPOG60", 
+        "description": null, 
+        "id": "lpog.60", 
+        "type": "G"
+      }, 
+      "LPOG61": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -40.61, 
+            "y": -84.09, 
+            "z": 20.48
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -40.88726, 
+            "y": -84.380371, 
+            "z": 20.223955
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -37.66, 
+            "y": -64.6, 
+            "z": 4.05
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -38.758091, 
+            "y": -63.863979, 
+            "z": 2.32455
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -39.806, 
+            "y": -86.0892, 
+            "z": 25.0732847847783
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -38.5458, 
+            "y": -78.5698, 
+            "z": 23.7552
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 362, 
+            "y": 387, 
+            "z": 133
+          }
+        }, 
+        "channel": 61, 
+        "code": "LPOG61", 
+        "description": null, 
+        "id": "lpog.61", 
+        "type": "G"
+      }, 
+      "LPOG62": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -39.27, 
+            "y": -83.44, 
+            "z": 30.63
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -39.306133, 
+            "y": -83.70903, 
+            "z": 30.925121
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -36.47, 
+            "y": -63.5, 
+            "z": 13.11
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -37.204262, 
+            "y": -64.546494, 
+            "z": 13.828279
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -37.2399, 
+            "y": -85.0189, 
+            "z": 34.1094381675511
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -37.0864, 
+            "y": -77.2545, 
+            "z": 33.0996
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 360, 
+            "y": 385, 
+            "z": 146
+          }
+        }, 
+        "channel": 62, 
+        "code": "LPOG62", 
+        "description": null, 
+        "id": "lpog.62", 
+        "type": "G"
+      }, 
+      "LPOG63": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -36.84, 
+            "y": -80.78, 
+            "z": 41.6
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -36.901405, 
+            "y": -80.648407, 
+            "z": 42.030422
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiorparietal", 
+            "x": -34.19, 
+            "y": -60.49, 
+            "z": 22.81
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiorparietal", 
+            "x": -35.070553, 
+            "y": -60.616207, 
+            "z": 23.432549
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -33.8659, 
+            "y": -81.9709, 
+            "z": 46.9100327163739
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -34.5822, 
+            "y": -73.907, 
+            "z": 43.0892
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 356, 
+            "y": 379, 
+            "z": 160
+          }
+        }, 
+        "channel": 63, 
+        "code": "LPOG63", 
+        "description": null, 
+        "id": "lpog.63", 
+        "type": "G"
+      }, 
+      "LPOG64": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiorparietal", 
+            "x": -34.43, 
+            "y": -79.15, 
+            "z": 52.53
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiorparietal", 
+            "x": -35.190334, 
+            "y": -76.555313, 
+            "z": 48.617222
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiorparietal", 
+            "x": -31.96, 
+            "y": -58.45, 
+            "z": 32.53
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiorparietal", 
+            "x": -29.525843, 
+            "y": -57.163506, 
+            "z": 31.84746
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -29.2753, 
+            "y": -77.6791, 
+            "z": 56.0669939775638
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -32.0517, 
+            "y": -71.5338, 
+            "z": 53.1012
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 352, 
+            "y": 375, 
+            "z": 174
+          }
+        }, 
+        "channel": 64, 
+        "code": "LPOG64", 
+        "description": null, 
+        "id": "lpog.64", 
+        "type": "G"
+      }, 
+      "LPOG7": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": -55.55, 
+            "y": -16.89, 
+            "z": 37.71
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": -57.467625, 
+            "y": -18.900856, 
+            "z": 37.871159
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -49.19, 
+            "y": 1.27, 
+            "z": 15.58
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -50.685085, 
+            "y": 0.791302, 
+            "z": 15.801653
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -63.258, 
+            "y": -12.0084, 
+            "z": 36.1670925102806
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -56.2227, 
+            "y": -14.3576, 
+            "z": 35.7862
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 393, 
+            "y": 254, 
+            "z": 151
+          }
+        }, 
+        "channel": 7, 
+        "code": "LPOG7", 
+        "description": null, 
+        "id": "lpog.7", 
+        "type": "G"
+      }, 
+      "LPOG8": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "postcentral", 
+            "x": -52.07, 
+            "y": -17.35, 
+            "z": 50.09
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "postcentral", 
+            "x": -52.872028, 
+            "y": -16.271154, 
+            "z": 50.451599
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "postcentral", 
+            "x": -46.06, 
+            "y": 1.34, 
+            "z": 26.73
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "postcentral", 
+            "x": -45.672318, 
+            "y": 1.759013, 
+            "z": 26.514107
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -58.798, 
+            "y": -17.7378, 
+            "z": 48.0541197581217
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -52.5098, 
+            "y": -13.8278, 
+            "z": 47.2564
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 387, 
+            "y": 254, 
+            "z": 167
+          }
+        }, 
+        "channel": 8, 
+        "code": "LPOG8", 
+        "description": null, 
+        "id": "lpog.8", 
+        "type": "G"
+      }, 
+      "LPOG9": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -65.34, 
+            "y": -29.38, 
+            "z": -25.8
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -59.15041, 
+            "y": -29.214027, 
+            "z": -25.817514
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -58.27, 
+            "y": -13.59, 
+            "z": -40.68
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -57.536995, 
+            "y": -14.462357, 
+            "z": -41.849373
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -65.4057, 
+            "y": -28.9018, 
+            "z": -27.1156891853646
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -66.4502, 
+            "y": -30.5853, 
+            "z": -20.1492
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 408, 
+            "y": 283, 
+            "z": 70
+          }
+        }, 
+        "channel": 9, 
+        "code": "LPOG9", 
+        "description": null, 
+        "id": "lpog.9", 
+        "type": "G"
+      }, 
+      "LPS1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": -32.62, 
+            "y": -3.45, 
+            "z": -50.12
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -33.093819, 
+            "y": -4.161299, 
+            "z": -45.572002
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": -26.2, 
+            "y": 8.74, 
+            "z": -63.41
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -26.239288, 
+            "y": 8.325571, 
+            "z": -64.236168
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -28.1551, 
+            "y": -0.875289, 
+            "z": -52.6605914012775
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -34.0329, 
+            "y": -4.80254, 
+            "z": -42.2066
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 344, 
+            "y": 233, 
+            "z": 39
+          }
+        }, 
+        "channel": 93, 
+        "code": "LPS1", 
+        "description": null, 
+        "id": "lps.1", 
+        "type": "S"
+      }, 
+      "LPS2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -43.48, 
+            "y": -3.38, 
+            "z": -48.97
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -41.638046, 
+            "y": -4.445238, 
+            "z": -45.251774
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "inferiortemporal", 
+            "x": -36.43, 
+            "y": 9.29, 
+            "z": -62.53
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "inferiortemporal", 
+            "x": -36.681076, 
+            "y": 9.473078, 
+            "z": -62.894424
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -43.8198, 
+            "y": -1.62223, 
+            "z": -49.9379757358821
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -45.1829, 
+            "y": -5.43894, 
+            "z": -41.2278
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 365, 
+            "y": 233, 
+            "z": 40
+          }
+        }, 
+        "channel": 94, 
+        "code": "LPS2", 
+        "description": null, 
+        "id": "lps.2", 
+        "type": "S"
+      }, 
+      "LPS3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "inferiortemporal", 
+            "x": -52.62, 
+            "y": -1.46, 
+            "z": -43.11
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "inferiortemporal", 
+            "x": -48.230309, 
+            "y": -6.322915, 
+            "z": -41.372993
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -45.01, 
+            "y": 11.79, 
+            "z": -57.52
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -45.050678, 
+            "y": 11.920819, 
+            "z": -56.735161
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -54.7838, 
+            "y": -1.54065, 
+            "z": -42.4597483483217
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -54.5939, 
+            "y": -3.92372, 
+            "z": -36.3824
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 383, 
+            "y": 229, 
+            "z": 47
+          }
+        }, 
+        "channel": 95, 
+        "code": "LPS3", 
+        "description": null, 
+        "id": "lps.3", 
+        "type": "S"
+      }, 
+      "LPS4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "middletemporal", 
+            "x": -57.52, 
+            "y": -0.72, 
+            "z": -33.53
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "middletemporal", 
+            "x": -55.616489, 
+            "y": -0.739254, 
+            "z": -32.171425
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "middletemporal", 
+            "x": -49.69, 
+            "y": 13.18, 
+            "z": -49.06
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "middletemporal", 
+            "x": -50.185875, 
+            "y": 12.433014, 
+            "z": -48.802963
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -60.315, 
+            "y": 0.724204, 
+            "z": -33.7894063522639
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -59.5567, 
+            "y": -3.04176, 
+            "z": -28.3326
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 393, 
+            "y": 227, 
+            "z": 59
+          }
+        }, 
+        "channel": 96, 
+        "code": "LPS4", 
+        "description": null, 
+        "id": "lps.4", 
+        "type": "S"
+      }, 
+      "LTD1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "parahippocampal", 
+            "x": -23.77, 
+            "y": -25.26, 
+            "z": -24.69
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "parahippocampal", 
+            "x": -23.77, 
+            "y": -25.26, 
+            "z": -24.69
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parahippocampal", 
+            "x": -19, 
+            "y": -11.19, 
+            "z": -39.35
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parahippocampal", 
+            "x": -19, 
+            "y": -11.19, 
+            "z": -39.35
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -24.4314, 
+            "y": -20.1391, 
+            "z": -23.616084499746
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Left EC", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -23.8723, 
+            "y": -23.6522, 
+            "z": -19.4934
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 328, 
+            "y": 274, 
+            "z": 73
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left PHG parahippocampal gyrus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 97, 
+        "code": "LTD1", 
+        "description": "None", 
+        "id": "ltd.1", 
+        "type": "D"
+      }, 
+      "LTD2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": -27.88, 
+            "y": -22.18, 
+            "z": -24.43
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": -27.88, 
+            "y": -22.18, 
+            "z": -24.43
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parahippocampal", 
+            "x": -22.75, 
+            "y": -8.06, 
+            "z": -39.34
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parahippocampal", 
+            "x": -22.75, 
+            "y": -8.06, 
+            "z": -39.34
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -28.6866, 
+            "y": -18.5538, 
+            "z": -24.592941226332
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Left MTL WM", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -28.2112, 
+            "y": -20.9792, 
+            "z": -19.4462
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 336, 
+            "y": 268, 
+            "z": 73
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left Cerebral White Matter", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 98, 
+        "code": "LTD2", 
+        "description": "WM, partial BA35", 
+        "id": "ltd.2", 
+        "type": "D"
+      }, 
+      "LTD3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": null, 
+            "x": -33.02, 
+            "y": -20.13, 
+            "z": -23.39
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": null, 
+            "x": -33.02, 
+            "y": -20.13, 
+            "z": -23.39
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parahippocampal", 
+            "x": -27.51, 
+            "y": -5.84, 
+            "z": -38.6
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parahippocampal", 
+            "x": -27.51, 
+            "y": -5.84, 
+            "z": -38.6
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -33.2518, 
+            "y": -18.6909, 
+            "z": -25.448912324847
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Left PRC", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -33.5565, 
+            "y": -19.3243, 
+            "z": -18.6838
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 346, 
+            "y": 264, 
+            "z": 74
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left PHG parahippocampal gyrus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 99, 
+        "code": "LTD3", 
+        "description": "BA35", 
+        "id": "ltd.3", 
+        "type": "D"
+      }, 
+      "LTD4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "fusiform", 
+            "x": -37.13, 
+            "y": -17.04, 
+            "z": -23.13
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -37.13, 
+            "y": -17.04, 
+            "z": -23.13
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "parahippocampal", 
+            "x": -31.26, 
+            "y": -2.72, 
+            "z": -38.59
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "parahippocampal", 
+            "x": -31.26, 
+            "y": -2.72, 
+            "z": -38.59
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -36.8589, 
+            "y": -16.7799, 
+            "z": -25.6484311513374
+          }, 
+          "stein": {
+            "id": "stein", 
+            "region": "Left PRC", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -37.8955, 
+            "y": -16.6511, 
+            "z": -18.6368
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 354, 
+            "y": 258, 
+            "z": 74
+          }, 
+          "wb": {
+            "id": "wb", 
+            "region": "Left PHG parahippocampal gyrus", 
+            "x": null, 
+            "y": null, 
+            "z": null
+          }
+        }, 
+        "channel": 100, 
+        "code": "LTD4", 
+        "description": "BA36", 
+        "id": "ltd.4", 
+        "type": "D"
+      }, 
+      "LTS1": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "entorhinal", 
+            "x": -21.03, 
+            "y": 3.42, 
+            "z": -46.33
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "fusiform", 
+            "x": -23.975271, 
+            "y": 3.170007, 
+            "z": -41.127621
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "fusiform", 
+            "x": -15.06, 
+            "y": 15.08, 
+            "z": -60.24
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "fusiform", 
+            "x": -15.145741, 
+            "y": 15.905472, 
+            "z": -59.460068
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -21.8895, 
+            "y": 2.41317, 
+            "z": -48.9341005192117
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -22.3407, 
+            "y": 2.79423, 
+            "z": -39.4123
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 322, 
+            "y": 219, 
+            "z": 44
+          }
+        }, 
+        "channel": 81, 
+        "code": "LTS1", 
+        "description": null, 
+        "id": "lts.1", 
+        "type": "S"
+      }, 
+      "LTS2": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "temporalpole", 
+            "x": -21.89, 
+            "y": 13.5, 
+            "z": -43.55
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "temporalpole", 
+            "x": -25.123547, 
+            "y": 10.286265, 
+            "z": -39.321167
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "temporalpole", 
+            "x": -15.49, 
+            "y": 24.92, 
+            "z": -58.32
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "temporalpole", 
+            "x": -15.516012, 
+            "y": 24.236542, 
+            "z": -58.092888
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -25.0471, 
+            "y": 15.39, 
+            "z": -45.0938988348032
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -23.5721, 
+            "y": 12.5286, 
+            "z": -37.6487
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 324, 
+            "y": 199, 
+            "z": 47
+          }
+        }, 
+        "channel": 82, 
+        "code": "LTS2", 
+        "description": null, 
+        "id": "lts.2", 
+        "type": "S"
+      }, 
+      "LTS3": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "temporalpole", 
+            "x": -26.86, 
+            "y": 21.01, 
+            "z": -38.4
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "temporalpole", 
+            "x": -29.967325, 
+            "y": 16.336658, 
+            "z": -36.35965
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "temporalpole", 
+            "x": -19.91, 
+            "y": 32.57, 
+            "z": -54.19
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "temporalpole", 
+            "x": -20.039991, 
+            "y": 29.737638, 
+            "z": -53.854336
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -30.8372, 
+            "y": 22.6686, 
+            "z": -39.5885494469227
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -28.9004, 
+            "y": 19.6329, 
+            "z": -33.7212
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 334, 
+            "y": 184, 
+            "z": 53
+          }
+        }, 
+        "channel": 83, 
+        "code": "LTS3", 
+        "description": null, 
+        "id": "lts.3", 
+        "type": "S"
+      }, 
+      "LTS4": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "temporalpole", 
+            "x": -33.89, 
+            "y": 25.96, 
+            "z": -32.49
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "temporalpole", 
+            "x": -35.377277, 
+            "y": 19.968716, 
+            "z": -32.436642
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "temporalpole", 
+            "x": -26.4, 
+            "y": 37.89, 
+            "z": -49.27
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "temporalpole", 
+            "x": -27.106853, 
+            "y": 36.572178, 
+            "z": -49.515251
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -38.3031, 
+            "y": 26.1233, 
+            "z": -34.1591547185271
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -36.2603, 
+            "y": 24.1955, 
+            "z": -29.0109
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 348, 
+            "y": 174, 
+            "z": 60
+          }
+        }, 
+        "channel": 84, 
+        "code": "LTS4", 
+        "description": null, 
+        "id": "lts.4", 
+        "type": "S"
+      }, 
+      "LTS5": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -42.51, 
+            "y": 24.78, 
+            "z": -25.21
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -42.116428, 
+            "y": 20.072721, 
+            "z": -25.551411
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -34.62, 
+            "y": 37.47, 
+            "z": -42.81
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -34.544476, 
+            "y": 36.226643, 
+            "z": -43.320465
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -46.4515, 
+            "y": 25.0835, 
+            "z": -24.7034873232147
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -44.9951, 
+            "y": 22.8559, 
+            "z": -22.786
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 365, 
+            "y": 176, 
+            "z": 69
+          }
+        }, 
+        "channel": 85, 
+        "code": "LTS5", 
+        "description": null, 
+        "id": "lts.5", 
+        "type": "S"
+      }, 
+      "LTS6": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -49.65, 
+            "y": 19.58, 
+            "z": -19.7
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -48.752483, 
+            "y": 17.707766, 
+            "z": -19.586971
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -41.61, 
+            "y": 33.05, 
+            "z": -37.69
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -41.111507, 
+            "y": 33.827026, 
+            "z": -38.174454
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -55.3615, 
+            "y": 20.8142, 
+            "z": -19.328537703999
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -52.0916, 
+            "y": 17.6765, 
+            "z": -17.8281
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 379, 
+            "y": 186, 
+            "z": 76
+          }
+        }, 
+        "channel": 86, 
+        "code": "LTS6", 
+        "description": null, 
+        "id": "lts.6", 
+        "type": "S"
+      }, 
+      "LTS7": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -54.75, 
+            "y": 11.82, 
+            "z": -14.36
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -54.733131, 
+            "y": 11.98076, 
+            "z": -14.801997
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -46.77, 
+            "y": 26.08, 
+            "z": -32.56
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -47.62962, 
+            "y": 26.868763, 
+            "z": -34.323708
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -60.3456, 
+            "y": 13.638, 
+            "z": -14.0606518224338
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -56.9923, 
+            "y": 10.1864, 
+            "z": -12.8691
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 389, 
+            "y": 201, 
+            "z": 83
+          }
+        }, 
+        "channel": 87, 
+        "code": "LTS7", 
+        "description": null, 
+        "id": "lts.7", 
+        "type": "S"
+      }, 
+      "LTS8": {
+        "atlases": {
+          "avg": {
+            "id": "avg", 
+            "region": "superiortemporal", 
+            "x": -58.85, 
+            "y": 3.58, 
+            "z": -9.86
+          }, 
+          "avg.dural": {
+            "id": "avg.dural", 
+            "region": "superiortemporal", 
+            "x": -58.810452, 
+            "y": 3.889405, 
+            "z": -9.501375
+          }, 
+          "ind": {
+            "id": "ind", 
+            "region": "superiortemporal", 
+            "x": -51, 
+            "y": 18.57, 
+            "z": -28.14
+          }, 
+          "ind.dural": {
+            "id": "ind.dural", 
+            "region": "superiortemporal", 
+            "x": -51.734779, 
+            "y": 17.262444, 
+            "z": -27.900232
+          }, 
+          "mni": {
+            "id": "mni", 
+            "region": null, 
+            "x": -64.6862, 
+            "y": 2.64647, 
+            "z": -11.4309882933466
+          }, 
+          "tal": {
+            "id": "tal", 
+            "region": null, 
+            "x": -60.8473, 
+            "y": 2.25336, 
+            "z": -8.58826
+          }, 
+          "vox": {
+            "id": "vox", 
+            "region": null, 
+            "x": 397, 
+            "y": 217, 
+            "z": 89
+          }
+        }, 
+        "channel": 88, 
+        "code": "LTS8", 
+        "description": null, 
+        "id": "lts.8", 
+        "type": "S"
+      }
+    }, 
+    "id": "r1.111.0_0"
+  }
+}
