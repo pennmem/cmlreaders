@@ -67,7 +67,7 @@ class MontageReader(BaseCMLReader):
                 cat = [key for key in categories
                        if l1 in categories[key] or l2 in categories[key]]
 
-            column[i] = ",".join(cat) if len(cat) else None
+            column[i] = cat
 
         df["category"] = column
 

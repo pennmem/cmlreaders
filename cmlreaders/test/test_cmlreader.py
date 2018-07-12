@@ -3,6 +3,7 @@ import functools
 import os
 from unittest.mock import patch
 
+import pandas as pd
 from pkg_resources import resource_filename
 import pytest
 
@@ -125,14 +126,13 @@ class TestCMLReader:
 
 class TestLoadMontage:
     @staticmethod
-    def assert_categories_correct(df, categories, read_categories):
+    def assert_categories_correct(df: pd.DataFrame, categories: dict,
+                                  read_categories: bool):
         if read_categories:
             assert "category" in df.columns
             for category, labels in categories.items():
                 mask = df["label"].isin(labels)
-                cat_labels = [cats.split(",") for cats in df[mask]["category"]]
-                for cat_label in cat_labels:
-                    assert category in cat_label
+                assert all([category in entry for entry in df[mask]["category"]])
         else:
             assert "category" not in df.columns
 
