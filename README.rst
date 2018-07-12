@@ -40,17 +40,23 @@ Usage examples
 What follows are some basic usage examples. See the documentation for a more
 complete guide to getting started.
 
-Get the index of all RAM data::
+Get the index of all RAM data:
+
+.. code-block:: python
 
     >>> from cmlreaders import CMLReader, get_data_index
     >>> df = get_data_index("r1")
 
-Find unique experiments performed by R1111M::
+Find unique experiments performed by R1111M:
+
+.. code-block:: python
 
     >>> df[df["subject"] == "R1111M"]["experiment"].unique()
     array(['FR1', 'FR2', 'PAL1', 'PAL2', 'PS2', 'catFR1'], dtype=object)
 
-Load montage pair data from FR1 session 0::
+Load montage pair data from FR1 session 0:
+
+.. code-block:: python
 
     >>> reader = CMLReader("R1111M", "FR1", 0)
     >>> pairs = reader.load("pairs")
@@ -65,7 +71,9 @@ Load montage pair data from FR1 session 0::
           dtype='object')
 
 
-Select word onset events::
+Select word onset events:
+
+.. code-block:: python
 
     >>> events = reader.load("events")
     >>> words = events[events["type"] == "WORD"]
@@ -73,7 +81,9 @@ Select word onset events::
     288
 
 Load EEG 100 ms before and after word onset using the bipolar referencing
-scheme::
+scheme:
+
+.. code-block:: python
 
     >>> eeg = reader.load_eeg(events=words, rel_start=-100, rel_stop=100, scheme=pairs)
     >>> eeg.data.shape
