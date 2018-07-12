@@ -1,6 +1,22 @@
 Changes
 =======
 
+Version 0.7.1
+-------------
+
+**2018-07-12**
+
+New feature:
+
+* Results of ``get_data_index`` are now cached using ``functools.lru_cache``
+  (#101).
+
+Bug fix:
+
+* Magic importing of reader classes didn't work if not in a specific working
+  directory (#104). Fixed in PR #105.
+
+
 Version 0.7.0
 -------------
 
