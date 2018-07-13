@@ -1,6 +1,8 @@
-import numpy as np
-import scipy
 from typing import Any, Dict, List, Optional, Tuple, Union
+
+import numpy as np
+import pandas as pd
+import scipy
 
 
 class TimeSeries(object):
@@ -30,6 +32,7 @@ class TimeSeries(object):
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, ...]]] = None,
+                 events: Optional[pd.DataFrame] = None,
                  channels: Optional[List[str]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):
@@ -40,7 +43,8 @@ class TimeSeries(object):
 
         self.data = data
         self.samplerate = samplerate
-        self.time = self._make_time_array(tstart)  #: time in milliseconds
+        self.time = self._make_time_array(tstart)  # time in milliseconds
+        self.events = events
 
         if epochs is not None:
             if len(epochs) != self.data.shape[0]:
@@ -184,11 +188,11 @@ class TimeSeries(object):
         """Apply a filter to the data and return a new :class:`TimeSeries`."""
         raise NotImplementedError
 
-    def to_ptsa(self) -> "TimeSeriesX":
+    def to_ptsa(self) -> "PtsaTimeSeries":
         """Convert to a PTSA :class:`TimeSeriesX` object."""
-        from ptsa.data.TimeSeriesX import TimeSeriesX
+        from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
-        return TimeSeriesX.create(
+        return PtsaTimeSeries.create(
             self.data,
             samplerate=self.samplerate,
             dims=('start_offset', 'channel', 'time'),

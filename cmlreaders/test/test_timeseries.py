@@ -2,7 +2,7 @@ import numpy as np
 from numpy.testing import assert_equal
 import pytest
 
-from ptsa.data.TimeSeriesX import TimeSeriesX
+from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
 from cmlreaders.timeseries import TimeSeries
 
@@ -113,7 +113,7 @@ class TestTimeSeries:
         ts = TimeSeries(data, rate)
         tsx = ts.to_ptsa()
 
-        assert isinstance(tsx, TimeSeriesX)
+        assert isinstance(tsx, PtsaTimeSeries)
         assert tsx['samplerate'] == ts.samplerate
         assert_equal(tsx['start_offset'].data, ts.start_offsets)
         assert_equal(tsx['time'].data, ts.time)

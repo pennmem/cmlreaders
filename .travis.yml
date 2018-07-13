@@ -21,7 +21,7 @@ install:
   - conda create -q -n test-environment python=$PYTHON_VERSION numpy pandas
   - source activate test-environment
   - pip install -r requirements.txt
-  - conda install -y -c pennmem -c conda-forge classiflib ptsa=1 ramutils
+  - conda install -y -c pennmem -c conda-forge classiflib ptsa=2 ramutils
   - python setup.py install
 
 script:
