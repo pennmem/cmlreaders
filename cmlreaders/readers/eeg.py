@@ -275,6 +275,9 @@ class EEGReader(BaseCMLReader):
     # metainfo loaded from sources.json
     sources_info = {}
 
+    events = None
+    epochs = None
+
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
         to pass along to :meth:`as_timeseries`.
@@ -291,18 +294,19 @@ class EEGReader(BaseCMLReader):
                                           object_pairs_hook=OrderedDict)
             self.sources_info['path'] = path
 
-        if 'events' in kwargs:
+        if "events" in kwargs:
             # convert events to epochs
-            events = kwargs.pop('events')
+            events = kwargs.pop("events")
             source_info_list = list(self.sources_info.values())[:-1]
-            sample_rate = source_info_list[0]['sample_rate']
-            basenames = [info['name'] for info in source_info_list]
+            sample_rate = source_info_list[0]["sample_rate"]
+            basenames = [info["name"] for info in source_info_list]
             epochs = convert.events_to_epochs(events,
-                                              kwargs.pop('rel_start'),
-                                              kwargs.pop('rel_stop'),
+                                              kwargs.pop("rel_start"),
+                                              kwargs.pop("rel_stop"),
                                               sample_rate,
                                               basenames)
             kwargs['epochs'] = epochs
+            self.events = kwargs["events"]
 
         if "epochs" not in kwargs:
             kwargs["epochs"] = [(0, None)]
@@ -310,6 +314,8 @@ class EEGReader(BaseCMLReader):
         kwargs["epochs"] = [e if len(e) == 3
                             else e + (0,)
                             for e in kwargs['epochs']]
+
+        self.epochs = kwargs["epochs"]
 
         return self.as_timeseries(**kwargs)
 
