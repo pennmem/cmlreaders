@@ -192,15 +192,19 @@ class TimeSeries(object):
         """Convert to a PTSA :class:`TimeSeriesX` object."""
         from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
+        dims = ("event", "channel", "time")
+
+        coords = {
+            "events": self.events if self.events is not None else self.epochs,
+            "channel": self.channels,
+            "time": self.time,
+        }
+
         return PtsaTimeSeries.create(
             self.data,
             samplerate=self.samplerate,
-            dims=('start_offset', 'channel', 'time'),
-            coords={
-                'start_offset': self.start_offsets,
-                'channel': self.channels,
-                'time': self.time
-            }
+            dims=dims,
+            coords=coords,
         )
 
     def to_mne(self) -> "mne.EpochsArray":

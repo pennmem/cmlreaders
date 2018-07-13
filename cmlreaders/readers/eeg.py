@@ -277,6 +277,7 @@ class EEGReader(BaseCMLReader):
 
     events = None
     epochs = None
+    scheme = None
 
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
@@ -306,7 +307,6 @@ class EEGReader(BaseCMLReader):
                                               sample_rate,
                                               basenames)
             kwargs['epochs'] = epochs
-            self.events = kwargs["events"]
 
         if "epochs" not in kwargs:
             kwargs["epochs"] = [(0, None)]
@@ -315,9 +315,11 @@ class EEGReader(BaseCMLReader):
                             else e + (0,)
                             for e in kwargs['epochs']]
 
+        self.events = kwargs.pop("events", None)
         self.epochs = kwargs["epochs"]
+        self.scheme = kwargs.pop("scheme", None)
 
-        return self.as_timeseries(**kwargs)
+        return self.as_timeseries()
 
     def as_dataframe(self):
         raise UnsupportedOutputFormat
@@ -338,19 +340,8 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    def as_timeseries(self,
-                      epochs: Optional[List[Tuple[int, Union[int, None], int]]] = None,
-                      scheme: Optional[pd.DataFrame] = None) -> TimeSeries:
+    def as_timeseries(self) -> TimeSeries:
         """Read the timeseries.
-
-        Keyword arguments
-        -----------------
-        epochs
-            When given, specify which epochs to read in ms. When omitted, read
-            an entire session.
-        scheme
-            When given, attempt to rereference and/or filter the data. This
-            parameter should be a :class:`pd.DataFrame` à la ``pairs.json``.
 
         Returns
         -------
@@ -367,9 +358,9 @@ class EEGReader(BaseCMLReader):
             When rereferincing is not possible.
 
         """
-        if epochs is None:
-            epochs = [(0, None)]
-        epochs = DefaultTuple(epochs)
+        if self.epochs is None:
+            self.epochs = [(0, None)]
+        self.epochs = DefaultTuple(self.epochs)
 
         if not len(epochs):
             raise ValueError("No events/epochs given! Hint: did filtering "
@@ -377,7 +368,7 @@ class EEGReader(BaseCMLReader):
 
         ts = []
 
-        for fileno, epoch_lst in itertools.groupby(epochs, key=lambda x: x[-1]):
+        for fileno, epoch_lst in itertools.groupby(self.epochs, key=lambda x: x[-1]):
             sources_info = list(self.sources_info.values())[fileno]
             basename = sources_info['name']
             sample_rate = sources_info['sample_rate']
@@ -385,29 +376,29 @@ class EEGReader(BaseCMLReader):
             eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
-            if len(epochs) > 1:
-                tlens = np.array([e[1] - e[0] for e in epochs])
+            if len(self.epochs) > 1:
+                tlens = np.array([e[1] - e[0] for e in self.epochs])
                 if not np.all(tlens == tlens[0]):
                     raise ValueError("Epoch lengths are not all the same!")
 
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=epochs,
-                                  scheme=scheme)
+                                  epochs=self.epochs,
+                                  scheme=self.scheme)
             data, contacts = reader.read()
 
-            if scheme is not None:
+            if self.scheme is not None:
                 data = reader.rereference(data, contacts)
-                channels = scheme.label.tolist()
+                channels = self.scheme.label.tolist()
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
-            # TODO: tstart
             ts.append(
                 TimeSeries(
                     data,
                     sample_rate,
-                    epochs=epochs,
+                    epochs=self.epochs,
+                    events=self.events,
                     channels=channels,
                 )
             )
