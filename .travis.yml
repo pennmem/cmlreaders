@@ -22,7 +22,7 @@ install:
   - source activate test-environment
   - pip install -r requirements.txt
   - conda install -y -c pennmem -c conda-forge classiflib ramutils fftw
-  - pip install git+https://github.com/pennmem/ptsa_new.git@v2.0.0#egg=ptsa
+  - pip install -U git+https://github.com/pennmem/ptsa_new.git@v2.0.0#egg=ptsa
   - python setup.py install
 
 script:

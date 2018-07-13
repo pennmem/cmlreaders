@@ -3,7 +3,7 @@ from collections import OrderedDict
 import itertools
 import json
 from pathlib import Path
-from typing import List, Optional, Tuple, Type, Union
+from typing import List, Tuple, Type, Union
 import warnings
 
 with warnings.catch_warnings():  # noqa
