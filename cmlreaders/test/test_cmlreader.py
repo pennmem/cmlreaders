@@ -123,6 +123,13 @@ class TestCMLReader:
         ps4_events = reader.load("ps4_events")
         assert all(events == ps4_events)
 
+    @pytest.mark.rhino
+    def test_ps2_events(self, rhino_root):
+        reader = CMLReader("R1111M", "PS2", 0, rootdir=rhino_root)
+        events = reader.load("events")
+        task_events = reader.load("task_events")
+        assert all(events == task_events)
+
 
 class TestLoadMontage:
     @staticmethod
