@@ -30,7 +30,7 @@ class PathFinder(object):
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
                  rootdir: Optional[str] = None):
-        """ Instantiates a PathFind object using the known information
+        """Instantiates a PathFinder object using the known information
 
         Parameters
         ----------

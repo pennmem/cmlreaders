@@ -83,11 +83,24 @@ rhino_paths = {
     ],
 
     # Session Data
-    'all_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
-    'task_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
-    'math_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
-    'ps4_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
-    'sources': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
+    "all_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "task_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "math_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json",
+        "data/events/pyFR/{subject_montage}_math.mat",
+    ],
+    'ps4_events': [
+        'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'
+    ],
+    'sources': [
+        'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'
+    ],
 
     # Ramulator-related information
     'experiment_log': [
