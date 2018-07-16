@@ -2,7 +2,7 @@ from functools import lru_cache
 import json
 import os
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional
 import warnings
 
 import numpy as np
@@ -59,9 +59,17 @@ def generate_pyfr_index(outdir: str, rootdir: str):
 
     subjects = []
     sessions = []
+    montages = []
 
     for filename in event_files:
         subject = filename.name.split("_events")[0]
+
+        if "_" in subject:
+            subject, montage = subject.split("_")
+            montage = int(montage)
+        else:
+            montage = 0
+
         events = sio.loadmat(str(filename), squeeze_me=True)["events"]
 
         try:
@@ -73,13 +81,16 @@ def generate_pyfr_index(outdir: str, rootdir: str):
 
         subjects += [subject] * len(unique_sessions)
         sessions += unique_sessions
+        montages += [montage] * len(unique_sessions)
 
     experiments = ["pyFR"] * len(sessions)
 
     df = pd.DataFrame({
         "subject": subjects,
         "experiment": experiments,
-        "session": sessions
+        "session": sessions,
+        "localization": [0] * len(sessions),
+        "montage": montages,
     })
 
     df.to_json(Path(outdir).joinpath("pyFR.json"))
@@ -94,8 +105,8 @@ def get_data_index(kind: str = "all",
     ----------
     kind
         Which kind of data index to return (default: "all"). Choices are:
-        ``"r1"``, ``"ltp"``, ``"all"``. Using ``"all"`` will read all available
-        indices.
+        ``"r1"``, ``"ltp"``, ``"pyfr"``, ``"all"``. Using ``"all"`` will read
+        all available indices.
     rootdir
         Root search path (default: ``"/"``).
 
@@ -117,12 +128,13 @@ def get_data_index(kind: str = "all",
         data.append(read_index(finder.find("ltp_index")))
     if kind == "r1" or kind == "all":
         data.append(read_index(finder.find("r1_index")))
-    if kind == "pyfr":  #  or kind == "all":
+    if kind == "pyfr":  # or kind == "all":
         raise NotImplementedError
+        # data.append(pd.read_json(finder.find("pyfr_index")))
 
     df = pd.concat([_index_dict_to_dataframe(d) for d in data])
 
-    if kind != "ltp":
+    if kind not in ["ltp"]:
         # make sure localization and montage are integers
         for key in ["localization", "montage"]:
             df.loc[df[key].isnull(), key] = 0

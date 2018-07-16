@@ -29,6 +29,9 @@ def test_get_data_index(kind, rhino_root):
     if kind in ["ltp", "all"]:
         assert any(df.subject == "LTP093")
         assert df[df.subject == 'LTP093'].experiment.count() == 24
+    # if kind in ["pyfr", "all"]:
+    #     assert any(df.subject == "FZ006")
+    #     assert df[df.subject == "FZ006"].experiment.count() == 1
     if kind != "ltp":
         assert df["localization"].dtype == int
         assert df["montage"].dtype == int
@@ -43,6 +46,6 @@ def test_generate_pyfr_index(rhino_root, tmpdir):
     assert path.exists()
 
     df = pd.read_json(path)
-    assert len(df.subject.unique()) == 176
+    assert len(df.subject.unique()) == 164
     assert len(df.session) == 378
     assert all(df.experiment == "pyFR")
