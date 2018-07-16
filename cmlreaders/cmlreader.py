@@ -171,12 +171,16 @@ class CMLReader(object):
             raise NotImplementedError("There is no reader to support the "
                                       "requested file type")
 
-        # By default we want task + math events when requesting events
+        # By default we want task + math events when requesting events so
+        # coerce to "all_events" unless we're looking at experiments that don't
+        # include these.
         if data_type == "events":
-            if not self.experiment.startswith("PS4"):
-                data_type = "all_events"
-            else:
+            if self.experiment.startswith("PS2"):
+                data_type = "task_events"
+            elif self.experiment.startswith("PS4"):
                 data_type = "ps4_events"
+            else:
+                data_type = "all_events"
 
         cls = self.readers[data_type]
         if self.protocol not in cls.protocols:
