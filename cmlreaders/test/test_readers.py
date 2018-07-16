@@ -225,6 +225,7 @@ class TestEventReader:
         df = EventReader.fromfile(path)
         assert df.columns[0] == "eegoffset"
 
+
 class TestMontageReader:
     @pytest.mark.parametrize("kind", ["contacts", "pairs"])
     @pytest.mark.parametrize("subject,localization,montage", [

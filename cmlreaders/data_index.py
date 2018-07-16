@@ -2,10 +2,14 @@ from functools import lru_cache
 import json
 import os
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Tuple
+import warnings
 
+import numpy as np
 import pandas as pd
+import scipy.io as sio
 
+from .constants import PROTOCOLS, rhino_paths
 from .path_finder import PathFinder
 from .util import get_root_dir
 
@@ -37,6 +41,50 @@ def _index_dict_to_dataframe(data: Dict) -> pd.DataFrame:
     return df
 
 
+def generate_pyfr_index(outdir: str, rootdir: str):
+    """Generates an index file for pyFR data. This needs to be run once (and
+    hopefully only once!) as a user with correct permissions and writes a file
+    to ``/data/events/pyFR/index.csv``.
+
+    Parameters
+    ----------
+    outdir
+        Absolute path to the directory to write the index file to.
+    rootdir
+        Data root directory.
+
+    """
+    path = Path(get_root_dir(rootdir)).joinpath(*rhino_paths["pyfr_root"])
+    event_files = list(path.glob("*_events.mat"))
+
+    subjects = []
+    sessions = []
+
+    for filename in event_files:
+        subject = filename.name.split("_events")[0]
+        events = sio.loadmat(str(filename), squeeze_me=True)["events"]
+
+        try:
+            unique_sessions = np.unique(events["session"]).tolist()
+        except ValueError:
+            warnings.warn("No session field found for {};".format(subject) +
+                          " assuming single session", UserWarning)
+            unique_sessions = [0]
+
+        subjects += [subject] * len(unique_sessions)
+        sessions += unique_sessions
+
+    experiments = ["pyFR"] * len(sessions)
+
+    df = pd.DataFrame({
+        "subject": subjects,
+        "experiment": experiments,
+        "session": sessions
+    })
+
+    df.to_json(Path(outdir).joinpath("pyFR.json"))
+
+
 @lru_cache()
 def get_data_index(kind: str = "all",
                    rootdir: Optional[str] = None) -> pd.DataFrame:
@@ -57,7 +105,7 @@ def get_data_index(kind: str = "all",
         A flattened :class:`pd.DataFrame` version of the data index.
 
     """
-    kinds = ("r1", "ltp", "all")
+    kinds = PROTOCOLS + ("all",)
 
     if kind not in kinds:
         raise ValueError("Unknown data index: " + kind)
@@ -69,6 +117,8 @@ def get_data_index(kind: str = "all",
         data.append(read_index(finder.find("ltp_index")))
     if kind == "r1" or kind == "all":
         data.append(read_index(finder.find("r1_index")))
+    if kind == "pyfr":  #  or kind == "all":
+        raise NotImplementedError
 
     df = pd.concat([_index_dict_to_dataframe(d) for d in data])
 
