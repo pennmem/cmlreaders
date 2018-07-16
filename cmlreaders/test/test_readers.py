@@ -19,7 +19,6 @@ datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 
 class TestTextReader:
-
     @pytest.mark.parametrize("method", ['dataframe', 'recarray', 'dict'])
     @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
@@ -208,12 +207,23 @@ class TestEEGMetaReader:
 
 
 class TestEventReader:
-    def test_load(self):
+    def test_load_json(self):
         path = datafile('all_events.json')
         reader = EventReader('all_events', file_path=path)
         df = reader.load()
         assert df.columns[0] == 'eegoffset'
 
+    @pytest.mark.parametrize("kind", [
+        "all_events", "task_events", "math_events"
+    ])
+    def test_load_matlab(self, kind):
+        if kind in ["all_events", "task_events"]:
+            filename = "TJ001_events.mat"
+        else:
+            filename = "TJ001_math.mat"
+        path = datafile(filename)
+        df = EventReader.fromfile(path)
+        assert df.columns[0] == "eegoffset"
 
 class TestMontageReader:
     @pytest.mark.parametrize("kind", ["contacts", "pairs"])
@@ -273,6 +283,7 @@ class TestElectrodeCategoriesReader:
             assert len(categories[key]) == len_
 
 
+@pytest.mark.skip(reason="TODO: reenable ramutils tests")
 class TestBaseReportDataReader:
     @patch("ramutils.reports.summary.ClassifierSummary")
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
@@ -316,6 +327,7 @@ class TestBaseReportDataReader:
         assert os.path.exists(exp_output)
 
 
+@pytest.mark.skip(reason="TODO: reenable ramutils tests")
 class TestReportSummaryReader:
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray', 'dict'])
     @pytest.mark.parametrize("data_type", ["session_summary"])
