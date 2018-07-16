@@ -127,6 +127,7 @@ class TestTimeSeries:
 
         assert isinstance(tsx, PtsaTimeSeries)
         assert tsx["samplerate"] == ts.samplerate
+        assert_equal(tsx.data, data)
 
         offsets = tsx["event"].data["eegoffset"]
 
