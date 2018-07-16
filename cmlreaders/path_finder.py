@@ -7,7 +7,8 @@ import warnings
 from typing import Optional
 
 from .constants import rhino_paths, localization_files, montage_files, \
-    subject_files, session_files, host_pc_files, used_classifier_files
+    subject_files, session_files, host_pc_files, used_classifier_files, \
+    PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
 
 __all__ = ['PathFinder']
@@ -64,6 +65,8 @@ class PathFinder(object):
             self.protocol = "r1"
         elif self.subject.startswith("LTP"):
             self.protocol = "ltp"
+        elif self.subject[:2] in PYFR_SUBJECT_CODE_PREFIXES:
+            self.protocol = "pyfr"
         else:
             raise ValueError("Unknown protocol for subject " + self.subject)
 
