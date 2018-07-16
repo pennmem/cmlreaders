@@ -403,3 +403,12 @@ class TestRereference:
             reader = EEGReader("eeg")
             eeg = reader.load(scheme=scheme)
             assert_equal(eeg.data[0], self.reref_data)
+
+
+@pytest.mark.only
+class TestLoadEEG:
+    def test_load_with_empty_events(self):
+        reader = EEGReader("eeg")
+
+        with pytest.raises(ValueError):
+            reader.as_timeseries(epochs=[])
