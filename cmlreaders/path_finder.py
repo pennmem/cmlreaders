@@ -64,6 +64,8 @@ class PathFinder(object):
             self.protocol = "r1"
         elif self.subject.startswith("LTP"):
             self.protocol = "ltp"
+        else:
+            raise ValueError("Unknown protocol for subject " + self.subject)
 
         self.localization = str(localization)
         self.montage = str(montage)
