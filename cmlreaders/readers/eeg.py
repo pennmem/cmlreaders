@@ -362,7 +362,7 @@ class EEGReader(BaseCMLReader):
             self.epochs = [(0, None)]
         self.epochs = DefaultTuple(self.epochs)
 
-        if not len(epochs):
+        if not len(self.epochs):
             raise ValueError("No events/epochs given! Hint: did filtering "
                              "events result in at least one?")
 
