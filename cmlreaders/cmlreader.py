@@ -178,7 +178,7 @@ class CMLReader(object):
             if self.experiment.startswith("PS2"):
                 data_type = "task_events"
             elif self.experiment.startswith("PS4"):
-                data_type = "ps4_events"
+                data_type = "task_events"
             else:
                 data_type = "all_events"
 

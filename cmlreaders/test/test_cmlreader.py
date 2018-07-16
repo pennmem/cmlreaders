@@ -120,8 +120,8 @@ class TestCMLReader:
     def test_ps4_events(self, subject, experiment, session, rhino_root):
         reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
         events = reader.load("events")
-        ps4_events = reader.load("ps4_events")
-        assert all(events == ps4_events)
+        task_events = reader.load("task_events")
+        assert all(events == task_events)
 
     @pytest.mark.rhino
     def test_ps2_events(self, rhino_root):
