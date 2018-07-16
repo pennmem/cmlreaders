@@ -189,13 +189,25 @@ class TimeSeries(object):
         raise NotImplementedError
 
     def to_ptsa(self) -> "PtsaTimeSeries":
-        """Convert to a PTSA :class:`TimeSeriesX` object."""
+        """Convert to a PTSA :class:`TimeSeriesX` object.
+
+        Notes
+        -----
+        Events are first converted from a :class:`pd.DataFrame` to a Numpy
+        recarray and are available as the ``event`` coordinate.
+
+        """
         from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
         dims = ("event", "channel", "time")
 
+        if self.events is not None:
+            events = self.events.to_records()
+        else:
+            events = pd.DataFrame(self.epochs, columns=["eegoffset", "epoch_end"]).to_records(index=False)
+
         coords = {
-            "events": self.events if self.events is not None else self.epochs,
+            "event": events,
             "channel": self.channels,
             "time": self.time,
         }
