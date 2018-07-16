@@ -4,7 +4,6 @@ notifications:
   email: false
 
 env:
-  - PYTHON_VERSION=3.5 CC=gcc-7 CXX=g++-7
   - PYTHON_VERSION=3.6 CC=gcc-7 CXX=g++-7
   # disabled until all conda packages exist for Python 3.7
   # - PYTHON_VERSION=3.7
