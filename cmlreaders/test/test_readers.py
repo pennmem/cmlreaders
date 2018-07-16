@@ -273,6 +273,7 @@ class TestElectrodeCategoriesReader:
             assert len(categories[key]) == len_
 
 
+@pytest.mark.skip(reason="ramutils is way out of date with dependencies")
 class TestBaseReportDataReader:
     @patch("ramutils.reports.summary.ClassifierSummary")
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
@@ -316,6 +317,7 @@ class TestBaseReportDataReader:
         assert os.path.exists(exp_output)
 
 
+@pytest.mark.skip(reason="ramutils is way out of date with dependencies")
 class TestReportSummaryReader:
     @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray', 'dict'])
     @pytest.mark.parametrize("data_type", ["session_summary"])
