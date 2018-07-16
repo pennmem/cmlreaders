@@ -365,6 +365,10 @@ class EEGReader(BaseCMLReader):
             epochs = [(0, None)]
         epochs = DefaultTuple(epochs)
 
+        if not len(epochs):
+            raise ValueError("No events/epochs given! Hint: did filtering "
+                             "events result in at least one?")
+
         ts = []
 
         for fileno, epoch_lst in itertools.groupby(epochs, key=lambda x: x[-1]):
