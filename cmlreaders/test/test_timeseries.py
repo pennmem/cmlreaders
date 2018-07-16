@@ -109,7 +109,6 @@ class TestTimeSeries:
             assert ts.shape == (1, n_channels, n_samples * 2)
             assert_equal(ts.data, np.concatenate(data, axis=2))
 
-    @pytest.mark.only
     @pytest.mark.parametrize("which", ["events", "epochs"])
     def test_to_ptsa(self, which):
         data = np.random.random((10, 32, 100))
