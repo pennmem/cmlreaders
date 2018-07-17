@@ -4,8 +4,7 @@ notifications:
   email: false
 
 env:
-  - PYTHON_VERSION=3.5
-  - PYTHON_VERSION=3.6
+  - PYTHON_VERSION=3.6 CC=gcc-7 CXX=g++-7
   # disabled until all conda packages exist for Python 3.7
   # - PYTHON_VERSION=3.7
 
@@ -21,7 +20,7 @@ install:
   - conda create -q -n test-environment python=$PYTHON_VERSION numpy pandas
   - source activate test-environment
   - pip install -r requirements.txt
-  - conda install -y -c pennmem -c conda-forge classiflib ptsa=1 ramutils
+  - conda install -y -c pennmem -c conda-forge classiflib ptsa
   - python setup.py install
 
 script:

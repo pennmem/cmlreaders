@@ -1,8 +1,10 @@
 import numpy as np
 from numpy.testing import assert_equal
+import pandas as pd
+from pkg_resources import resource_filename
 import pytest
 
-from ptsa.data.TimeSeriesX import TimeSeriesX
+from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
 from cmlreaders.timeseries import TimeSeries
 
@@ -107,16 +109,33 @@ class TestTimeSeries:
             assert ts.shape == (1, n_channels, n_samples * 2)
             assert_equal(ts.data, np.concatenate(data, axis=2))
 
-    def test_to_ptsa(self):
+    @pytest.mark.parametrize("which", ["events", "epochs"])
+    def test_to_ptsa(self, which):
         data = np.random.random((10, 32, 100))
         rate = 1000
-        ts = TimeSeries(data, rate)
+
+        if which == "epochs":
+            epochs = [(i, i + 100) for i in range(data.shape[0])]
+            ts = TimeSeries(data, rate, epochs=epochs)
+        else:
+            filename = resource_filename("cmlreaders.test.data", "R1111M_FR1_0_events.json")
+            events = pd.read_json(filename).iloc[:data.shape[0]]
+            ts = TimeSeries(data, rate, events=events)
+
         tsx = ts.to_ptsa()
 
-        assert isinstance(tsx, TimeSeriesX)
-        assert tsx['samplerate'] == ts.samplerate
-        assert_equal(tsx['start_offset'].data, ts.start_offsets)
-        assert_equal(tsx['time'].data, ts.time)
+        assert isinstance(tsx, PtsaTimeSeries)
+        assert tsx["samplerate"] == ts.samplerate
+        assert_equal(tsx.data, data)
+
+        offsets = tsx["event"].data["eegoffset"]
+
+        if which == "epochs":
+            assert_equal(offsets, ts.start_offsets)
+        else:
+            assert_equal(offsets, events["eegoffset"])
+
+        assert_equal(tsx["time"].data, ts.time)
 
     def test_to_mne(self):
         events = int(np.random.uniform(1, 10))
