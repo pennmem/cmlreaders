@@ -125,14 +125,13 @@ def get_data_index(kind: str = "all",
     data = []
 
     if kind == "ltp" or kind == "all":
-        data.append(read_index(finder.find("ltp_index")))
+        data.append(_index_dict_to_dataframe(read_index(finder.find("ltp_index"))))
     if kind == "r1" or kind == "all":
-        data.append(read_index(finder.find("r1_index")))
-    if kind == "pyfr":  # or kind == "all":
-        raise NotImplementedError
-        # data.append(pd.read_json(finder.find("pyfr_index")))
+        data.append(_index_dict_to_dataframe(read_index(finder.find("r1_index"))))
+    if kind == "pyfr" or kind == "all":
+        data.append(pd.read_json(finder.find("pyfr_index")))
 
-    df = pd.concat([_index_dict_to_dataframe(d) for d in data])
+    df = pd.concat(data)
 
     if kind not in ["ltp"]:
         # make sure localization and montage are integers
