@@ -255,12 +255,13 @@ class EEGReader(BaseCMLReader):
         >>> eeg = reader.load_eeg(epochs=epochs)
 
     Loading from specified epochs, when there are multiple files for the
-    session (units are relative to the start of each file):
+    session (units are relative to the start of each file)::
 
         >>> epochs = [(100,200,0), (100,200,1)]
         >>> eeg = reader.load_eeg(epochs=epochs)
 
-    Loading EEG from -100 ms to +100 ms relative to a set of events:
+    Loading EEG from -100 ms to +100 ms relative to a set of events::
+
         >>> events = reader.load("events")
         >>> eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100)
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.7.1 documentation</title>
+  <title>API &mdash; CML Data Readers 0.7.2 documentation</title>
   
 
   
@@ -626,14 +626,11 @@ session (units are relative to the start of each file):</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>Loading EEG from -100 ms to +100 ms relative to a set of events:</dt>
-<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<p>Loading EEG from -100 ms to +100 ms relative to a set of events:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">rel_start</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">rel_stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 <p>Loading an entire session:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">()</span>
 </pre></div>
@@ -658,22 +655,13 @@ session (units are relative to the start of each file):</p>
 
 <dl class="method">
 <dt id="cmlreaders.readers.eeg.EEGReader.as_timeseries">
-<code class="descname">as_timeseries</code><span class="sig-paren">(</span><em>epochs: Union[typing.List[typing.Tuple[int, typing.Union[int, NoneType], int]], NoneType] = None, scheme: Union[pandas.core.frame.DataFrame, NoneType] = None</em><span class="sig-paren">)</span> &#x2192; cmlreaders.timeseries.TimeSeries<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader.as_timeseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader.as_timeseries" title="Permalink to this definition">¶</a></dt>
+<code class="descname">as_timeseries</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; cmlreaders.timeseries.TimeSeries<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader.as_timeseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader.as_timeseries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the timeseries.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Keyword Arguments:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first simple">
-<li><strong>epochs</strong> – When given, specify which epochs to read in ms. When omitted, read
-an entire session.</li>
-<li><strong>scheme</strong> – When given, attempt to rereference and/or filter the data. This
-parameter should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> à la <code class="docutils literal notranslate"><span class="pre">pairs.json</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
 <li><em>A time series with shape (channels, epochs, time). By default, this</em></li>
 <li><em>returns data as it was physically recorded (e.g., if recorded with a</em></li>
 <li><em>common reference, each channel will be a contact’s reading referenced to</em></li>
@@ -682,7 +670,7 @@ parameter should be a <code class="xref py py-class docutils literal notranslate
 </p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – When provided epochs are not all the same length</li>
 <li><code class="xref py py-exc docutils literal notranslate"><span class="pre">RereferencingNotPossibleError</span></code> – When rereferincing is not possible.</li>
 </ul>
@@ -864,7 +852,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.1',
+            VERSION:'0.7.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
