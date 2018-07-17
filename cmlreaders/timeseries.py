@@ -204,7 +204,11 @@ class TimeSeries(object):
         if self.events is not None:
             events = self.events.to_records()
         else:
-            events = pd.DataFrame(self.epochs, columns=["eegoffset", "epoch_end"]).to_records(index=False)
+            columns = ["eegoffset", "epoch_end"]
+            if len(self.epochs[0]) > 2:
+                columns = [columns[i] if i < 2 else "column_{}".format(i)
+                           for i in range(len(self.epochs[0]))]
+            events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
 
         coords = {
             "event": events,
