@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 import json
+import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
 import warnings
@@ -21,6 +22,7 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
+from cmlreaders.util import get_root_dir
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -361,7 +363,7 @@ class EEGReader(BaseCMLReader):
 
             info = EEGMetaReader.fromfile(path, subject=self.subject)
             sample_rate = info["sample_rate"]
-            dtype = info["data_type"]
+            dtype = info["data_format"]
 
             # get a list of EEG filenames from events
             basenames = self._get_basenames_from_events(events)
@@ -436,7 +438,8 @@ class EEGReader(BaseCMLReader):
             # convert events to epochs
             epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
-            eeg_filename = ""  # FIXME
+            root = get_root_dir(self.rootdir)
+            eeg_filename = os.path.join(root, basename.lstrip("/"))
             reader_class = self._get_reader_class(basename)
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
