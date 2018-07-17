@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from cmlreaders.readers import (
-    BaseJSONReader, TextReader, RAMCSVReader, EEGMetaReader,
+    BaseJSONReader, TextReader, RAMCSVReader,
     ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
     RamulatorEventLogReader, RAMReportSummaryDataReader, BaseRAMReportDataReader,
     ClassifierContainerReader

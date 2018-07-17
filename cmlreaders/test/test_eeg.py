@@ -312,6 +312,7 @@ class TestEEGReader:
         for name in expected_basenames:
             assert name in basenames
 
+
 class TestRereference:
     def setup_method(self):
         size = 1000

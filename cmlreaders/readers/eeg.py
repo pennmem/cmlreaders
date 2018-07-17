@@ -1,8 +1,5 @@
 from abc import abstractmethod, ABC
-from collections import OrderedDict
-import itertools
 import json
-import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
 import warnings
@@ -24,7 +21,6 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
-from cmlreaders.util import DefaultTuple
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -399,7 +395,7 @@ class EEGReader(BaseCMLReader):
                       sample_rate: Union[int, float],
                       dtype: str,
                       rel_start: Union[float, int],
-                      rel_stop: Union[float,int]) -> TimeSeries:
+                      rel_stop: Union[float, int]) -> TimeSeries:
         """Read the timeseries.
 
         Parameters
