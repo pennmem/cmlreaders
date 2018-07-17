@@ -1,6 +1,17 @@
 Changes
 =======
 
+Version 0.7.2
+-------------
+
+**2018-07-17**
+
+* Improved conversion of EEG data to PTSA format (#107)
+* Fixed loading events for PS2 and PS4 (#110, #112)
+* Improved error message when trying to load EEG with an empty events DataFrame
+  (#114)
+
+
 Version 0.7.1
 -------------
 
