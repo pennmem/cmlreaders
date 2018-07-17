@@ -16,9 +16,6 @@ lab-specific file formats. Many of these readers have previously existed in
 other repositories, but are being migrated to a single repository since they
 are logically related.
 
-This is a work in progress and should be used with caution until the v1.0
-release as the API will likely undergo numerous changes up until that point.
-
 More information and usage examples are provided in the documentation_.
 
 .. _documentation: https://pennmem.github.io/cmlreaders/html/index.html

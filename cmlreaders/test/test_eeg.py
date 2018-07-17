@@ -407,7 +407,11 @@ class TestRereference:
 
 class TestLoadEEG:
     def test_load_with_empty_events(self):
-        reader = EEGReader("eeg")
+        sources_file = resource_filename("cmlreaders.test.data", "sources.json")
+        with patch.object(PathFinder, "find", return_value=sources_file):
+            reader = EEGReader("eeg")
 
-        with pytest.raises(ValueError):
-            reader.as_timeseries(epochs=[])
+            with pytest.raises(ValueError):
+                data = np.random.random((10, 10, 10))
+                with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
+                    reader.load()

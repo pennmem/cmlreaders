@@ -1,6 +1,7 @@
 pytest
 pytest-cov
 pandas>=0.22,!=0.23.0
+matplotlib
 numpy
 scipy
 codecov

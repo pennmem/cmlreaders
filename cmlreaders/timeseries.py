@@ -1,6 +1,8 @@
-import numpy as np
-import scipy
 from typing import Any, Dict, List, Optional, Tuple, Union
+
+import numpy as np
+import pandas as pd
+import scipy
 
 
 class TimeSeries(object):
@@ -30,6 +32,7 @@ class TimeSeries(object):
     """
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, ...]]] = None,
+                 events: Optional[pd.DataFrame] = None,
                  channels: Optional[List[str]] = None,
                  tstart: Union[int, float] = 0,
                  attrs: Optional[Dict[str, Any]] = None):
@@ -40,7 +43,8 @@ class TimeSeries(object):
 
         self.data = data
         self.samplerate = samplerate
-        self.time = self._make_time_array(tstart)  #: time in milliseconds
+        self.time = self._make_time_array(tstart)  # time in milliseconds
+        self.events = events
 
         if epochs is not None:
             if len(epochs) != self.data.shape[0]:
@@ -184,19 +188,39 @@ class TimeSeries(object):
         """Apply a filter to the data and return a new :class:`TimeSeries`."""
         raise NotImplementedError
 
-    def to_ptsa(self) -> "TimeSeriesX":
-        """Convert to a PTSA :class:`TimeSeriesX` object."""
-        from ptsa.data.TimeSeriesX import TimeSeriesX
+    def to_ptsa(self) -> "PtsaTimeSeries":
+        """Convert to a PTSA :class:`TimeSeriesX` object.
 
-        return TimeSeriesX.create(
+        Notes
+        -----
+        Events are first converted from a :class:`pd.DataFrame` to a Numpy
+        recarray and are available as the ``event`` coordinate.
+
+        """
+        from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
+
+        dims = ("event", "channel", "time")
+
+        if self.events is not None:
+            events = self.events.to_records()
+        else:
+            columns = ["eegoffset", "epoch_end"]
+            if len(self.epochs[0]) > 2:
+                columns = [columns[i] if i < 2 else "column_{}".format(i)
+                           for i in range(len(self.epochs[0]))]
+            events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
+
+        coords = {
+            "event": events,
+            "channel": self.channels,
+            "time": self.time,
+        }
+
+        return PtsaTimeSeries.create(
             self.data,
             samplerate=self.samplerate,
-            dims=('start_offset', 'channel', 'time'),
-            coords={
-                'start_offset': self.start_offsets,
-                'channel': self.channels,
-                'time': self.time
-            }
+            dims=dims,
+            coords=coords,
         )
 
     def to_mne(self) -> "mne.EpochsArray":

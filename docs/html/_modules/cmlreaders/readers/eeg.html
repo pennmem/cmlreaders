@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.7.1 documentation</title>
+  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.7.2 documentation</title>
   
 
   
@@ -157,7 +157,7 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>  <span class="c1"># noqa</span>
@@ -409,12 +409,13 @@
 <span class="sd">        &gt;&gt;&gt; eeg = reader.load_eeg(epochs=epochs)</span>
 
 <span class="sd">    Loading from specified epochs, when there are multiple files for the</span>
-<span class="sd">    session (units are relative to the start of each file):</span>
+<span class="sd">    session (units are relative to the start of each file)::</span>
 
 <span class="sd">        &gt;&gt;&gt; epochs = [(100,200,0), (100,200,1)]</span>
 <span class="sd">        &gt;&gt;&gt; eeg = reader.load_eeg(epochs=epochs)</span>
 
-<span class="sd">    Loading EEG from -100 ms to +100 ms relative to a set of events:</span>
+<span class="sd">    Loading EEG from -100 ms to +100 ms relative to a set of events::</span>
+
 <span class="sd">        &gt;&gt;&gt; events = reader.load(&quot;events&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100)</span>
 
@@ -428,6 +429,10 @@
 
     <span class="c1"># metainfo loaded from sources.json</span>
     <span class="n">sources_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">events</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">epochs</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">scheme</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="EEGReader.load"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.eeg.EEGReader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Overrides the generic load method so as to accept keyword arguments</span>
@@ -445,15 +450,15 @@
                                           <span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
 
-        <span class="k">if</span> <span class="s1">&#39;events&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;events&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="c1"># convert events to epochs</span>
-            <span class="n">events</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">)</span>
+            <span class="n">events</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
             <span class="n">source_info_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources_info</span><span class="o">.</span><span class="n">values</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">source_info_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;sample_rate&#39;</span><span class="p">]</span>
-            <span class="n">basenames</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">source_info_list</span><span class="p">]</span>
+            <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">source_info_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;sample_rate&quot;</span><span class="p">]</span>
+            <span class="n">basenames</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">source_info_list</span><span class="p">]</span>
             <span class="n">epochs</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">events_to_epochs</span><span class="p">(</span><span class="n">events</span><span class="p">,</span>
-                                              <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;rel_start&#39;</span><span class="p">),</span>
-                                              <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;rel_stop&#39;</span><span class="p">),</span>
+                                              <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rel_start&quot;</span><span class="p">),</span>
+                                              <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rel_stop&quot;</span><span class="p">),</span>
                                               <span class="n">sample_rate</span><span class="p">,</span>
                                               <span class="n">basenames</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epochs</span>
@@ -465,7 +470,11 @@
                             <span class="k">else</span> <span class="n">e</span> <span class="o">+</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
                             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_timeseries</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;epochs&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scheme&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_timeseries</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="EEGReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.eeg.EEGReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">UnsupportedOutputFormat</span></div>
@@ -486,19 +495,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SplitEEGReader</span>
 
-<div class="viewcode-block" id="EEGReader.as_timeseries"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.eeg.EEGReader.as_timeseries">[docs]</a>    <span class="k">def</span> <span class="nf">as_timeseries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                      <span class="n">scheme</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimeSeries</span><span class="p">:</span>
+<div class="viewcode-block" id="EEGReader.as_timeseries"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.eeg.EEGReader.as_timeseries">[docs]</a>    <span class="k">def</span> <span class="nf">as_timeseries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TimeSeries</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Read the timeseries.</span>
-
-<span class="sd">        Keyword arguments</span>
-<span class="sd">        -----------------</span>
-<span class="sd">        epochs</span>
-<span class="sd">            When given, specify which epochs to read in ms. When omitted, read</span>
-<span class="sd">            an entire session.</span>
-<span class="sd">        scheme</span>
-<span class="sd">            When given, attempt to rereference and/or filter the data. This</span>
-<span class="sd">            parameter should be a :class:`pd.DataFrame` à la ``pairs.json``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -515,13 +513,17 @@
 <span class="sd">            When rereferincing is not possible.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">epochs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
-        <span class="n">epochs</span> <span class="o">=</span> <span class="n">DefaultTuple</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="n">DefaultTuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No events/epochs given! Hint: did filtering &quot;</span>
+                             <span class="s2">&quot;events result in at least one?&quot;</span><span class="p">)</span>
 
         <span class="n">ts</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">epoch_lst</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">epoch_lst</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">sources_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources_info</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="n">fileno</span><span class="p">]</span>
             <span class="n">basename</span> <span class="o">=</span> <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
             <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;sample_rate&#39;</span><span class="p">]</span>
@@ -529,29 +531,29 @@
             <span class="n">eeg_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;noreref&#39;</span><span class="p">,</span> <span class="n">basename</span><span class="p">)</span>
             <span class="n">reader_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_reader_class</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">tlens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">epochs</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">tlens</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">])</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">tlens</span> <span class="o">==</span> <span class="n">tlens</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Epoch lengths are not all the same!&quot;</span><span class="p">)</span>
 
             <span class="n">reader</span> <span class="o">=</span> <span class="n">reader_class</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">eeg_filename</span><span class="p">,</span>
                                   <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
-                                  <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
-                                  <span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+                                  <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+                                  <span class="n">scheme</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheme</span><span class="p">)</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">contacts</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">scheme</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">rereference</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">contacts</span><span class="p">)</span>
-                <span class="n">channels</span> <span class="o">=</span> <span class="n">scheme</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                <span class="n">channels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CH</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
-            <span class="c1"># TODO: tstart</span>
             <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">TimeSeries</span><span class="p">(</span>
                     <span class="n">data</span><span class="p">,</span>
                     <span class="n">sample_rate</span><span class="p">,</span>
-                    <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+                    <span class="n">epochs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+                    <span class="n">events</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">,</span>
                     <span class="n">channels</span><span class="o">=</span><span class="n">channels</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -593,7 +595,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.1',
+            VERSION:'0.7.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
