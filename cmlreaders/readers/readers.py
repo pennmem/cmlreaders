@@ -141,7 +141,12 @@ class EventReader(BaseCMLReader):
         return pd.read_json(self._file_path)
 
     def _read_matlab_events(self) -> pd.DataFrame:
-        return pd.DataFrame(sio.loadmat(self._file_path, squeeze_me=True)["events"])
+        df = pd.DataFrame(sio.loadmat(self._file_path, squeeze_me=True)["events"])
+
+        if self.session is not None:
+            df = df[df["session"] == self.session]
+
+        return df
 
     def as_dataframe(self):
         if self._file_path.endswith(".json"):
