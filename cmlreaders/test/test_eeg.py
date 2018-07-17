@@ -31,16 +31,19 @@ def events():
         return reader.as_dataframe()
 
 
-# FIXME: test with params.txt
 class TestEEGMetaReader:
-    def test_load(self):
-        path = resource_filename("cmlreaders.test.data", "sources.json")
-        sources = EEGMetaReader.fromfile(path, subject="R1111M")
+    @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample_rate", [
+        ("R1389J", "sources.json", "int16", 1641165, 1000),
+        ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
+    ])
+    def test_load(self, subject, filename, data_format, n_samples, sample_rate):
+        path = resource_filename("cmlreaders.test.data", filename)
+        sources = EEGMetaReader.fromfile(path, subject=subject)
 
         assert isinstance(sources, dict)
-        assert sources["data_format"] == "int16"
-        assert sources["n_samples"] == 1641165
-        assert sources["sample_rate"] == 1000
+        assert sources["data_format"] == data_format
+        assert sources["n_samples"] == n_samples
+        assert sources["sample_rate"] == sample_rate
 
 
 class TestBaseEEGReader:

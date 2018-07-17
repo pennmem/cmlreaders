@@ -15,7 +15,7 @@ with warnings.catch_warnings():  # noqa
 import numpy as np
 import pandas as pd
 
-from cmlreaders import constants, convert
+from cmlreaders import convert
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     RereferencingNotPossibleError, UnsupportedOutputFormat
@@ -50,8 +50,9 @@ class EEGMetaReader(BaseCMLReader):
         df = pd.read_table(self._file_path, sep=' ', header=None, index_col=0).T
 
         sources_info = {
-            "sample_rate": df["samplerate"].iloc[0],
-            "data_format": df["dataformat"].iloc[0],
+            "sample_rate": float(df["samplerate"].iloc[0]),
+            "data_format": df["dataformat"].str.replace("'", "").iloc[0],
+            "n_samples": None,
             "path": self._file_path,
         }
 
