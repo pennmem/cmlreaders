@@ -206,8 +206,8 @@ class TimeSeries(object):
         else:
             columns = ["eegoffset", "epoch_end"]
             if len(self.epochs[0]) > 2:
-                columns += ["column_{}".format(i + 2)
-                            for i in range(len(self.epochs[0][2:]))]
+                columns = [columns[i] if i < 2 else "column_{}".format(i)
+                           for i in range(len(self.epochs[0]))]
             events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
 
         coords = {
