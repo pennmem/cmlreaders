@@ -97,7 +97,10 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         return get_protocol(self.subject)
 
     @classmethod
-    def fromfile(cls, path: Union[str, Path], subject: Optional[str] = None):
+    def fromfile(cls, path: Union[str, Path],
+                 subject: Optional[str] = None,
+                 experiment: Optional[str] = None,
+                 session: Optional[int] = None):
         """Directly load data from a file using the default representation.
         This is equivalent to creating a reader with the ``file_path`` keyword
         argument given but without the need to then call ``load`` or specify
@@ -113,7 +116,11 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         """
         if subject is None:
             subject = ""
-        reader = cls("dtype", subject, "experiment", -1, file_path=str(path))
+
+        if experiment is None:
+            experiment = "experiment"
+
+        reader = cls("dtype", subject, experiment, session, file_path=str(path))
         return reader.load()
 
     def load(self):

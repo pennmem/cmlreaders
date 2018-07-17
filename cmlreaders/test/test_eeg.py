@@ -18,7 +18,8 @@ from cmlreaders.readers.eeg import (
     BaseEEGReader, EEGMetaReader, EEGReader, NumpyEEGReader,
     RamulatorHDF5Reader, SplitEEGReader,
 )
-from cmlreaders.readers import MontageReader
+from cmlreaders.readers.electrodes import MontageReader
+from cmlreaders.readers.readers import EventReader
 from cmlreaders.test.utils import patched_cmlreader
 
 
@@ -42,8 +43,10 @@ class TestEEGMetaReader:
 
         assert isinstance(sources, dict)
         assert sources["data_format"] == data_format
-        assert sources["n_samples"] == n_samples
         assert sources["sample_rate"] == sample_rate
+
+        if n_samples is not None:
+            assert sources["n_samples"] == n_samples
 
 
 class TestBaseEEGReader:
@@ -288,6 +291,26 @@ class TestEEGReader:
             True if subject != "R1384J" else False
         )
 
+    @pytest.mark.only
+    @pytest.mark.parametrize("subject,events_filename,expected_basenames", [
+        ("TJ001", "TJ001_events.mat", [
+            "/data1/eeg/TJ001/eeg.reref/TJ001_14Jan09_1057",
+            "/data1/eeg/TJ001/eeg.reref/TJ001_15Jan09_1134",
+            "/data1/eeg/TJ001/eeg.reref/TJ001_16Jan09_1107",
+        ]),
+        ("R1389J", "task_events.json", [
+            "protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
+        ]),
+    ])
+    def test_get_basenames_from_events(self, subject, events_filename,
+                                       expected_basenames):
+        path = resource_filename("cmlreaders.test.data", events_filename)
+        events = EventReader.fromfile(path)
+        reader = EEGReader("eeg", subject)
+        basenames = reader._get_basenames_from_events(events)
+
+        for name in expected_basenames:
+            assert name in basenames
 
 class TestRereference:
     def setup_method(self):

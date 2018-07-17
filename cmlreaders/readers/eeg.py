@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 from collections import OrderedDict
 import itertools
 import json
+import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
 import warnings
@@ -15,10 +16,11 @@ with warnings.catch_warnings():  # noqa
 import numpy as np
 import pandas as pd
 
-from cmlreaders import convert
+from cmlreaders import constants, convert
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
-    RereferencingNotPossibleError, UnsupportedOutputFormat
+    RereferencingNotPossibleError, UnsupportedOutputFormat,
+    IncompatibleParametersError,
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
@@ -302,12 +304,31 @@ class EEGReader(BaseCMLReader):
     data_types = ["eeg"]
     default_representation = "timeseries"
 
-    # metainfo loaded from sources.json
-    sources_info = {}
+    # referencing scheme
+    scheme = None  # type: pd.DataFrame
 
-    events = None
-    epochs = None
-    scheme = None
+    def _get_basenames_from_events(self, events: pd.DataFrame) -> List[str]:
+        """Gets a list of base EEG filenames from events."""
+        basenames = [eegfile for eegfile in events["eegfile"].unique() if len(eegfile)]
+
+        # paths are only the basename in data stored in /protocols; the old
+        # Matlab event processing uses absolute paths to EEG files
+        if self.protocol in ["r1", "ltp"]:
+            new_basenames = []
+            for basename in basenames:
+                subject, experiment, session, date, time = basename.split("_")
+                new_basenames.append(
+                    constants.rhino_paths["processed_eeg"][0].format(
+                        protocol=self.protocol,
+                        subject=subject,
+                        experiment=experiment,
+                        session=session,
+                        basename=basename,
+                    )
+                )
+            basenames = new_basenames
+
+        return basenames
 
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
@@ -319,36 +340,40 @@ class EEGReader(BaseCMLReader):
                             session=self.session,
                             rootdir=self.rootdir)
 
-        path = Path(finder.find('sources'))
-        # self.sources_info = EEGMetaReader.fromfile(path, subject=self.subject)
+        path = Path(finder.find("sources"))
 
-        # FIXME: remove
-        with path.open() as metafile:
-            self.sources_info = json.load(metafile,
-                                          object_pairs_hook=OrderedDict)
-            self.sources_info['path'] = path
+        # TODO: Load an entire session
+        if "events" not in kwargs:
+            # The main issue here is that "resumed" sessions make it so that
+            # there is not an obvious way to read a "whole" session because we
+            # have no a priori way of knowing what exactly we should be reading.
+            raise NotImplementedError(
+                "Reading EEG data without giving events is not supported"
+            )
 
-        if "events" in kwargs:
-            # convert events to epochs
-            events = kwargs.pop("events")
-            source_info_list = list(self.sources_info.values())[:-1]
-            sample_rate = source_info_list[0]["sample_rate"]
-            basenames = [info["name"] for info in source_info_list]
-            epochs = convert.events_to_epochs(events,
-                                              kwargs.pop("rel_start"),
-                                              kwargs.pop("rel_stop"),
-                                              sample_rate,
-                                              basenames)
+        # Determine files to load from events
         else:
-            epochs = [(0, None)]
+            events = kwargs["events"]
 
-        epochs = [e if len(e) == 3 else e + (0,) for e in epochs]
+            if not len(events):
+                raise ValueError("No events found! Hint: did filtering events "
+                                 "result in at least one?")
+            if "rel_start" not in kwargs or "rel_stop" not in kwargs:
+                raise IncompatibleParametersError(
+                    "rel_start and rel_stop must be given with events"
+                )
 
-        self.events = kwargs.pop("events", None)
-        self.epochs = epochs
-        self.scheme = kwargs.pop("scheme", None)
+            info = EEGMetaReader.fromfile(path, subject=self.subject)
+            sample_rate = info["sample_rate"]
+            dtype = info["data_type"]
 
-        return self.as_timeseries()
+            # get a list of EEG filenames from events
+            basenames = self._get_basenames_from_events(events)
+
+        self.scheme = kwargs.get("scheme", None)
+
+        return self.as_timeseries(events, basenames, sample_rate, dtype,
+                                  kwargs["rel_start"], kwargs["rel_stop"])
 
     def as_dataframe(self):
         raise UnsupportedOutputFormat
@@ -369,8 +394,28 @@ class EEGReader(BaseCMLReader):
         else:
             return SplitEEGReader
 
-    def as_timeseries(self) -> TimeSeries:
+    def as_timeseries(self, events: pd.DataFrame,
+                      basenames: List[str],
+                      sample_rate: Union[int, float],
+                      dtype: str,
+                      rel_start: Union[float, int],
+                      rel_stop: Union[float,int]) -> TimeSeries:
         """Read the timeseries.
+
+        Parameters
+        ----------
+        events
+            Events to read EEG data from
+        basenames
+            List of base filenames
+        sample_rate
+            Recorded sample rate
+        dtype
+            Recorded data type in string form
+        rel_start
+            Relative start times in ms
+        rel_stop
+            Relative stop times in ms
 
         Returns
         -------
@@ -381,36 +426,25 @@ class EEGReader(BaseCMLReader):
 
         Raises
         ------
-        ValueError
-            When provided epochs are not all the same length
         RereferencingNotPossibleError
-            When rereferincing is not possible.
+            When rereferencing is not possible.
 
         """
-        self.epochs = DefaultTuple(self.epochs)
-
-        if not len(self.epochs):
-            raise ValueError("No events/epochs given! Hint: did filtering "
-                             "events result in at least one?")
-
         eegs = []
 
-        for fileno, epoch_lst in itertools.groupby(self.epochs, key=lambda x: x[-1]):
-            sources_info = list(self.sources_info.values())[fileno]
-            basename = sources_info['name']
-            sample_rate = sources_info['sample_rate']
-            dtype = sources_info['data_format']
-            eeg_filename = Path(self.sources_info['path']).parent.joinpath('noreref', basename)
+        for basename in basenames:
+            # select subset of events for this basename
+            name = Path(basename).name if self.protocol not in ["pyfr"] else basename
+            ev = events[events["eegfile"] == name]
+
+            # convert events to epochs
+            epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
+
+            eeg_filename = ""  # FIXME
             reader_class = self._get_reader_class(basename)
-
-            if len(self.epochs) > 1:
-                tlens = np.array([e[1] - e[0] for e in self.epochs])
-                if not np.all(tlens == tlens[0]):
-                    raise ValueError("Epoch lengths are not all the same!")
-
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
-                                  epochs=self.epochs,
+                                  epochs=epochs,
                                   scheme=self.scheme)
             data, contacts = reader.read()
 
@@ -424,8 +458,8 @@ class EEGReader(BaseCMLReader):
                 TimeSeries(
                     data,
                     sample_rate,
-                    epochs=self.epochs,
-                    events=self.events,
+                    epochs=epochs,
+                    events=ev,
                     channels=channels,
                 )
             )
