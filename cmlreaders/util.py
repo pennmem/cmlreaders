@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 from typing import Any, Iterable, Optional, Union
 
+from cmlreaders import constants
+from cmlreaders.exc import UnknownProtocolError
+
 
 def get_root_dir(path: Union[str, Path] = None) -> str:
     """Used to set a default root directory. The root directory is resolved in
@@ -57,6 +60,25 @@ def is_rerefable(subject: str, experiment: str, session: int,
             return False
 
     return True
+
+
+def get_protocol(subject: str) -> str:
+    """Get the protocol name from the subject code.
+
+    This returns the ``<protocol> `` in ``/protocols/<protocol>``. For
+    example, it returns ``"r1"`` for RAM subjects.
+
+    """
+    if subject.startswith("R1"):
+        return "r1"
+    elif subject.startswith("LTP"):
+        return "ltp"
+    elif subject[:2] in constants.PYFR_SUBJECT_CODE_PREFIXES:
+        return "pyfr"
+    else:
+        raise UnknownProtocolError(
+            "Can't determine protocol for subject id " + subject
+        )
 
 
 class DefaultTuple(tuple):

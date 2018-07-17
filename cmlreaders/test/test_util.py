@@ -4,7 +4,8 @@ from random import shuffle
 
 import pytest
 
-from cmlreaders.util import DefaultTuple, get_root_dir, is_rerefable
+from cmlreaders import exc
+from cmlreaders.util import DefaultTuple, get_protocol, get_root_dir, is_rerefable
 
 
 @contextmanager
@@ -18,6 +19,24 @@ def set_cml_root(path):
         os.environ.pop("CML_ROOT", None)
     yield
     os.environ = orig
+
+
+@pytest.mark.parametrize("subject", [
+    "R1111M", "LTP001", "TJ001", "FR001", "CH001", "DNE123",
+])
+def test_get_protocol(subject):
+    if subject.startswith("DNE"):
+        with pytest.raises(exc.UnknownProtocolError):
+            get_protocol(subject)
+    else:
+        protocol = get_protocol(subject)
+
+        if subject.startswith("R1"):
+            assert protocol == "r1"
+        elif subject.startswith("LTP"):
+            assert protocol == "ltp"
+        else:
+            assert protocol == "pyfr"
 
 
 @pytest.mark.parametrize("path", [None, "/some/path"])

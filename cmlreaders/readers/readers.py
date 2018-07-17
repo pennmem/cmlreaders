@@ -112,7 +112,8 @@ class BaseJSONReader(BaseCMLReader):
 
 
 class EEGMetaReader(BaseCMLReader):
-    """Reads the ``sources.json`` file which describes metainfo about EEG data.
+    """Reads the ``sources.json`` or ``params.txt`` files which describes
+    metainfo about EEG data.
 
     Returns a :class:`dict`.
 
