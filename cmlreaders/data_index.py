@@ -141,3 +141,21 @@ def get_data_index(kind: str = "all",
             df[key] = df[key].astype(int)
 
     return df
+
+
+if __name__ == "__main__":
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+    parser.add_argument("--generate-pyfr-index", action="store_true",
+                        help="generate a pyFR.json index file")
+    parser.add_argument("--outdir", default=".", type=str,
+                        help="output directory (default: .)")
+    parser.add_argument("--rootdir", default=None, help="data root directory")
+
+    args = parser.parse_args()
+
+    if args.generate_pyfr_index:
+        generate_pyfr_index(args.outdir, args.rootdir)
+    else:
+        parser.print_usage()
