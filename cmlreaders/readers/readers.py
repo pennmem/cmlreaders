@@ -111,23 +111,6 @@ class BaseJSONReader(BaseCMLReader):
         return pd.read_json(self._file_path)
 
 
-class EEGMetaReader(BaseCMLReader):
-    """Reads the ``sources.json`` or ``params.txt`` files which describes
-    metainfo about EEG data.
-
-    Returns a :class:`dict`.
-
-    """
-    data_types = ["sources"]
-    default_representation = "dict"
-
-    def as_dict(self):
-        with open(self._file_path, 'r') as metafile:
-            sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = self._file_path
-        return sources_info
-
-
 class EventReader(BaseCMLReader):
     """Reader for all experiment events.
 

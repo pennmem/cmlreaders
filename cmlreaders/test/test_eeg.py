@@ -15,8 +15,8 @@ import pandas as pd
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import convert, exc
 from cmlreaders.readers.eeg import (
-    BaseEEGReader, EEGReader, NumpyEEGReader, RamulatorHDF5Reader,
-    SplitEEGReader,
+    BaseEEGReader, EEGMetaReader, EEGReader, NumpyEEGReader,
+    RamulatorHDF5Reader, SplitEEGReader,
 )
 from cmlreaders.readers import MontageReader
 from cmlreaders.test.utils import patched_cmlreader
@@ -29,6 +29,18 @@ def events():
         path = resource_filename('cmlreaders.test.data', 'all_events.json')
         reader = cml_reader.get_reader('events', file_path=path)
         return reader.as_dataframe()
+
+
+# FIXME: test with params.txt
+class TestEEGMetaReader:
+    def test_load(self):
+        path = resource_filename("cmlreaders.test.data", "sources.json")
+        sources = EEGMetaReader.fromfile(path, subject="R1111M")
+
+        assert isinstance(sources, dict)
+        assert sources["data_format"] == "int16"
+        assert sources["n_samples"] == 1641165
+        assert sources["sample_rate"] == 1000
 
 
 class TestBaseEEGReader:

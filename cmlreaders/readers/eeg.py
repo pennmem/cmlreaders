@@ -15,7 +15,7 @@ with warnings.catch_warnings():  # noqa
 import numpy as np
 import pandas as pd
 
-from cmlreaders import convert
+from cmlreaders import constants, convert
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     RereferencingNotPossibleError, UnsupportedOutputFormat
@@ -23,6 +23,45 @@ from cmlreaders.exc import (
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
 from cmlreaders.util import DefaultTuple
+
+
+class EEGMetaReader(BaseCMLReader):
+    """Reads the ``sources.json`` or ``params.txt`` files which describes
+    metainfo about EEG data.
+
+    Returns a :class:`dict`.
+
+    """
+    data_types = ["sources"]
+    default_representation = "dict"
+
+    def _read_sources_json(self) -> dict:
+        """Read from a sources.json file."""
+        with open(self._file_path, 'r') as metafile:
+            sources_info = list(json.load(metafile).values())[0]
+            sources_info['path'] = self._file_path
+            return sources_info
+
+    def _read_params_txt(self) -> dict:
+        """Read from a params.txt file and coerces to a similar format as
+        sources.json.
+
+        """
+        df = pd.read_table(self._file_path, sep=' ', header=None, index_col=0).T
+
+        sources_info = {
+            "sample_rate": df["samplerate"].iloc[0],
+            "data_format": df["dataformat"].iloc[0],
+            "path": self._file_path,
+        }
+
+        return sources_info
+
+    def as_dict(self) -> dict:
+        if self.protocol in ["r1", "ltp"]:
+            return self._read_sources_json()
+        else:
+            return self._read_params_txt()
 
 
 class BaseEEGReader(ABC):
@@ -249,17 +288,6 @@ class EEGReader(BaseCMLReader):
         >>> filtered = pairs[pairs["avg.region"] == "middletemporal"]
         >>> eeg = reader.load_eeg(scheme=pairs)
 
-    Loading from explicitly specified epochs (units are samples)::
-
-        >>> epochs = [(100, 200), (300, 400)]
-        >>> eeg = reader.load_eeg(epochs=epochs)
-
-    Loading from specified epochs, when there are multiple files for the
-    session (units are relative to the start of each file)::
-
-        >>> epochs = [(100,200,0), (100,200,1)]
-        >>> eeg = reader.load_eeg(epochs=epochs)
-
     Loading EEG from -100 ms to +100 ms relative to a set of events::
 
         >>> events = reader.load("events")
@@ -291,6 +319,9 @@ class EEGReader(BaseCMLReader):
                             rootdir=self.rootdir)
 
         path = Path(finder.find('sources'))
+        # self.sources_info = EEGMetaReader.fromfile(path, subject=self.subject)
+
+        # FIXME: remove
         with path.open() as metafile:
             self.sources_info = json.load(metafile,
                                           object_pairs_hook=OrderedDict)
@@ -307,17 +338,13 @@ class EEGReader(BaseCMLReader):
                                               kwargs.pop("rel_stop"),
                                               sample_rate,
                                               basenames)
-            kwargs['epochs'] = epochs
+        else:
+            epochs = [(0, None)]
 
-        if "epochs" not in kwargs:
-            kwargs["epochs"] = [(0, None)]
-
-        kwargs["epochs"] = [e if len(e) == 3
-                            else e + (0,)
-                            for e in kwargs['epochs']]
+        epochs = [e if len(e) == 3 else e + (0,) for e in epochs]
 
         self.events = kwargs.pop("events", None)
-        self.epochs = kwargs["epochs"]
+        self.epochs = epochs
         self.scheme = kwargs.pop("scheme", None)
 
         return self.as_timeseries()
@@ -359,22 +386,20 @@ class EEGReader(BaseCMLReader):
             When rereferincing is not possible.
 
         """
-        if self.epochs is None:
-            self.epochs = [(0, None)]
         self.epochs = DefaultTuple(self.epochs)
 
         if not len(self.epochs):
             raise ValueError("No events/epochs given! Hint: did filtering "
                              "events result in at least one?")
 
-        ts = []
+        eegs = []
 
         for fileno, epoch_lst in itertools.groupby(self.epochs, key=lambda x: x[-1]):
             sources_info = list(self.sources_info.values())[fileno]
             basename = sources_info['name']
             sample_rate = sources_info['sample_rate']
             dtype = sources_info['data_format']
-            eeg_filename = self.sources_info['path'].parent.joinpath('noreref', basename)
+            eeg_filename = Path(self.sources_info['path']).parent.joinpath('noreref', basename)
             reader_class = self._get_reader_class(basename)
 
             if len(self.epochs) > 1:
@@ -394,7 +419,7 @@ class EEGReader(BaseCMLReader):
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
-            ts.append(
+            eegs.append(
                 TimeSeries(
                     data,
                     sample_rate,
@@ -404,6 +429,6 @@ class EEGReader(BaseCMLReader):
                 )
             )
 
-        ts = TimeSeries.concatenate(ts)
-        ts.attrs["rereferencing_possible"] = reader.rereferencing_possible
-        return ts
+        eegs = TimeSeries.concatenate(eegs)
+        eegs.attrs["rereferencing_possible"] = reader.rereferencing_possible
+        return eegs

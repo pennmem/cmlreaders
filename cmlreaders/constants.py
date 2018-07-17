@@ -103,6 +103,13 @@ rhino_paths = {
         'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'
     ],
 
+    # Processed EEG data basename
+    # For data in /protocols, this gets expanded into either a bunch of files or
+    # a single HDF5 file in the case of later RAM subjects recorded on the ENS.
+    "eeg": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/noreref/{basename}"
+    ],
+
     # Ramulator-related information
     'experiment_log': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/experiment.log',

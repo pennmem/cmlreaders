@@ -194,18 +194,6 @@ class TestBaseJSONReader:
         assert isinstance(df, pd.DataFrame)
 
 
-class TestEEGMetaReader:
-    def test_load(self):
-        path = datafile("sources.json")
-        reader = EEGMetaReader("sources.json", file_path=path)
-        sources = reader.load()
-
-        assert isinstance(sources, dict)
-        assert sources["data_format"] == "int16"
-        assert sources["n_samples"] == 1641165
-        assert sources["sample_rate"] == 1000
-
-
 class TestEventReader:
     def test_load_json(self):
         path = datafile('all_events.json')
