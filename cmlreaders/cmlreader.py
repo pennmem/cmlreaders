@@ -3,7 +3,7 @@ from typing import List, Tuple, Optional
 import numpy as np
 import pandas as pd
 
-from . import readers
+from . import constants, readers
 from .data_index import get_data_index
 from .exc import IncompatibleParametersError, UnknownProtocolError, \
     UnsupportedProtocolError
@@ -84,6 +84,8 @@ class CMLReader(object):
             return "r1"
         elif subject.startswith("LTP"):
             return "ltp"
+        elif subject[:2] in constants.PYFR_SUBJECT_CODE_PREFIXES:
+            return "pyfr"
         else:
             raise UnknownProtocolError(
                 "Can't determine protocol for subject id " + subject
