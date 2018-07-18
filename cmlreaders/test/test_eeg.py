@@ -318,6 +318,25 @@ class TestEEGReader:
         for name in expected_basenames:
             assert name in basenames
 
+    @pytest.mark.parametrize("which", ["subject", "experiment", "session"])
+    def test_get_basenames_from_events_with_malformed_events(self, which):
+        path = resource_filename("cmlreaders.test.data", "task_events.json")
+        events = EventReader.fromfile(path)
+        subject = events["subject"].unique()[0]
+
+        # purposely malform events
+        value = {
+            "subject": "R1111M",
+            "experiment": "PS4",
+            "session": 10,
+        }
+        events.loc[5, which] = value[which]
+
+        reader = EEGReader("eeg", subject)
+
+        with pytest.raises(ValueError):
+            reader._get_basenames_from_events(events)
+
 
 class TestRereference:
     def setup_method(self):
@@ -341,6 +360,13 @@ class TestRereference:
     def teardown_method(self):
         import shutil
         shutil.rmtree(self.rootdir.name, ignore_errors=True)
+
+    @property
+    def events(self) -> pd.DataFrame:
+        return pd.DataFrame({
+            "eegoffset": [0],
+            "eegfile": ["R1111M_FR1_0_1234_1234"],
+        })
 
     @property
     def sources_path(self) -> str:
@@ -445,8 +471,10 @@ class TestRereference:
         })
 
         with patch.object(PathFinder, "find", return_value=self.sources_path):
-            reader = EEGReader("eeg")
-            eeg = reader.load(scheme=scheme)
+            reader = EEGReader("eeg", subject="R1111M")
+            eeg = reader.load(events=self.events,
+                              rel_start=0, rel_stop=self.data.shape[-1],
+                              scheme=scheme)
             assert_equal(eeg.data[0], self.reref_data)
 
 

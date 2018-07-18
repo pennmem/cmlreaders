@@ -22,7 +22,7 @@ from cmlreaders.exc import (
 )
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.timeseries import TimeSeries
-from cmlreaders.util import get_root_dir
+from cmlreaders.util import get_protocol, get_root_dir
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -306,21 +306,41 @@ class EEGReader(BaseCMLReader):
     scheme = None  # type: pd.DataFrame
 
     def _get_basenames_from_events(self, events: pd.DataFrame) -> List[str]:
-        """Gets a list of base EEG filenames from events."""
+        """Gets a list of base EEG filenames from events.
+
+        Raises
+        ------
+        ValueError
+            When events are malformed.
+
+        """
         basenames = [eegfile for eegfile in events["eegfile"].unique() if len(eegfile)]
 
         # paths are only the basename in data stored in /protocols; the old
         # Matlab event processing uses absolute paths to EEG files
         if self.protocol in ["r1", "ltp"]:
             new_basenames = []
+
             for basename in basenames:
-                subject, experiment, session, date, time = basename.split("_")
+                # determine subject, experiment, session for this set of EEG
+                # data
+                ev = events[events["eegfile"] == basename]
+                subjects = ev["subject"].unique()
+                experiments = ev["experiment"].unique()
+                sessions = ev["session"].unique()
+
+                if not all([len(x) == 1 for x in [subjects, experiments, sessions]]):
+                    raise ValueError(
+                        "Malformed events: subject, experiment, session should"
+                        " be unique for a single recording"
+                    )
+
                 new_basenames.append(
                     constants.rhino_paths["processed_eeg"][0].format(
-                        protocol=self.protocol,
-                        subject=subject,
-                        experiment=experiment,
-                        session=session,
+                        protocol=get_protocol(subjects[0]),
+                        subject=subjects[0],
+                        experiment=experiments[0],
+                        session=sessions[0],
                         basename=basename,
                     )
                 )

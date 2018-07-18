@@ -201,7 +201,6 @@ class TestEventReader:
         df = reader.load()
         assert df.columns[0] == 'eegoffset'
 
-    @pytest.mark.only
     @pytest.mark.parametrize("kind", [
         "all_events", "task_events", "math_events"
     ])
