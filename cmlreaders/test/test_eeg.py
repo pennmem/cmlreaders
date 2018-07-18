@@ -308,8 +308,7 @@ class TestEEGReader:
             "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
         ]),
     ])
-    def test_eeg_absolute(self, subject, events_filename,
-                                       expected_basenames):
+    def test_eeg_absolute(self, subject, events_filename, expected_basenames):
         path = resource_filename("cmlreaders.test.data", events_filename)
         events = EventReader.fromfile(path)
         reader = EEGReader("eeg", subject)

@@ -125,7 +125,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         path = Path(path)
         try:
             data_type = path.name.split(".")[0]
-        except:
+        except:  # noqa
             data_type = "dtype"
         reader = cls(data_type, subject, experiment, session, file_path=str(path))
         return reader.load()
