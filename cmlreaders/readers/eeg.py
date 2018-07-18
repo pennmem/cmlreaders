@@ -305,48 +305,30 @@ class EEGReader(BaseCMLReader):
     # referencing scheme
     scheme = None  # type: pd.DataFrame
 
-    def _get_basenames_from_events(self, events: pd.DataFrame) -> List[str]:
-        """Gets a list of base EEG filenames from events.
-
-        Raises
-        ------
-        ValueError
-            When events are malformed.
+    def _eegfile_absolute(self, events: pd.DataFrame) -> pd.DataFrame:
+        """Convert possibly relative paths to EEG files in events to absolute
+        paths.
 
         """
-        basenames = [eegfile for eegfile in events["eegfile"].unique() if len(eegfile)]
+        # Only reformat if we have relative path names. Data stored in
+        # /protocols usually uses relative paths, whereas the older, Matlab-
+        # based event processing uses absolute paths.
+        def to_absolute(row):
+            if row["eegfile"].startswith("/"):
+                return row["eegfile"]
 
-        # paths are only the basename in data stored in /protocols; the old
-        # Matlab event processing uses absolute paths to EEG files
-        if self.protocol in ["r1", "ltp"]:
-            new_basenames = []
+            subject = row["subject"]
 
-            for basename in basenames:
-                # determine subject, experiment, session for this set of EEG
-                # data
-                ev = events[events["eegfile"] == basename]
-                subjects = ev["subject"].unique()
-                experiments = ev["experiment"].unique()
-                sessions = ev["session"].unique()
+            return "/" + constants.rhino_paths["processed_eeg"][0].format(
+                protocol=get_protocol(subject),
+                subject=subject,
+                experiment=row["experiment"],
+                session=row["session"],
+                basename=row["eegfile"]
+            )
 
-                if not all([len(x) == 1 for x in [subjects, experiments, sessions]]):
-                    raise ValueError(
-                        "Malformed events: subject, experiment, session should"
-                        " be unique for a single recording"
-                    )
-
-                new_basenames.append(
-                    constants.rhino_paths["processed_eeg"][0].format(
-                        protocol=get_protocol(subjects[0]),
-                        subject=subjects[0],
-                        experiment=experiments[0],
-                        session=sessions[0],
-                        basename=basename,
-                    )
-                )
-            basenames = new_basenames
-
-        return basenames
+        events["eegfile"] = events.apply(to_absolute, axis=1)
+        return events
 
     def load(self, **kwargs):
         """Overrides the generic load method so as to accept keyword arguments
@@ -385,12 +367,9 @@ class EEGReader(BaseCMLReader):
             sample_rate = info["sample_rate"]
             dtype = info["data_format"]
 
-            # get a list of EEG filenames from events
-            basenames = self._get_basenames_from_events(events)
-
         self.scheme = kwargs.get("scheme", None)
 
-        return self.as_timeseries(events, basenames, sample_rate, dtype,
+        return self.as_timeseries(events, sample_rate, dtype,
                                   kwargs["rel_start"], kwargs["rel_stop"])
 
     def as_dataframe(self):
@@ -413,7 +392,6 @@ class EEGReader(BaseCMLReader):
             return SplitEEGReader
 
     def as_timeseries(self, events: pd.DataFrame,
-                      basenames: List[str],
                       sample_rate: Union[int, float],
                       dtype: str,
                       rel_start: Union[float, int],
@@ -424,8 +402,6 @@ class EEGReader(BaseCMLReader):
         ----------
         events
             Events to read EEG data from
-        basenames
-            List of base filenames
         sample_rate
             Recorded sample rate
         dtype
@@ -450,10 +426,11 @@ class EEGReader(BaseCMLReader):
         """
         eegs = []
 
-        for basename in basenames:
+        for basename in events["eegfile"].unique():
             # select subset of events for this basename
             name = Path(basename).name if self.protocol not in ["pyfr"] else basename
             ev = events[events["eegfile"] == name]
+            import pytest;pytest.set_trace()
 
             # convert events to epochs
             epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
