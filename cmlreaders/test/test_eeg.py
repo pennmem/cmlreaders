@@ -305,7 +305,7 @@ class TestEEGReader:
             "/data1/eeg/TJ001/eeg.reref/TJ001_16Jan09_1107",
         ]),
         ("R1389J", "task_events.json", [
-            "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
+            "protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
         ]),
     ])
     def test_get_basenames_from_events(self, subject, events_filename,
@@ -319,7 +319,6 @@ class TestEEGReader:
             assert eegfile in expected_basenames
 
 
-@pytest.mark.only
 class TestRereference:
     def setup_method(self):
         size = 1000

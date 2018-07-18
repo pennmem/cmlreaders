@@ -319,7 +319,7 @@ class EEGReader(BaseCMLReader):
 
             subject = row["subject"]
 
-            return "/" + constants.rhino_paths["processed_eeg"][0].format(
+            return constants.rhino_paths["processed_eeg"][0].format(
                 protocol=get_protocol(subject),
                 subject=subject,
                 experiment=row["experiment"],
@@ -426,18 +426,16 @@ class EEGReader(BaseCMLReader):
         """
         eegs = []
 
-        for basename in events["eegfile"].unique():
+        for filename in events["eegfile"].unique():
             # select subset of events for this basename
-            name = Path(basename).name if self.protocol not in ["pyfr"] else basename
-            ev = events[events["eegfile"] == name]
-            import pytest;pytest.set_trace()
+            ev = events[events["eegfile"] == filename]
 
             # convert events to epochs
             epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
             root = get_root_dir(self.rootdir)
-            eeg_filename = os.path.join(root, basename.lstrip("/"))
-            reader_class = self._get_reader_class(basename)
+            eeg_filename = os.path.join(root, filename.lstrip("/"))
+            reader_class = self._get_reader_class(filename)
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
                                   epochs=epochs,
