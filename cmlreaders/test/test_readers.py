@@ -404,5 +404,6 @@ class TestClassifierContainerReader:
     (RamulatorEventLogReader, datafile("event_log.json"), pd.DataFrame),
 ])
 def test_fromfile(cls, path, dtype):
-    data = cls.fromfile(path)
+    subject = "R1405E" if cls == MontageReader else None
+    data = cls.fromfile(path, subject=subject)
     assert isinstance(data, dtype)

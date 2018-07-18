@@ -112,6 +112,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             Path to the file to load.
         subject
             Subject code to use; required when we need to determine the protocol
+        experiment
+        session
 
         """
         if subject is None:
@@ -120,7 +122,12 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         if experiment is None:
             experiment = "experiment"
 
-        reader = cls("dtype", subject, experiment, session, file_path=str(path))
+        path = Path(path)
+        try:
+            data_type = path.name.split(".")[0]
+        except:
+            data_type = "dtype"
+        reader = cls(data_type, subject, experiment, session, file_path=str(path))
         return reader.load()
 
     def load(self):
