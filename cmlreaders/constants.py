@@ -2,12 +2,19 @@
 PROTOCOLS = (
     "r1",
     "ltp",
+    "pyfr",
 )
+
+PYFR_SUBJECT_CODE_PREFIXES = ("BW", "CH", "CP", "FR", "FZ", "TJ", "UP")
 
 rhino_paths = {
     # data indices
-    'r1_index': ['protocols/r1.json'],
-    'ltp_index': ['protocols/ltp.json'],
+    "r1_index": ["protocols/r1.json"],
+    "ltp_index": ["protocols/ltp.json"],
+    "pyfr_index": ["data/events/pyFR/pyFR.json"],
+
+    # root directory to look for pyFR data
+    "pyfr_root": ["data/events/pyFR"],
 
     # Localization-level (subject + localization_
     'localization': [
@@ -77,11 +84,31 @@ rhino_paths = {
     ],
 
     # Session Data
-    'all_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
-    'task_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
-    'math_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
-    'ps4_events': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
-    'sources': ['protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
+    "all_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "task_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "math_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json",
+        "data/events/pyFR/{subject_montage}_math.mat",
+    ],
+    'ps4_events': [
+        'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'
+    ],
+    'sources': [
+        'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'
+    ],
+
+    # Processed EEG data basename
+    # For data in /protocols, this gets expanded into either a bunch of files or
+    # a single HDF5 file in the case of later RAM subjects recorded on the ENS.
+    "processed_eeg": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/noreref/{basename}"
+    ],
 
     # Ramulator-related information
     'experiment_log': [

@@ -15,10 +15,11 @@ import pandas as pd
 from cmlreaders import CMLReader, PathFinder
 from cmlreaders import convert, exc
 from cmlreaders.readers.eeg import (
-    BaseEEGReader, EEGReader, NumpyEEGReader, RamulatorHDF5Reader,
-    SplitEEGReader,
+    BaseEEGReader, EEGMetaReader, EEGReader, NumpyEEGReader,
+    RamulatorHDF5Reader, SplitEEGReader,
 )
-from cmlreaders.readers import MontageReader
+from cmlreaders.readers.electrodes import MontageReader
+from cmlreaders.readers.readers import EventReader
 from cmlreaders.test.utils import patched_cmlreader
 
 
@@ -29,6 +30,23 @@ def events():
         path = resource_filename('cmlreaders.test.data', 'all_events.json')
         reader = cml_reader.get_reader('events', file_path=path)
         return reader.as_dataframe()
+
+
+class TestEEGMetaReader:
+    @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample_rate", [
+        ("R1389J", "sources.json", "int16", 1641165, 1000),
+        ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
+    ])
+    def test_load(self, subject, filename, data_format, n_samples, sample_rate):
+        path = resource_filename("cmlreaders.test.data", filename)
+        sources = EEGMetaReader.fromfile(path, subject=subject)
+
+        assert isinstance(sources, dict)
+        assert sources["data_format"] == data_format
+        assert sources["sample_rate"] == sample_rate
+
+        if n_samples is not None:
+            assert sources["n_samples"] == n_samples
 
 
 class TestBaseEEGReader:
@@ -174,6 +192,7 @@ class TestFileReaders:
 
 @pytest.mark.rhino
 class TestEEGReader:
+    # FIXME: add LTP, pyFR cases
     @pytest.mark.parametrize("subject,index,channel", [
         ("R1298E", 87, "CH88"),  # Split EEG
         ("R1387E", 13, "CH14"),  # Ramulator HDF5
@@ -181,16 +200,20 @@ class TestEEGReader:
     def test_eeg_reader(self, subject, index, channel, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
-        eeg = reader.load_eeg(epochs=[(0, 100), (100, 200)])
+        events = reader.load("events")
+        events = events[events["type"] == "WORD"].iloc[:2]
+        eeg = reader.load_eeg(events=events, rel_start=0, rel_stop=100)
         assert len(eeg.time) == 100
-        assert len(eeg.epochs) == 2
+        assert eeg.data.shape[0] == 2
         assert eeg.channels[index] == channel
 
     @pytest.mark.parametrize("subject", ["R1161E"])
     def test_read_whole_session(self, subject, rhino_root):
         reader = CMLReader(subject=subject, experiment="FR1", session=0,
                            rootdir=rhino_root)
-        reader.load_eeg()
+
+        with pytest.raises(NotImplementedError):
+            reader.load_eeg()
 
     @pytest.mark.parametrize('subject', ['R1161E', 'R1387E'])
     def test_eeg_reader_with_events(self, subject, rhino_root):
@@ -224,24 +247,26 @@ class TestEEGReader:
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         rate = reader.load("sources")["sample_rate"]
+        events = reader.load("events")
+        events = events[events.type == "WORD"].iloc[:1]
 
-        events = pd.DataFrame({"eegoffset": [0]})
         rel_start, rel_stop = 0, 100
-        epochs = convert.events_to_epochs(events, rel_start, rel_stop, rate)
 
         expected_samples = int(rate * rel_stop / 1000)
         scheme = reader.load('pairs')
-        print(scheme.label)
+
+        load_eeg = partial(reader.load_eeg, events=events, rel_start=rel_start,
+                           rel_stop=rel_stop)
 
         if reref_possible:
-            data = reader.load_eeg(epochs=epochs)
+            data = load_eeg()
             assert data.shape == (1, 100, expected_samples)
-            data = reader.load_eeg(epochs=epochs, scheme=scheme)
+            data = load_eeg(scheme=scheme)
             assert data.shape == (1, 141, expected_samples)
             assert data.channels[index] == channel
         else:
-            data_noreref = reader.load_eeg(epochs=epochs)
-            data_reref = reader.load_eeg(epochs=epochs, scheme=scheme)
+            data_noreref = load_eeg()
+            data_reref = load_eeg(scheme=scheme)
             assert_equal(data_noreref.data, data_reref.data)
             assert data_reref.channels[index] == channel
 
@@ -273,6 +298,25 @@ class TestEEGReader:
             True if subject != "R1384J" else False
         )
 
+    @pytest.mark.parametrize("subject,events_filename,expected_basenames", [
+        ("TJ001", "TJ001_events.mat", [
+            "/data1/eeg/TJ001/eeg.reref/TJ001_14Jan09_1057",
+            "/data1/eeg/TJ001/eeg.reref/TJ001_15Jan09_1134",
+            "/data1/eeg/TJ001/eeg.reref/TJ001_16Jan09_1107",
+        ]),
+        ("R1389J", "task_events.json", [
+            "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
+        ]),
+    ])
+    def test_eeg_absolute(self, subject, events_filename, expected_basenames):
+        path = resource_filename("cmlreaders.test.data", events_filename)
+        events = EventReader.fromfile(path)
+        reader = EEGReader("eeg", subject)
+        new_events = reader._eegfile_absolute(events)
+
+        for eegfile in new_events[new_events["eegfile"].notnull()]["eegfile"].unique():
+            assert eegfile in expected_basenames
+
 
 class TestRereference:
     def setup_method(self):
@@ -296,6 +340,15 @@ class TestRereference:
     def teardown_method(self):
         import shutil
         shutil.rmtree(self.rootdir.name, ignore_errors=True)
+
+    def events(self, filename: str) -> pd.DataFrame:
+        return pd.DataFrame({
+            "eegoffset": [0],
+            "eegfile": [filename],
+            "subject": ["R1111M"],
+            "experiment": ["doesn't matter"],
+            "session": [10],
+        })
 
     @property
     def sources_path(self) -> str:
@@ -333,7 +386,7 @@ class TestRereference:
         eeg_dir.mkdir()
         return eeg_dir
 
-    def to_split_eeg(self):
+    def to_split_eeg(self) -> Path:
         """Save files as raw binary "split" EEG files."""
         prefix = "split"
         eeg_dir = self.prepare_dirs(prefix)
@@ -343,10 +396,13 @@ class TestRereference:
             with filepath.open("w") as eegfile:
                 self.data[channel].tofile(eegfile.name)
 
-    def to_ramulator_hdf5(self, rerefable: bool):
+        return eeg_dir.joinpath(prefix)
+
+    def to_ramulator_hdf5(self, rerefable: bool) -> Path:
         """Save files in the Ramulator HDF5 format."""
         name = "eeg_timeseries.h5"
         eeg_dir = self.prepare_dirs(name)
+        eeg_path = eeg_dir.joinpath(name)
 
         with h5py.File(eeg_dir.joinpath(name), "w") as hfile:
             if not rerefable:
@@ -380,6 +436,8 @@ class TestRereference:
             ts = hfile.create_dataset("timeseries", data=data)
             ts.attrs["orient"] = b"row"
 
+        return eeg_path
+
     @pytest.mark.parametrize("reader_class,rerefable", [
         (SplitEEGReader, True),
         (RamulatorHDF5Reader, True),
@@ -388,10 +446,10 @@ class TestRereference:
     def test_rereference(self, reader_class, rerefable):
         """Test rereferencing without rhino by using known, fake data."""
         if reader_class == SplitEEGReader:
-            self.to_split_eeg()
+            eeg_path = self.to_split_eeg()
 
         if reader_class == RamulatorHDF5Reader:
-            self.to_ramulator_hdf5(rerefable)
+            eeg_path = self.to_ramulator_hdf5(rerefable)
 
         scheme = pd.DataFrame({
             "contact_1": [1 + a for a in self.anodes],
@@ -400,8 +458,10 @@ class TestRereference:
         })
 
         with patch.object(PathFinder, "find", return_value=self.sources_path):
-            reader = EEGReader("eeg")
-            eeg = reader.load(scheme=scheme)
+            reader = EEGReader("eeg", subject="R1111M")
+            eeg = reader.load(events=self.events(str(eeg_path)),
+                              rel_start=0, rel_stop=self.data.shape[-1],
+                              scheme=scheme)
             assert_equal(eeg.data[0], self.reref_data)
 
 
@@ -411,7 +471,8 @@ class TestLoadEEG:
         with patch.object(PathFinder, "find", return_value=sources_file):
             reader = EEGReader("eeg")
 
-            with pytest.raises(ValueError):
+            # with pytest.raises(ValueError):
+            with pytest.raises(NotImplementedError):
                 data = np.random.random((10, 10, 10))
                 with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
                     reader.load()

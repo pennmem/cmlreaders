@@ -5,9 +5,8 @@ import pandas as pd
 
 from . import readers
 from .data_index import get_data_index
-from .exc import IncompatibleParametersError, UnknownProtocolError, \
-    UnsupportedProtocolError
-from .util import get_root_dir
+from .exc import IncompatibleParametersError, UnsupportedProtocolError
+from .util import get_protocol, get_root_dir
 
 
 __all__ = ['CMLReader']
@@ -48,7 +47,7 @@ class CMLReader(object):
         self._localization = localization
         self._montage = montage
 
-        self.protocol = self._get_protocol(self.subject)
+        self.protocol = get_protocol(self.subject)
 
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
         self.reader_protocols = {k: getattr(readers, v).protocols for k, v in self.reader_names.items()}
@@ -71,23 +70,6 @@ class CMLReader(object):
             pass
 
         return index
-
-    @staticmethod
-    def _get_protocol(subject: str) -> str:
-        """Get the protocol name from the subject code.
-
-        This returns the ``<protocol> `` in ``/protocols/<protocol>``. For
-        example, it returns ``"r1"`` for RAM subjects.
-
-        """
-        if subject.startswith("R1"):
-            return "r1"
-        elif subject.startswith("LTP"):
-            return "ltp"
-        else:
-            raise UnknownProtocolError(
-                "Can't determine protocol for subject id " + subject
-            )
 
     def _determine_localization_or_montage(self, which: str) -> Optional[int]:
         """Inner workings of localization/montage properties.

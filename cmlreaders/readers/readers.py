@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from pandas.io.json import json_normalize
+import scipy.io as sio
 
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
@@ -110,23 +111,7 @@ class BaseJSONReader(BaseCMLReader):
         return pd.read_json(self._file_path)
 
 
-class EEGMetaReader(BaseCMLReader):
-    """Reads the ``sources.json`` file which describes metainfo about EEG data.
-
-    Returns a :class:`dict`.
-
-    """
-    data_types = ["sources"]
-    default_representation = "dict"
-
-    def as_dict(self):
-        with open(self._file_path, 'r') as metafile:
-            sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = self._file_path
-        return sources_info
-
-
-class EventReader(BaseJSONReader):
+class EventReader(BaseCMLReader):
     """Reader for all experiment events.
 
     Returns a :class:`pd.DataFrame`.
@@ -136,8 +121,22 @@ class EventReader(BaseJSONReader):
         "all_events", "events", "math_events", "ps4_events", "task_events",
     ]
 
+    def _read_json_events(self) -> pd.DataFrame:
+        return pd.read_json(self._file_path)
+
+    def _read_matlab_events(self) -> pd.DataFrame:
+        df = pd.DataFrame(sio.loadmat(self._file_path, squeeze_me=True)["events"])
+
+        if self.session is not None:
+            df = df[df["session"] == self.session]
+
+        return df
+
     def as_dataframe(self):
-        df = super().as_dataframe()
+        if self._file_path.endswith(".json"):
+            df = self._read_json_events()
+        else:
+            df = self._read_matlab_events()
         first = ['eegoffset']
         df = df[first + [col for col in df.columns if col not in first]]
         return df

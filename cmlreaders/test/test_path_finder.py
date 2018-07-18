@@ -33,6 +33,8 @@ def ramulator_files_finder(rhino_root):
 def test_find_file(file_type, current_files_subject, legacy_files_subject):
     if file_type in ['target_selection_table', 'ps4_events']:
         return  # does not exist for stim sessions
+    elif file_type == "processed_eeg":
+        return  # special case that isn't actually used by PathFinder
 
     if file_type in ['matlab_bipolar_talstruct', 'matlab_monopolar_talstruct']:
         myfinder = legacy_files_subject

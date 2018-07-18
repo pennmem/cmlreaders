@@ -5,6 +5,7 @@ from .constants import PROTOCOLS
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
 from .cmlreader import CMLReader
+from .util import get_protocol
 
 
 class _MetaReader(type):
@@ -60,11 +61,14 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     # We set this default value here for easier mocking in tests.
     _file_path = None
 
-    def __init__(self, data_type: str, subject: Optional[str] = None,
+    def __init__(self, data_type: str,
+                 subject: Optional[str] = None,
                  experiment: Optional[str] = None,
                  session: Optional[int] = None,
-                 localization: Optional[int] = 0, montage: Optional[int] = 0,
-                 file_path: Optional[str] = None, rootdir: Optional[str] = "/"):
+                 localization: Optional[int] = 0,
+                 montage: Optional[int] = 0,
+                 file_path: Optional[str] = None,
+                 rootdir: Optional[str] = "/"):
 
         # This is for mocking in tests, do not remove!
         if self._file_path is None:
@@ -88,8 +92,15 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.data_type = data_type
         self.rootdir = rootdir
 
+    @property
+    def protocol(self):
+        return get_protocol(self.subject)
+
     @classmethod
-    def fromfile(cls, path: Union[str, Path]):
+    def fromfile(cls, path: Union[str, Path],
+                 subject: Optional[str] = None,
+                 experiment: Optional[str] = None,
+                 session: Optional[int] = None):
         """Directly load data from a file using the default representation.
         This is equivalent to creating a reader with the ``file_path`` keyword
         argument given but without the need to then call ``load`` or specify
@@ -99,9 +110,24 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         ----------
         path
             Path to the file to load.
+        subject
+            Subject code to use; required when we need to determine the protocol
+        experiment
+        session
 
         """
-        reader = cls("", "", "", -1, file_path=str(path))
+        if subject is None:
+            subject = ""
+
+        if experiment is None:
+            experiment = "experiment"
+
+        path = Path(path)
+        try:
+            data_type = path.name.split(".")[0]
+        except:  # noqa
+            data_type = "dtype"
+        reader = cls(data_type, subject, experiment, session, file_path=str(path))
         return reader.load()
 
     def load(self):

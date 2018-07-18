@@ -1,0 +1,3 @@
+samplerate 400.00
+dataformat 'int16'
+gain 1
