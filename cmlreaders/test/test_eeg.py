@@ -204,7 +204,7 @@ class TestEEGReader:
         events = events[events["type"] == "WORD"].iloc[:2]
         eeg = reader.load_eeg(events=events, rel_start=0, rel_stop=100)
         assert len(eeg.time) == 100
-        assert len(eeg.epochs) == 2
+        assert eeg.data.shape[0] == 2
         assert eeg.channels[index] == channel
 
     @pytest.mark.parametrize("subject", ["R1161E"])
@@ -305,10 +305,10 @@ class TestEEGReader:
             "/data1/eeg/TJ001/eeg.reref/TJ001_16Jan09_1107",
         ]),
         ("R1389J", "task_events.json", [
-            "protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
+            "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
         ]),
     ])
-    def test_get_basenames_from_events(self, subject, events_filename,
+    def test_eeg_absolute(self, subject, events_filename,
                                        expected_basenames):
         path = resource_filename("cmlreaders.test.data", events_filename)
         events = EventReader.fromfile(path)

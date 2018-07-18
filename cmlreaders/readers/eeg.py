@@ -319,7 +319,7 @@ class EEGReader(BaseCMLReader):
 
             subject = row["subject"]
 
-            return constants.rhino_paths["processed_eeg"][0].format(
+            return "/" + constants.rhino_paths["processed_eeg"][0].format(
                 protocol=get_protocol(subject),
                 subject=subject,
                 experiment=row["experiment"],
@@ -327,7 +327,7 @@ class EEGReader(BaseCMLReader):
                 basename=row["eegfile"]
             )
 
-        events["eegfile"] = events.apply(to_absolute, axis=1)
+        events.loc[:, "eegfile"] = events.apply(to_absolute, axis=1)
         return events
 
     def load(self, **kwargs):
@@ -369,6 +369,7 @@ class EEGReader(BaseCMLReader):
 
         self.scheme = kwargs.get("scheme", None)
 
+        events = self._eegfile_absolute(events.copy())
         return self.as_timeseries(events, sample_rate, dtype,
                                   kwargs["rel_start"], kwargs["rel_stop"])
 
