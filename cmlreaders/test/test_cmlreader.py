@@ -202,7 +202,6 @@ class TestLoadMontage:
             reader.load(kind, read_categories=True)
 
 
-@pytest.mark.only
 @pytest.mark.rhino
 class TestLoadAggregate:
     @pytest.mark.parametrize("subjects,experiments,unique_sessions", [

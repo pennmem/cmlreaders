@@ -9,8 +9,7 @@ from ptsa.data.timeseries import TimeSeries
 from cmlreaders.eeg_container import EEGContainer
 
 
-class TestTimeSeries:
-
+class TestEEGContainer:
     @pytest.mark.parametrize("tstart", [0, 1])
     def test_make_time_array_tstart(self, tstart):
         data = np.random.random((1, 32, 2))

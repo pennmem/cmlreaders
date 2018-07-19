@@ -475,3 +475,41 @@ class TestLoadEEG:
                 data = np.random.random((10, 10, 10))
                 with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
                     reader.load()
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subjects,experiments", [
+        (["R1111M"], ["FR1"]),
+        (["R1111M"], ["FR1", "catFR1"]),
+        (["R1111M", "R1286J"], ["FR1"]),
+    ])
+    def test_load_multisession(self, subjects, experiments, rhino_root):
+        events = CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+
+        good_sample = False
+
+        while not good_sample:
+            events = events.copy()[events["type"] == "WORD"].sample(20)
+            good_sample = (
+                all([s in events.subject.values for s in subjects]) and
+                all([e in events.experiment.values for e in experiments])
+            )
+
+        reader = CMLReader(events["subject"].unique()[0], rootdir=rhino_root)
+
+        load = lambda: reader.load_eeg(events, rel_start=0, rel_stop=10)  # noqa
+
+        if len(subjects) > 1:
+            with pytest.raises(ValueError):
+                load()
+            return
+
+        eeg = load()
+
+        assert len(eeg.epochs) == len(events)
+        assert len(eeg.events) == len(events)
+
+        for subject in subjects:
+            assert subject in set(events["subject"])
+
+        for experiment in experiments:
+            assert experiment in set(events["experiment"])
