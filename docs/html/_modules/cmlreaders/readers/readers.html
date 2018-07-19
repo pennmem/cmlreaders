@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.7.2 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.8.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.7
+                0.8
               </div>
             
           
@@ -155,6 +155,7 @@
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>
 
 <span class="kn">from</span> <span class="nn">cmlreaders.base_reader</span> <span class="k">import</span> <span class="n">BaseCMLReader</span>
 <span class="kn">from</span> <span class="nn">cmlreaders.exc</span> <span class="k">import</span> <span class="p">(</span>
@@ -264,23 +265,7 @@
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EEGMetaReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EEGMetaReader">[docs]</a><span class="k">class</span> <span class="nc">EEGMetaReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reads the ``sources.json`` file which describes metainfo about EEG data.</span>
-
-<span class="sd">    Returns a :class:`dict`.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">]</span>
-    <span class="n">default_representation</span> <span class="o">=</span> <span class="s2">&quot;dict&quot;</span>
-
-<div class="viewcode-block" id="EEGMetaReader.as_dict"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EEGMetaReader.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">metafile</span><span class="p">:</span>
-            <span class="n">sources_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">metafile</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span>
-        <span class="k">return</span> <span class="n">sources_info</span></div></div>
-
-
-<div class="viewcode-block" id="EventReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader">[docs]</a><span class="k">class</span> <span class="nc">EventReader</span><span class="p">(</span><span class="n">BaseJSONReader</span><span class="p">):</span>
+<div class="viewcode-block" id="EventReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader">[docs]</a><span class="k">class</span> <span class="nc">EventReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reader for all experiment events.</span>
 
 <span class="sd">    Returns a :class:`pd.DataFrame`.</span>
@@ -290,8 +275,22 @@
         <span class="s2">&quot;all_events&quot;</span><span class="p">,</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span> <span class="s2">&quot;math_events&quot;</span><span class="p">,</span> <span class="s2">&quot;ps4_events&quot;</span><span class="p">,</span> <span class="s2">&quot;task_events&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
+    <span class="k">def</span> <span class="nf">_read_json_events</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_read_matlab_events</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">squeeze_me</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">&quot;events&quot;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">df</span>
+
 <div class="viewcode-block" id="EventReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_json_events</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_matlab_events</span><span class="p">()</span>
         <span class="n">first</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eegoffset&#39;</span><span class="p">]</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">first</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">first</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">df</span></div></div>
@@ -381,7 +380,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.2',
+            VERSION:'0.8.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

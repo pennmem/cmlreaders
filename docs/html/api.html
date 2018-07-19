@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.7.2 documentation</title>
+  <title>API &mdash; CML Data Readers 0.8.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.7
+                0.8
               </div>
             
           
@@ -233,7 +233,7 @@ loaded. See <a class="reference internal" href="#cmlreaders.CMLReader.load_eeg" 
 
 <dl class="method">
 <dt id="cmlreaders.CMLReader.load_eeg">
-<code class="descname">load_eeg</code><span class="sig-paren">(</span><em>events: Union[pandas.core.frame.DataFrame, NoneType] = None, rel_start: int = None, rel_stop: int = None, epochs: Union[typing.List[typing.Tuple[int, ...]], NoneType] = None, scheme: Union[pandas.core.frame.DataFrame, NoneType] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load_eeg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load_eeg" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_eeg</code><span class="sig-paren">(</span><em>events: Union[pandas.core.frame.DataFrame</em>, <em>NoneType] = None</em>, <em>rel_start: int = None</em>, <em>rel_stop: int = None</em>, <em>scheme: Union[pandas.core.frame.DataFrame</em>, <em>NoneType] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load_eeg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load_eeg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load EEG data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -247,15 +247,6 @@ loaded. See <a class="reference internal" href="#cmlreaders.CMLReader.load_eeg" 
 required when passing events and not used otherwise.</li>
 <li><strong>rel_stop</strong> – Stop time in ms relative to passed event onsets. This  parameter is
 required when passing events and not used otherwise.</li>
-<li><strong>epochs</strong> – <p>A list of tuples to specify epochs to retrieve data from. These can
-be in one of two forms:</p>
-<ul>
-<li>(start_index, stop_index)</li>
-<li>(start_index, stop_index, file_number) when the EEG
-for the session is is split over multiple recordings.</li>
-</ul>
-<p>Incompatible with passing <code class="docutils literal notranslate"><span class="pre">events</span></code>.</p>
-</li>
 <li><strong>scheme</strong> – When specified, a bipolar scheme to rereference the data with and/or
 filter by channel. Rereferencing is only possible if the data were
 recorded in monopolar (a.k.a. common reference) mode.</li>
@@ -265,13 +256,32 @@ recorded in monopolar (a.k.a. common reference) mode.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">TimeSeries</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">EEGContainer</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><code class="xref py py-exc docutils literal notranslate"><span class="pre">RereferencingNotPossibleError</span></code> – When passing <code class="docutils literal notranslate"><span class="pre">scheme</span></code> and the data do not support rereferencing.</li>
 <li><code class="xref py py-exc docutils literal notranslate"><span class="pre">IncompatibleParametersError</span></code> – When both <code class="docutils literal notranslate"><span class="pre">events</span></code> and <code class="docutils literal notranslate"><span class="pre">epochs</span></code> are specified or <code class="docutils literal notranslate"><span class="pre">events</span></code> are
 used without passing <code class="docutils literal notranslate"><span class="pre">rel_start</span></code> and/or <code class="docutils literal notranslate"><span class="pre">rel_stop</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="cmlreaders.CMLReader.load_events">
+<em class="property">classmethod </em><code class="descname">load_events</code><span class="sig-paren">(</span><em>subjects: Union[typing.List[str], NoneType] = None, experiments: Union[typing.List[str], NoneType] = None, rootdir: Union[str, NoneType] = None</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/cmlreaders/cmlreader.html#CMLReader.load_events"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.CMLReader.load_events" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load events from multiple sessions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>subjects</strong> – List of subjects.</li>
+<li><strong>experiments</strong> – List of experiments to include.</li>
+<li><strong>rootdir</strong> – Path to root data directory.</li>
 </ul>
 </td>
 </tr>
@@ -315,6 +325,7 @@ used without passing <code class="docutils literal notranslate"><span class="pre
 <li><strong>rel_start</strong> – Start time relative to events in ms.</li>
 <li><strong>rel_stop</strong> – Stop time relative to events in ms.</li>
 <li><strong>sample_rate</strong> – Sample rate in Hz.</li>
+<li><strong>basenames</strong> – EEG file basenames.</li>
 </ul>
 </td>
 </tr>
@@ -457,19 +468,6 @@ details on supported output formats.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="cmlreaders.readers.readers.EEGMetaReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">EEGMetaReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EEGMetaReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EEGMetaReader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the <code class="docutils literal notranslate"><span class="pre">sources.json</span></code> file which describes metainfo about EEG data.</p>
-<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>.</p>
-<dl class="method">
-<dt id="cmlreaders.readers.readers.EEGMetaReader.as_dict">
-<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EEGMetaReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EEGMetaReader.as_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data as a list of dictionaries</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="cmlreaders.readers.readers.EventReader">
 <em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">EventReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#EventReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.EventReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reader for all experiment events.</p>
@@ -580,7 +578,7 @@ reading data.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>This method is meant to be used when loading data and so returns a raw
-Numpy array. If used externally, a <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code> will need to be
+Numpy array. If used externally, a <code class="xref py py-class docutils literal notranslate"><span class="pre">EEGContainer</span></code> will need to be
 constructed manually.</p>
 </dd></dl>
 
@@ -598,10 +596,24 @@ constructed manually.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="cmlreaders.readers.eeg.EEGMetaReader">
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">EEGMetaReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGMetaReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGMetaReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the <code class="docutils literal notranslate"><span class="pre">sources.json</span></code> or <code class="docutils literal notranslate"><span class="pre">params.txt</span></code> files which describes
+metainfo about EEG data.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+<dl class="method">
+<dt id="cmlreaders.readers.eeg.EEGMetaReader.as_dict">
+<code class="descname">as_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGMetaReader.as_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGMetaReader.as_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data as a list of dictionaries</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="cmlreaders.readers.eeg.EEGReader">
 <em class="property">class </em><code class="descclassname">cmlreaders.readers.eeg.</code><code class="descname">EEGReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: Union[str</em>, <em>NoneType] = None</em>, <em>experiment: Union[str</em>, <em>NoneType] = None</em>, <em>session: Union[int</em>, <em>NoneType] = None</em>, <em>localization: Union[int</em>, <em>NoneType] = 0</em>, <em>montage: Union[int</em>, <em>NoneType] = 0</em>, <em>file_path: Union[str</em>, <em>NoneType] = None</em>, <em>rootdir: Union[str</em>, <em>NoneType] = '/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads EEG data.</p>
-<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">TimeSeries</span></code>.</p>
+<p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">EEGContainer</span></code>.</p>
 <p class="rubric">Examples</p>
 <p>All examples start by defining a reader:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cmlreaders</span> <span class="k">import</span> <span class="n">CMLReader</span>
@@ -615,17 +627,6 @@ re-references):</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="n">pairs</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Loading from explicitly specified epochs (units are samples):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">epochs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Loading from specified epochs, when there are multiple files for the
-session (units are relative to the start of each file):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">epochs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Loading EEG from -100 ms to +100 ms relative to a set of events:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">rel_start</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">rel_stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -633,6 +634,13 @@ session (units are relative to the start of each file):</p>
 </div>
 <p>Loading an entire session:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Loading multiple sessions from the same subject:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">events</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="o">.</span><span class="n">load_events</span><span class="p">([</span><span class="s2">&quot;R1111M&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="p">(</span><span class="s2">&quot;R1111M&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="n">words</span><span class="p">,</span> <span class="n">rel_start</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">rel_stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="method">
@@ -655,13 +663,20 @@ session (units are relative to the start of each file):</p>
 
 <dl class="method">
 <dt id="cmlreaders.readers.eeg.EEGReader.as_timeseries">
-<code class="descname">as_timeseries</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; cmlreaders.timeseries.TimeSeries<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader.as_timeseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader.as_timeseries" title="Permalink to this definition">¶</a></dt>
+<code class="descname">as_timeseries</code><span class="sig-paren">(</span><em>events: pandas.core.frame.DataFrame, rel_start: Union[float, int], rel_stop: Union[float, int]</em><span class="sig-paren">)</span> &#x2192; cmlreaders.eeg_container.EEGContainer<a class="reference internal" href="_modules/cmlreaders/readers/eeg.html#EEGReader.as_timeseries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.eeg.EEGReader.as_timeseries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the timeseries.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>events</strong> – Events to read EEG data from</li>
+<li><strong>rel_start</strong> – Relative start times in ms</li>
+<li><strong>rel_stop</strong> – Relative stop times in ms</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><ul class="simple">
 <li><em>A time series with shape (channels, epochs, time). By default, this</em></li>
 <li><em>returns data as it was physically recorded (e.g., if recorded with a</em></li>
 <li><em>common reference, each channel will be a contact’s reading referenced to</em></li>
@@ -670,10 +685,7 @@ session (units are relative to the start of each file):</p>
 </p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – When provided epochs are not all the same length</li>
-<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">RereferencingNotPossibleError</span></code> – When rereferincing is not possible.</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RereferencingNotPossibleError</span></code> – When rereferencing is not possible.</p>
 </td>
 </tr>
 </tbody>
@@ -852,7 +864,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.2',
+            VERSION:'0.8.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

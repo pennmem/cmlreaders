@@ -131,7 +131,7 @@ def get_data_index(kind: str = "all",
     if kind == "pyfr" or kind == "all":
         data.append(pd.read_json(finder.find("pyfr_index")))
 
-    df = pd.concat(data)
+    df = pd.concat(data, sort=True)
 
     if kind not in ["ltp"]:
         # make sure localization and montage are integers

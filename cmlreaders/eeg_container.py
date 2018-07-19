@@ -140,7 +140,7 @@ class EEGContainer(object):
         if all([s.events is None for s in containers]):
             all_events = None
         else:
-            all_events = pd.concat([s.events for s in containers])
+            all_events = pd.concat([s.events for s in containers], sort=True)
 
         if dim == "events":
             check_samples()

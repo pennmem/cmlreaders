@@ -1,6 +1,21 @@
 Changes
 =======
 
+Version 0.8.0
+-------------
+
+**2018-07-19**
+
+* Added support for loading pyFR data (#117)
+* Simplified EEG loading by removing the option to load directly via epochs
+  (#125)
+* Renamed the class holding results from ``CMLReader.load_eeg`` to
+  ``EEGContainer`` to avoid confusion with the PTSA ``TimeSeries`` class (#126)
+* Added a new ``CMLReader.load_events`` classmethod to load events from
+  multiple subjects and/or experiments (#129)
+* Added support for loading multisession EEG data (#130)
+
+
 Version 0.7.2
 -------------
 

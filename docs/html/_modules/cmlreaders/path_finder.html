@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.7.2 documentation</title>
+  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.8.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.7
+                0.8
               </div>
             
           
@@ -161,7 +161,8 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">.constants</span> <span class="k">import</span> <span class="n">rhino_paths</span><span class="p">,</span> <span class="n">localization_files</span><span class="p">,</span> <span class="n">montage_files</span><span class="p">,</span> \
-    <span class="n">subject_files</span><span class="p">,</span> <span class="n">session_files</span><span class="p">,</span> <span class="n">host_pc_files</span><span class="p">,</span> <span class="n">used_classifier_files</span>
+    <span class="n">subject_files</span><span class="p">,</span> <span class="n">session_files</span><span class="p">,</span> <span class="n">host_pc_files</span><span class="p">,</span> <span class="n">used_classifier_files</span><span class="p">,</span> \
+    <span class="n">PYFR_SUBJECT_CODE_PREFIXES</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_root_dir</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PathFinder&#39;</span><span class="p">]</span>
@@ -183,7 +184,7 @@
                  <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Instantiates a PathFind object using the known information</span>
+        <span class="sd">&quot;&quot;&quot;Instantiates a PathFinder object using the known information</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -218,6 +219,10 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;r1&quot;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LTP&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;ltp&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">PYFR_SUBJECT_CODE_PREFIXES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="s2">&quot;pyfr&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown protocol for subject &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
@@ -404,7 +409,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.2',
+            VERSION:'0.8.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -166,7 +166,7 @@ class LocalizationReader(BaseCMLReader):
             json_normalize(flat_contact_data).set_index('name'),
             json_normalize(flat_pairs_data).set_index('names')
         ]
-        combined_df = pd.concat(all_data, keys=['contacts', 'pairs'])
+        combined_df = pd.concat(all_data, keys=['contacts', 'pairs'], sort=True)
         return combined_df
 
 

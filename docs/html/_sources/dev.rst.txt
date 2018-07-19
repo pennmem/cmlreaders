@@ -70,6 +70,3 @@ Once the reader works, test cases for the data types using the new reader
 should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
 to the test cases that should already exist for the new reader. For examples,
 see :mod:`cmlreaders.test.test_readers`.
-
-
-
