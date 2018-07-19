@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from ._accessors import *  # noqa
 from .data_index import get_data_index  # noqa
 
 # n.b. the order below matters so as to avoid circular imports
