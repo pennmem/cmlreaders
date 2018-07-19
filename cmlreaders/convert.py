@@ -78,6 +78,8 @@ def events_to_epochs(events: pd.DataFrame, rel_start: int, rel_stop: int,
         Stop time relative to events in ms.
     sample_rate
         Sample rate in Hz.
+    basenames
+        EEG file basenames.
 
     Returns
     -------

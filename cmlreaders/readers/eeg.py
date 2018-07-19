@@ -16,12 +16,13 @@ import pandas as pd
 
 from cmlreaders import constants, convert
 from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.eeg_container import EEGContainer
 from cmlreaders.exc import (
     RereferencingNotPossibleError, UnsupportedOutputFormat,
     IncompatibleParametersError,
 )
 from cmlreaders.path_finder import PathFinder
-from cmlreaders.eeg_container import EEGContainer
+from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
 
 
@@ -342,30 +343,45 @@ class EEGReader(BaseCMLReader):
 
         path = Path(finder.find("sources"))
 
-        # TODO: Load an entire session
-        if "events" not in kwargs:
-            # The main issue here is that "resumed" sessions make it so that
-            # there is not an obvious way to read a "whole" session because we
-            # have no a priori way of knowing what exactly we should be reading.
-            raise NotImplementedError(
-                "Reading EEG data without giving events is not supported"
-            )
-
-        # Determine files to load from events
-        else:
+        if "events" in kwargs:
             events = kwargs["events"]
-
-            if not len(events):
-                raise ValueError("No events found! Hint: did filtering events "
-                                 "result in at least one?")
-            if "rel_start" not in kwargs or "rel_stop" not in kwargs:
-                raise IncompatibleParametersError(
-                    "rel_start and rel_stop must be given with events"
+        else:
+            if self.session is None:
+                raise ValueError(
+                    "A session must be specified to load an entire session of "
+                    "EEG data!"
                 )
 
-            info = EEGMetaReader.fromfile(path, subject=self.subject)
-            sample_rate = info["sample_rate"]
-            dtype = info["data_format"]
+            events_file = finder.find("task_events")
+            all_events = EventReader.fromfile(events_file, self.subject,
+                                              self.experiment, self.session)
+
+            # Select only a single event with a valid eegfile just to get the
+            # filename
+            valid = all_events[
+                (all_events["eegfile"].notnull()) &
+                (all_events["eegfile"].str.len() > 0)
+            ]
+            events = pd.DataFrame(valid.iloc[0]).T.reset_index(drop=True)
+
+            # Set relative start and stop times if necessary. If they were
+            # already specified, these will allow us to subset the session.
+            if "rel_start" not in kwargs:
+                kwargs["rel_start"] = 0
+            if "rel_stop" not in kwargs:
+                kwargs["rel_stop"] = -1
+
+        if not len(events):
+            raise ValueError("No events found! Hint: did filtering events "
+                             "result in at least one?")
+        if "rel_start" not in kwargs or "rel_stop" not in kwargs:
+            raise IncompatibleParametersError(
+                "rel_start and rel_stop must be given with events"
+            )
+
+        info = EEGMetaReader.fromfile(path, subject=self.subject)
+        sample_rate = info["sample_rate"]
+        dtype = info["data_format"]
 
         self.scheme = kwargs.get("scheme", None)
 
@@ -432,7 +448,16 @@ class EEGReader(BaseCMLReader):
             ev = events[events["eegfile"] == filename]
 
             # convert events to epochs
-            epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
+            if rel_stop < 0:
+                # We're trying to load to the end of the session. Only allow
+                # this in cases where we're trying to load a whole session.
+                if len(events) > 1:
+                    raise ValueError("rel_stop must not be negative")
+                epochs = [(0, None)]
+            else:
+                epochs = convert.events_to_epochs(ev,
+                                                  rel_start, rel_stop,
+                                                  sample_rate)
 
             root = get_root_dir(self.rootdir)
             eeg_filename = os.path.join(root, filename.lstrip("/"))

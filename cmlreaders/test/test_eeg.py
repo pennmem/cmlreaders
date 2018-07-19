@@ -212,8 +212,8 @@ class TestEEGReader:
         reader = CMLReader(subject=subject, experiment="FR1", session=0,
                            rootdir=rhino_root)
 
-        with pytest.raises(NotImplementedError):
-            reader.load_eeg()
+        eeg = reader.load_eeg()
+        assert eeg.shape == (1, 70, 3304786)
 
     @pytest.mark.parametrize('subject', ['R1161E', 'R1387E'])
     def test_eeg_reader_with_events(self, subject, rhino_root):
@@ -471,8 +471,7 @@ class TestLoadEEG:
         with patch.object(PathFinder, "find", return_value=sources_file):
             reader = EEGReader("eeg")
 
-            # with pytest.raises(ValueError):
-            with pytest.raises(NotImplementedError):
+            with pytest.raises(ValueError):
                 data = np.random.random((10, 10, 10))
                 with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
                     reader.load()
