@@ -4,7 +4,7 @@ import pandas as pd
 from pkg_resources import resource_filename
 import pytest
 
-from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
+from ptsa.data.timeseries import TimeSeries
 
 from cmlreaders.eeg_container import EEGContainer
 
@@ -124,7 +124,7 @@ class TestTimeSeries:
 
         tsx = ts.to_ptsa()
 
-        assert isinstance(tsx, PtsaTimeSeries)
+        assert isinstance(tsx, TimeSeries)
         assert tsx["samplerate"] == ts.samplerate
         assert_equal(tsx.data, data)
 
