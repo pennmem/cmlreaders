@@ -276,4 +276,4 @@ class CMLReader(object):
                                        rootdir=rootdir)
                     events.append(reader.load("events"))
 
-        return pd.concat(events)
+        return pd.concat(events, sort=True)
