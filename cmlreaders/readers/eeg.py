@@ -336,13 +336,6 @@ class EEGReader(BaseCMLReader):
         to pass along to :meth:`as_timeseries`.
 
         """
-        finder = PathFinder(subject=self.subject,
-                            experiment=self.experiment,
-                            session=self.session,
-                            rootdir=self.rootdir)
-
-        path = Path(finder.find("sources"))
-
         if "events" in kwargs:
             events = kwargs["events"]
         else:
@@ -351,6 +344,11 @@ class EEGReader(BaseCMLReader):
                     "A session must be specified to load an entire session of "
                     "EEG data!"
                 )
+
+            finder = PathFinder(subject=self.subject,
+                                experiment=self.experiment,
+                                session=self.session,
+                                rootdir=self.rootdir)
 
             events_file = finder.find("task_events")
             all_events = EventReader.fromfile(events_file, self.subject,
@@ -374,20 +372,23 @@ class EEGReader(BaseCMLReader):
         if not len(events):
             raise ValueError("No events found! Hint: did filtering events "
                              "result in at least one?")
+        elif len(events["subject"].unique()) > 1:
+            raise ValueError("Loading multiple sessions of EEG data requires "
+                             "using events from only a single subject.")
+
         if "rel_start" not in kwargs or "rel_stop" not in kwargs:
             raise IncompatibleParametersError(
                 "rel_start and rel_stop must be given with events"
             )
 
-        info = EEGMetaReader.fromfile(path, subject=self.subject)
-        sample_rate = info["sample_rate"]
-        dtype = info["data_format"]
+        # info = EEGMetaReader.fromfile(path, subject=self.subject)
+        # sample_rate = info["sample_rate"]
+        # dtype = info["data_format"]
 
         self.scheme = kwargs.get("scheme", None)
 
         events = self._eegfile_absolute(events.copy())
-        return self.as_timeseries(events, sample_rate, dtype,
-                                  kwargs["rel_start"], kwargs["rel_stop"])
+        return self.as_timeseries(events, kwargs["rel_start"], kwargs["rel_stop"])
 
     def as_dataframe(self):
         raise UnsupportedOutputFormat
@@ -409,8 +410,6 @@ class EEGReader(BaseCMLReader):
             return SplitEEGReader
 
     def as_timeseries(self, events: pd.DataFrame,
-                      sample_rate: Union[int, float],
-                      dtype: str,
                       rel_start: Union[float, int],
                       rel_stop: Union[float, int]) -> EEGContainer:
         """Read the timeseries.
@@ -419,10 +418,6 @@ class EEGReader(BaseCMLReader):
         ----------
         events
             Events to read EEG data from
-        sample_rate
-            Recorded sample rate
-        dtype
-            Recorded data type in string form
         rel_start
             Relative start times in ms
         rel_stop
@@ -446,6 +441,18 @@ class EEGReader(BaseCMLReader):
         for filename in events["eegfile"].unique():
             # select subset of events for this basename
             ev = events[events["eegfile"] == filename]
+
+            # determine experiment, session, dtype, and sample rate
+            experiment = ev["experiment"].unique()[0]
+            session = ev["session"].unique()[0]
+            finder = PathFinder(subject=self.subject,
+                                experiment=experiment,
+                                session=session,
+                                rootdir=self.rootdir)
+            sources = EEGMetaReader.fromfile(finder.find("sources"),
+                                             subject=self.subject)
+            sample_rate = sources["sample_rate"]
+            dtype = sources["data_format"]
 
             # convert events to epochs
             if rel_stop < 0:
