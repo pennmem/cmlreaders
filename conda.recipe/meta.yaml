@@ -6,7 +6,8 @@ package:
 
 source:
   git_url: ../
-  git_rev: {{ 'v' + setup_data['version'] }}  # always use tagged version
+  # disabling using the tagged version
+  # git_rev: {{ 'v' + setup_data['version'] }}
 
 build:
   # If this is a new build for the same version, increment the build
@@ -20,7 +21,7 @@ build:
 # Common dependencies that need to be listed in both the build and run
 # subsections of the requirements section.
 {% set deps = [
-    "pandas=0.22",
+    "pandas>=0.23.1",
     "numpy",
     "scipy",
     "h5py",
@@ -28,7 +29,6 @@ build:
 
 requirements:
   build:
-    # We default to Python 3.6 if no environment variable is set
     - python {{ python }}
     - setuptools
     {% for dep in deps %}
