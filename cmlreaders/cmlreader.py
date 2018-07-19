@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -233,3 +233,47 @@ class CMLReader(object):
             })
 
         return self.load('eeg', **kwargs)
+
+    @classmethod
+    def load_events(cls, subjects: Optional[List[str]] = None,
+                    experiments: Optional[List[str]] = None,
+                    rootdir: Optional[str] = None) -> pd.DataFrame:
+        """Load events from multiple sessions.
+
+        Parameters
+        ----------
+        subjects
+            List of subjects.
+        experiments
+            List of experiments to include.
+        rootdir
+            Path to root data directory.
+
+        """
+        if subjects is None and experiments is None:
+            raise ValueError(
+                "Please specify at least one subject or experiment."
+            )
+
+        rootdir = get_root_dir(rootdir)
+        df = get_data_index("all", rootdir=rootdir)
+
+        if subjects is None:
+            subjects = df["subject"].unique()
+
+        if experiments is None:
+            experiments = df["experiment"].unique()
+
+        events = []
+
+        for subject in subjects:
+            for experiment in experiments:
+                mask = (df["subject"] == subject) & (df["experiment"] == experiment)
+                sessions = df[mask]["session"].unique()
+
+                for session in sessions:
+                    reader = CMLReader(subject, experiment, session,
+                                       rootdir=rootdir)
+                    events.append(reader.load("events"))
+
+        return pd.concat(events)
