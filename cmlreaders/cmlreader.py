@@ -214,7 +214,7 @@ class CMLReader(object):
 
         Returns
         -------
-        TimeSeries
+        EEGContainer
 
         Raises
         ------

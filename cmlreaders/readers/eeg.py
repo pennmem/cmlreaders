@@ -21,7 +21,7 @@ from cmlreaders.exc import (
     IncompatibleParametersError,
 )
 from cmlreaders.path_finder import PathFinder
-from cmlreaders.eeg_container import TimeSeries
+from cmlreaders.eeg_container import EEGContainer
 from cmlreaders.util import get_protocol, get_root_dir
 
 
@@ -137,7 +137,7 @@ class BaseEEGReader(ABC):
         Notes
         -----
         This method is meant to be used when loading data and so returns a raw
-        Numpy array. If used externally, a :class:`TimeSeries` will need to be
+        Numpy array. If used externally, a :class:`EEGContainer` will need to be
         constructed manually.
 
         """
@@ -273,7 +273,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
 class EEGReader(BaseCMLReader):
     """Reads EEG data.
 
-    Returns a :class:`TimeSeries`.
+    Returns a :class:`EEGContainer`.
 
     Examples
     --------
@@ -396,7 +396,7 @@ class EEGReader(BaseCMLReader):
                       sample_rate: Union[int, float],
                       dtype: str,
                       rel_start: Union[float, int],
-                      rel_stop: Union[float, int]) -> TimeSeries:
+                      rel_stop: Union[float, int]) -> EEGContainer:
         """Read the timeseries.
 
         Parameters
@@ -450,7 +450,7 @@ class EEGReader(BaseCMLReader):
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
             eegs.append(
-                TimeSeries(
+                EEGContainer(
                     data,
                     sample_rate,
                     epochs=epochs,
@@ -459,6 +459,6 @@ class EEGReader(BaseCMLReader):
                 )
             )
 
-        eegs = TimeSeries.concatenate(eegs)
+        eegs = EEGContainer.concatenate(eegs)
         eegs.attrs["rereferencing_possible"] = reader.rereferencing_possible
         return eegs

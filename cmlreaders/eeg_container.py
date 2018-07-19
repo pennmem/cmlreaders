@@ -5,7 +5,7 @@ import pandas as pd
 import scipy
 
 
-class TimeSeries(object):
+class EEGContainer(object):
     """A simple wrapper around a ndarray to represent EEG time series data.
 
     Parameters
@@ -73,8 +73,8 @@ class TimeSeries(object):
         return np.arange(tstart, n_samples * rate + tstart, rate)
 
     @classmethod
-    def concatenate(cls, series: List["TimeSeries"], dim="events") -> "TimeSeries":
-        """Concatenate several :class:`TimeSeries` objects.
+    def concatenate(cls, series: List["EEGContainer"], dim="events") -> "EEGContainer":
+        """Concatenate several :class:`EEGContainer` objects.
 
         Parameters
         ----------
@@ -144,20 +144,20 @@ class TimeSeries(object):
             data = np.concatenate([s.data for s in series], axis=0)
             epochs = list(np.concatenate([s.epochs for s in series]))
 
-            return TimeSeries(data, samplerate, epochs,
-                              channels=series[0].channels,
-                              tstart=series[0].time[0],
-                              attrs=attrs)
+            return EEGContainer(data, samplerate, epochs,
+                                channels=series[0].channels,
+                                tstart=series[0].time[0],
+                                attrs=attrs)
 
         elif dim == "time":
             check_channels()
             check_starts()
 
             data = np.concatenate([s.data for s in series], axis=2)
-            return TimeSeries(data, samplerate, series[0].epochs,
-                              channels=series[0].channels,
-                              tstart=series[0].time[0],
-                              attrs=attrs)
+            return EEGContainer(data, samplerate, series[0].epochs,
+                                channels=series[0].channels,
+                                tstart=series[0].time[0],
+                                attrs=attrs)
 
     @property
     def shape(self):
@@ -169,7 +169,7 @@ class TimeSeries(object):
         """Returns the start offsets in samples for each epoch."""
         return np.array([e[0] for e in self.epochs])
 
-    def resample(self, rate: Union[int, float]) -> "TimeSeries":
+    def resample(self, rate: Union[int, float]) -> "EEGContainer":
         """Resample the time series.
 
         Parameters
@@ -180,15 +180,15 @@ class TimeSeries(object):
         new_len = int(len(self.time) * rate / self.samplerate)
         new_data, _ = scipy.signal.resample(self.data, new_len,
                                             t=self.time, axis=-1)
-        return TimeSeries(new_data, rate, epochs=self.epochs,
-                          channels=self.channels, tstart=self.time[0],
-                          attrs=self.attrs)
+        return EEGContainer(new_data, rate, epochs=self.epochs,
+                            channels=self.channels, tstart=self.time[0],
+                            attrs=self.attrs)
 
-    def filter(self, filter) -> "TimeSeries":
-        """Apply a filter to the data and return a new :class:`TimeSeries`."""
+    def filter(self, filter) -> "EEGContainer":
+        """Apply a filter to the data and return a new :class:`EEGContainer`."""
         raise NotImplementedError
 
-    def to_ptsa(self) -> "PtsaTimeSeries":
+    def to_ptsa(self) -> "TimeSeries":
         """Convert to a PTSA :class:`TimeSeriesX` object.
 
         Notes
@@ -197,7 +197,7 @@ class TimeSeries(object):
         recarray and are available as the ``event`` coordinate.
 
         """
-        from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
+        from ptsa.data.timeseries import TimeSeries
 
         dims = ("event", "channel", "time")
 
@@ -216,7 +216,7 @@ class TimeSeries(object):
             "time": self.time,
         }
 
-        return PtsaTimeSeries.create(
+        return TimeSeries.create(
             self.data,
             samplerate=self.samplerate,
             dims=dims,
