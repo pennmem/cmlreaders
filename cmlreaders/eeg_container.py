@@ -137,6 +137,8 @@ class EEGContainer(object):
             for key in series[0].attrs.keys()
         }
 
+        all_events = pd.concat([s.events for s in series])
+
         if dim == "events":
             check_samples()
             check_channels()
@@ -144,7 +146,9 @@ class EEGContainer(object):
             data = np.concatenate([s.data for s in series], axis=0)
             epochs = list(np.concatenate([s.epochs for s in series]))
 
-            return EEGContainer(data, samplerate, epochs,
+            return EEGContainer(data, samplerate,
+                                epochs=epochs,
+                                events=all_events,
                                 channels=series[0].channels,
                                 tstart=series[0].time[0],
                                 attrs=attrs)
@@ -154,7 +158,9 @@ class EEGContainer(object):
             check_starts()
 
             data = np.concatenate([s.data for s in series], axis=2)
-            return EEGContainer(data, samplerate, series[0].epochs,
+            return EEGContainer(data, samplerate,
+                                epochs=series[0].epochs,
+                                events=all_events,
                                 channels=series[0].channels,
                                 tstart=series[0].time[0],
                                 attrs=attrs)
