@@ -200,3 +200,25 @@ class TestLoadMontage:
 
         with pytest.raises(exc.MissingDataError):
             reader.load(kind, read_categories=True)
+
+
+@pytest.mark.only
+@pytest.mark.rhino
+class TestLoadAggregate:
+    @pytest.mark.parametrize("subjects,experiments,unique_sessions", [
+        (None, None, None),
+        (["R1111M", "R1260D"], ["FR1"], 5),
+        (["R1111M"], None, 22),
+        (["R1111M"], ["PS2"], 6),
+        (None, ["FR2"], 79),
+    ])
+    def test_load_events(self, subjects, experiments, unique_sessions,
+                         rhino_root):
+        if subjects is experiments is None:
+            with pytest.raises(ValueError):
+                CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+            return
+
+        events = CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+        size = len(events.groupby(["subject", "experiment", "session"]).size())
+        assert size == unique_sessions
