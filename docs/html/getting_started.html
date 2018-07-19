@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.7.2 documentation</title>
+  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.8.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.7
+                0.8
               </div>
             
           
@@ -107,6 +107,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Loading-EEG">Loading EEG</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Reading-a-full-session">Reading a full session</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Reading-from-events">Reading from events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Reading-from-multiple-sessions">Reading from multiple sessions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Converting-EEG-Representation">Converting EEG Representation</a></li>
 </ul>
 </li>
@@ -441,6 +442,8 @@ section of the documentation.</p>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[&#39;r1_index&#39;,
  &#39;ltp_index&#39;,
+ &#39;pyfr_index&#39;,
+ &#39;pyfr_root&#39;,
  &#39;localization&#39;,
  &#39;voxel_coordinates&#39;,
  &#39;prior_stim_results&#39;,
@@ -465,6 +468,7 @@ section of the documentation.</p>
  &#39;math_events&#39;,
  &#39;ps4_events&#39;,
  &#39;sources&#39;,
+ &#39;processed_eeg&#39;,
  &#39;experiment_log&#39;,
  &#39;session_log&#39;,
  &#39;ramulator_session_folder&#39;,
@@ -835,7 +839,7 @@ of subjects to be used.</p>
        &#39;R1394E&#39;, &#39;R1395M&#39;, &#39;R1396T&#39;, &#39;R1397D&#39;, &#39;R1398J&#39;, &#39;R1401J&#39;,
        &#39;R1402E&#39;, &#39;R1404E&#39;, &#39;R1405E&#39;, &#39;R1406M&#39;, &#39;R1409D&#39;, &#39;R1412M&#39;,
        &#39;R1414E&#39;, &#39;R1415T&#39;, &#39;R1416T&#39;, &#39;R1420T&#39;, &#39;R1421M&#39;, &#39;R1422T&#39;,
-       &#39;R1423E&#39;], dtype=object)
+       &#39;R1423E&#39;, &#39;R1425D&#39;, &#39;R1427T&#39;, &#39;R1431J&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -1227,7 +1231,7 @@ supported method using one of the as_x methods</li>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>(0, -1, &#39;X&#39;, -999, &#39;&#39;, &#39;&#39;, &#39;catFR5&#39;, -999, False, &#39;X&#39;, -999, -999, 0, -1, -1, &#39;&#39;, &#39;r1&#39;, False, -999, -999, -999, -999, -999, -999, 1, False, list([]), &#39;R1389J&#39;, &#39;STIM_ARTIFACT_DETECTION_START&#39;)
+<span></span>(0, -1, &#39;X&#39;, -999, &#39;&#39;, &#39;&#39;, &#39;catFR5&#39;, -999, False, &#39;X&#39;, -999, -999, 0, -1, -1, &#39;&#39;, &#39;r1&#39;, False, -999, -999, -999, -999, -999, -999, 1, False, [], &#39;R1389J&#39;, &#39;STIM_ARTIFACT_DETECTION_START&#39;)
 </pre></div>
 </div>
 </div>
@@ -1733,6 +1737,31 @@ straightforward to load multiple sessions-worth of events.</p>
 </pre></div>
 </div>
 </div>
+<p>We can also use the special <code class="docutils literal notranslate"><span class="pre">load_events</span></code> classmethod to load events
+from multiple subjects and/or experiments.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">aggregate_events</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="o">.</span><span class="n">load_events</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R1111M&quot;</span><span class="p">,</span> <span class="s2">&quot;R1409D&quot;</span><span class="p">],</span>
+                                             <span class="n">experiments</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">],</span>
+                                             <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+<span class="n">aggregate_events</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[25]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([&#39;R1111M&#39;, &#39;R1409D&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Loading-EEG">
 <h3>Loading EEG<a class="headerlink" href="#Loading-EEG" title="Permalink to this headline">¶</a></h3>
@@ -1742,7 +1771,7 @@ we instead use <code class="docutils literal notranslate"><span class="pre">load
 always, start by instantiating a <code class="docutils literal notranslate"><span class="pre">CMLReader</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1756,7 +1785,7 @@ always, start by instantiating a <code class="docutils literal notranslate"><spa
 data for an entire session will be loaded as the data were recorded:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1767,11 +1796,11 @@ data for an entire session will be loaded as the data were recorded:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[26]:
+<span></span>Out[27]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>(1, 100, 1623159)
+<span></span>(1, 100, 1623160)
 </pre></div>
 </div>
 </div>
@@ -1782,7 +1811,7 @@ data for an entire session will be loaded as the data were recorded:</p>
 standard pandas idioms to select events of interest:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1797,7 +1826,7 @@ word onset starting at the time the word appeared and ending 100 ms
 later:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [28]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1808,11 +1837,40 @@ later:</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[28]:
+<span></span>Out[29]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>(288, 100, 50)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Reading-from-multiple-sessions">
+<h4>Reading from multiple sessions<a class="headerlink" href="#Reading-from-multiple-sessions" title="Permalink to this headline">¶</a></h4>
+<p>Building upon aggregate event loading, we can also load EEG data from
+multiple sessions. The caveat here is that we are restricted to a single
+subject:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">all_fr1_events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_events</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R1111M&quot;</span><span class="p">],</span> <span class="n">experiments</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">],</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+<span class="n">fr1_words</span> <span class="o">=</span> <span class="n">all_fr1_events</span><span class="p">[</span><span class="n">all_fr1_events</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">]</span>
+<span class="n">fr1_eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="n">fr1_words</span><span class="p">,</span> <span class="n">rel_start</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">rel_stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fr1_eeg</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[30]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>(1020, 100, 100)
 </pre></div>
 </div>
 </div>
@@ -1825,7 +1883,7 @@ representation to a format that is understood by PTSA and MNE, since
 these are common libraries for interacting with EEG data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [29]:
+<span></span>In [31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1836,17 +1894,17 @@ these are common libraries for interacting with EEG data.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[29]:
+<span></span>Out[31]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>ptsa.data.TimeSeriesX.TimeSeriesX
+<span></span>ptsa.data.timeseries.TimeSeries
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1857,7 +1915,7 @@ these are common libraries for interacting with EEG data.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[30]:
+<span></span>Out[32]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1912,7 +1970,7 @@ these are common libraries for interacting with EEG data.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.7.2',
+            VERSION:'0.8.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
