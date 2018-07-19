@@ -4,6 +4,8 @@ Changes
 Version 0.8.0
 -------------
 
+**2018-07-19**
+
 * Added support for loading pyFR data (#117)
 * Simplified EEG loading by removing the option to load directly via epochs
   (#125)
