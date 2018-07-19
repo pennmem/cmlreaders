@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -183,7 +183,6 @@ class CMLReader(object):
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,
-                 epochs: Optional[List[Tuple[int, ...]]] = None,
                  scheme: Optional[pd.DataFrame] = None):
         """Load EEG data.
 
@@ -198,15 +197,6 @@ class CMLReader(object):
         rel_stop
             Stop time in ms relative to passed event onsets. This  parameter is
             required when passing events and not used otherwise.
-        epochs
-            A list of tuples to specify epochs to retrieve data from. These can
-            be in one of two forms:
-
-            - (start_index, stop_index)
-            - (start_index, stop_index, file_number) when the EEG
-              for the session is is split over multiple recordings.
-
-            Incompatible with passing ``events``.
         scheme
             When specified, a bipolar scheme to rereference the data with and/or
             filter by channel. Rereferencing is only possible if the data were
@@ -225,9 +215,6 @@ class CMLReader(object):
             used without passing ``rel_start`` and/or ``rel_stop``.
 
         """
-        if events is not None and epochs is not None:
-            raise IncompatibleParametersError("events and epochs are mutually exclusive")
-
         kwargs = {
             'scheme': scheme,
         }
@@ -243,10 +230,6 @@ class CMLReader(object):
                 'events': events,
                 'rel_start': rel_start,
                 'rel_stop': rel_stop,
-            })
-        elif epochs is not None:
-            kwargs.update({
-                'epochs': epochs,
             })
 
         return self.load('eeg', **kwargs)
