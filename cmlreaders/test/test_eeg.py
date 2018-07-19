@@ -476,7 +476,6 @@ class TestLoadEEG:
                 with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
                     reader.load()
 
-    @pytest.mark.only
     @pytest.mark.rhino
     @pytest.mark.parametrize("subjects,experiments", [
         (["R1111M"], ["FR1"]),

@@ -299,6 +299,13 @@ class EEGReader(BaseCMLReader):
 
         >>> eeg = reader.load_eeg()
 
+    Loading multiple sessions from the same subject::
+
+        >>> events = CMLReader.load_events(["R1111M"], ["FR1"])
+        >>> words = events[events["type"] == "WORD"]
+        >>> reader = CMLReader("R1111M")
+        >>> eeg = reader.load_eeg(events=words, rel_start=-100, rel_stop=100)
+
     """
     data_types = ["eeg"]
     default_representation = "timeseries"
