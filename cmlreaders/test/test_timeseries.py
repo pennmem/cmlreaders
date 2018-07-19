@@ -6,7 +6,7 @@ import pytest
 
 from ptsa.data.timeseries import TimeSeries as PtsaTimeSeries
 
-from cmlreaders.timeseries import TimeSeries
+from cmlreaders.eeg_container import TimeSeries
 
 
 class TestTimeSeries:

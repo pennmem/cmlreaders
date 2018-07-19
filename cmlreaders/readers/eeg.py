@@ -21,7 +21,7 @@ from cmlreaders.exc import (
     IncompatibleParametersError,
 )
 from cmlreaders.path_finder import PathFinder
-from cmlreaders.timeseries import TimeSeries
+from cmlreaders.eeg_container import TimeSeries
 from cmlreaders.util import get_protocol, get_root_dir
 
 
