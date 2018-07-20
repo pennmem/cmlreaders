@@ -74,16 +74,6 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         if self._file_path is None:
             self._file_path = file_path
 
-        # When no file path is given, look it up using PathFinder unless we're
-        # loading EEG data. EEG data is treated differently because of the way
-        # it is stored on rhino: sometimes it is split into one file per channel
-        # and other times it is a single HDF5 or EDF/BDF file.
-        if self._file_path is None and data_type != 'eeg':
-            finder = PathFinder(subject=subject, experiment=experiment,
-                                session=session, localization=localization,
-                                montage=montage, rootdir=rootdir)
-            self._file_path = finder.find(data_type)
-
         self.subject = subject
         self.experiment = experiment
         self.session = session
@@ -95,6 +85,21 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     @property
     def protocol(self):
         return get_protocol(self.subject)
+
+    @property
+    def file_path(self):
+        """
+        When no file path is given, look it up using PathFinder unless we're
+        loading EEG data. EEG data is treated differently because of the way
+        it is stored on rhino: sometimes it is split into one file per channel
+        and other times it is a single HDF5 or EDF/BDF file.
+        """
+        if self._file_path is None and self.data_type != 'eeg':
+            finder = PathFinder(subject=self.subject, experiment=self.experiment,
+                                session=self.session, localization=self.localization,
+                                montage=self.montage, rootdir=self.rootdir)
+            self._file_path = finder.find(self.data_type)
+        return self._file_path
 
     @classmethod
     def fromfile(cls, path: Union[str, Path],

@@ -39,14 +39,14 @@ class TextReader(BaseCMLReader):
             sep = " "
         else:
             sep = ","  # read_csv's default value
-        df = pd.read_csv(self._file_path, sep=sep, names=self._headers)
+        df = pd.read_csv(self.file_path, sep=sep, names=self._headers)
         return df
 
 
 class BaseCSVReader(BaseCMLReader):
     """Base class for reading CSV files."""
     def as_dataframe(self):
-        df = pd.read_csv(self._file_path)
+        df = pd.read_csv(self.file_path)
         return df
 
 
@@ -86,7 +86,7 @@ class RamulatorEventLogReader(BaseCMLReader):
                                                       rootdir=rootdir)
 
     def as_dataframe(self):
-        with open(self._file_path, 'r') as efile:
+        with open(self.file_path, 'r') as efile:
             raw = json.loads(efile.read())['events']
 
         exclude = ['to_id', 'from_id', 'event_id', 'command_id']
@@ -94,7 +94,7 @@ class RamulatorEventLogReader(BaseCMLReader):
         return df.drop(exclude, axis=1)
 
     def as_dict(self):
-        with open(self._file_path, 'r') as efile:
+        with open(self.file_path, 'r') as efile:
             raw_dict = json.load(efile)
         return raw_dict
 
@@ -108,7 +108,7 @@ class BaseJSONReader(BaseCMLReader):
     data_types = []
 
     def as_dataframe(self):
-        return pd.read_json(self._file_path)
+        return pd.read_json(self.file_path)
 
 
 class EventReader(BaseCMLReader):
@@ -122,10 +122,10 @@ class EventReader(BaseCMLReader):
     ]
 
     def _read_json_events(self) -> pd.DataFrame:
-        return pd.read_json(self._file_path)
+        return pd.read_json(self.file_path)
 
     def _read_matlab_events(self) -> pd.DataFrame:
-        df = pd.DataFrame(sio.loadmat(self._file_path, squeeze_me=True)["events"])
+        df = pd.DataFrame(sio.loadmat(self.file_path, squeeze_me=True)["events"])
 
         if self.session is not None:
             df = df[df["session"] == self.session]
@@ -133,7 +133,7 @@ class EventReader(BaseCMLReader):
         return df
 
     def as_dataframe(self):
-        if self._file_path.endswith(".json"):
+        if self.file_path.endswith(".json"):
             df = self._read_json_events()
         else:
             df = self._read_matlab_events()
@@ -175,7 +175,7 @@ class ClassifierContainerReader(BaseCMLReader):
 
     def as_pyobject(self):
         summary_obj = self.pyclass_mapping['classifier']
-        return summary_obj.load(self._file_path)
+        return summary_obj.load(self.file_path)
 
     def as_dataframe(self):
         raise UnsupportedRepresentation("Unable to represent classifier as a dataframe")
