@@ -12,10 +12,13 @@ class EventsAccessor(object):
 
     .. code-block:: python
 
+        >>> from cmlreaders import CMLReader
         >>> reader = CMLReader("R1111M", "FR1", 0)
         >>> df = reader.load("events")
         >>> word_events = df.events.words
         >>> stim_events = df.events.stim
+        >>> recalled_words = df.events.words_recalled
+        >>> forgotten_words = df.events.words_not_recalled
 
     """
     def __init__(self, obj):
@@ -25,6 +28,21 @@ class EventsAccessor(object):
     def words(self) -> pd.DataFrame:
         """Select all WORD onset events."""
         return self._obj[self._obj["type"] == "WORD"]
+
+    def _words_recalled_or_not(self, recalled: bool) -> pd.DataFrame:
+        recalled = int(recalled)
+        mask = (self._obj["type"] == "WORD") & (self._obj["recalled"] == recalled)
+        return self._obj[mask]
+
+    @property
+    def words_recalled(self) -> pd.DataFrame:
+        """Select all recalled word events."""
+        return self._words_recalled_or_not(True)
+
+    @property
+    def words_not_recalled(self) -> pd.DataFrame:
+        """Select word events where the word was not recalled."""
+        return self._words_recalled_or_not(False)
 
     @property
     def stim(self) -> pd.DataFrame:

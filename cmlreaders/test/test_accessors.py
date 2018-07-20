@@ -12,8 +12,14 @@ def events():
     )
     random.shuffle(types)
 
+    recalled = [
+        random.choice([0, 1, -999])
+        for _ in range(len(types))
+    ]
+
     df = pd.DataFrame({
-        "type": types
+        "type": types,
+        "recalled": recalled,
     })
     return df
 
@@ -26,3 +32,9 @@ class TestEventsAccessors:
     def test_stim(self, events):
         expected = events[events.type == "STIM_ON"]
         assert all(expected == events.events.stim)
+
+    def test_recalled_words(self, events):
+        expected_recalled = events[(events.type == "WORD") & (events.recalled == 1)]
+        expected_not_recalled = events[(events.type == "WORD") & (events.recalled == 0)]
+        assert all(expected_recalled == events.events.words_recalled)
+        assert all(expected_not_recalled == events.events.words_not_recalled)
