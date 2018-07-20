@@ -38,9 +38,9 @@ class EEGMetaReader(BaseCMLReader):
 
     def _read_sources_json(self) -> dict:
         """Read from a sources.json file."""
-        with open(self._file_path, 'r') as metafile:
+        with open(self.file_path, 'r') as metafile:
             sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = self._file_path
+            sources_info['path'] = self.file_path
             return sources_info
 
     def _read_params_txt(self) -> dict:
@@ -48,13 +48,13 @@ class EEGMetaReader(BaseCMLReader):
         sources.json.
 
         """
-        df = pd.read_table(self._file_path, sep=' ', header=None, index_col=0).T
+        df = pd.read_table(self.file_path, sep=' ', header=None, index_col=0).T
 
         sources_info = {
             "sample_rate": float(df["samplerate"].iloc[0]),
             "data_format": df["dataformat"].str.replace("'", "").iloc[0],
             "n_samples": None,
-            "path": self._file_path,
+            "path": self.file_path,
         }
 
         return sources_info

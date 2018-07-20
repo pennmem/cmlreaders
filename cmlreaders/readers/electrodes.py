@@ -74,13 +74,13 @@ class MontageReader(BaseCMLReader):
         return df
 
     def as_dataframe(self):
-        with open(self._file_path) as f:
+        with open(self.file_path) as f:
             raw = json.load(f)
 
             # we're using fromfile, so we need to infer subject/data_type
             if not len(self.data_type):
                 self.data_type = (
-                    "contacts" if "contacts" in os.path.basename(self._file_path)
+                    "contacts" if "contacts" in os.path.basename(self.file_path)
                     else "pairs"
                 )
 
@@ -142,7 +142,7 @@ class LocalizationReader(BaseCMLReader):
     def as_dataframe(self):
         import itertools
 
-        with open(self._file_path) as f:
+        with open(self.file_path) as f:
             data = json.load(f)
 
         leads = list(data['leads'].values())
@@ -206,7 +206,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
             'bad electrodes', 'bad electrodes:', 'broken leads', 'broken leads:'
         }
 
-        with open(self._file_path, 'r') as f:
+        with open(self.file_path, 'r') as f:
             ch_info = f.read().split('\n')
 
         # This will be used to initalize a before after kind of check to sort

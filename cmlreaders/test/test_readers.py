@@ -83,6 +83,15 @@ class TestTextReader:
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
 
+    def test_failures(self):
+        """
+        When unable to locate a path, constructor should pass but `load()`
+        should fail.
+        """
+        reader = TextReader('jacksheet', subject='R1XXX', localization=0)
+        with pytest.raises(FileNotFoundError):
+            _ = reader.load()
+
 
 class TestRAMCSVReader:
     @pytest.mark.parametrize("method", ["dataframe", "recarray", "dict"])
