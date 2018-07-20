@@ -30,6 +30,13 @@ Installation
     source activate environment_name
     conda install -c pennmem cmlreaders
 
+.. note::
+
+    In some installations using Anaconda (as opposed to miniconda), it may be
+    necessary to also install the ``bottleneck`` package::
+
+        conda install -y bottleneck
+
 
 Usage examples
 --------------
