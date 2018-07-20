@@ -38,6 +38,7 @@ def test_get_data_index(kind, rhino_root):
 
 
 @pytest.mark.rhino
+@pytest.mark.filterwarnings("ignore::UserWarning")
 def test_generate_pyfr_index(rhino_root, tmpdir):
     outdir = str(tmpdir)
     generate_pyfr_index(outdir, rhino_root)
