@@ -90,7 +90,7 @@ class TestTextReader:
         """
         reader = TextReader('jacksheet', subject='R1XXX', localization=0)
         with pytest.raises(FileNotFoundError):
-            _ = reader.load()
+            reader.load()
 
 
 class TestRAMCSVReader:
