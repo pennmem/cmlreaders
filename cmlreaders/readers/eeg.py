@@ -1,10 +1,8 @@
 from abc import abstractmethod, ABC
-import json
 import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
 import warnings
-from collections import OrderedDict
 
 with warnings.catch_warnings():  # noqa
     # Some versions of h5py produce a FutureWarning from a numpy import; we can
@@ -39,7 +37,7 @@ class EEGMetaReader(BaseCMLReader):
 
     def _read_sources_json(self) -> dict:
         """Read from a sources.json file."""
-        df = pd.read_json(self.file_path,orient='index')
+        df = pd.read_json(self.file_path, orient='index')
         sources_info = {}
         for k in df:
             v = df[k].unique()
@@ -456,7 +454,6 @@ class EEGReader(BaseCMLReader):
             # determine experiment, session, dtype, and sample rate
             experiment = ev["experiment"].unique()[0]
             session = ev["session"].unique()[0]
-            basename = os.path.basename(filename)
             finder = PathFinder(subject=self.subject,
                                 experiment=experiment,
                                 session=session,
