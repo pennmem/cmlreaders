@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; CML Data Readers 0.8.0 documentation</title>
+  <title>Index &mdash; CML Data Readers 0.8.1 documentation</title>
   
 
   
@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
 </ul>
@@ -170,6 +171,7 @@
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -247,13 +249,15 @@
 </li>
       <li><a href="api.html#cmlreaders.readers.eeg.EEGMetaReader">EEGMetaReader (class in cmlreaders.readers.eeg)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.eeg.EEGReader">EEGReader (class in cmlreaders.readers.eeg)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.readers.EventReader">EventReader (class in cmlreaders.readers.readers)</a>
 </li>
       <li><a href="api.html#cmlreaders.convert.events_to_epochs">events_to_epochs() (in module cmlreaders.convert)</a>
+</li>
+      <li><a href="shortcuts.html#cmlreaders._accessors.events.EventsAccessor">EventsAccessor (class in cmlreaders._accessors.events)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -385,6 +389,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.eeg.SplitEEGReader">SplitEEGReader (class in cmlreaders.readers.eeg)</a>
 </li>
+      <li><a href="shortcuts.html#cmlreaders._accessors.events.EventsAccessor.stim">stim (cmlreaders._accessors.events.EventsAccessor attribute)</a>
+</li>
       <li><a href="api.html#cmlreaders.PathFinder.subject_files">subject_files (cmlreaders.PathFinder attribute)</a>
 </li>
   </ul></td>
@@ -398,6 +404,20 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api.html#cmlreaders.readers.readers.ClassifierContainerReader.to_binary">to_binary() (cmlreaders.readers.readers.ClassifierContainerReader method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="shortcuts.html#cmlreaders._accessors.events.EventsAccessor.words">words (cmlreaders._accessors.events.EventsAccessor attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="shortcuts.html#cmlreaders._accessors.events.EventsAccessor.words_not_recalled">words_not_recalled (cmlreaders._accessors.events.EventsAccessor attribute)</a>
+</li>
+      <li><a href="shortcuts.html#cmlreaders._accessors.events.EventsAccessor.words_recalled">words_recalled (cmlreaders._accessors.events.EventsAccessor attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -436,7 +456,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.8.0',
+            VERSION:'0.8.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
