@@ -1,6 +1,12 @@
 Changes
 =======
 
+Upcoming
+--------
+
+* Significantly improved read speed for split EEG data (#137)
+
+
 Version 0.8.0
 -------------
 

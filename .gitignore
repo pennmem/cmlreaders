@@ -1,3 +1,6 @@
+.ipynb_checkpoints/
+Untitled.ipynb
+
 # these get produced when running the getting sarted notebook
 docs/electrode_coordinates.json
 docs/task_events.csv
