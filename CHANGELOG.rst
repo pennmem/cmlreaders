@@ -1,9 +1,15 @@
 Changes
 =======
 
-Upcoming
---------
+Version 0.8.1
+-------------
 
+**2018-07-23**
+
+This is a minor update with the following changes and additions:
+
+* Added shortcuts for common queries with pandas accessors (#133)
+* Deferred path finding until necessary (#135)
 * Significantly improved read speed for split EEG data (#137)
 
 
