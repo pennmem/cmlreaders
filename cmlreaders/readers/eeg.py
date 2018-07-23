@@ -181,10 +181,6 @@ class SplitEEGReader(BaseEEGReader):
     channel per file).
 
     """
-    @staticmethod
-    def _read_epoch(mmap: np.memmap, epoch: Tuple[int, ...]) -> np.array:
-        return np.array(mmap[epoch[0]:epoch[1]])
-
     def read(self) -> Tuple[np.ndarray, List[int]]:
         basename = Path(self.filename).name
         files = sorted(Path(self.filename).parent.glob(basename + '.*'))
@@ -200,7 +196,7 @@ class SplitEEGReader(BaseEEGReader):
             memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
 
         data = np.array([
-            [self._read_epoch(mmap, epoch) for mmap in memmaps]
+            [mmap[epoch[0]:epoch[1]] for mmap in memmaps]
             for epoch in self.epochs
         ])
 
