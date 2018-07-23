@@ -119,6 +119,7 @@ rhino_paths = {
     ],
     'ramulator_session_folder': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*',
+        'protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_source/host_pc/*',
     ],
 
     # There can be multiple timestamped folders for the host pc files for when

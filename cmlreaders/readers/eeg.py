@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
 import warnings
+from collections import OrderedDict
 
 with warnings.catch_warnings():  # noqa
     # Some versions of h5py produce a FutureWarning from a numpy import; we can
@@ -38,10 +39,13 @@ class EEGMetaReader(BaseCMLReader):
 
     def _read_sources_json(self) -> dict:
         """Read from a sources.json file."""
-        with open(self.file_path, 'r') as metafile:
-            sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = self.file_path
-            return sources_info
+        df = pd.read_json(self.file_path,orient='index')
+        sources_info = {}
+        for k in df:
+            v = df[k].unique()
+            sources_info[k] = v[0] if len(v) == 1 else v
+        sources_info['path'] = self.file_path
+        return sources_info
 
     def _read_params_txt(self) -> dict:
         """Read from a params.txt file and coerces to a similar format as
@@ -452,6 +456,7 @@ class EEGReader(BaseCMLReader):
             # determine experiment, session, dtype, and sample rate
             experiment = ev["experiment"].unique()[0]
             session = ev["session"].unique()[0]
+            basename = os.path.basename(filename)
             finder = PathFinder(subject=self.subject,
                                 experiment=experiment,
                                 session=session,
