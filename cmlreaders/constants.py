@@ -153,6 +153,13 @@ rhino_paths = {
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/pairs.json',
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/retrained_classifier/pairs.json'
     ],
+
+    # SuperEEG data
+    'brain_object': [
+        # TODO: Find a place for these to live that isn't Lucy's scratch directory
+        # if we plan to keep using them
+        'scratch/lucy.owen/supereeg/brain/{subject}_{RAM_experiment}_{session}.bo'
+    ]
 }
 
 # Maintain separate lists of the file types depending on what information is
