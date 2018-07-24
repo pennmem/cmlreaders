@@ -141,6 +141,7 @@ class PathFinder(object):
 
         paths_to_check = self._paths[data_type]
         timestamped_dir = None
+        ram_experiment = self.experiment[0].upper() + self.experiment[1:]
 
         # Only check the host_pc folder if necessary
         if (data_type in host_pc_files) or (data_type in used_classifier_files):
@@ -155,7 +156,6 @@ class PathFinder(object):
             # The user can also just request the folder
             if data_type == 'ramulator_session_folder':
                 return ramulator_session_folder
-
         expected_path = self._find_single_path(paths_to_check,
                                                protocol=self.protocol,
                                                subject=self.subject,
@@ -164,7 +164,8 @@ class PathFinder(object):
                                                experiment=self.experiment,
                                                session=self.session,
                                                localization=self.localization,
-                                               montage=self.montage)
+                                               montage=self.montage,
+                                               ram_experiment=ram_experiment)
         return expected_path
 
     def _get_most_recent_ramulator_folder(self, base_folder_path):
