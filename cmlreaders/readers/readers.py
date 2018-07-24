@@ -2,12 +2,13 @@ import json
 import pandas as pd
 from pandas.io.json import json_normalize
 import scipy.io as sio
+import warnings
+import h5py
 
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
 )
-
 
 # TODO: separate into a base class so that we can use this for ltp
 class TextReader(BaseCMLReader):
@@ -192,3 +193,31 @@ class ClassifierContainerReader(BaseCMLReader):
 
         """
         self.as_pyobject().save(file_name, **kwargs)
+
+
+class BrainObjectReader(BaseCMLReader):
+    """Reader class for loading a SuperEEG brain object """
+
+    data_types = ['brain_object']
+    default_representation = "pyobject"
+
+    def as_pyobject(self):
+        try:
+            import supereeg
+        except ImportError:
+            warnings.warn("Could not import supereeg -- data will be returned as dict")
+            supereeg = None
+        try:
+            import deepdish
+        except ImportError:
+            warnings.warn("Could not import deepdish -- data will be returned as HDF5 file")
+            deepdish = None
+
+        if deepdish is None:
+            return h5py.File(self.file_path)
+        else:
+            data = deepdish.io.load(self.file_path)
+            if supereeg is None:
+                return supereeg.Brain(**data)
+            else:
+                return data
