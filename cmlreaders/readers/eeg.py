@@ -1,5 +1,4 @@
 from abc import abstractmethod, ABC
-import json
 import os
 from pathlib import Path
 from typing import List, Tuple, Type, Union
@@ -30,7 +29,12 @@ class EEGMetaReader(BaseCMLReader):
     """Reads the ``sources.json`` or ``params.txt`` files which describes
     metainfo about EEG data.
 
-    Returns a :class:`dict`.
+    EEGMetaReader uses the following logic to combine entries in ``sources.json``:
+
+    - If all recordings in ``sources.json`` have the same value for a field,
+      then the dictionary returned by EEGMetaReader has that value for the field
+    - Otherwise, that field should be populated by a list of the values
+      present in ``sources.json``
 
     """
     data_types = ["sources"]
@@ -38,10 +42,13 @@ class EEGMetaReader(BaseCMLReader):
 
     def _read_sources_json(self) -> dict:
         """Read from a sources.json file."""
-        with open(self.file_path, 'r') as metafile:
-            sources_info = list(json.load(metafile).values())[0]
-            sources_info['path'] = self.file_path
-            return sources_info
+        df = pd.read_json(self.file_path, orient='index')
+        sources_info = {}
+        for k in df:
+            v = df[k].unique()
+            sources_info[k] = v[0] if len(v) == 1 else v
+        sources_info['path'] = self.file_path
+        return sources_info
 
     def _read_params_txt(self) -> dict:
         """Read from a params.txt file and coerces to a similar format as
