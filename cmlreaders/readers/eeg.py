@@ -229,16 +229,19 @@ class RamulatorHDF5Reader(BaseEEGReader):
             ts = hfile['/timeseries']
 
             # Check for duplicated channels
-            bpinfo = hfile['bipolar_info']
-            all_nums = [
-                (int(a), int(b)) for (a, b) in list(
-                    zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
-                )]
-            idxs = np.empty(len(all_nums), dtype=bool)
-            idxs.fill(True)
-            for i, pair in enumerate(all_nums):
-                if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
-                    idxs[i] = False
+            if 'bipolar_info' in hfile:
+                bpinfo = hfile['bipolar_info']
+                all_nums = [
+                    (int(a), int(b)) for (a, b) in list(
+                        zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
+                    )]
+                idxs = np.empty(len(all_nums), dtype=bool)
+                idxs.fill(True)
+                for i, pair in enumerate(all_nums):
+                    if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
+                        idxs[i] = False
+            else:
+                idxs = np.array([True for _ in hfile['ports']])
 
             # FIXME: only select channels we care about
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
