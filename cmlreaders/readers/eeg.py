@@ -29,7 +29,12 @@ class EEGMetaReader(BaseCMLReader):
     """Reads the ``sources.json`` or ``params.txt`` files which describes
     metainfo about EEG data.
 
-    Returns a :class:`dict`.
+    EEGMetaReader uses the following logic to combine entries in ``sources.json``:
+
+    - If all recordings in ``sources.json`` have the same value for a field,
+      then the dictionary returned by EEGMetaReader has that value for the field
+    - Otherwise, that field should be populated by a list of the values
+      present in ``sources.json``
 
     """
     data_types = ["sources"]
