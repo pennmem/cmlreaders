@@ -10,6 +10,7 @@ from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, host_pc_files, used_classifier_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
+from .warnings import MultiplePathsFoundWarning
 
 __all__ = ['PathFinder']
 
@@ -185,8 +186,11 @@ class PathFinder(object):
             raise RuntimeError("No timestamped folder found in host_pc folder")
 
         if len(timestamped_directories) > 1:
-            warnings.warn("Multiple timestamped directories found. The"
-                          " most recent will be returned", RuntimeWarning)
+            warnings.warn(
+                "Multiple timestamped directories found. "
+                "The most recent will be returned",
+                MultiplePathsFoundWarning
+            )
 
         # Only return the values from the final "/" to the end
         latest = timestamped_directories[0]
@@ -218,6 +222,6 @@ class PathFinder(object):
 
         if len(found_files) > 1:
             warnings.warn('Multiple files found. Returning the first '
-                          'file found', RuntimeWarning)
+                          'file found', MultiplePathsFoundWarning)
 
         return found_files[0]
