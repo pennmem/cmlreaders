@@ -1,109 +1,59 @@
-from functools import wraps
+import functools
 from pathlib import Path
-from typing import Callable, KeysView,  Optional
+from typing import Set, Type
 
 
-class Cache(object):
-    """Singleton cache."""
+_cached_readers = set()  # type: Set[CachedReader]
+
+
+class CachedReader(object):
+    """Wraps a reader class so that its load method can be cached."""
     # Location to store cached results
     # FIXME: put in the proper place for app-specific data
+    # TODO: on-disk or in-memory cache options
     _cachedir = Path.home().joinpath(".cmlreaders", "cache")
 
-    # Global flag indicating whether to enable caching
-    _enabled = False
+    _result = None
 
-    # singleton instance
-    __instance = None  # type: Cache
-
-    # cached function registry
-    __funcs = {}
-
-    def __init__(self):
-        if Cache.__instance is not None:
-            raise RuntimeError("Only one cache object is allowed; "
-                               "use the instance classmethod instead")
-
-    def __contains__(self, item: Callable):
-        return item.__name__ in Cache.__funcs
-
-    def __getitem__(self, name: str) -> CachedFunction:
-        return Cache.__funcs[name]
-
-    @classmethod
-    def instance(cls) -> "Cache":
-        """Return the singleton instance."""
-        if cls.__instance is None:
-            cls.__instance = cls()
-        return cls.__instance
+    def __init__(self, reader_object):
+        self._obj = reader_object
+        _cached_readers.add(self)
 
     @property
-    def enabled(self) -> bool:
-        return Cache._enabled
+    def cached_result(self):
+        """Loads the cached result if available else None."""
+        return self._result
 
-    @enabled.setter
-    def enabled(self, state: bool):
-        Cache._enabled = state
+    @cached_result.setter
+    def cached_result(self, result):
+        self._result = result
 
-    @property
-    def cached_names(self) -> KeysView:
-        """Returns the names of registered functions."""
-        return self.__funcs.keys()
+    def clear(self):
+        """Clear the cache."""
+        self._result = None
 
-    def register(self, func: "CachedFunction"):
-        """Register a function with the cache."""
-        self.__funcs[func.name] = func
+    def load(self):
+        """Load the data from the cache if available."""
+        if self.cached_result is None:
+            self.cached_result = self._obj.load()
 
-    def clear(self, name: Optional[str] = None):
-        """Clear the cache. If ``name`` is given, clear only the cached files
-        associated with that function. Otherwise, clear the entire cache.
-
-        """
-        raise NotImplementedError
+        return self.cached_result
 
 
-class CachedFunction(object):
-    """Wraps functions that are cached with the :func:`cache` decorator."""
-    def __init__(self, func: Callable):
-        self._func = func
-
-        cache = Cache.instance()
-
-        if self.name not in cache.cached_names:
-            cache.register(self)
-
-    def __call__(self, *args, **kwargs):
-        try:
-            return self._load_cached_result(*args, **kwargs)
-        except:
-            return self._func(*args, **kwargs)
-
-    def _load_cached_result(self, *args, **kwargs):
-        """Load and return cached results."""
-        raise NotImplementedError
-
-    @property
-    def name(self):
-        return self._func.__name__
-
-    def clear_cache(self):
-        """Clears the cache affecting the wrapped function."""
-        Cache.instance().clear(self.name)
-
-
-def cache(func: Callable):
-    """Cache on disk the results of the decorated function if caching has been
-    enabled.
+def cache(cls: Type):
+    """Class decorator to allow caching results from a reader's :meth:`load`
+    method.
 
     """
-    @wraps(func)
+    @functools.wraps(cls)
     def wrapper(*args, **kwargs):
-        cache = Cache.instance()
-        if not cache.enabled:
-            return func(*args, **kwargs)
-
-        if func.__name__ in cache:
-            return cache[func.__name__](*args, **kwargs)
-
-        return CachedFunction(func)(*args, **kwargs)
+        obj = cls(*args, **kwargs)
+        return CachedReader(obj)
 
     return wrapper
+
+
+def clear_all():
+    """Clear all cached results."""
+    for reader in _cached_readers:
+        reader.clear()
