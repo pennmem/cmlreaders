@@ -1,5 +1,7 @@
 from pathlib import Path
 from typing import Optional, Union
+from typing import Set  # noqa
+import weakref
 
 from . import cache
 from .constants import PROTOCOLS
@@ -64,6 +66,9 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     protocols = PROTOCOLS
     caching = None
 
+    # weakref references to all instantiated readers
+    _instances = set()  # type: Set[weakref.ref]
+
     # We set this default value here for easier mocking in tests.
     _file_path = None
 
@@ -90,6 +95,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
 
         # in-memory cached result (if enabled)
         self._result = None
+
+        BaseCMLReader._instances.add(weakref.ref(self))
 
     @property
     def protocol(self):
@@ -179,6 +186,17 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             "memory": self._clear_memory_cache,
             None: lambda: None,
         }[self.caching]()
+
+    @classmethod
+    def clear_all_caches(cls):
+        """Clear caches for every instantiated reader."""
+        instances = cls._instances.copy()
+        for ref in instances:
+            obj = ref()
+            if obj is not None:
+                obj.clear_cache()
+            else:
+                cls._instances.remove(ref)
 
     def as_dataframe(self):
         """ Return data as dataframe """

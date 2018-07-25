@@ -3,6 +3,7 @@ from pkg_resources import resource_filename
 import pytest
 
 from cmlreaders import cache
+from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.readers.electrodes import MontageReader
 
 
@@ -14,9 +15,38 @@ def caching_enabled(request):
     cache.enabled = orig_state
 
 
-def test_clear_all():
-    with pytest.raises(NotImplementedError):
-        cache.clear_all()
+@pytest.fixture
+def contacts_reader():
+    path = resource_filename("cmlreaders.test.data", "R1006P_contacts.json")
+    mr = MontageReader("contacts", "R1006P", file_path=path)
+    yield mr
+    mr.clear_cache()
+    BaseCMLReader._instances.clear()
+
+
+@pytest.fixture
+def pairs_reader():
+    path = resource_filename("cmlreaders.test.data", "R1006P_pairs.json")
+    mr = MontageReader("pairs", "R1006P", file_path=path)
+    yield mr
+    mr.clear_cache()
+    BaseCMLReader._instances.clear()
+
+
+def test_clear_all(caching_enabled, contacts_reader, pairs_reader):
+    contacts_reader.load()
+    pairs_reader.load()
+
+    assert len(BaseCMLReader._instances) == 2
+
+    if caching_enabled:
+        assert contacts_reader._result is not None
+        assert pairs_reader._result is not None
+
+    cache.clear_all()
+
+    assert contacts_reader._result is None
+    assert pairs_reader._result is None
 
 
 def test_enable(caching_enabled):
@@ -26,11 +56,8 @@ def test_enable(caching_enabled):
 
 @pytest.mark.parametrize("clear", [True, False])
 def test_disable(caching_enabled, clear):
-    if clear:
-        with pytest.raises(NotImplementedError):
-            cache.disable(clear)
-    else:
-        cache.disable(clear)
+    cache.disable(clear)
+    assert not cache.enabled
 
 
 def test_in_memory_caching(caching_enabled):

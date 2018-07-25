@@ -139,6 +139,7 @@ class LocalizationReader(BaseCMLReader):
     """
     data_types = ["localization"]
     protocols = ["r1"]
+    caching = "memory"
 
     def as_dataframe(self):
         import itertools
@@ -181,6 +182,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
     data_types = ["electrode_categories"]
     protocols = ["r1"]
     default_representation = "dict"
+    caching = "memory"
 
     def _read_categories(self) -> dict:
         """Returns a dictionary mapping categories to electrode from the

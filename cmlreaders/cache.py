@@ -28,4 +28,5 @@ def disable(clear: bool = False):
 
 def clear_all():
     """Clear all cached results."""
-    raise NotImplementedError
+    from cmlreaders.base_reader import BaseCMLReader
+    BaseCMLReader.clear_all_caches()
