@@ -1,3 +1,4 @@
+import functools
 from typing import List, Optional
 
 import numpy as np
@@ -120,17 +121,34 @@ class CMLReader(object):
         return PathFinder(self.subject, self.experiment, self.session,
                           self.localization, self.montage, self.rootdir)
 
-    def get_reader(self, data_type, file_path=None):
-        """ Return an instance of the reader class for the given data type """
-
+    @functools.lru_cache()
+    def _construct_reader(self, data_type, subject, experiment, session,
+                          localization, montage, file_path, rootdir):
         return self.readers[data_type](data_type,
-                                       subject=self.subject,
-                                       experiment=self.experiment,
-                                       session=self.session,
-                                       localization=self.localization,
-                                       montage=self.montage,
+                                       subject=subject,
+                                       experiment=experiment,
+                                       session=session,
+                                       localization=localization,
+                                       montage=montage,
                                        file_path=file_path,
-                                       rootdir=self.rootdir)
+                                       rootdir=rootdir)
+
+    def get_reader(self, data_type, file_path=None):
+        """Return an instance of the reader class for the given data type.
+
+        Notes
+        -----
+        Reader instances get cached via :func:`functools.lru_cache`.
+
+        """
+        return self._construct_reader(data_type,
+                                      self.subject,
+                                      self.experiment,
+                                      self.session,
+                                      self.localization,
+                                      self.montage,
+                                      file_path,
+                                      self.rootdir)
 
     def load(self, data_type: str, file_path: str = None, **kwargs):
         """Load requested data into memory.
