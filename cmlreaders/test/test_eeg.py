@@ -149,7 +149,7 @@ class TestFileReaders:
         eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs, None)
         ts, contacts = eeg_reader.read()
 
-        num_channels = len(CMLReader(subject, experiment, session).load('pairs'))
+        num_channels = len(CMLReader(subject, experiment, session, rootdir=rhino_root).load('pairs'))
 
         time_steps = 200
         assert ts.shape == (len(epochs), num_channels, time_steps)
