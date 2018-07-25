@@ -1,7 +1,7 @@
-import functools
 from pathlib import Path
 from typing import Optional, Union
 
+from . import cache
 from .constants import PROTOCOLS
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
@@ -88,8 +88,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.data_type = data_type
         self.rootdir = get_root_dir(rootdir)
 
-        # Wrap _load_from_memory so that we get per-instance caching
-        self._load_from_memory = functools.lru_cache(maxsize=1)(self._load_from_memory)
+        # in-memory cached result (if enabled)
+        self._result = None
 
     @property
     def protocol(self):
@@ -114,7 +114,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     def fromfile(cls, path: Union[str, Path],
                  subject: Optional[str] = None,
                  experiment: Optional[str] = None,
-                 session: Optional[int] = None):
+                 session: Optional[int] = None,
+                 data_type: Optional[str] = None):
         """Directly load data from a file using the default representation.
         This is equivalent to creating a reader with the ``file_path`` keyword
         argument given but without the need to then call ``load`` or specify
@@ -136,12 +137,15 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         if experiment is None:
             experiment = "experiment"
 
-        path = Path(path)
-        try:
-            data_type = path.name.split(".")[0]
-        except:  # noqa
-            data_type = "dtype"
-        reader = cls(data_type, subject, experiment, session, file_path=str(path))
+        # Try to guess data_type if it wasn't given (likely only required if
+        # testing things).
+        if data_type is None:
+            try:
+                data_type = Path(path).name.split(".")[0]
+            except:  # noqa
+                data_type = "dtype"
+
+        reader = cls(data_type, subject, experiment, session, file_path=path)
         return reader.load()
 
     def _load_no_cache(self):
@@ -150,24 +154,31 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         return getattr(self, method_name)()
 
     def _load_from_memory(self):
-        """Load from disk or in-memory cache.
+        """Load from disk or in-memory cache."""
+        if self._result is None:
+            self._result = self._load_no_cache()
 
-        Notes
-        -----
-        Because of how :func:`functools.lru_cache` works, this has to be
-        wrapped in :meth:`__init__` to cache the instance method.
-
-        """
-        return self._load_no_cache()
+        return self._result
 
     def load(self):
         """Load data into memory in the default representation."""
-        if self.caching is None:
+        if self.caching is None or not cache.enabled:
             return self._load_no_cache()
         elif self.caching == "memory":
             return self._load_from_memory()
         else:
             raise ValueError("Invalid caching type: " + self.caching)
+
+    def _clear_memory_cache(self):
+        """Clear in-memory cached result."""
+        self._result = None
+
+    def clear_cache(self):
+        """Clear cache if configured."""
+        {
+            "memory": self._clear_memory_cache,
+            None: lambda: None,
+        }[self.caching]()
 
     def as_dataframe(self):
         """ Return data as dataframe """
