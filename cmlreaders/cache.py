@@ -19,6 +19,17 @@ class CachedReader(object):
         self._obj = reader_object
         _cached_readers.add(self)
 
+    def __str__(self):
+        return "<{classname:s}({subject:s}, {experiment:s}, {session:d})".format(
+            classname=self._obj.__class__.__name__,
+            subject=(self._obj.subject or "???"),
+            experiment=(self._obj.experiment or "???"),
+            session=(self._obj.session if self._obj.session is not None else -1),
+        ) + " object at {}>".format(hex(id(self._obj)))
+
+    def __repr__(self):
+        return str(self)
+
     @property
     def cached_result(self):
         """Loads the cached result if available else None."""
@@ -40,7 +51,7 @@ class CachedReader(object):
         return self.cached_result
 
 
-def cache(cache_type):
+def cache(cache_type: str):
     """Class decorator to allow caching results from a reader's :meth:`load`
     method.
 
