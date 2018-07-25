@@ -228,13 +228,28 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             ts = hfile['/timeseries']
 
-            # FIXME: only select channels we care about
-            if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
-                data = np.array([ts[epoch[0]:epoch[1], :].T for epoch in self.epochs])
+            # Check for duplicated channels
+            if 'bipolar_info' in hfile:
+                bpinfo = hfile['bipolar_info']
+                all_nums = [
+                    (int(a), int(b)) for (a, b) in list(
+                        zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
+                    )]
+                idxs = np.empty(len(all_nums), dtype=bool)
+                idxs.fill(True)
+                for i, pair in enumerate(all_nums):
+                    if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
+                        idxs[i] = False
             else:
-                data = np.array([ts[:, epoch[0]:epoch[1]] for epoch in self.epochs])
+                idxs = np.array([True for _ in hfile['ports']])
 
-            contacts = hfile["ports"][:]
+            # Only select channels we care about
+            if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
+                data = np.array([ts[epoch[0]:epoch[1], idxs].T for epoch in self.epochs])
+            else:
+                data = np.array([ts[idxs, epoch[0]:epoch[1]] for epoch in self.epochs])
+
+            contacts = hfile["ports"][idxs]
 
             return data, contacts
 
@@ -270,7 +285,9 @@ class RamulatorHDF5Reader(BaseEEGReader):
             )
 
         # allow a subset of channels
-        channel_inds = [chan in scheme_nums for chan in all_nums]
+        channel_inds = [chan in scheme_nums or
+                        (chan[1], chan[0]) in scheme_nums
+                        for chan in all_nums]
         return data[:, channel_inds, :]
 
 
