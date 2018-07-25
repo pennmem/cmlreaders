@@ -5,7 +5,7 @@ from .constants import PROTOCOLS
 from .path_finder import PathFinder
 from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
 from .cmlreader import CMLReader
-from .util import get_protocol
+from .util import get_protocol, get_root_dir
 
 
 class _MetaReader(type):
@@ -68,7 +68,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
                  file_path: Optional[str] = None,
-                 rootdir: Optional[str] = "/"):
+                 rootdir: Optional[str] = None):
 
         # This is for mocking in tests, do not remove!
         if self._file_path is None:
@@ -80,7 +80,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.localization = localization
         self.montage = montage
         self.data_type = data_type
-        self.rootdir = rootdir
+        self.rootdir = get_root_dir(rootdir)
 
     @property
     def protocol(self):
@@ -88,12 +88,13 @@ class BaseCMLReader(object, metaclass=_MetaReader):
 
     @property
     def file_path(self):
-        """
-        When no file path is given, look it up using PathFinder unless we're
+        """When no file path is given, look it up using PathFinder unless we're
         loading EEG data. EEG data is treated differently because of the way
         it is stored on rhino: sometimes it is split into one file per channel
         and other times it is a single HDF5 or EDF/BDF file.
+
         """
+        print(self.rootdir)
         if self._file_path is None and self.data_type != 'eeg':
             finder = PathFinder(subject=self.subject, experiment=self.experiment,
                                 session=self.session, localization=self.localization,
