@@ -1,3 +1,4 @@
+import functools
 from typing import List, Optional
 
 import numpy as np
@@ -86,6 +87,7 @@ class CMLReader(object):
         df = index[index["subject"] == self.subject]
 
         if which not in df:
+            setattr(self, "_" + which, None)
             return None
 
         if self.experiment is not None:
@@ -95,9 +97,12 @@ class CMLReader(object):
             df = df[df.session == self.session]
 
         if len(df[which].unique()) != 1:
+            setattr(self, "_" + which, None)
             return None
         else:
-            return int(df[which].unique()[0])
+            value = int(df[which].unique()[0])
+            setattr(self, "_" + which, value)
+            return value
 
     @property
     def localization(self) -> int:
@@ -120,28 +125,40 @@ class CMLReader(object):
         return PathFinder(self.subject, self.experiment, self.session,
                           self.localization, self.montage, self.rootdir)
 
-    def get_reader(self, data_type, file_path=None):
-        """ Return an instance of the reader class for the given data type """
-
+    @functools.lru_cache()
+    def _construct_reader(self, data_type, subject, experiment, session,
+                          localization, montage, rootdir):
         return self.readers[data_type](data_type,
-                                       subject=self.subject,
-                                       experiment=self.experiment,
-                                       session=self.session,
-                                       localization=self.localization,
-                                       montage=self.montage,
-                                       file_path=file_path,
-                                       rootdir=self.rootdir)
+                                       subject=subject,
+                                       experiment=experiment,
+                                       session=session,
+                                       localization=localization,
+                                       montage=montage,
+                                       rootdir=rootdir)
 
-    def load(self, data_type: str, file_path: str = None, **kwargs):
+    def get_reader(self, data_type):
+        """Return an instance of the reader class for the given data type.
+
+        Notes
+        -----
+        Reader instances get cached via :func:`functools.lru_cache`.
+
+        """
+        return self._construct_reader(data_type,
+                                      self.subject,
+                                      self.experiment,
+                                      self.session,
+                                      self.localization,
+                                      self.montage,
+                                      self.rootdir)
+
+    def load(self, data_type: str, **kwargs):
         """Load requested data into memory.
 
         Parameters
         ----------
         data_type
             Type of data to load (see :attr:`readers` for available options)
-        file_path
-            Absolute path to load if given. This overrides the default search
-            paths.
 
         Notes
         -----
@@ -164,7 +181,14 @@ class CMLReader(object):
             else:
                 data_type = "all_events"
 
-        cls = self.readers[data_type]
+        cls = self._construct_reader(data_type,
+                                     self.subject,
+                                     self.experiment,
+                                     self.session,
+                                     self.localization,
+                                     self.montage,
+                                     self.rootdir)
+
         if self.protocol not in cls.protocols:
             raise UnsupportedProtocolError(
                 "Data type {} is not supported under protocol {}".format(
@@ -172,14 +196,7 @@ class CMLReader(object):
                 )
             )
 
-        return cls(data_type,
-                   subject=self.subject,
-                   experiment=self.experiment,
-                   session=self.session,
-                   localization=self.localization,
-                   montage=self.montage,
-                   file_path=file_path,
-                   rootdir=self.rootdir).load(**kwargs)
+        return cls.load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,

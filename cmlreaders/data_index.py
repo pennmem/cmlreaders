@@ -142,7 +142,7 @@ def get_data_index(kind: str = "all",
     return df
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # noqa
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
