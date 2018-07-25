@@ -87,6 +87,7 @@ class CMLReader(object):
         df = index[index["subject"] == self.subject]
 
         if which not in df:
+            setattr(self, "_" + which, None)
             return None
 
         if self.experiment is not None:
@@ -96,9 +97,12 @@ class CMLReader(object):
             df = df[df.session == self.session]
 
         if len(df[which].unique()) != 1:
+            setattr(self, "_" + which, None)
             return None
         else:
-            return int(df[which].unique()[0])
+            value = int(df[which].unique()[0])
+            setattr(self, "_" + which, value)
+            return value
 
     @property
     def localization(self) -> int:

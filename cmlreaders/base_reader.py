@@ -88,6 +88,9 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.data_type = data_type
         self.rootdir = get_root_dir(rootdir)
 
+        # Wrap _load_from_memory so that we get per-instance caching
+        self._load_from_memory = functools.lru_cache(maxsize=1)(self._load_from_memory)
+
     @property
     def protocol(self):
         return get_protocol(self.subject)
@@ -146,10 +149,15 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         method_name = "_".join(["as", self.default_representation])
         return getattr(self, method_name)()
 
-    @functools.lru_cache(maxsize=1)
     def _load_from_memory(self):
-        """Load from disk or in-memory cache."""
-        print("loading from lru cache")
+        """Load from disk or in-memory cache.
+
+        Notes
+        -----
+        Because of how :func:`functools.lru_cache` works, this has to be
+        wrapped in :meth:`__init__` to cache the instance method.
+
+        """
         return self._load_no_cache()
 
     def load(self):
