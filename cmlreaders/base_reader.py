@@ -94,7 +94,6 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         and other times it is a single HDF5 or EDF/BDF file.
 
         """
-        print(self.rootdir)
         if self._file_path is None and self.data_type != 'eeg':
             finder = PathFinder(subject=self.subject, experiment=self.experiment,
                                 session=self.session, localization=self.localization,
