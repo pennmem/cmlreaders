@@ -120,6 +120,7 @@ class EventReader(BaseCMLReader):
     data_types = [
         "all_events", "events", "math_events", "ps4_events", "task_events",
     ]
+    caching = "memory"
 
     def _read_json_events(self) -> pd.DataFrame:
         return pd.read_json(self.file_path)

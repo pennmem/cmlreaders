@@ -98,6 +98,18 @@ class BaseCMLReader(object, metaclass=_MetaReader):
 
         BaseCMLReader._instances.add(weakref.ref(self))
 
+    @classmethod
+    def get_instance_count(cls) -> int:
+        """Gets the count of all reader instances and purges those that are
+        dead references.
+
+        """
+        instances = cls._instances.copy()
+        for ref in instances:
+            if ref() is None:
+                cls._instances.remove(ref)
+        return len(cls._instances)
+
     @property
     def protocol(self):
         return get_protocol(self.subject)

@@ -37,7 +37,7 @@ def test_clear_all(caching_enabled, contacts_reader, pairs_reader):
     contacts_reader.load()
     pairs_reader.load()
 
-    assert len(BaseCMLReader._instances) == 2
+    assert BaseCMLReader.get_instance_count() == 2
 
     if caching_enabled:
         assert contacts_reader._result is not None
@@ -70,3 +70,18 @@ def test_in_memory_caching(caching_enabled):
         assert mr._result is df
     else:
         assert mr._result is None
+
+
+class TestBaseCMLReaderCacheMethods:
+    def test_clear_all_caches(self, contacts_reader, pairs_reader):
+        assert BaseCMLReader.get_instance_count() == 2
+
+        contacts_reader.load()
+        pairs_reader.load()
+
+        assert contacts_reader._result is not None
+        assert pairs_reader._result is not None
+
+        BaseCMLReader.clear_all_caches()
+        assert contacts_reader._result is None
+        assert pairs_reader._result is None

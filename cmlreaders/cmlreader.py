@@ -152,16 +152,13 @@ class CMLReader(object):
                                       self.montage,
                                       self.rootdir)
 
-    def load(self, data_type: str, file_path: str = None, **kwargs):
+    def load(self, data_type: str, **kwargs):
         """Load requested data into memory.
 
         Parameters
         ----------
         data_type
             Type of data to load (see :attr:`readers` for available options)
-        file_path
-            Absolute path to load if given. This overrides the default search
-            paths.
 
         Notes
         -----
@@ -184,7 +181,14 @@ class CMLReader(object):
             else:
                 data_type = "all_events"
 
-        cls = self.readers[data_type]
+        cls = self._construct_reader(data_type,
+                                     self.subject,
+                                     self.experiment,
+                                     self.session,
+                                     self.localization,
+                                     self.montage,
+                                     self.rootdir)
+
         if self.protocol not in cls.protocols:
             raise UnsupportedProtocolError(
                 "Data type {} is not supported under protocol {}".format(
@@ -192,14 +196,7 @@ class CMLReader(object):
                 )
             )
 
-        return cls(data_type,
-                   subject=self.subject,
-                   experiment=self.experiment,
-                   session=self.session,
-                   localization=self.localization,
-                   montage=self.montage,
-                   file_path=file_path,
-                   rootdir=self.rootdir).load(**kwargs)
+        return cls.load(**kwargs)
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,

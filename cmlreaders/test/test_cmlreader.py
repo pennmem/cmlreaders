@@ -89,11 +89,11 @@ class TestCMLReader:
         'all_events.json', 'math_events.json', 'task_events.json'
     ])
     def test_load(self, file_type):
-        with patched_cmlreader():
+        with patched_cmlreader(datafile(file_type)):
             data_type = os.path.splitext(file_type)[0]
             reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
                                session=1)
-            reader.load(data_type=data_type, file_path=datafile(file_type))
+            reader.load(data_type=data_type)
 
     # FIXME: find a good way to test ramutils-requiring things
     @pytest.mark.parametrize("file_type", [
