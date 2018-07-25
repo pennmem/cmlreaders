@@ -18,6 +18,7 @@ class MontageReader(BaseCMLReader):
     """
     data_types = ["pairs", "contacts"]
     protocols = ["r1"]
+    caching = "memory"
 
     read_categories = False
 

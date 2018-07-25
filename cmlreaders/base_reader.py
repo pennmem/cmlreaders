@@ -149,6 +149,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     @functools.lru_cache(maxsize=1)
     def _load_from_memory(self):
         """Load from disk or in-memory cache."""
+        print("loading from lru cache")
         return self._load_no_cache()
 
     def load(self):

@@ -3,23 +3,19 @@ import pandas as pd
 from pkg_resources import resource_filename
 import pytest
 
-from cmlreaders.cmlreader import CMLReader
 from cmlreaders.convert import (
     events_to_epochs,
     milliseconds_to_events,
     milliseconds_to_samples,
     samples_to_milliseconds,
 )
-from cmlreaders.test.utils import patched_cmlreader
+from cmlreaders.readers.readers import EventReader
 
 
 @pytest.fixture
 def events():
-    with patched_cmlreader():
-        cml_reader = CMLReader("R1389J")
-        path = resource_filename('cmlreaders.test.data', 'all_events.json')
-        reader = cml_reader.get_reader('events', file_path=path)
-        return reader.as_dataframe()
+    path = resource_filename('cmlreaders.test.data', 'all_events.json')
+    return EventReader.fromfile(path, subject="R1389J")
 
 
 @pytest.mark.parametrize("millis,rate,samples", [

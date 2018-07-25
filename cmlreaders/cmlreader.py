@@ -123,17 +123,16 @@ class CMLReader(object):
 
     @functools.lru_cache()
     def _construct_reader(self, data_type, subject, experiment, session,
-                          localization, montage, file_path, rootdir):
+                          localization, montage, rootdir):
         return self.readers[data_type](data_type,
                                        subject=subject,
                                        experiment=experiment,
                                        session=session,
                                        localization=localization,
                                        montage=montage,
-                                       file_path=file_path,
                                        rootdir=rootdir)
 
-    def get_reader(self, data_type, file_path=None):
+    def get_reader(self, data_type):
         """Return an instance of the reader class for the given data type.
 
         Notes
@@ -147,7 +146,6 @@ class CMLReader(object):
                                       self.session,
                                       self.localization,
                                       self.montage,
-                                      file_path,
                                       self.rootdir)
 
     def load(self, data_type: str, file_path: str = None, **kwargs):

@@ -109,7 +109,7 @@ class TestCMLReader:
         with patched_cmlreader():
             reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
                                session=0, montage=0)
-            reader_obj = reader.get_reader(file_type, file_path=datafile(file_type))
+            reader_obj = reader.get_reader(file_type)
             assert type(reader_obj) == reader.readers[file_type]
 
     def test_load_unimplemented(self):
