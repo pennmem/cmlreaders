@@ -2,15 +2,15 @@ from functools import wraps
 from pathlib import Path
 from typing import Callable, KeysView,  Optional
 
-# Global flag indicating whether to enable caching
-_caching_enabled = False
-
 
 class Cache(object):
     """Singleton cache."""
     # Location to store cached results
     # FIXME: put in the proper place for app-specific data
     _cachedir = Path.home().joinpath(".cmlreaders", "cache")
+
+    # Global flag indicating whether to enable caching
+    _enabled = False
 
     # singleton instance
     __instance = None  # type: Cache
@@ -23,12 +23,26 @@ class Cache(object):
             raise RuntimeError("Only one cache object is allowed; "
                                "use the instance classmethod instead")
 
+    def __contains__(self, item: Callable):
+        return item.__name__ in Cache.__funcs
+
+    def __getitem__(self, name: str) -> CachedFunction:
+        return Cache.__funcs[name]
+
     @classmethod
     def instance(cls) -> "Cache":
         """Return the singleton instance."""
         if cls.__instance is None:
             cls.__instance = cls()
         return cls.__instance
+
+    @property
+    def enabled(self) -> bool:
+        return Cache._enabled
+
+    @enabled.setter
+    def enabled(self, state: bool):
+        Cache._enabled = state
 
     @property
     def cached_names(self) -> KeysView:
@@ -83,11 +97,12 @@ def cache(func: Callable):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if not _caching_enabled:
+        cache = Cache.instance()
+        if not cache.enabled:
             return func(*args, **kwargs)
 
-        if func.__name__ in CachedFunction._funcs:
-            return CachedFunction._funcs[func.__name__](*args, **kwargs)
+        if func.__name__ in cache:
+            return cache[func.__name__](*args, **kwargs)
 
         return CachedFunction(func)(*args, **kwargs)
 
