@@ -6,7 +6,6 @@ from pandas.io.json import json_normalize
 
 from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
-from cmlreaders.cache import cache
 
 
 class MontageReader(BaseCMLReader):

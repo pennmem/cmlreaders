@@ -1,3 +1,4 @@
+import functools
 from pathlib import Path
 from typing import Optional, Union
 
@@ -40,8 +41,6 @@ class _MetaReader(type):
 class BaseCMLReader(object, metaclass=_MetaReader):
     """Base class for CML data readers
 
-    Notes
-    -----
     All CML readers should inherit from this base class in order to have the
     reader be registered with the generic :class:`cmlreaders.CMLReader` class.
     This happens through the metaclass of BaseCMLReader. To ensure the
@@ -53,10 +52,17 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     subset of protocols support a data type, then they should be specified using
     the ``protocols`` variable.
 
+    Results from calling :meth:`load` may be cached. This is configured by
+    setting the ``caching`` variable which defaults to ``None`` (caching
+    disabled for this reader type). Available caching types are:
+
+    * ``"memory"`` for in-memory caching
+
     """
     data_types = []
     default_representation = "dataframe"
     protocols = PROTOCOLS
+    caching = None
 
     # We set this default value here for easier mocking in tests.
     _file_path = None
@@ -135,17 +141,35 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         reader = cls(data_type, subject, experiment, session, file_path=str(path))
         return reader.load()
 
-    def load(self):
-        """ Load data into memory """
+    def _load_no_cache(self):
+        """Load stored data without using a cache."""
         method_name = "_".join(["as", self.default_representation])
         return getattr(self, method_name)()
+
+    @functools.lru_cache(maxsize=1)
+    def _load_from_memory(self):
+        """Load from disk or in-memory cache."""
+        return self._load_no_cache()
+
+    def load(self):
+        """Load data into memory in the default representation."""
+        if self.caching is None:
+            return self._load_no_cache()
+        elif self.caching == "memory":
+            return self._load_from_memory()
+        else:
+            raise ValueError("Invalid caching type: " + self.caching)
 
     def as_dataframe(self):
         """ Return data as dataframe """
         raise NotImplementedError
 
     def as_recarray(self):
-        """ Return data as a `np.rec.array` """
+        """Return data as a numpy recarray. By default, this calls
+        :meth:`as_dataframe` and converts to a recarray with
+        :meth:`pd.DataFrame.to_records`.
+
+        """
         return self.as_dataframe().to_records()
 
     def as_dict(self):
