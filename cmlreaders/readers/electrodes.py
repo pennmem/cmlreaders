@@ -9,7 +9,6 @@ from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.cache import cache
 
 
-@cache("memory")
 class MontageReader(BaseCMLReader):
     """Reads montage files (contacts.json, pairs.json). When loading via
     :meth:`CMLReader.load`, pass ``read_categories=True`` to additionally load

@@ -25,6 +25,11 @@ class TestCache:
     def setup_method(self):
         cache._cached_readers.clear()
 
+    def test_str(self):
+        obj = make_reader_class("memory")("dummy")
+        assert "???" in str(obj)
+        assert "DummyReader" in str(obj)
+
     def test_caching(self, cache_type):
         cls = make_reader_class(cache_type)
         instance = cls("dummy")

@@ -1,6 +1,7 @@
 import functools
 from pathlib import Path
-from typing import Set, Type
+from typing import Set  # noqa
+from typing import Type
 
 
 _cached_readers = set()  # type: Set[CachedReader]

@@ -27,7 +27,7 @@ class _MetaReader(type):
 
     """
     def __new__(cls, name, bases, d):
-        if not name.startswith("Base"):
+        if not name.startswith("Base") and not name.startswith("Dummy"):
             if "data_types" not in d:
                 raise ImproperlyDefinedReader(
                     "All CML readers must define a list called 'data_types' "
