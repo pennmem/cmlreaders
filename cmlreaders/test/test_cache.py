@@ -5,22 +5,28 @@ from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders import cache
 
 
+@pytest.fixture(params=["memory"])
+def cache_type(request):
+    return request.param
+
+
+def make_reader_class(kind):
+    class DummyReader(BaseCMLReader):
+        data_types = ["dummy"]
+        default_representation = "dataframe"
+
+        def as_dataframe(self):
+            return pd.DataFrame({"a": [1, 2, 3], "b": [3, 2, 1]})
+
+    return cache.cache(kind)(DummyReader)
+
+
 class TestCache:
     def setup_method(self):
         cache._cached_readers.clear()
 
-    def make_reader_class(self):
-        class DummyReader(BaseCMLReader):
-            data_types = ["dummy"]
-            default_representation = "dataframe"
-
-            def as_dataframe(self):
-                return pd.DataFrame({"a": [1, 2, 3], "b": [3, 2, 1]})
-
-        return cache.cache(DummyReader)
-
-    def test_caching(self):
-        cls = self.make_reader_class()
+    def test_caching(self, cache_type):
+        cls = make_reader_class(cache_type)
         instance = cls("dummy")
 
         assert hasattr(instance, "cached_result")
@@ -34,9 +40,9 @@ class TestCache:
         instance.clear()
         assert instance.cached_result is None
 
-    def test_clear_all(self):
-        obj1 = self.make_reader_class()("dummy")
-        obj2 = self.make_reader_class()("dummy")
+    def test_clear_all(self, cache_type):
+        obj1 = make_reader_class(cache_type)("dummy")
+        obj2 = make_reader_class(cache_type)("dummy")
         assert len(cache._cached_readers) == 2
 
         obj1.load()
@@ -49,3 +55,7 @@ class TestCache:
 
         assert obj1.cached_result is None
         assert obj2.cached_result is None
+
+    def test_invalid_cache_type(self):
+        with pytest.raises(ValueError):
+            make_reader_class("invalid")

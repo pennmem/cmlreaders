@@ -40,17 +40,28 @@ class CachedReader(object):
         return self.cached_result
 
 
-def cache(cls: Type):
+def cache(cache_type):
     """Class decorator to allow caching results from a reader's :meth:`load`
     method.
 
-    """
-    @functools.wraps(cls)
-    def wrapper(*args, **kwargs):
-        obj = cls(*args, **kwargs)
-        return CachedReader(obj)
+    Parameters
+    ----------
+    cache_type
+        One of: "memory". What kind of caching to use.
 
-    return wrapper
+    """
+    if cache_type not in ["memory"]:
+        raise ValueError("Invalid caching type specified: {}".format(cache_type))
+
+    def decorator(cls: Type):
+        @functools.wraps(cls)
+        def wrapper(*args, **kwargs):
+            obj = cls(*args, **kwargs)
+            return CachedReader(obj)
+
+        return wrapper
+
+    return decorator
 
 
 def clear_all():
