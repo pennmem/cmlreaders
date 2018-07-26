@@ -157,12 +157,12 @@ rhino_paths = {
 
 # Maintain separate lists of the file types depending on what information is
 # required to be able to find them
-localization_files = [
-    'localization'
-]
+localization_files = (
+    'localization',
+)
 
 # All files that change when a montage changes
-montage_files = [
+montage_files = (
     'pairs',
     'contacts',
     'voxel_coordinates',
@@ -176,13 +176,13 @@ montage_files = [
     'electrode_categories',
     'target_selection_file',
     'baseline_classifier',
-]
+)
 
 # All files that are constant by subject
 subject_files = []
 
 # All files that vary at the session level
-session_files = [
+session_files = (
     'session_summary',
     'classifier_summary',
     'math_summary',
@@ -199,10 +199,10 @@ session_files = [
     'task_events',
     'math_events',
     'ps4_events'
-]
+)
 
 # All files that require some extra work to identify
-host_pc_files = [
+host_pc_files = (
     'event_log',
     'experiment_config',
     'raw_eeg',
@@ -210,7 +210,7 @@ host_pc_files = [
     'used_classifier',
     'excluded_pairs',
     'all_pairs',
-]
+)
 
 # Files related to in-session classifier retraining
-used_classifier_files = ['used_classifier', 'excluded_pairs', 'all_pairs']
+used_classifier_files = ('used_classifier', 'excluded_pairs', 'all_pairs')
