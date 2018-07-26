@@ -7,7 +7,7 @@ import warnings
 from typing import Optional
 
 from .constants import rhino_paths, localization_files, montage_files, \
-    subject_files, session_files, host_pc_files, used_classifier_files, \
+    subject_files, session_files, ramulator_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
 from .warnings import MultiplePathsFoundWarning
@@ -144,7 +144,7 @@ class PathFinder(object):
         timestamped_dir = None
 
         # Only check the host_pc folder if necessary
-        if (data_type in host_pc_files) or (data_type in used_classifier_files):
+        if data_type in ramulator_files:
             folder_wildcard = self._paths['ramulator_session_folder'][0]
             ramulator_session_folder = folder_wildcard.format(
                 subject=subject_montage, experiment=self.experiment,
@@ -155,7 +155,7 @@ class PathFinder(object):
 
             # The user can also just request the folder
             if data_type == 'ramulator_session_folder':
-                return ramulator_session_folder
+                return timestamped_dir
 
         expected_path = self._find_single_path(paths_to_check,
                                                protocol=self.protocol,
@@ -180,7 +180,7 @@ class PathFinder(object):
         ]
 
         # Sort such that most recent appears first
-        timestamped_directories = sorted(timestamped_directories)
+        timestamped_directories = sorted(timestamped_directories)[::-1]
 
         if len(timestamped_directories) == 0:
             raise RuntimeError("No timestamped folder found in host_pc folder")

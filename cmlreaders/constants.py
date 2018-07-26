@@ -214,3 +214,8 @@ host_pc_files = (
 
 # Files related to in-session classifier retraining
 used_classifier_files = ('used_classifier', 'excluded_pairs', 'all_pairs')
+
+# All Ramulator files/directories
+ramulator_files = (
+    host_pc_files + used_classifier_files + ("ramulator_session_folder",)
+)
