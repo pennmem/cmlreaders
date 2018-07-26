@@ -206,6 +206,7 @@ class TestLoadMontage:
 class TestLoadAggregate:
     @pytest.mark.parametrize("subjects,experiments,unique_sessions", [
         (None, None, None),
+        ("R1111M", "FR1", 4),
         (["R1111M", "R1260D"], ["FR1"], 5),
         (["R1111M"], None, 22),
         (["R1111M"], ["PS2"], 6),
