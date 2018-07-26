@@ -122,16 +122,11 @@ class TestCMLReader:
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,experiment,session", [
         ("R1354E", "PS4_FR", 1),
+        ("R1111M", "PS2", 0),
+        ("R1025P", "PS1", 0)
     ])
-    def test_ps4_events(self, subject, experiment, session, rhino_root):
+    def test_ps_events(self, subject, experiment, session, rhino_root):
         reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
-        events = reader.load("events")
-        task_events = reader.load("task_events")
-        assert all(events == task_events)
-
-    @pytest.mark.rhino
-    def test_ps2_events(self, rhino_root):
-        reader = CMLReader("R1111M", "PS2", 0, rootdir=rhino_root)
         events = reader.load("events")
         task_events = reader.load("task_events")
         assert all(events == task_events)
