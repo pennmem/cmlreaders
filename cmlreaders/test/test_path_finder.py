@@ -70,8 +70,8 @@ def test_montage_file_lookup(subject, localization, montage, rhino_root):
 @pytest.mark.rhino
 def test_get_ramulator_files(ramulator_files_finder):
     path = ramulator_files_finder.find('experiment_config')
-    assert path.endswith(os.path.join('20171027_144048',
+    assert path.endswith(os.path.join('20171027_164013',
                                       'experiment_config.json'))
 
     folder_path = ramulator_files_finder.find("ramulator_session_folder")
-    assert folder_path.endswith('20171027_144048')
+    assert folder_path.endswith('20171027_164013')
