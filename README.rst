@@ -24,6 +24,11 @@ More information and usage examples are provided in the documentation_.
 Installation
 ------------
 
+The following assumes you have already installed Anaconda_ or Miniconda_.
+
+.. _Anaconda: https://www.anaconda.com/distribution/
+.. _Miniconda: https://conda.io/miniconda.html
+
 .. code-block:: shell-session
 
     conda create -y -n environment_name python=3
