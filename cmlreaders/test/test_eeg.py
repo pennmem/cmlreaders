@@ -184,8 +184,13 @@ class TestFileReaders:
         new_ts, _ = reader.rereference(ts, contacts)
         assert (new_ts == ts[:, :10, :]).all()
 
-        pairs['contact_1'][0] = pairs.iloc[0].contact_2
-        reader = make_reader(pairs)
+        # testing non-existent pairs
+        scheme = pd.DataFrame({
+            "contact_1": [300],
+            "contact_2": [400],
+            "label": ["DNE12"],
+        })
+        reader = make_reader(scheme)
         ts, contacts = reader.read()
         with pytest.raises(exc.RereferencingNotPossibleError):
             reader.rereference(ts, contacts)

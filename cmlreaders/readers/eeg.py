@@ -13,13 +13,9 @@ with warnings.catch_warnings():  # noqa
 import numpy as np
 import pandas as pd
 
-from cmlreaders import constants, convert
+from cmlreaders import constants, convert, exc
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.eeg_container import EEGContainer
-from cmlreaders.exc import (
-    UnsupportedOutputFormat,
-    IncompatibleParametersError,
-)
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
@@ -285,6 +281,11 @@ class RamulatorHDF5Reader(BaseEEGReader):
             (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
         )
 
+        if not len(self.scheme[valid_mask]):
+            raise exc.RereferencingNotPossibleError(
+                "No channels specified in scheme are present in EEG recording"
+            )
+
         if len(self.scheme[valid_mask]) < len(self.scheme):
             # Some channels included in the scheme are not present in the
             # actual recording
@@ -420,7 +421,7 @@ class EEGReader(BaseCMLReader):
                              "using events from only a single subject.")
 
         if "rel_start" not in kwargs or "rel_stop" not in kwargs:
-            raise IncompatibleParametersError(
+            raise exc.IncompatibleParametersError(
                 "rel_start and rel_stop must be given with events"
             )
 
@@ -434,13 +435,13 @@ class EEGReader(BaseCMLReader):
         return self.as_timeseries(events, kwargs["rel_start"], kwargs["rel_stop"])
 
     def as_dataframe(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     def as_recarray(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     def as_dict(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     @staticmethod
     def _get_reader_class(basename: str) -> Type[BaseEEGReader]:
