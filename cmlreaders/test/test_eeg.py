@@ -21,6 +21,7 @@ from cmlreaders.readers.eeg import (
 from cmlreaders.readers.electrodes import MontageReader
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.test.utils import patched_cmlreader
+from cmlreaders.warnings import MissingChannelsWarning
 
 
 @pytest.fixture
@@ -174,13 +175,13 @@ class TestFileReaders:
         reader = make_reader(pairs)
         ts, contacts = reader.read()
 
-        new_ts = reader.rereference(ts, contacts)
+        new_ts, _ = reader.rereference(ts, contacts)
         assert (new_ts == ts).all()
 
         pairs = pairs[:10]
         reader = make_reader(pairs)
         ts, contacts = reader.read()
-        new_ts = reader.rereference(ts, contacts)
+        new_ts, _ = reader.rereference(ts, contacts)
         assert (new_ts == ts[:, :10, :]).all()
 
         pairs['contact_1'][0] = pairs.iloc[0].contact_2
@@ -513,3 +514,21 @@ class TestLoadEEG:
 
         for experiment in experiments:
             assert experiment in set(events["experiment"])
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ("R1387E", "catFR5", 0),
+    ])
+    def test_channel_discrepancies(self, subject, experiment, session,
+                                   rhino_root):
+        """Test loading of known subjects with differences between channels in
+        pairs.json and channels actually recorded.
+
+        """
+        reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
+        pairs = reader.load("pairs")
+        events = reader.load("events")
+
+        with pytest.warns(MissingChannelsWarning):
+            eeg = reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10,
+                                  scheme=pairs)
