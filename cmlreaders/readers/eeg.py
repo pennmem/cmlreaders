@@ -13,16 +13,13 @@ with warnings.catch_warnings():  # noqa
 import numpy as np
 import pandas as pd
 
-from cmlreaders import constants, convert
+from cmlreaders import constants, convert, exc
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.eeg_container import EEGContainer
-from cmlreaders.exc import (
-    RereferencingNotPossibleError, UnsupportedOutputFormat,
-    IncompatibleParametersError,
-)
 from cmlreaders.path_finder import PathFinder
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
+from cmlreaders.warnings import MissingChannelsWarning
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -127,7 +124,8 @@ class BaseEEGReader(ABC):
     def read(self) -> Tuple[np.ndarray, List[int]]:
         """Read the data."""
 
-    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
+    def rereference(self, data: np.ndarray,
+                    contacts: List[int]) -> Tuple[np.ndarray, List[str]]:
         """Attempt to rereference the EEG data using the specified scheme.
 
         Parameters
@@ -141,6 +139,8 @@ class BaseEEGReader(ABC):
         -------
         reref
             Rereferenced timeseries.
+        labels
+            List of channel labels used (included in case some don't get used).
 
         Notes
         -----
@@ -162,7 +162,7 @@ class BaseEEGReader(ABC):
         reref = np.array(
             [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
         )
-        return reref
+        return reref, self.scheme["label"].tolist()
 
 
 class NumpyEEGReader(BaseEEGReader):
@@ -232,9 +232,11 @@ class RamulatorHDF5Reader(BaseEEGReader):
             if 'bipolar_info' in hfile:
                 bpinfo = hfile['bipolar_info']
                 all_nums = [
-                    (int(a), int(b)) for (a, b) in list(
+                    (int(a), int(b))
+                    for (a, b) in list(
                         zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
-                    )]
+                    )
+                ]
                 idxs = np.empty(len(all_nums), dtype=bool)
                 idxs.fill(True)
                 for i, pair in enumerate(all_nums):
@@ -253,7 +255,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             return data, contacts
 
-    def rereference(self, data: np.ndarray, contacts: List[int]) -> np.ndarray:
+    def rereference(self, data: np.ndarray,
+                    contacts: List[int]) -> Tuple[np.ndarray, List[str]]:
         """Overrides the default rereferencing to first check validity of the
         passed scheme or if rereferencing is even possible in the first place.
 
@@ -264,31 +267,45 @@ class RamulatorHDF5Reader(BaseEEGReader):
         with h5py.File(self.filename, 'r') as hfile:
             bpinfo = hfile['bipolar_info']
             all_nums = [
-                (int(a), int(b)) for (a, b) in list(
-                    zip(bpinfo['ch0_label'][:], bpinfo['ch1_label'][:])
+                (int(a), int(b))
+                for (a, b) in zip(
+                    bpinfo['ch0_label'][:], bpinfo['ch1_label'][:]
                 )
             ]
 
-        scheme_nums = list(zip(self.scheme["contact_1"],
-                               self.scheme["contact_2"]))
-        is_valid_channel = [channel in all_nums for channel in scheme_nums]
+        # Create a mask of channels that appear in both the passed scheme and
+        # the recorded data.
+        all_nums_array = np.asarray(all_nums)
+        valid_mask = (
+            (self.scheme["contact_1"].isin(all_nums_array[:, 0])) &
+            (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
+        )
 
-        if not all(is_valid_channel):
-            raise RereferencingNotPossibleError(
-                'The following channels are missing: %s' % (
-                    ', '.join(
-                        label for (label, valid) in
-                        zip(self.scheme["label"], is_valid_channel)
-                        if not valid
-                    )
+        if not len(self.scheme[valid_mask]):
+            raise exc.RereferencingNotPossibleError(
+                "No channels specified in scheme are present in EEG recording"
+            )
+
+        if len(self.scheme[valid_mask]) < len(self.scheme):
+            # Some channels included in the scheme are not present in the
+            # actual recording
+            msg = (
+                "The following channels are missing: {:s}".format(
+                    ", ".join(self.scheme[~valid_mask]["label"])
                 )
             )
+            warnings.warn(msg, MissingChannelsWarning)
+
+        # Handle missing channels
+        scheme_nums = list(zip(self.scheme[valid_mask]["contact_1"],
+                               self.scheme[valid_mask]["contact_2"]))
+        labels = self.scheme[valid_mask]["label"].tolist()
 
         # allow a subset of channels
         channel_inds = [chan in scheme_nums or
                         (chan[1], chan[0]) in scheme_nums
-                        for chan in all_nums]
-        return data[:, channel_inds, :]
+                        for chan in list(all_nums)]
+        return data[:, channel_inds, :], labels
 
 
 class EEGReader(BaseCMLReader):
@@ -404,7 +421,7 @@ class EEGReader(BaseCMLReader):
                              "using events from only a single subject.")
 
         if "rel_start" not in kwargs or "rel_stop" not in kwargs:
-            raise IncompatibleParametersError(
+            raise exc.IncompatibleParametersError(
                 "rel_start and rel_stop must be given with events"
             )
 
@@ -418,13 +435,13 @@ class EEGReader(BaseCMLReader):
         return self.as_timeseries(events, kwargs["rel_start"], kwargs["rel_stop"])
 
     def as_dataframe(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     def as_recarray(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     def as_dict(self):
-        raise UnsupportedOutputFormat
+        raise exc.UnsupportedOutputFormat
 
     @staticmethod
     def _get_reader_class(basename: str) -> Type[BaseEEGReader]:
@@ -503,8 +520,8 @@ class EEGReader(BaseCMLReader):
             data, contacts = reader.read()
 
             if self.scheme is not None:
-                data = reader.rereference(data, contacts)
-                channels = self.scheme.label.tolist()
+                data, labels = reader.rereference(data, contacts)
+                channels = labels
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
