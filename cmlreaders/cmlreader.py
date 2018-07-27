@@ -174,7 +174,7 @@ class CMLReader(object):
         # coerce to "all_events" unless we're looking at experiments that don't
         # include these.
         if data_type == "events":
-            if self.experiment.startswith("PS"):
+            if self.experiment.startswith("PS") or self.experiment.startswith("TH"):
                 data_type = "task_events"
             else:
                 data_type = "all_events"
