@@ -206,6 +206,7 @@ class TestLoadAggregate:
         (["R1111M"], None, 22),
         (["R1111M"], ["PS2"], 6),
         (None, ["FR2"], 79),
+        ("R1289C", ["TH1"], 3)
     ])
     def test_load_events(self, subjects, experiments, unique_sessions,
                          rhino_root):
