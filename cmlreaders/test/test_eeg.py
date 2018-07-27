@@ -516,11 +516,11 @@ class TestLoadEEG:
             assert experiment in set(events["experiment"])
 
     @pytest.mark.rhino
-    @pytest.mark.parametrize("subject,experiment,session", [
-        ("R1387E", "catFR5", 0),
+    @pytest.mark.parametrize("subject,experiment,session,eeg_channels,pairs_channels", [
+        ("R1387E", "catFR5", 0, 120, 125),
     ])
     def test_channel_discrepancies(self, subject, experiment, session,
-                                   rhino_root):
+                                   eeg_channels, pairs_channels, rhino_root):
         """Test loading of known subjects with differences between channels in
         pairs.json and channels actually recorded.
 
@@ -532,3 +532,6 @@ class TestLoadEEG:
         with pytest.warns(MissingChannelsWarning):
             eeg = reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10,
                                   scheme=pairs)
+
+        assert len(eeg.channels) == eeg_channels
+        assert len(pairs) == pairs_channels

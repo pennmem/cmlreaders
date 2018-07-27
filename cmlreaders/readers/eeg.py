@@ -17,7 +17,7 @@ from cmlreaders import constants, convert
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.eeg_container import EEGContainer
 from cmlreaders.exc import (
-    RereferencingNotPossibleError, UnsupportedOutputFormat,
+    UnsupportedOutputFormat,
     IncompatibleParametersError,
 )
 from cmlreaders.path_finder import PathFinder
