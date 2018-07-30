@@ -32,6 +32,8 @@ class CMLReader(object):
 
     """
     reader_names = {}
+    readers = {}
+    reader_protocols = {}
 
     def __init__(self, subject: Optional[str] = None,
                  experiment: Optional[str] = None,
@@ -48,8 +50,15 @@ class CMLReader(object):
         self._localization = localization
         self._montage = montage
 
-        self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
-        self.reader_protocols = {k: getattr(readers, v).protocols for k, v in self.reader_names.items()}
+        if not len(CMLReader.readers):
+            CMLReader.readers = {
+                k: getattr(readers, v) for k, v in self.reader_names.items()
+            }
+        if not len(CMLReader.reader_protocols):
+            CMLReader.reader_protocols = {
+                k: getattr(readers, v).protocols
+                for k, v in self.reader_names.items()
+            }
 
     def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and
