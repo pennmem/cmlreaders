@@ -33,7 +33,7 @@ class CMLReader(object):
     """
     reader_names = {}
 
-    def __init__(self, subject: str,
+    def __init__(self, subject: Optional[str] = None,
                  experiment: Optional[str] = None,
                  session: Optional[int] = None,
                  localization: Optional[int] = None,
@@ -48,8 +48,6 @@ class CMLReader(object):
         self._localization = localization
         self._montage = montage
 
-        self.protocol = get_protocol(self.subject)
-
         self.readers = {k: getattr(readers, v) for k, v in self.reader_names.items()}
         self.reader_protocols = {k: getattr(readers, v).protocols for k, v in self.reader_names.items()}
 
@@ -58,6 +56,9 @@ class CMLReader(object):
         localization nubmers.
 
         """
+        if self.subject is None:
+            return pd.DataFrame({})
+
         index = get_data_index(self.protocol, rootdir=self.rootdir)
 
         # Some subjects don't explicitly specify localization/montage
@@ -105,15 +106,25 @@ class CMLReader(object):
             return value
 
     @property
-    def localization(self) -> int:
+    def protocol(self):
+        return get_protocol(self.subject)
+
+    @property
+    def localization(self) -> Union[int, None]:
         """Determine the localization number."""
+        if self.subject is None:
+            return None
+
         if self._localization is not None:
             return self._localization
         return self._determine_localization_or_montage("localization")
 
     @property
-    def montage(self) -> int:
+    def montage(self) -> Union[int, None]:
         """Determine the montage number."""
+        if self.subject is None:
+            return None
+
         if self._montage is not None:
             return self._montage
         return self._determine_localization_or_montage("montage")

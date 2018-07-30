@@ -62,13 +62,16 @@ def is_rerefable(subject: str, experiment: str, session: int,
     return True
 
 
-def get_protocol(subject: str) -> str:
+def get_protocol(subject: Union[str, None]) -> str:
     """Get the protocol name from the subject code.
 
     This returns the ``<protocol> `` in ``/protocols/<protocol>``. For
     example, it returns ``"r1"`` for RAM subjects.
 
     """
+    if subject is None:
+        raise ValueError("No subject was passed!")
+
     if subject.startswith("R1"):
         return "r1"
     elif subject.startswith("LTP"):

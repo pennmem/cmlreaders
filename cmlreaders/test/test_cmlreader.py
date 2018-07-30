@@ -14,6 +14,16 @@ datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 
 class TestCMLReader:
+    def test_no_subject(self):
+        reader = CMLReader()
+
+        assert reader.subject is None
+
+        with pytest.raises(ValueError):
+            _ = reader.protocol
+
+
+
     @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
         ("R1278E", "catFR1", 0, 0, 1),
         ("R1278E", "catFR1", None, 0, 1),
@@ -21,7 +31,8 @@ class TestCMLReader:
         ("R1278E", "PAL3", 2, 2, 2),
         ("R1278E", "TH1", 0, 0, 0),
         ("R1278E", "TH1", None, 0, 0),
-        ("LTP093", "ltpFR2", 0, None, None)
+        ("LTP093", "ltpFR2", 0, None, None),
+        (None, None, None, None, None),
     ])
     def test_determine_localization_or_montage(self, subject, experiment,
                                                session, localization, montage):
