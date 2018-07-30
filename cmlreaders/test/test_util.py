@@ -22,9 +22,14 @@ def set_cml_root(path):
 
 
 @pytest.mark.parametrize("subject", [
-    "R1111M", "LTP001", "TJ001", "FR001", "CH001", "DNE123",
+    "R1111M", "LTP001", "TJ001", "FR001", "CH001", "DNE123", None
 ])
 def test_get_protocol(subject):
+    if subject is None:
+        with pytest.raises(ValueError):
+            get_protocol(subject)
+        return
+
     if subject.startswith("DNE"):
         with pytest.raises(exc.UnknownProtocolError):
             get_protocol(subject)
