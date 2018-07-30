@@ -198,12 +198,16 @@ class CMLReader(object):
                                      self.montage,
                                      self.rootdir)
 
-        if self.protocol not in cls.protocols:
-            raise UnsupportedProtocolError(
-                "Data type {} is not supported under protocol {}".format(
-                    data_type, self.protocol
+        # When a subject is not specified, we don't need to check the protocol
+        # since things will go wrong downstream if a given reader requires a
+        # subject.
+        if self.subject is None:
+            if self.protocol not in cls.protocols:
+                raise UnsupportedProtocolError(
+                    "Data type {} is not supported under protocol {}".format(
+                        data_type, self.protocol
+                    )
                 )
-            )
 
         return cls.load(**kwargs)
 

@@ -22,8 +22,6 @@ class TestCMLReader:
         with pytest.raises(ValueError):
             _ = reader.protocol
 
-
-
     @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
         ("R1278E", "catFR1", 0, 0, 1),
         ("R1278E", "catFR1", None, 0, 1),
