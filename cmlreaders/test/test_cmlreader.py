@@ -22,6 +22,13 @@ class TestCMLReader:
         with pytest.raises(ValueError):
             _ = reader.protocol
 
+    @pytest.mark.only
+    @pytest.mark.rhino
+    def test_no_subject_eeg(self, rhino_root):
+        events = CMLReader.load_events("R1111M", "FR1", rootdir=rhino_root).sample(n=2)
+        eeg = CMLReader(rootdir=rhino_root).load_eeg(events, 0, 10)
+        assert eeg.shape == (2, 100, 10)
+
     @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
         ("R1278E", "catFR1", 0, 0, 1),
         ("R1278E", "catFR1", None, 0, 1),

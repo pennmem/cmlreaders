@@ -210,7 +210,7 @@ class CMLReader(object):
         # When a subject is not specified, we don't need to check the protocol
         # since things will go wrong downstream if a given reader requires a
         # subject.
-        if self.subject is None:
+        if self.subject is not None:
             if self.protocol not in cls.protocols:
                 raise UnsupportedProtocolError(
                     "Data type {} is not supported under protocol {}".format(
