@@ -113,6 +113,15 @@ class CMLReader(object):
             setattr(self, "_" + which, value)
             return value
 
+    @staticmethod
+    def get_data_index(protocol: str = "all",
+                       rootdir: Optional[str] = None) -> pd.DataFrame:
+        """Shortcut for the global :func:`get_data_index` function to only
+        need to import :class:`CMLReader`.
+
+        """
+        return get_data_index(protocol, rootdir)
+
     @property
     def localization(self) -> int:
         """Determine the localization number."""

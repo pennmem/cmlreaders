@@ -7,13 +7,25 @@ import pandas as pd
 from pkg_resources import resource_filename
 import pytest
 
-from cmlreaders import CMLReader, exc
+from cmlreaders import CMLReader, exc, get_data_index
+from cmlreaders.path_finder import PathFinder
 from cmlreaders.test.utils import patched_cmlreader
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
 
 class TestCMLReader:
+    @pytest.mark.parametrize("protocol", ["all", "r1"])
+    def test_get_data_index(self, protocol):
+        if protocol is "all":
+            path = resource_filename("cmlreaders.test.data", "r1.json")
+        else:
+            path = resource_filename("cmlreaders.test.data", protocol + ".json")
+
+        with patch.object(PathFinder, "find", return_value=path):
+            ix = CMLReader.get_data_index(protocol)
+            assert all(ix == get_data_index(protocol))
+
     @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
         ("R1278E", "catFR1", 0, 0, 1),
         ("R1278E", "catFR1", None, 0, 1),
