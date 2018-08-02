@@ -275,6 +275,7 @@ class TestEEGReader:
         ("R1384J", "pairs", False, 43, "LS12-LS1"),
         ("R1111M", "pairs", True, 43, "LPOG23-LPOG31"),
         ("R1111M", "contacts", True, 43, "LPOG44"),
+        ("R1286J", "contacts", True, 43, "LJ16")
     ])
     def test_rereference(self, subject, scheme_type, reref_possible, index,
                          channel, rhino_root):
@@ -306,7 +307,8 @@ class TestEEGReader:
                 assert data_reref.channels[index] == channel
         else:
             data = load_eeg(scheme=scheme)
-            assert data.shape == (1, 100, expected_samples)
+            count = 100 if subject == "R1111M" else 124
+            assert data.shape == (1, count, expected_samples)
             assert data.channels[index] == channel
 
     @pytest.mark.rhino
