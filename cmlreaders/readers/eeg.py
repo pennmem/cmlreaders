@@ -105,11 +105,13 @@ class BaseEEGReader(ABC):
         try:
             if self.scheme_type == "contacts":
                 self._unique_contacts = self.scheme.contact.unique()
-            else:
+            elif self.scheme_type == "pairs":
                 self._unique_contacts = np.union1d(
                     self.scheme["contact_1"],
                     self.scheme["contact_2"]
                 )
+            else:
+                self._unique_contacts = None
         except KeyError:
             self._unique_contacts = None
 
@@ -117,9 +119,13 @@ class BaseEEGReader(ABC):
         self.rereferencing_possible = True
 
     @property
-    def scheme_type(self) -> str:
+    def scheme_type(self) -> Union[str, None]:
         """Returns "contacts" when the input scheme is in the form of monopolar
         contacts and "pairs" when bipolar.
+
+        Returns
+        -------
+        The scheme type or ``None`` is no scheme was specified.
 
         Raises
         ------
@@ -128,6 +134,9 @@ class BaseEEGReader(ABC):
             ``contact_1``, ``contact_2``, ``contact``
 
         """
+        if self.scheme is None:
+            return None
+
         if "contact_1" in self.scheme and "contact_2" in self.scheme:
             return "pairs"
         elif "contact" in self.scheme:
@@ -152,7 +161,7 @@ class BaseEEGReader(ABC):
 
     def rereference(self, data: np.ndarray,
                     contacts: List[int]) -> Tuple[np.ndarray, List[str]]:
-        """Attempt to rereference the EEG data using the specified scheme.
+        """Rereference and/or select a subset of raw channels.
 
         Parameters
         ----------
@@ -180,15 +189,22 @@ class BaseEEGReader(ABC):
             for i, c in enumerate(contacts)
         }
 
-        c1 = [contact_to_index[c] for c in self.scheme["contact_1"]
-              if c in contact_to_index]
-        c2 = [contact_to_index[c] for c in self.scheme["contact_2"]
-              if c in contact_to_index]
+        if self.scheme_type == "pairs":
+            c1 = [contact_to_index[c] for c in self.scheme["contact_1"]
+                  if c in contact_to_index]
+            c2 = [contact_to_index[c] for c in self.scheme["contact_2"]
+                  if c in contact_to_index]
 
-        reref = np.array(
-            [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
-        )
-        return reref, self.scheme["label"].tolist()
+            reref = np.array(
+                [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
+            )
+            return reref, self.scheme["label"].tolist()
+        else:
+            channels = [contact_to_index[c] for c in self.scheme["contact"]]
+            subset = np.array(
+                [data[i, channels, :] for i in range(data.shape[0])]
+            )
+            return subset, self.scheme["label"].tolist()
 
 
 class NumpyEEGReader(BaseEEGReader):
@@ -287,7 +303,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
         passed scheme or if rereferencing is even possible in the first place.
 
         """
-        if self.rereferencing_possible:
+        if self.rereferencing_possible or self.scheme_type == "contacts":
             return BaseEEGReader.rereference(self, data, contacts)
 
         with h5py.File(self.filename, 'r') as hfile:

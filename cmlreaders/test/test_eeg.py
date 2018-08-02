@@ -94,6 +94,9 @@ class TestBaseEEGReader:
         if expected is None:
             with pytest.raises(KeyError):
                 _ = reader.scheme_type
+
+            reader = self.make_reader()
+            assert reader.scheme_type is None
         else:
             assert reader.scheme_type == expected
 
@@ -268,12 +271,13 @@ class TestEEGReader:
         with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events)
 
-    @pytest.mark.parametrize("subject,reref_possible,index,channel", [
-        ("R1384J", False, 43, "LS12-LS1"),
-        ("R1111M", True, 43, "LPOG23-LPOG31"),
+    @pytest.mark.parametrize("subject,scheme_type,reref_possible,index,channel", [
+        ("R1384J", "pairs", False, 43, "LS12-LS1"),
+        ("R1111M", "pairs", True, 43, "LPOG23-LPOG31"),
+        ("R1111M", "contacts", True, 43, "LPOG44"),
     ])
-    def test_rereference(self, subject, reref_possible, index, channel,
-                         rhino_root):
+    def test_rereference(self, subject, scheme_type, reref_possible, index,
+                         channel, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
                            rootdir=rhino_root)
         rate = reader.load("sources")["sample_rate"]
@@ -283,22 +287,27 @@ class TestEEGReader:
         rel_start, rel_stop = 0, 100
 
         expected_samples = int(rate * rel_stop / 1000)
-        scheme = reader.load('pairs')
+        scheme = reader.load(scheme_type)
 
         load_eeg = partial(reader.load_eeg, events=events, rel_start=rel_start,
                            rel_stop=rel_stop)
 
-        if reref_possible:
-            data = load_eeg()
-            assert data.shape == (1, 100, expected_samples)
-            data = load_eeg(scheme=scheme)
-            assert data.shape == (1, 141, expected_samples)
-            assert data.channels[index] == channel
+        if scheme_type == "pairs":
+            if reref_possible:
+                data = load_eeg()
+                assert data.shape == (1, 100, expected_samples)
+                data = load_eeg(scheme=scheme)
+                assert data.shape == (1, 141, expected_samples)
+                assert data.channels[index] == channel
+            else:
+                data_noreref = load_eeg()
+                data_reref = load_eeg(scheme=scheme)
+                assert_equal(data_noreref.data, data_reref.data)
+                assert data_reref.channels[index] == channel
         else:
-            data_noreref = load_eeg()
-            data_reref = load_eeg(scheme=scheme)
-            assert_equal(data_noreref.data, data_reref.data)
-            assert data_reref.channels[index] == channel
+            data = load_eeg(scheme=scheme)
+            assert data.shape == (1, 100, expected_samples)
+            assert data.channels[index] == channel
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,region_key,region_name,expected_channels,tlen", [
