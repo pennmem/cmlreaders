@@ -532,6 +532,7 @@ class EEGReader(BaseCMLReader):
                     epochs=epochs,
                     events=ev,
                     channels=channels,
+                    tstart=rel_start,
                 )
             )
 

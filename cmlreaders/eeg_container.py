@@ -23,6 +23,17 @@ class EEGContainer(object):
     attrs
         Arbitrary additional attributes to store.
 
+    Attributes
+    ----------
+    data
+        Numpy array shaped as (epochs, channels, time).
+    samplerate
+        Sample rate in Hz.
+    events
+        DataFrame of events.
+    time
+        Array of time points in milliseconds.
+
     Raises
     ------
     ValueError
