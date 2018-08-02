@@ -148,6 +148,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             Subject code to use; required when we need to determine the protocol
         experiment
         session
+        data_type
 
         """
         if subject is None:

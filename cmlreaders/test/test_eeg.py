@@ -24,6 +24,11 @@ from cmlreaders.test.utils import patched_cmlreader
 from cmlreaders.warnings import MissingChannelsWarning
 
 
+class DummyReader(BaseEEGReader):
+    def read(self):
+        return
+
+
 @pytest.fixture
 def events():
     with patched_cmlreader():
@@ -51,18 +56,18 @@ class TestEEGMetaReader:
 
 
 class TestBaseEEGReader:
+    @staticmethod
+    def make_reader(scheme=None):
+        return DummyReader("", np.int16, [(0, None)], scheme=scheme)
+
     @pytest.mark.parametrize("use_scheme", [True, False])
     def test_include_contact(self, use_scheme):
-        class DummyReader(BaseEEGReader):
-            def read(self):
-                return
-
         scheme = pd.DataFrame({
             "contact_1": list(range(1, 10)),
             "contact_2": list(range(2, 11)),
         }) if use_scheme else None
 
-        reader = DummyReader("", np.int16, [(0, None)], scheme=scheme)
+        reader = self.make_reader(scheme)
 
         if use_scheme:
             assert len(reader._unique_contacts) == 10
@@ -72,6 +77,25 @@ class TestBaseEEGReader:
                 assert reader.include_contact(i)
             else:
                 assert not reader.include_contact(i)
+
+    @pytest.mark.parametrize("filename,expected", [
+        (resource_filename("cmlreaders.test.data", "contacts.json"), "contacts"),
+        (resource_filename("cmlreaders.test.data", "pairs.json"), "pairs"),
+        ("", None)
+    ])
+    def test_scheme_type(self, filename, expected):
+        if len(filename):
+            scheme = MontageReader.fromfile(filename, data_type=expected)
+        else:
+            scheme = pd.DataFrame({"foo": [1, 2, 3]})
+
+        reader = self.make_reader(scheme)
+
+        if expected is None:
+            with pytest.raises(KeyError):
+                _ = reader.scheme_type
+        else:
+            assert reader.scheme_type == expected
 
 
 class TestFileReaders:

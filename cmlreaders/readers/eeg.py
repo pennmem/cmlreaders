@@ -102,13 +102,39 @@ class BaseEEGReader(ABC):
         self.epochs = epochs
         self.scheme = scheme
 
-        self._unique_contacts = np.union1d(
-            self.scheme["contact_1"],
-            self.scheme["contact_2"]
-        ) if self.scheme is not None else None
+        try:
+            if self.scheme_type == "contacts":
+                self._unique_contacts = self.scheme.contact.unique()
+            else:
+                self._unique_contacts = np.union1d(
+                    self.scheme["contact_1"],
+                    self.scheme["contact_2"]
+                )
+        except KeyError:
+            self._unique_contacts = None
 
         # in cases where we can't rereference, this will get changed to False
         self.rereferencing_possible = True
+
+    @property
+    def scheme_type(self) -> str:
+        """Returns "contacts" when the input scheme is in the form of monopolar
+        contacts and "pairs" when bipolar.
+
+        Raises
+        ------
+        KeyError
+            When the passed scheme doesn't include any of the following keys:
+            ``contact_1``, ``contact_2``, ``contact``
+
+        """
+        if "contact_1" in self.scheme and "contact_2" in self.scheme:
+            return "pairs"
+        elif "contact" in self.scheme:
+            return "contacts"
+        else:
+            raise KeyError("The passed scheme appears to be neither contacts "
+                           "nor pairs")
 
     def include_contact(self, contact_num: int):
         """Filter to determine if we need to include a contact number when
