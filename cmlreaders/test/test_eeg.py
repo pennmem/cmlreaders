@@ -93,7 +93,7 @@ class TestBaseEEGReader:
 
         if expected is None:
             with pytest.raises(KeyError):
-                _ = reader.scheme_type
+                _ = reader.scheme_type  # noqa
 
             reader = self.make_reader()
             assert reader.scheme_type is None
