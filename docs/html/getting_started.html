@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.8.1 documentation</title>
+  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.9.0 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Shortcuts for common queries" href="shortcuts.html" />
-    <link rel="prev" title="Data Guide" href="data_guide.html" /> 
+    <link rel="next" title="Classification from scratch" href="classifier.html" />
+    <link rel="prev" title="Examples and tutorials" href="guides.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.8
+                0.9
               </div>
             
           
@@ -88,31 +88,29 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with CML Readers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Finding-Files-on-Rhino">Finding Files on Rhino</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#What-can-you-request?">What can you request?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Finding-File-Paths">Finding File Paths</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="guides.html">Examples and tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started with CML Readers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Finding-Files-on-Rhino">Finding Files on Rhino</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-can-you-request?">What can you request?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Finding-File-Paths">Finding File Paths</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Loading-Data">Loading Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Using-the-Default-Representation">Using the Default Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-from-a-Custom-Location">Loading from a Custom Location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-Data">Loading Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Using-the-Default-Representation">Using the Default Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Loading-from-a-Custom-Location">Loading from a Custom Location</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Saving-Data">Saving Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Examples">Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-Multiple-Sessions">Loading Multiple Sessions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-EEG">Loading EEG</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Reading-a-full-session">Reading a full session</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Reading-from-events">Reading from events</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Reading-from-multiple-sessions">Reading from multiple sessions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Converting-EEG-Representation">Converting EEG Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Saving-Data">Saving Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Loading-Multiple-Sessions">Loading Multiple Sessions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Loading-EEG">Loading EEG</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html">Classification from scratch</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
@@ -162,6 +160,8 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="guides.html">Examples and tutorials</a> &raquo;</li>
         
       <li>Getting Started with CML Readers</li>
     
@@ -1937,10 +1937,10 @@ these are common libraries for interacting with EEG data.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="shortcuts.html" class="btn btn-neutral float-right" title="Shortcuts for common queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="classifier.html" class="btn btn-neutral float-right" title="Classification from scratch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="data_guide.html" class="btn btn-neutral" title="Data Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="guides.html" class="btn btn-neutral" title="Examples and tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1971,7 +1971,7 @@ these are common libraries for interacting with EEG data.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.8.1',
+            VERSION:'0.9.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

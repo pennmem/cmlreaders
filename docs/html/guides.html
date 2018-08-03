@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction &mdash; CML Data Readers 0.9.0 documentation</title>
+  <title>Examples and tutorials &mdash; CML Data Readers 0.9.0 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Guide" href="data_guide.html" />
-    <link rel="prev" title="Computational Memory Lab Data Readers" href="index.html" /> 
+    <link rel="next" title="Getting Started with CML Readers" href="getting_started.html" />
+    <link rel="prev" title="Data Guide" href="data_guide.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,14 +86,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples and tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html">Classification from scratch</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
@@ -142,13 +141,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Introduction</li>
+      <li>Examples and tutorials</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/guides.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -180,39 +179,48 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="introduction">
-<span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="purpose">
-<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
-<p>CMLReaders is a library for easily finding, loading, and saving data that is
-specific to the Computational Memory Lab at the University of Pennsylvania.
-It abstracts away the need to remember a multitude of file locations, prevents
-the need for analysis code to be littered with try/except blocks, and unifies
-the API for loading lab specific data. For more information on lab
-specific data types, see the <a class="reference internal" href="data_guide.html#data-guide"><span class="std std-ref">Data Guide</span></a> section.</p>
-</div>
-<div class="section" id="features">
-<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Easily find the location of a file on RHINO</li>
-<li>Single API for loading data</li>
-<li>Convert from one file output format to another</li>
+<div class="section" id="examples-and-tutorials">
+<h1>Examples and tutorials<a class="headerlink" href="#examples-and-tutorials" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Finding-Files-on-Rhino">Finding Files on Rhino</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#What-can-you-request?">What can you request?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Finding-File-Paths">Finding File Paths</a></li>
 </ul>
-</div>
-<div class="section" id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders</span></code> library contains a number of lab-specific data readers.
-However, for the vast majority of use cases, users should be able to use
-<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.CMLReader</span></code> to load data.</p>
-<p>In situations where the user would like to load data into a non-default
-format or convert between different output formats, the individual readers can
-be used directly. All readers are built on top of
-<code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.BaseCMLReader</span></code>. These readers implement various
-as_x() methods to load data into memory using different representations such
-as a dictionary, dataframe, recarray, python class, etc. Readers also implement
-different to_y() methods for saving data to CSV, JSON, or HDF5 output formats.
-Different readers implement different loading and saving methods, so consult the
-<a class="reference internal" href="api.html#api"><span class="std std-ref">API</span></a> documentation for more information.</p>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Loading-Data">Loading Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Using-the-Default-Representation">Using the Default Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Loading-from-a-Custom-Location">Loading from a Custom Location</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Saving-Data">Saving Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#Examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Loading-Multiple-Sessions">Loading Multiple Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting_started.html#Loading-EEG">Loading EEG</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#Reading-a-full-session">Reading a full session</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#Reading-from-events">Reading from events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#Reading-from-multiple-sessions">Reading from multiple sessions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="getting_started.html#Converting-EEG-Representation">Converting EEG Representation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="classifier.html">Classification from scratch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html#Loading-data">Loading data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html#Compute-features-for-the-classifier">Compute features for the classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html#Train-the-classifier">Train the classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html#Evaluating-a-classifier">Evaluating a classifier</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classifier.html#LOSO-cross-validation">LOSO cross validation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
@@ -224,10 +232,10 @@ Different readers implement different loading and saving methods, so consult the
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="data_guide.html" class="btn btn-neutral float-right" title="Data Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started with CML Readers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Computational Memory Lab Data Readers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="data_guide.html" class="btn btn-neutral" title="Data Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
