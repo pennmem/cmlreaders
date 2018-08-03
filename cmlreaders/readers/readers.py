@@ -131,6 +131,10 @@ class EventReader(BaseCMLReader):
         if self.session is not None:
             df = df[df["session"] == self.session]
 
+        # ensure we have an experiment column
+        if "experiment" not in df:
+            df.loc[:, "experiment"] = self.experiment
+
         return df
 
     def as_dataframe(self):
