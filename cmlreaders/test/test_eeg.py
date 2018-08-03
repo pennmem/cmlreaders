@@ -225,13 +225,13 @@ class TestFileReaders:
 
 @pytest.mark.rhino
 class TestEEGReader:
-    # FIXME: add LTP, pyFR cases
-    @pytest.mark.parametrize("subject,index,channel", [
-        ("R1298E", 87, "CH88"),  # Split EEG
-        ("R1387E", 13, "CH14"),  # Ramulator HDF5
+    @pytest.mark.parametrize("subject,experiment,index,channel", [
+        ("R1298E", "FR1", 87, "CH88"),  # Split EEG
+        ("R1387E", "FR1", 13, "CH14"),  # Ramulator HDF5
+        ("TJ039", "pyFR", 14, "CH15"),  # pyFR
     ])
-    def test_eeg_reader(self, subject, index, channel, rhino_root):
-        reader = CMLReader(subject=subject, experiment='FR1', session=0,
+    def test_eeg_reader(self, subject, experiment, index, channel, rhino_root):
+        reader = CMLReader(subject=subject, experiment=experiment, session=0,
                            rootdir=rhino_root)
         events = reader.load("events")
         events = events[events["type"] == "WORD"].iloc[:2]

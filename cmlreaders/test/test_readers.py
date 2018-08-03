@@ -221,6 +221,7 @@ class TestEventReader:
         path = datafile(filename)
         df = EventReader.fromfile(path)
         assert df.columns[0] == "eegoffset"
+        assert "experiment" in df.columns
         assert len(df)
 
 
