@@ -1,6 +1,38 @@
 Changes
 =======
 
+Version 0.9.0
+-------------
+
+**2018-08-03**
+
+New features:
+
+* Added initial support for caching some data types (#143)
+* Added a new tutorial to the documentation (#151)
+
+Improvements:
+
+* Improved the reading EEG metadata for resumed sessions (#139)
+* Taught ``CMLReader.load_events`` how to handle string arguments in addition to
+  lists (#150)
+* Ramulator HDF5 reader now handles missing channels without crashing (#158)
+* Updated ``EEGReader`` to use ``rel_start`` as the start time given to
+  ``EEGContainer`` (#167)
+* Allowed the use of ``contacts`` data for the ``scheme`` keyword argument in
+  ``CMLReader.load_eeg`` (#169)
+* Made ``get_data_index`` a static method of ``CMLReader`` to simplify imports
+  (#170)
+
+Bug fixes:
+
+* Duplicated channels no longer cause issues when loading Ramulator HDF5 files
+  (#142)
+* Fixed low-level Ramulator readers to get the most recent timestamped directory
+  (#152)
+* Ensured events can be read for PS and TH tasks (#154, #160)
+
+
 Version 0.8.1
 -------------
 
