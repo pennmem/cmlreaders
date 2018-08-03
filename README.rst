@@ -53,14 +53,14 @@ Get the index of all RAM data:
 
 .. code-block:: python
 
-    >>> from cmlreaders import CMLReader, get_data_index
-    >>> df = get_data_index("r1")
+    >>> from cmlreaders import CMLReader
+    >>> ix = CMLReader.get_data_index("r1")
 
 Find unique experiments performed by R1111M:
 
 .. code-block:: python
 
-    >>> df[df["subject"] == "R1111M"]["experiment"].unique()
+    >>> ix[ix["subject"] == "R1111M"]["experiment"].unique()
     array(['FR1', 'FR2', 'PAL1', 'PAL2', 'PS2', 'catFR1'], dtype=object)
 
 Load montage pair data from FR1 session 0:
@@ -112,5 +112,3 @@ mounted:
 
 Upon completion, the coverage report will be saved into htmlcov/ in the top
 level directory of the project.
-
-
