@@ -1,0 +1,1090 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Classification from scratch &mdash; CML Data Readers 0.9.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Shortcuts for common queries" href="shortcuts.html" />
+    <link rel="prev" title="Getting Started with CML Readers" href="getting_started.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="guides.html">Examples and tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Classification from scratch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-data">Loading data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute-features-for-the-classifier">Compute features for the classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Train-the-classifier">Train the classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Evaluating-a-classifier">Evaluating a classifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LOSO-cross-validation">LOSO cross validation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="guides.html">Examples and tutorials</a> &raquo;</li>
+        
+      <li>Classification from scratch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/classifier.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Classification-from-scratch">
+<h1>Classification from scratch<a class="headerlink" href="#Classification-from-scratch" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Set CML_ROOT to root data mount point</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;CML_ROOT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;~/mnt/rhino&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">zscore</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">auc</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">roc_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">cmlreaders</span> <span class="k">import</span> <span class="n">CMLReader</span><span class="p">,</span> <span class="n">get_data_index</span>
+<span class="kn">from</span> <span class="nn">ptsa.data.filters</span> <span class="k">import</span> <span class="n">ButterworthFilter</span><span class="p">,</span> <span class="n">MorletWaveletFilter</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Loading-data">
+<h2>Loading data<a class="headerlink" href="#Loading-data" title="Permalink to this headline">¶</a></h2>
+<p>We start by loading the data index of all RAM subjects:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="s2">&quot;r1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>To train a classifier, we want to analyze record-only experiments. Here,
+we’ll just consider FR1. Let’s choose subject R1111M and see how many
+FR1 sessions they completed:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">subject</span> <span class="o">==</span> <span class="s2">&quot;R1111M&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">experiment</span> <span class="o">==</span> <span class="s2">&quot;FR1&quot;</span><span class="p">)][[</span><span class="s2">&quot;subject&quot;</span><span class="p">,</span> <span class="s2">&quot;experiment&quot;</span><span class="p">,</span> <span class="s2">&quot;session&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>subject</th>
+      <th>experiment</th>
+      <th>session</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>616</th>
+      <td>R1111M</td>
+      <td>FR1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>617</th>
+      <td>R1111M</td>
+      <td>FR1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>618</th>
+      <td>R1111M</td>
+      <td>FR1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>619</th>
+      <td>R1111M</td>
+      <td>FR1</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Four sessions gives us a fair amount of data to work with, so let’s
+start by creating a reader so that we can load montage (“pairs”)
+information, events, and EEG data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="p">(</span><span class="s2">&quot;R1111M&quot;</span><span class="p">,</span> <span class="s2">&quot;FR1&quot;</span><span class="p">)</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;pairs&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In general, we can always use <code class="docutils literal notranslate"><span class="pre">reader.load</span></code> to load any kind of data,
+but since we want to get FR1 events from all sessions completed by
+R1111M, we instead use the <code class="docutils literal notranslate"><span class="pre">reader.load_events</span></code> convenience method.
+Under the hood, this class method iterates through a given list of
+subjects, experiments, and sessions and returns a single <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>
+combining all relevant events. Let’s hold out the last session, though,
+so that we can test on it later.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_events</span><span class="p">([</span><span class="s2">&quot;R1111M&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<p>Now we need to load EEG segments for all word events. To select word
+onsets, we utilize the <code class="docutils literal notranslate"><span class="pre">events</span></code> accessor, but we could just as easily
+use standard <code class="docutils literal notranslate"><span class="pre">pandas</span></code> querying.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">time</span>
+eeg = reader.load_eeg(events=events.events.words,
+                      rel_start=0,
+                      rel_stop=1600,
+                      scheme=pairs)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 1.71 s, sys: 1.3 s, total: 3.01 s
+Wall time: 12.9 s
+</pre></div></div>
+</div>
+<p>Let’s inspect a few signals at random:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">n_signals</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_signals</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">chans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">eeg</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_signals</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chans</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">eeg</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">/</span> <span class="n">eeg</span><span class="o">.</span><span class="n">samplerate</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_15_0.png" src="_images/classifier_15_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Compute-features-for-the-classifier">
+<h2>Compute features for the classifier<a class="headerlink" href="#Compute-features-for-the-classifier" title="Permalink to this headline">¶</a></h2>
+<p>In order to train a classifier, we need to convert our time series EEG
+data into power features. To do so, we’ll use
+<a class="reference external" href="https://github.com/pennmem/ptsa_new">PTSA</a> for its filtering
+capabilities. For Morlet wavelet decomposition, we’ll also add a 1
+second mirror buffer.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">eeg</span><span class="o">.</span><span class="n">to_ptsa</span><span class="p">()</span><span class="o">.</span><span class="n">add_mirror_buffer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>For comparison, let’s look at our signals now with this added buffer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_signals</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chans</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_20_0.png" src="_images/classifier_20_0.png" />
+</div>
+</div>
+<p>Next we remove line noise using a <a class="reference external" href="https://en.wikipedia.org/wiki/Butterworth_filter">Butterworth
+filter</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">time</span>
+bf = ButterworthFilter(ts, [58., 62.], order=4, filt_type=&quot;stop&quot;)
+ts2 = bf.filter()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 8.34 s, sys: 3.09 s, total: 11.4 s
+Wall time: 11.4 s
+</pre></div></div>
+</div>
+<p>Let’s again inspect our signals after this filtering:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">n_signals</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chans</span><span class="p">,</span> <span class="n">axes</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">ts2</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts2</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_24_0.png" src="_images/classifier_24_0.png" />
+</div>
+</div>
+<p>With the initial data cleaning out of the way, we can begin computing
+spectral powers. Now we compute powers for 8 log-spaced frequencies from
+6 to 180 Hz and finally remove the mirror buffer we added.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">time</span>
+freqs = np.logspace(np.log10(6), np.log10(180), 8)
+mwf = MorletWaveletFilter(ts2, freqs=freqs, output=&quot;power&quot;, cpus=2)
+powers = mwf.filter().remove_buffer(1)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPP total time wavelet loop:  30.692717790603638
+CPU times: user 43.9 s, sys: 9.51 s, total: 53.4 s
+Wall time: 36.2 s
+</pre></div></div>
+</div>
+<p>Compute the mean powers over time for each event and zscore:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%</span><span class="k">time</span>
+axis = [i for i, dim in enumerate(powers.dims) if dim == &quot;time&quot;][0]
+mean_powers = np.log10(powers.data.mean(axis=axis))
+zscored = zscore(mean_powers, axis=1, ddof=1)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 3.24 s, sys: 9.14 s, total: 12.4 s
+Wall time: 20.3 s
+</pre></div></div>
+</div>
+<p>Let’s take a look at spectrograms for a recalled word compared to a word
+that was not recalled.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">plot_spectrogram</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">cax</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Frequency index&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cax</span>
+
+<span class="n">recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words_recalled</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">not_recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words_not_recalled</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+<span class="n">cax1</span> <span class="o">=</span> <span class="n">plot_spectrogram</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">zscored</span><span class="p">[:,</span> <span class="n">recalled</span><span class="p">,</span> <span class="p">:])</span>
+
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+<span class="n">cax2</span> <span class="o">=</span> <span class="n">plot_spectrogram</span><span class="p">(</span><span class="n">ax2</span><span class="p">,</span> <span class="n">zscored</span><span class="p">[:,</span> <span class="n">not_recalled</span><span class="p">,</span> <span class="p">:])</span>
+
+<span class="c1"># make the color scales the same</span>
+<span class="n">clims</span> <span class="o">=</span> <span class="n">cax1</span><span class="o">.</span><span class="n">get_clim</span><span class="p">()</span> <span class="o">+</span> <span class="n">cax2</span><span class="o">.</span><span class="n">get_clim</span><span class="p">()</span>
+<span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">clims</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">clims</span><span class="p">)</span>
+<span class="n">cax1</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">)</span>
+<span class="n">cax2</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Recalled&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Not recalled&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Channel number&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[15]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Text(0.5,0,&#39;Channel number&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_30_1.png" src="_images/classifier_30_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_30_2.png" src="_images/classifier_30_2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Train-the-classifier">
+<h2>Train the classifier<a class="headerlink" href="#Train-the-classifier" title="Permalink to this headline">¶</a></h2>
+<p>We’re using L2 logistic regression which requires a 2-D features matrix
+to train:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">zscores_to_features</span><span class="p">(</span><span class="n">zscores</span><span class="p">,</span> <span class="n">events</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts a 3-D z-scored powers array into a 2D feature matrix.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">zscores</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">train_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">recalls</span><span class="p">):</span>
+    <span class="c1"># words = events.events.words</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">7.2e-4</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">recalls</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">words</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">events</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">]</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">zscores_to_features</span><span class="p">(</span><span class="n">zscored</span><span class="p">,</span> <span class="n">words</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">train_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">words</span><span class="o">.</span><span class="n">recalled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">classifier</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[19]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>LogisticRegression(C=0.00072, class_weight=None, dual=False,
+          fit_intercept=True, intercept_scaling=1, max_iter=100,
+          multi_class=&#39;ovr&#39;, n_jobs=1, penalty=&#39;l2&#39;, random_state=None,
+          solver=&#39;liblinear&#39;, tol=0.0001, verbose=0, warm_start=False)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Evaluating-a-classifier">
+<h2>Evaluating a classifier<a class="headerlink" href="#Evaluating-a-classifier" title="Permalink to this headline">¶</a></h2>
+<p>Typically we perform leave-one-session-out (LOSO) cross validation (or
+LOLO cross validation for single record-only sessions) rather than using
+random sampling to choose training and test datasets. This is in part so
+that we can evaluate how well the classifier generalizes to multiple
+sessions. LOSO/LOLO validation is also more sensible than random
+sampling because within a list, items are not truly independent (items
+between lists may also not be truly independent, but it’s a closer
+approximation to reality).</p>
+<div class="section" id="LOSO-cross-validation">
+<h3>LOSO cross validation<a class="headerlink" href="#LOSO-cross-validation" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">loso_probs</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">recalls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute classifier outputs while leaving each session out one at a time.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    probs : np.ndarray</span>
+<span class="sd">        Classifier output for each event.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classifier2</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">classifier</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">recalls</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">events</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="c1"># select training data (all but one session)</span>
+        <span class="n">train_mask</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">session</span> <span class="o">!=</span> <span class="n">session</span>
+        <span class="n">train_features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
+        <span class="n">train_recalls</span> <span class="o">=</span> <span class="n">recalls</span><span class="p">[</span><span class="n">train_mask</span><span class="p">]</span>
+
+        <span class="c1"># select testing data (the left out session)</span>
+        <span class="n">test_mask</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">session</span> <span class="o">==</span> <span class="n">session</span>
+        <span class="n">test_features</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span>
+
+        <span class="c1"># fit and evaluate</span>
+        <span class="n">classifier2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_features</span><span class="p">,</span> <span class="n">train_recalls</span><span class="p">)</span>
+        <span class="n">probs</span><span class="p">[</span><span class="n">test_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">classifier2</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">test_features</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">probs</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">permuted_loso_xval</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">num_permutations</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform permuted leave-one-session-out cross validation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    classifier</span>
+<span class="sd">        The trained sklearn model</span>
+<span class="sd">    features : np.ndarray</span>
+<span class="sd">        Features matrix</span>
+<span class="sd">    events : pd.DataFrame</span>
+<span class="sd">        Word encoding events</span>
+<span class="sd">    num_permutations : int</span>
+<span class="sd">        Number of permutations to run for cross validation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># placeholder for AUC scores</span>
+    <span class="n">aucs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_permutations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+    <span class="n">recalls</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">recalled</span>
+    <span class="n">permuted_recalls</span> <span class="o">=</span> <span class="n">recalls</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_permutations</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">events</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+            <span class="c1"># select current session to leave out</span>
+            <span class="n">session_mask</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">session</span> <span class="o">==</span> <span class="n">session</span>
+
+            <span class="c1"># shuffle recalls so we can get our null distribution</span>
+            <span class="n">permuted_recalls</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">session_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">recalls</span><span class="p">[</span><span class="n">session_mask</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># compute null distribution probabilities</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">loso_probs</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">permuted_recalls</span><span class="p">)</span>
+        <span class="n">aucs</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">recalls</span><span class="p">,</span> <span class="n">probs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">aucs</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">num_permutations</span> <span class="o">=</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">permuted_aucs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">permuted_loso_xval</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span> <span class="n">num_permutations</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">probs</span> <span class="o">=</span> <span class="n">loso_probs</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span> <span class="n">words</span><span class="o">.</span><span class="n">recalled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">recalled</span><span class="p">,</span> <span class="n">probs</span><span class="p">)</span>
+<span class="n">auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">recalled</span><span class="p">,</span> <span class="n">probs</span><span class="p">)</span>
+<span class="n">pvalue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">((</span><span class="n">permuted_aucs</span> <span class="o">&gt;=</span> <span class="n">auc</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">permuted_aucs</span><span class="p">))</span>
+<span class="n">pvalue_str</span> <span class="o">=</span> <span class="s2">&quot;p &lt; 0.001&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">pvalue</span> <span class="k">else</span> <span class="s2">&quot;p = </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pvalue</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;fpr&quot;</span><span class="p">:</span> <span class="n">fpr</span><span class="p">,</span> <span class="s2">&quot;tpr&quot;</span><span class="p">:</span> <span class="n">tpr</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;fpr&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;tpr&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AUC = </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">auc</span><span class="p">),</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">pvalue_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AUC = 0.714 , p &lt; 0.001
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_46_1.png" src="_images/classifier_46_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">permuted_aucs</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x10b5028d0&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/classifier_47_1.png" src="_images/classifier_47_1.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="shortcuts.html" class="btn btn-neutral float-right" title="Shortcuts for common queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started with CML Readers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

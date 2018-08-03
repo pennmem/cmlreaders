@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.8.1 documentation</title>
+  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.9.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.8
+                0.9
               </div>
             
           
@@ -86,7 +86,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_guide.html">Data Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../dev.html">Developer’s Guide</a></li>
@@ -153,7 +153,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cmlreaders.cmlreader</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -186,6 +187,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">reader_names</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">readers</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">reader_protocols</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">experiment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -204,8 +207,15 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">get_protocol</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">readers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader_protocols</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">protocols</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">CMLReader</span><span class="o">.</span><span class="n">readers</span><span class="p">):</span>
+            <span class="n">CMLReader</span><span class="o">.</span><span class="n">readers</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">CMLReader</span><span class="o">.</span><span class="n">reader_protocols</span><span class="p">):</span>
+            <span class="n">CMLReader</span><span class="o">.</span><span class="n">reader_protocols</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">protocols</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_load_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Loads the data index. Used internally to determine montage and</span>
@@ -241,6 +251,7 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">which</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">which</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -250,9 +261,21 @@
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">session</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">which</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">which</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">which</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">which</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">which</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="CMLReader.get_data_index"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_data_index">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_data_index</span><span class="p">(</span><span class="n">protocol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+                       <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Shortcut for the global :func:`get_data_index` function to only</span>
+<span class="sd">        need to import :class:`CMLReader`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_data_index</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">localization</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -275,28 +298,40 @@
         <span class="k">return</span> <span class="n">PathFinder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
                           <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CMLReader.get_reader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Return an instance of the reader class for the given data type &quot;&quot;&quot;</span>
-
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_construct_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span>
+                          <span class="n">localization</span><span class="p">,</span> <span class="n">montage</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">[</span><span class="n">data_type</span><span class="p">](</span><span class="n">data_type</span><span class="p">,</span>
-                                       <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-                                       <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-                                       <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
-                                       <span class="n">localization</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
-                                       <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
-                                       <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                                       <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span></div>
+                                       <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
+                                       <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                                       <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+                                       <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
+                                       <span class="n">montage</span><span class="o">=</span><span class="n">montage</span><span class="p">,</span>
+                                       <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CMLReader.load"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CMLReader.get_reader"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.get_reader">[docs]</a>    <span class="k">def</span> <span class="nf">get_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an instance of the reader class for the given data type.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Reader instances get cached via :func:`functools.lru_cache`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_reader</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CMLReader.load"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load requested data into memory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        data_type</span>
 <span class="sd">            Type of data to load (see :attr:`readers` for available options)</span>
-<span class="sd">        file_path</span>
-<span class="sd">            Absolute path to load if given. This overrides the default search</span>
-<span class="sd">            paths.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -312,14 +347,19 @@
         <span class="c1"># coerce to &quot;all_events&quot; unless we&#39;re looking at experiments that don&#39;t</span>
         <span class="c1"># include these.</span>
         <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;events&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS2&quot;</span><span class="p">):</span>
-                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;task_events&quot;</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS4&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TH&quot;</span><span class="p">):</span>
                 <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;task_events&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;all_events&quot;</span>
 
-        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_reader</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">protocols</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnsupportedProtocolError</span><span class="p">(</span>
                 <span class="s2">&quot;Data type </span><span class="si">{}</span><span class="s2"> is not supported under protocol </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -327,14 +367,7 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span>
-                   <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-                   <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
-                   <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
-                   <span class="n">localization</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
-                   <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
-                   <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                   <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CMLReader.load_eeg"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load_eeg">[docs]</a>    <span class="k">def</span> <span class="nf">load_eeg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">rel_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">rel_stop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -390,17 +423,17 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;eeg&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CMLReader.load_events"><a class="viewcode-back" href="../../api.html#cmlreaders.CMLReader.load_events">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load_events</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">subjects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">experiments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">load_events</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">subjects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">experiments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                     <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Load events from multiple sessions.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        subjects</span>
-<span class="sd">            List of subjects.</span>
+<span class="sd">            Subject or list of subjects.</span>
 <span class="sd">        experiments</span>
-<span class="sd">            List of experiments to include.</span>
+<span class="sd">            Experiment or list of experiments to include.</span>
 <span class="sd">        rootdir</span>
 <span class="sd">            Path to root data directory.</span>
 
@@ -413,10 +446,14 @@
         <span class="n">rootdir</span> <span class="o">=</span> <span class="n">get_root_dir</span><span class="p">(</span><span class="n">rootdir</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">subjects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subjects</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="n">subjects</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">subjects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">subjects</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">experiments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">experiments</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">experiments</span> <span class="o">=</span> <span class="p">[</span><span class="n">experiments</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">experiments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">experiments</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
         <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
@@ -466,7 +503,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.8.1',
+            VERSION:'0.9.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
