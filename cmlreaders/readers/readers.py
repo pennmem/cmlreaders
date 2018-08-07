@@ -190,16 +190,3 @@ class ClassifierContainerReader(BaseCMLReader):
 
     def as_dataframe(self):
         raise UnsupportedRepresentation("Unable to represent classifier as a dataframe")
-
-    def to_binary(self, file_name, **kwargs):
-        """Saves classifier to a serialized format as determined by  the file
-        extension. By default, if the file already exists, it will note be
-        overwritten.
-
-        Notes
-        -----
-        See :meth:`classiflib.container.ClassifierContainer.save()` for more
-        details on supported output formats.
-
-        """
-        self.as_pyobject().save(file_name, **kwargs)

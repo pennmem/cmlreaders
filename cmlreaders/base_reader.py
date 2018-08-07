@@ -227,13 +227,3 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     def as_dict(self):
         """ Return data as a list of dictionaries """
         return self.as_dataframe().to_dict(orient='records')
-
-    def to_json(self, file_name):
-        self.as_dataframe().to_json(file_name)
-
-    def to_csv(self, file_name, **kwargs):
-        """ Save data to csv file """
-        self.as_dataframe().to_csv(file_name, index=False, **kwargs)
-
-    def to_hdf(self, file_name):
-        raise UnsupportedOutputFormat

@@ -45,10 +45,6 @@ class BaseRAMReportDataReader(BaseCMLReader):
     def as_dataframe(self):
         raise exc.UnsupportedRepresentation("Unable to represent this data as a dataframe")
 
-    def to_hdf(self, file_name):
-        pyobj = self.as_pyobject()
-        pyobj.to_hdf(file_name)
-
 
 class RAMReportClassifierSummaryReader(BaseRAMReportDataReader):
     """Reader class for classifier summary data produced in the RAM reporting
