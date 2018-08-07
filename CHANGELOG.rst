@@ -1,6 +1,17 @@
 Changes
 =======
 
+Version 0.9.1
+-------------
+
+**2018-08-07**
+
+* Fixed issues loading pyFR data (#180)
+* Fixed loading of YC events (#182)
+* Fixed loading of jacksheets with tabs instead of spaces (#185)
+* Breaking change: removed ``to_xyz`` methods (#187)
+
+
 Version 0.9.0
 -------------
 
