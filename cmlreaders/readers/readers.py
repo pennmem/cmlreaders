@@ -1,5 +1,8 @@
 import json
+import warnings
+
 import pandas as pd
+from pandas.errors import ParserWarning
 from pandas.io.json import json_normalize
 import scipy.io as sio
 
@@ -9,7 +12,6 @@ from cmlreaders.exc import (
 )
 
 
-# TODO: separate into a base class so that we can use this for ltp
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """
     data_types = ['voxel_coordinates', 'jacksheet', 'classifier_excluded_leads',
@@ -26,20 +28,25 @@ class TextReader(BaseCMLReader):
         'area': ['lead_label', 'surface_area'],
     }
 
-    def __init__(self, data_type, subject, localization, file_path=None,
-                 rootdir="/", **kwargs):
+    def __init__(self, data_type, subject, localization, rootdir="/", **kwargs):
         super(TextReader, self).__init__(data_type, subject=subject,
                                          localization=localization,
-                                         file_path=file_path,
-                                         rootdir=rootdir)
+                                         **kwargs)
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
         if self.data_type == "jacksheet":
-            sep = " "
+            sep = None  # autodetect if separated by space or tab
         else:
             sep = ","  # read_csv's default value
-        df = pd.read_csv(self.file_path, sep=sep, names=self._headers)
+
+        # When sep is None, we get a warning that the Python parser is slower,
+        # but for jacksheet files, it automatically DTRT and the file is small
+        # enough for speed to not be an issue.
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=ParserWarning)
+            df = pd.read_csv(self.file_path, sep=sep, names=self._headers)
+
         return df
 
 

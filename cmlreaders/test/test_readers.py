@@ -7,13 +7,24 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from cmlreaders.readers import (
-    BaseJSONReader, TextReader, RAMCSVReader,
-    ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
-    RamulatorEventLogReader, RAMReportSummaryDataReader, BaseRAMReportDataReader,
-    ClassifierContainerReader
-)
 from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
+from cmlreaders.readers.readers import (
+    BaseJSONReader,
+    ClassifierContainerReader,
+    EventReader,
+    TextReader,
+    RAMCSVReader,
+    RamulatorEventLogReader,
+)
+from cmlreaders.readers.electrodes import (
+    ElectrodeCategoriesReader,
+    LocalizationReader,
+    MontageReader
+)
+from cmlreaders.readers.reports import (
+    BaseRAMReportDataReader,
+    RAMReportSummaryDataReader
+)
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -41,15 +52,17 @@ class TestTextReader:
         assert data is not None
         assert type(data) == expected_types[method]
 
-    def test_read_jacksheet(self):
-        file_path = datafile("jacksheet.txt")
-        reader = TextReader("jacksheet", "R1389J", 0, file_path=file_path)
-        js = reader.load()
+    @pytest.mark.parametrize("subject,filename,sep", [
+        ("R1389J", datafile("jacksheet.txt"), " "),
+        ("R1406M", datafile("R1406M_jacksheet.txt"), "\t"),
+    ])
+    def test_read_jacksheet(self, subject, filename, sep):
+        js = TextReader.fromfile(filename, subject=subject, data_type="jacksheet")
 
         assert "number" in js.columns
         assert "label" in js.columns
 
-        data = np.loadtxt(file_path, delimiter=" ", dtype=[
+        data = np.loadtxt(filename, delimiter=sep, dtype=[
             ("number", "<i8"),
             ("label", "|U32"),
         ])
