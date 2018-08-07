@@ -36,3 +36,10 @@ script:
 
 after_success:
   - codecov
+
+deploy:
+  - provider: script
+    script: maint/deploy.sh
+    on:
+      tags: true
+    skip_cleanup: true
