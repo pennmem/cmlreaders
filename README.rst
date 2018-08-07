@@ -11,6 +11,10 @@ CML Data Readers
    :target: https://pennmem.github.io/pennmem/cmlreaders/html/index.html
    :alt: docs
 
+.. image:: https://img.shields.io/conda/v/pennmem/cmlreaders.svg
+    :alt: Conda
+    :target: https://anaconda.org/pennmem/cmlreaders
+
 This repository contains a collection of utility classes for reading
 lab-specific file formats. Many of these readers have previously existed in
 other repositories, but are being migrated to a single repository since they
