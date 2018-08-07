@@ -25,8 +25,7 @@ before_install:
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
   - pip install -r requirements.txt
-  - PKG_PATH=`conda build --output --python=$PYTHON_VERSION conda.recipe`
-  - conda install --use-local $PKG_PATH
+  - conda install --use-local `conda build --output --python=$PYTHON_VERSION conda.recipe`
 
 script:
   - flake8
