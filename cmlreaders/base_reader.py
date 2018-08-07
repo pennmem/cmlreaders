@@ -6,7 +6,7 @@ import weakref
 from . import cache
 from .constants import PROTOCOLS
 from .path_finder import PathFinder
-from .exc import UnsupportedOutputFormat, ImproperlyDefinedReader
+from .exc import ImproperlyDefinedReader
 from .cmlreader import CMLReader
 from .util import get_protocol, get_root_dir
 
