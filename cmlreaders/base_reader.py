@@ -165,7 +165,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             except:  # noqa
                 data_type = "dtype"
 
-        reader = cls(data_type, subject, experiment, session, file_path=path)
+        reader = cls(data_type, subject=subject, experiment=experiment,
+                     session=session, file_path=path)
         return reader.load()
 
     def _load_no_cache(self):

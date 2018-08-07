@@ -7,13 +7,24 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from cmlreaders.readers import (
-    BaseJSONReader, TextReader, RAMCSVReader,
-    ElectrodeCategoriesReader, EventReader, LocalizationReader, MontageReader,
-    RamulatorEventLogReader, RAMReportSummaryDataReader, BaseRAMReportDataReader,
-    ClassifierContainerReader
-)
 from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
+from cmlreaders.readers.readers import (
+    BaseJSONReader,
+    ClassifierContainerReader,
+    EventReader,
+    TextReader,
+    RAMCSVReader,
+    RamulatorEventLogReader,
+)
+from cmlreaders.readers.electrodes import (
+    ElectrodeCategoriesReader,
+    LocalizationReader,
+    MontageReader
+)
+from cmlreaders.readers.reports import (
+    BaseRAMReportDataReader,
+    RAMReportSummaryDataReader
+)
 
 datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 
@@ -28,7 +39,7 @@ class TestTextReader:
     ])
     def test_as_methods(self, method, data_type, subject, localization):
         file_path = datafile(data_type + ".txt")
-        reader = TextReader(data_type, subject, localization,
+        reader = TextReader(data_type, subject, localization=localization,
                             file_path=file_path)
         expected_types = {
             'dataframe': pd.DataFrame,
@@ -41,15 +52,17 @@ class TestTextReader:
         assert data is not None
         assert type(data) == expected_types[method]
 
-    def test_read_jacksheet(self):
-        file_path = datafile("jacksheet.txt")
-        reader = TextReader("jacksheet", "R1389J", 0, file_path=file_path)
-        js = reader.load()
+    @pytest.mark.parametrize("subject,filename,sep", [
+        ("R1389J", datafile("jacksheet.txt"), " "),
+        ("R1406M", datafile("R1406M_jacksheet.txt"), "\t"),
+    ])
+    def test_read_jacksheet(self, subject, filename, sep):
+        js = TextReader.fromfile(filename, subject=subject, data_type="jacksheet")
 
         assert "number" in js.columns
         assert "label" in js.columns
 
-        data = np.loadtxt(file_path, delimiter=" ", dtype=[
+        data = np.loadtxt(filename, delimiter=sep, dtype=[
             ("number", "<i8"),
             ("label", "|U32"),
         ])
@@ -57,6 +70,7 @@ class TestTextReader:
         np.testing.assert_equal(data["number"], js.number)
         np.testing.assert_equal(data["label"], js.label)
 
+    @pytest.mark.xfail
     @pytest.mark.parametrize("method", ['json', 'csv'])
     @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
@@ -66,6 +80,8 @@ class TestTextReader:
     ])
     def test_to_methods(self, method, data_type, subject, localization,
                         rhino_root, tmpdir):
+        localization = int(localization)
+
         file_path = datafile(data_type + ".txt")
         reader = TextReader(data_type, subject, localization,
                             file_path=file_path, rootdir=rhino_root)
@@ -80,6 +96,7 @@ class TestTextReader:
         # Check that data can be reloaded
         re_reader = TextReader(data_type, subject, localization,
                                file_path=exp_output)
+
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
 
