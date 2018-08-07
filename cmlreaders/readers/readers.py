@@ -28,7 +28,8 @@ class TextReader(BaseCMLReader):
         'area': ['lead_label', 'surface_area'],
     }
 
-    def __init__(self, data_type, subject, localization, rootdir="/", **kwargs):
+    def __init__(self, data_type: str, subject: str, localization: int,
+                 **kwargs):
         super(TextReader, self).__init__(data_type, subject=subject,
                                          localization=localization,
                                          **kwargs)
