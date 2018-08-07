@@ -4,4 +4,4 @@
 set -ex
 
 python maint/build.py
-anaconda -t $ANACONDA_TOKEN -u pennmem upload build/**/$PKG_NAME-*.tar.bz2
+anaconda -t $ANACONDA_TOKEN upload build/**/$PKG_NAME-*.tar.bz2
