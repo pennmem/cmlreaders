@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 from numpy.testing import assert_equal
 import pandas as pd
@@ -108,6 +110,8 @@ class TestEEGContainer:
             assert ts.shape == (1, n_channels, n_samples * 2)
             assert_equal(ts.data, np.concatenate(data, axis=2))
 
+    @pytest.mark.skipif(sys.version_info < (3, 6),
+                        reason="No PTSA 2 package for Python 3.5")
     @pytest.mark.parametrize("which", ["events", "epochs"])
     def test_to_ptsa(self, which):
         data = np.random.random((10, 32, 100))
