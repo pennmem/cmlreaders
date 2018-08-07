@@ -26,7 +26,8 @@ before_install:
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
   - pip install -r requirements.txt
-  - conda build --output --python=$PYTHON_VERSION conda.recipe
+  - conda build --python=$PYTHON_VERSION conda.recipe
+  - ls $HOME/miniconda/conda-bld/linux-64
   - conda install --use-local $PKG_NAME
 
 script:
