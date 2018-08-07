@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; CML Data Readers 0.9.0 documentation</title>
+  <title>API &mdash; CML Data Readers 0.9.1 documentation</title>
   
 
   
@@ -459,17 +459,6 @@ returned.</p>
 <dd><p>Return data as dataframe</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="cmlreaders.readers.readers.ClassifierContainerReader.to_binary">
-<code class="descname">to_binary</code><span class="sig-paren">(</span><em>file_name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#ClassifierContainerReader.to_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.ClassifierContainerReader.to_binary" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves classifier to a serialized format as determined by  the file
-extension. By default, if the file already exists, it will note be
-overwritten.</p>
-<p class="rubric">Notes</p>
-<p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">classiflib.container.ClassifierContainer.save()</span></code> for more
-details on supported output formats.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -511,7 +500,7 @@ details on supported output formats.</p>
 
 <dl class="class">
 <dt id="cmlreaders.readers.readers.TextReader">
-<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type</em>, <em>subject</em>, <em>localization</em>, <em>file_path=None</em>, <em>rootdir='/'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cmlreaders.readers.readers.</code><code class="descname">TextReader</code><span class="sig-paren">(</span><em>data_type: str</em>, <em>subject: str</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/readers/readers.html#TextReader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders.readers.readers.TextReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generic reader class for reading RAM text files</p>
 <dl class="method">
 <dt id="cmlreaders.readers.readers.TextReader.as_dataframe">
@@ -898,7 +887,7 @@ constants being well-maintained.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.0',
+            VERSION:'0.9.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.9.0 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.9.1 documentation</title>
   
 
   
@@ -154,7 +154,10 @@
             
   <h1>Source code for cmlreaders.readers.readers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas.errors</span> <span class="k">import</span> <span class="n">ParserWarning</span>
 <span class="kn">from</span> <span class="nn">pandas.io.json</span> <span class="k">import</span> <span class="n">json_normalize</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>
 
@@ -164,7 +167,6 @@
 <span class="p">)</span>
 
 
-<span class="c1"># TODO: separate into a base class so that we can use this for ltp</span>
 <div class="viewcode-block" id="TextReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader">[docs]</a><span class="k">class</span> <span class="nc">TextReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Generic reader class for reading RAM text files &quot;&quot;&quot;</span>
     <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">,</span> <span class="s1">&#39;jacksheet&#39;</span><span class="p">,</span> <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">,</span>
@@ -181,20 +183,24 @@
         <span class="s1">&#39;area&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_label&#39;</span><span class="p">,</span> <span class="s1">&#39;surface_area&#39;</span><span class="p">],</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">localization</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">rootdir</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TextReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-                                         <span class="n">localization</span><span class="o">=</span><span class="n">localization</span><span class="p">,</span>
-                                         <span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
-                                         <span class="n">rootdir</span><span class="o">=</span><span class="n">rootdir</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="n">data_type</span><span class="p">]</span>
 
 <div class="viewcode-block" id="TextReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;jacksheet&quot;</span><span class="p">:</span>
-            <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># autodetect if separated by space or tab</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>  <span class="c1"># read_csv&#39;s default value</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
+
+        <span class="c1"># When sep is None, we get a warning that the Python parser is slower,</span>
+        <span class="c1"># but for jacksheet files, it automatically DTRT and the file is small</span>
+        <span class="c1"># enough for speed to not be an issue.</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">ParserWarning</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">df</span></div></div>
 
 
@@ -286,6 +292,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">]</span>
 
+        <span class="c1"># ensure we have an experiment column</span>
+        <span class="k">if</span> <span class="s2">&quot;experiment&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;experiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span>
+
         <span class="k">return</span> <span class="n">df</span>
 
 <div class="viewcode-block" id="EventReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.EventReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -334,20 +344,7 @@
         <span class="k">return</span> <span class="n">summary_obj</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ClassifierContainerReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ClassifierContainerReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="n">UnsupportedRepresentation</span><span class="p">(</span><span class="s2">&quot;Unable to represent classifier as a dataframe&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="ClassifierContainerReader.to_binary"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.ClassifierContainerReader.to_binary">[docs]</a>    <span class="k">def</span> <span class="nf">to_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Saves classifier to a serialized format as determined by  the file</span>
-<span class="sd">        extension. By default, if the file already exists, it will note be</span>
-<span class="sd">        overwritten.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        See :meth:`classiflib.container.ClassifierContainer.save()` for more</span>
-<span class="sd">        details on supported output formats.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">as_pyobject</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+        <span class="k">raise</span> <span class="n">UnsupportedRepresentation</span><span class="p">(</span><span class="s2">&quot;Unable to represent classifier as a dataframe&quot;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -382,7 +379,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.0',
+            VERSION:'0.9.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
