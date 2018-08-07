@@ -7,6 +7,7 @@ env:
   global:
     - CC=gcc-7
     - CXX=g++-7
+    - PKG_NAME=cmlreaders
   matrix:
     - PYTHON_VERSION=3.6
   # disabled until all conda packages exist for Python 3.7
@@ -25,7 +26,8 @@ before_install:
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
   - pip install -r requirements.txt
-  - conda install --use-local `conda build --output --python=$PYTHON_VERSION conda.recipe`
+  - conda build --output --python=$PYTHON_VERSION conda.recipe
+  - conda install --use-local $PKG_NAME
 
 script:
   - flake8
