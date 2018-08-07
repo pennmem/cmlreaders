@@ -70,6 +70,7 @@ class TestTextReader:
         np.testing.assert_equal(data["number"], js.number)
         np.testing.assert_equal(data["label"], js.label)
 
+    @pytest.mark.xfail
     @pytest.mark.parametrize("method", ['json', 'csv'])
     @pytest.mark.parametrize("data_type", [
         "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
@@ -95,9 +96,6 @@ class TestTextReader:
         # Check that data can be reloaded
         re_reader = TextReader(data_type, subject, localization,
                                file_path=exp_output)
-
-        if data_type == "jacksheet":
-            pytest.xfail("issues with jacksheets")
 
         reread_data = re_reader.as_dataframe()
         assert reread_data is not None
