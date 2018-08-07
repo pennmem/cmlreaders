@@ -39,7 +39,7 @@ class TestTextReader:
     ])
     def test_as_methods(self, method, data_type, subject, localization):
         file_path = datafile(data_type + ".txt")
-        reader = TextReader(data_type, subject, localization,
+        reader = TextReader(data_type, subject, localization=localization,
                             file_path=file_path)
         expected_types = {
             'dataframe': pd.DataFrame,

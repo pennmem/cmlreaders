@@ -28,11 +28,9 @@ class TextReader(BaseCMLReader):
         'area': ['lead_label', 'surface_area'],
     }
 
-    def __init__(self, data_type: str, subject: str, localization: int,
+    def __init__(self, data_type: str, subject: str,
                  **kwargs):
-        super(TextReader, self).__init__(data_type, subject=subject,
-                                         localization=localization,
-                                         **kwargs)
+        super(TextReader, self).__init__(data_type, subject=subject, **kwargs)
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
