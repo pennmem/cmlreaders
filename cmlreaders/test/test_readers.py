@@ -1,5 +1,4 @@
 import functools
-import os
 from pkg_resources import resource_filename
 import pytest
 from unittest.mock import patch
@@ -70,36 +69,6 @@ class TestTextReader:
         np.testing.assert_equal(data["number"], js.number)
         np.testing.assert_equal(data["label"], js.label)
 
-    @pytest.mark.xfail
-    @pytest.mark.parametrize("method", ['json', 'csv'])
-    @pytest.mark.parametrize("data_type", [
-        "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
-        "jacksheet", "area"])
-    @pytest.mark.parametrize("subject,localization", [
-        ('R1389J', '0'),
-    ])
-    def test_to_methods(self, method, data_type, subject, localization,
-                        rhino_root, tmpdir):
-        localization = int(localization)
-
-        file_path = datafile(data_type + ".txt")
-        reader = TextReader(data_type, subject, localization,
-                            file_path=file_path, rootdir=rhino_root)
-
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        exp_output = str(tmpdir.join(data_type + "." + method))
-        callable_method(exp_output)
-        assert os.path.exists(exp_output)
-
-        # Check that data can be reloaded
-        re_reader = TextReader(data_type, subject, localization,
-                               file_path=exp_output)
-
-        reread_data = re_reader.as_dataframe()
-        assert reread_data is not None
-
     def test_failures(self):
         """
         When unable to locate a path, constructor should pass but `load()`
@@ -133,34 +102,6 @@ class TestRAMCSVReader:
         assert data is not None
         assert type(data) == expected_types[method]
 
-    @pytest.mark.parametrize("method", ['json', 'csv'])
-    @pytest.mark.parametrize("data_type", [
-        'electrode_coordinates', 'prior_stim_results', 'target_selection_table'
-    ])
-    @pytest.mark.parametrize("subject,localization", [
-        ('R1409D', '0'),
-    ])
-    def test_to_methods(self, method, data_type, subject, localization,
-                        rhino_root, tmpdir):
-        # Load the test data
-        file_path = datafile(data_type + ".csv")
-        reader = RAMCSVReader(data_type, subject, localization,
-                              experiment="FR1", file_path=file_path,
-                              rootdir=rhino_root)
-
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        exp_output = str(tmpdir.join(data_type + "." + method))
-        callable_method(exp_output)
-        assert os.path.exists(exp_output)
-
-        # Check that data can be reloaded
-        re_reader = RAMCSVReader(data_type, subject, localization,
-                                 experiment="FR1", file_path=exp_output)
-        reread_data = re_reader.as_dataframe()
-        assert reread_data is not None
-
 
 class TestRamulatorEventLogReader:
     @pytest.mark.parametrize("method", ["dataframe", "recarray", "dict"])
@@ -185,31 +126,6 @@ class TestRamulatorEventLogReader:
         data = callable_method()
         assert data is not None
         assert type(data) == expected_types[method]
-
-    @pytest.mark.parametrize("method", ['json', 'csv'])
-    @pytest.mark.parametrize("data_type", ['event_log'])
-    @pytest.mark.parametrize("subject,experiment,session", [
-        ('R1409D', 'catFR1', '1'),
-    ])
-    def test_to_methods(self, method, data_type, subject, experiment, session,
-                        rhino_root, tmpdir):
-        # Load the test data
-        file_path = datafile(data_type + ".json")
-        reader = RamulatorEventLogReader(data_type, subject=subject,
-                                         experiment=experiment, session=session,
-                                         file_path=file_path,
-                                         rootdir=rhino_root)
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        exp_output = str(tmpdir.join(data_type + "." + method))
-        callable_method(exp_output)
-        assert os.path.exists(exp_output)
-
-        # Note: We are not testing that the data can be reloaded with the
-        # reader because the format has materially changed from the original
-        # source. This does not happen for all readers, which is why we can
-        # test reloading for some
 
 
 class TestBaseJSONReader:
@@ -328,21 +244,6 @@ class TestBaseReportDataReader:
         assert data is not None
         assert ClassifierSummary.from_hdf.call_count == 1
 
-    @pytest.mark.parametrize("method", ['hdf'])
-    @pytest.mark.parametrize("data_type", ["classifier_summary"])
-    def test_to_methods(self, method, data_type, tmpdir):
-        # Load the test data
-        file_path = datafile(data_type + ".h5")
-        reader = BaseRAMReportDataReader(data_type, subject='R1409D',
-                                         experiment='catFR1', session=1,
-                                         localization=0, file_path=file_path)
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        exp_output = str(tmpdir.join(data_type + ".h5"))
-        callable_method(exp_output)
-        assert os.path.exists(exp_output)
-
 
 @pytest.mark.skip(reason="TODO: reenable ramutils tests")
 class TestReportSummaryReader:
@@ -369,27 +270,6 @@ class TestReportSummaryReader:
         with pytest.raises(UnsupportedExperimentError):
             reader.as_pyobject()
 
-    @pytest.mark.xfail
-    @pytest.mark.parametrize("method", ['csv', 'json', 'hdf'])
-    @pytest.mark.parametrize("data_type", ["math_summary", "session_summary"])
-    def test_to_methods(self, method, data_type, tmpdir):
-        # Load the test data
-        file_path = datafile(data_type + ".h5")
-        reader = RAMReportSummaryDataReader(data_type, subject='R1409D',
-                                            experiment='catFR5', session=1,
-                                            localization=0, file_path=file_path)
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-
-        extension = "." + method
-        if method == "hdf":
-            extension = ".h5"
-
-        exp_output = str(tmpdir.join(data_type + extension))
-        callable_method(exp_output)
-        assert os.path.exists(exp_output)
-
 
 class TestClassifierContainerReader:
     @patch("classiflib.container.ClassifierContainer")
@@ -406,22 +286,6 @@ class TestClassifierContainerReader:
         callable_method = getattr(reader, method_name)
         callable_method()
         assert ClassifierContainer.load.call_count == 1
-
-    @pytest.mark.parametrize("method", ['binary'])
-    @pytest.mark.parametrize("data_type", [
-        'baseline_classifier', 'used_classifier'])
-    def test_to_methods(self, method, data_type, tmpdir):
-        # Load the test data
-        file_path = datafile(data_type + ".zip")
-        reader = ClassifierContainerReader(data_type, subject='R1389J',
-                                           experiment='catFR5', session=1,
-                                           localization=0, file_path=file_path)
-        # Save as specified format
-        method_name = "to_{}".format(method)
-        callable_method = getattr(reader, method_name)
-        exp_output = str(tmpdir.join(data_type + ".zip"))
-        callable_method(exp_output, overwrite=True)
-        assert os.path.exists(exp_output)
 
 
 @pytest.mark.parametrize("cls,path,dtype", [
