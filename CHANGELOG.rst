@@ -1,6 +1,14 @@
 Changes
 =======
 
+Version 0.9.2
+-------------
+
+**2018-08-08**
+
+* Ignore events with negative ``eegoffset`` values when loading EEG data (#192).
+
+
 Version 0.9.1
 -------------
 
