@@ -423,7 +423,10 @@ class EEGReader(BaseCMLReader):
 
         """
         if "events" in kwargs:
-            events = kwargs["events"]
+            events = kwargs["events"]  # type: pd.DataFrame
+
+            # drop any invalid eegoffset events
+            events = events[events["eegoffset"] >= 0]
         else:
             if self.session is None:
                 raise ValueError(
