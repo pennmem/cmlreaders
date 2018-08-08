@@ -3,5 +3,6 @@
 # on tagged versions only, so make sure to tag when releasing!
 set -ex
 
+VERSION = `python -c "print(''.join('$PYTHON_VERSION'.split('.')))"`
 python maint/build.py
-anaconda -t $ANACONDA_TOKEN upload build/**/$PKG_NAME-*.tar.bz2
+anaconda -t $ANACONDA_TOKEN upload build/**/$PKG_NAME-py$VERSION*.tar.bz2
