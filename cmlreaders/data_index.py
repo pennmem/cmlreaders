@@ -94,59 +94,7 @@ def generate_pyfr_index(outdir: str, rootdir: str):
     })
 
     df.to_json(Path(outdir).joinpath("pyFR.json"))
-    
-def generate_pymms_index(outdir: str, rootdir: str):
-    """Generates an index file for pymms data. This needs to be run once (and
-    hopefully only once!) as a user with correct permissions and writes a file
-    to ``/data/events/pyFR/index.csv``.
 
-    Parameters
-    ----------
-    outdir
-        Absolute path to the directory to write the index file to.
-    rootdir
-        Data root directory.
-
-    """
-    path = Path(get_root_dir(rootdir)).joinpath(*rhino_paths["pymms_root"])
-    event_files = list(path.glob("*_events.mat"))
-
-    subjects = []
-    sessions = []
-    montages = []
-
-    for filename in event_files:
-        subject = filename.name.split("_events")[0]
-        if '._' in subject: continue  #skipe invisible files
-        if "_" in subject:
-            montage = 1
-        else:
-            montage = 0
-
-        events = sio.loadmat(str(filename), squeeze_me=True)["events"]
-
-        try:
-            unique_sessions = np.unique(events["session"]).tolist()
-        except ValueError:
-            warnings.warn("No session field found for {};".format(subject) +
-                          " assuming single session", UserWarning)
-            unique_sessions = [0]
-
-        subjects += [subject] * len(unique_sessions)
-        sessions += unique_sessions
-        montages += [montage] * len(unique_sessions)
-
-    experiments = ["pymms"] * len(sessions)
-
-    df = pd.DataFrame({
-        "subject": subjects,
-        "experiment": experiments,
-        "session": sessions,
-        "localization": [0] * len(sessions),
-        "montage": montages,
-    })
-
-    df.to_json(Path(outdir).joinpath("pymms.json"))
 
 @lru_cache()
 def get_data_index(kind: str = "all",

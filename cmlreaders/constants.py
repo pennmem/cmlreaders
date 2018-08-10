@@ -3,7 +3,6 @@ PROTOCOLS = (
     "r1",
     "ltp",
     "pyfr",
-    "pymms"
 )
 
 PYFR_SUBJECT_CODE_PREFIXES = ("BW", "CH", "CP", "FR", "FZ", "TJ", "UP")
@@ -13,7 +12,6 @@ rhino_paths = {
     "r1_index": ["protocols/r1.json"],
     "ltp_index": ["protocols/ltp.json"],
     "pyfr_index": ["data/events/pyFR/pyFR.json"],
-    "pymms_index": ["data/events/pymms/pymms.json"],
 
     # root directory to look for pyFR data
     "pyfr_root": ["data/events/pyFR"],
