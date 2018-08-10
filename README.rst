@@ -103,6 +103,15 @@ scheme:
     (288, 141, 100)
 
 
+Contributing
+------------
+
+Contributions are always welcome so that we can read more kinds of data with a
+common interface. To do so, fork this repository and create a separate branch
+and submit a pull request with your changes or additions. See the developer's
+guide in the documentation for more helpful hints.
+
+
 Testing
 -------
 
