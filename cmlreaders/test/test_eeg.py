@@ -522,6 +522,7 @@ class TestLoadEEG:
         (["R1111M"], ["FR1"]),
         (["R1111M"], ["FR1", "catFR1"]),
         (["R1111M", "R1286J"], ["FR1"]),
+        (["TJ015"], ["pyFR"]),
     ])
     def test_load_multisession(self, subjects, experiments, rhino_root):
         events = CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
