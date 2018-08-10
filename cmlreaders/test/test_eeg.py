@@ -41,6 +41,7 @@ def events():
 class TestEEGMetaReader:
     @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample_rate", [
         ("R1389J", "sources.json", "int16", 1641165, 1000),
+        ("R1191J", "multiNSx_sources.json", "int16", 5256192, 1000),
         ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
     ])
     def test_load(self, subject, filename, data_format, n_samples, sample_rate):
