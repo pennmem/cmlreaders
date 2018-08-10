@@ -30,6 +30,7 @@ class PathFinder(object):
                  session: Optional[int] = None,
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
+                 eeg_basename: Optional[str] = None,
                  rootdir: Optional[str] = None):
         """Instantiates a PathFinder object using the known information
 
@@ -73,6 +74,7 @@ class PathFinder(object):
 
         self.localization = str(localization)
         self.montage = str(montage)
+        self.eeg_basename = eeg_basename
 
         self._paths = rhino_paths
 
@@ -165,7 +167,8 @@ class PathFinder(object):
                                                experiment=self.experiment,
                                                session=self.session,
                                                localization=self.localization,
-                                               montage=self.montage)
+                                               montage=self.montage,
+                                               eeg_basename=self.eeg_basename)
         return expected_path
 
     def _get_most_recent_ramulator_folder(self, base_folder_path):

@@ -103,7 +103,9 @@ rhino_paths = {
     ],
     'sources': [
         "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json",
+        "data/eeg/{subject}/eeg.noreref/{eeg_basename}.params.txt",
         "data/eeg/{subject}/eeg.noreref/params.txt",
+
     ],
 
     # Processed EEG data basename

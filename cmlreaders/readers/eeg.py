@@ -534,9 +534,11 @@ class EEGReader(BaseCMLReader):
             # determine experiment, session, dtype, and sample rate
             experiment = ev["experiment"].unique()[0]
             session = ev["session"].unique()[0]
+            basename = os.path.basename(filename)
             finder = PathFinder(subject=self.subject,
                                 experiment=experiment,
                                 session=session,
+                                eeg_basename=basename,
                                 rootdir=self.rootdir)
             sources = EEGMetaReader.fromfile(finder.find("sources"),
                                              subject=self.subject)
