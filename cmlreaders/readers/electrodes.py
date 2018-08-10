@@ -1,11 +1,39 @@
 import json
 import os.path
+import scipy.io as sio
+from typing import Optional
 
 import pandas as pd
 from pandas.io.json import json_normalize
 
 from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
+
+
+class MatlabMontageReader(BaseCMLReader):
+    """ Reads MATLAB montage files. Returns a :class:`pd.DataFrame`."""
+
+    struct_names = ['bpTalStruct', 'talStruct', 'virtualTalStruct',
+                    'subjTalEvents', 'events']
+    struct_name = None
+
+    def load(self, struct_name: Optional[str]=None):
+        self.struct_name = struct_name
+        super(MatlabMontageReader, self).load()
+
+    def as_dataframe(self):
+
+        data_dict = sio.loadmat(self.file_path)
+        if self.struct_name is None:
+            for name in self.struct_names:
+                if name in data_dict:
+                    self.struct_name = name
+                    break
+            else:
+                raise ValueError("Montage info has unknown name --"
+                                 "please specify with `struct_name` parameter"
+                                 )
+        return pd.DataFrame(data_dict[self.struct_name])
 
 
 class MontageReader(BaseCMLReader):
