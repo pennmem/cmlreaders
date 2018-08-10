@@ -42,6 +42,8 @@ class EEGMetaReader(BaseCMLReader):
         df = pd.read_json(self.file_path, orient='index')
         sources_info = {}
         for k in df:
+            if any(df[k].apply(lambda x: isinstance(x, dict))):
+                continue
             v = df[k].unique()
             sources_info[k] = v[0] if len(v) == 1 else v
         sources_info['path'] = self.file_path
