@@ -75,3 +75,17 @@ def test_get_ramulator_files(ramulator_files_finder):
 
     folder_path = ramulator_files_finder.find("ramulator_session_folder")
     assert folder_path.endswith('20171027_164013')
+
+
+@pytest.mark.rhino
+@pytest.mark.parametrize('use_basename', [True, False])
+def test_session_params(rhino_root, use_basename):
+    subject = 'TJ012'
+    eeg_basename = 'TJ012_20Apr10_1329'
+    if use_basename:
+        finder = PathFinder(subject=subject,eeg_basename=eeg_basename,
+                            rootdir=rhino_root)
+    else:
+        finder = PathFinder(subject=subject,rootdir=rhino_root)
+    path = finder.find('sources')
+    assert (eeg_basename in path) == use_basename

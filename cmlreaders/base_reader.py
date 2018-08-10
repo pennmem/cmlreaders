@@ -79,6 +79,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
                  localization: Optional[int] = 0,
                  montage: Optional[int] = 0,
                  file_path: Optional[str] = None,
+                 eeg_basename: Optional[str] = None,
                  rootdir: Optional[str] = None):
 
         # This is for mocking in tests, do not remove!
@@ -91,6 +92,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         self.localization = localization
         self.montage = montage
         self.data_type = data_type
+        self.eeg_basename = eeg_basename
         self.rootdir = get_root_dir(rootdir)
 
         # in-memory cached result (if enabled)
@@ -125,7 +127,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         if self._file_path is None and self.data_type != 'eeg':
             finder = PathFinder(subject=self.subject, experiment=self.experiment,
                                 session=self.session, localization=self.localization,
-                                montage=self.montage, rootdir=self.rootdir)
+                                montage=self.montage, eeg_basename=self.eeg_basename,
+                                rootdir=self.rootdir)
             self._file_path = finder.find(self.data_type)
         return self._file_path
 
