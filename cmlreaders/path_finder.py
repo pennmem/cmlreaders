@@ -74,7 +74,7 @@ class PathFinder(object):
 
         self.localization = str(localization)
         self.montage = str(montage)
-        self.eeg_basename=eeg_basename
+        self.eeg_basename = eeg_basename
 
         self._paths = rhino_paths
 

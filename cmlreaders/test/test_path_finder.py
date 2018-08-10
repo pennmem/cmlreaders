@@ -83,9 +83,9 @@ def test_session_params(rhino_root, use_basename):
     subject = 'TJ012'
     eeg_basename = 'TJ012_20Apr10_1329'
     if use_basename:
-        finder = PathFinder(subject=subject,eeg_basename=eeg_basename,
+        finder = PathFinder(subject=subject, eeg_basename=eeg_basename,
                             rootdir=rhino_root)
     else:
-        finder = PathFinder(subject=subject,rootdir=rhino_root)
+        finder = PathFinder(subject=subject, rootdir=rhino_root)
     path = finder.find('sources')
     assert (eeg_basename in path) == use_basename
