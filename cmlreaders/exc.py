@@ -7,11 +7,29 @@ class UnsupportedOutputFormat(CMLReaderException):
 
 
 class UnsupportedRepresentation(CMLReaderException):
-    """ Raised when a data loading method is not supported for the given data type """
+    """Raised when a data loading method is not supported for the given data
+    type.
+
+    """
+
+
+class UnknownProtocolError(CMLReaderException):
+    """Raised when an unknown protocol (e.g., "r2") is found."""
+
+
+class UnsupportedProtocolError(CMLReaderException):
+    """Raised when trying to load data for a protocol that doesn't support that
+    data type.
+
+    """
 
 
 class MissingParameter(CMLReaderException):
     """ Raised when a required parameter is missing """
+
+
+class MissingDataError(CMLReaderException):
+    """Raised when some required data cannot be found."""
 
 
 class RereferencingNotPossibleError(CMLReaderException):

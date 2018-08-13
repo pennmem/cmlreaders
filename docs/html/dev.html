@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developer’s Guide &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>Developer’s Guide &mdash; CML Data Readers 0.9.2 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.4
+                0.9
               </div>
             
           
@@ -87,7 +87,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started with CML Readers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer’s Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-search-paths">Adding new search paths</a></li>
@@ -229,6 +230,14 @@ to the <code class="docutils literal notranslate"><span class="pre">data_types</
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;for&#39;</span><span class="p">:</span> <span class="s1">&#39;great justice&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
+<p>By default, all known protocols (e.g., <code class="docutils literal notranslate"><span class="pre">r1</span></code>, <code class="docutils literal notranslate"><span class="pre">ltp</span></code>) are assumed to be
+supported. If a reader only works for a subset, specify the <code class="docutils literal notranslate"><span class="pre">protocols</span></code> class
+variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RamThingReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ram_thing&quot;</span><span class="p">]</span>
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
 <p>Once the reader works, test cases for the data types using the new reader
 should be added to <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.test.test_cmlreader</span></code>. These are in addition
 to the test cases that should already exist for the new reader. For examples,
@@ -254,7 +263,7 @@ see <code class="xref py py-mod docutils literal notranslate"><span class="pre">
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -276,7 +285,7 @@ see <code class="xref py py-mod docutils literal notranslate"><span class="pre">
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.0',
+            VERSION:'0.9.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -298,9 +307,7 @@ see <code class="xref py py-mod docutils literal notranslate"><span class="pre">
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

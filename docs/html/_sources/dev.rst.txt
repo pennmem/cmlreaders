@@ -3,6 +3,7 @@ Developer's Guide
 
 Adding new search paths
 -----------------------
+
 All of the file path information is contained in the ``rhino_paths`` dictionary
 contained within :mod:`cmlreaders.constants`. The keys of the dictionary are the
 supported data types and the values are python lists whose elements correspond
@@ -14,6 +15,7 @@ new path in the desired location within the list of search paths.
 
 Adding new data types
 ---------------------
+
 To add support for a new data type, first add the data type shortcut name
 to :mod:`cmlreaders.constants` with a list of possible locations on rhino
 as the value. Next, add this data type to the appropriate list:
@@ -54,10 +56,17 @@ to the ``data_types`` list.
         def as_dict(self):
             return {'for': 'great justice'}
 
+By default, all known protocols (e.g., ``r1``, ``ltp``) are assumed to be
+supported. If a reader only works for a subset, specify the ``protocols`` class
+variable:
+
+.. code-block:: python
+
+    class RamThingReader(BaseCMLReader):
+        data_types = ["ram_thing"]
+        protocols = ["r1"]
+
 Once the reader works, test cases for the data types using the new reader
 should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
 to the test cases that should already exist for the new reader. For examples,
 see :mod:`cmlreaders.test.test_readers`.
-
-
-

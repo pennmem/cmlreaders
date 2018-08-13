@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Shortcuts for common queries &mdash; CML Data Readers 0.9.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Classification from scratch" href="classifier.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Shortcuts for common queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#available-accessors">Available accessors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Shortcuts for common queries</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/shortcuts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="shortcuts-for-common-queries">
+<h1>Shortcuts for common queries<a class="headerlink" href="#shortcuts-for-common-queries" title="Permalink to this headline">¶</a></h1>
+<p>Since most data other than EEG data can be naturally represented by a pandas
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code>, querying and selecting subsets of data is generally very
+easy. Nevertheless, common queries can be tedious to have to write out every
+time, so shortcuts exist in the form of custom pandas <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/extending.html">accessors</a>.</p>
+<p>For example, we can get all word events for some events either by directly
+masking an events <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code> or by using the shortcut accessor
+<code class="docutils literal notranslate"><span class="pre">.events.words</span></code>:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">cmlreaders</span> <span class="kn">import</span> <span class="n">CMLReader</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;R1111M&quot;</span><span class="p">,</span> <span class="s2">&quot;R1286J&quot;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">experiments</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">all_events</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="o">.</span><span class="n">load_events</span><span class="p">(</span><span class="n">subjects</span><span class="p">,</span> <span class="n">experiments</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">all_events</span><span class="p">[</span><span class="n">all_events</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="n">answer</span>                    <span class="n">eegfile</span>  <span class="n">eegoffset</span>  <span class="o">...</span>  <span class="n">subject</span>       <span class="n">test</span>  <span class="nb">type</span>
+<span class="mi">27</span>    <span class="o">-</span><span class="mi">999</span>  <span class="n">R1111M_FR1_0_22Jan16_1638</span>     <span class="mi">100520</span>  <span class="o">...</span>   <span class="n">R1111M</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="n">WORD</span>
+<span class="mi">28</span>    <span class="o">-</span><span class="mi">999</span>  <span class="n">R1111M_FR1_0_22Jan16_1638</span>     <span class="mi">101829</span>  <span class="o">...</span>   <span class="n">R1111M</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="n">WORD</span>
+
+<span class="p">[</span><span class="mi">2</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">24</span> <span class="n">columns</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">all_events</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+    <span class="n">answer</span>                    <span class="n">eegfile</span>  <span class="n">eegoffset</span>  <span class="o">...</span>  <span class="n">subject</span>       <span class="n">test</span>  <span class="nb">type</span>
+<span class="mi">27</span>    <span class="o">-</span><span class="mi">999</span>  <span class="n">R1111M_FR1_0_22Jan16_1638</span>     <span class="mi">100520</span>  <span class="o">...</span>   <span class="n">R1111M</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="n">WORD</span>
+<span class="mi">28</span>    <span class="o">-</span><span class="mi">999</span>  <span class="n">R1111M_FR1_0_22Jan16_1638</span>     <span class="mi">101829</span>  <span class="o">...</span>   <span class="n">R1111M</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="n">WORD</span>
+
+<span class="p">[</span><span class="mi">2</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">24</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="available-accessors">
+<h2>Available accessors<a class="headerlink" href="#available-accessors" title="Permalink to this headline">¶</a></h2>
+<p>Upon importing <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders</span></code>, the following accessors are automatically
+registered with pandas.</p>
+<dl class="class">
+<dt id="cmlreaders._accessors.events.EventsAccessor">
+<em class="property">class </em><code class="descclassname">cmlreaders._accessors.events.</code><code class="descname">EventsAccessor</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cmlreaders/_accessors/events.html#EventsAccessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cmlreaders._accessors.events.EventsAccessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcuts for selecting events of various types.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cmlreaders</span> <span class="kn">import</span> <span class="n">CMLReader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">CMLReader</span><span class="p">(</span><span class="s2">&quot;R1111M&quot;</span><span class="p">,</span> <span class="s2">&quot;FR1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">word_events</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stim_events</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">stim</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recalled_words</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words_recalled</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">forgotten_words</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">words_not_recalled</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="cmlreaders._accessors.events.EventsAccessor.stim">
+<code class="descname">stim</code><a class="headerlink" href="#cmlreaders._accessors.events.EventsAccessor.stim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select all stim events.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cmlreaders._accessors.events.EventsAccessor.words">
+<code class="descname">words</code><a class="headerlink" href="#cmlreaders._accessors.events.EventsAccessor.words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select all WORD onset events.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cmlreaders._accessors.events.EventsAccessor.words_not_recalled">
+<code class="descname">words_not_recalled</code><a class="headerlink" href="#cmlreaders._accessors.events.EventsAccessor.words_not_recalled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select word events where the word was not recalled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cmlreaders._accessors.events.EventsAccessor.words_recalled">
+<code class="descname">words_recalled</code><a class="headerlink" href="#cmlreaders._accessors.events.EventsAccessor.words_recalled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select all recalled word events.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="classifier.html" class="btn btn-neutral" title="Classification from scratch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

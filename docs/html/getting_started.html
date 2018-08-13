@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.4.0 documentation</title>
+  <title>Getting Started with CML Readers &mdash; CML Data Readers 0.9.2 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API" href="api.html" />
-    <link rel="prev" title="Data Guide" href="data_guide.html" /> 
+    <link rel="next" title="Classification from scratch" href="classifier.html" />
+    <link rel="prev" title="Examples and tutorials" href="guides.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.4
+                0.9
               </div>
             
           
@@ -88,32 +88,30 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started with CML Readers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Finding-Files-on-Rhino">Finding Files on Rhino</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#What-can-you-request?">What can you request?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Finding-File-Paths">Finding File Paths</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="guides.html">Examples and tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started with CML Readers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Finding-Files-on-Rhino">Finding Files on Rhino</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-can-you-request?">What can you request?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Finding-File-Paths">Finding File Paths</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Loading-Data">Loading Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Using-the-Default-Representation">Using the Default Representation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-from-a-Custom-Location">Loading from a Custom Location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Identifying-Available-Sessions">Identifying Available Sessions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-Data">Loading Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Using-the-Default-Representation">Using the Default Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Using-the-Underlying-Reader">Using the Underlying Reader</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#Saving-Data">Saving Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Examples">Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-Multiple-Sessions">Loading Multiple Sessions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-EEG">Loading EEG</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Full-Session">Full Session</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#EEG-from-Events">EEG from Events</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Converting-EEG-Representation">Converting EEG Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Examples">Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Loading-Multiple-Sessions">Loading Multiple Sessions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Loading-EEG">Loading EEG</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="classifier.html">Classification from scratch</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
 </ul>
@@ -160,6 +158,8 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="guides.html">Examples and tutorials</a> &raquo;</li>
         
       <li>Getting Started with CML Readers</li>
     
@@ -392,8 +392,10 @@ that the preferred location comes before a fall-back location.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># If not working on RHINO, specify the mount point</span>
-<span class="n">rhino_root</span> <span class="o">=</span> <span class="s2">&quot;/Volumes/RHINO/&quot;</span>
+<span></span><span class="c1"># If not working on RHINO, specify the mount point.</span>
+<span class="c1"># Alternatively, set the CML_ROOT environment variable and never</span>
+<span class="c1"># have to explicitly pass the rootdir keyword argument.</span>
+<span class="n">rhino_root</span> <span class="o">=</span> <span class="s2">&quot;/mnt/rhino/&quot;</span>
 
 <span class="c1"># Instantiate the finder object</span>
 <span class="n">finder</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1389J&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;catFR5&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -439,6 +441,9 @@ section of the documentation.</p>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>[&#39;r1_index&#39;,
  &#39;ltp_index&#39;,
+ &#39;pyfr_index&#39;,
+ &#39;pyfr_root&#39;,
+ &#39;localization&#39;,
  &#39;voxel_coordinates&#39;,
  &#39;prior_stim_results&#39;,
  &#39;electrode_coordinates&#39;,
@@ -448,7 +453,6 @@ section of the documentation.</p>
  &#39;good_leads&#39;,
  &#39;leads&#39;,
  &#39;classifier_excluded_leads&#39;,
- &#39;localization&#39;,
  &#39;matlab_bipolar_talstruct&#39;,
  &#39;matlab_monopolar_talstruct&#39;,
  &#39;pairs&#39;,
@@ -463,6 +467,7 @@ section of the documentation.</p>
  &#39;math_events&#39;,
  &#39;ps4_events&#39;,
  &#39;sources&#39;,
+ &#39;processed_eeg&#39;,
  &#39;experiment_log&#39;,
  &#39;session_log&#39;,
  &#39;ramulator_session_folder&#39;,
@@ -492,18 +497,7 @@ section of the documentation.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;voxel_coordinates&#39;,
- &#39;prior_stim_results&#39;,
- &#39;electrode_coordinates&#39;,
- &#39;jacksheet&#39;,
- &#39;good_leads&#39;,
- &#39;leads&#39;,
- &#39;area&#39;,
- &#39;classifier_excluded_leads&#39;,
- &#39;localization&#39;,
- &#39;electrode_categories&#39;,
- &#39;target_selection_file&#39;,
- &#39;baseline_classifier&#39;]
+<span></span>(&#39;localization&#39;,)
 </pre></div>
 </div>
 </div>
@@ -523,7 +517,19 @@ section of the documentation.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;pairs&#39;, &#39;contacts&#39;]
+<span></span>(&#39;pairs&#39;,
+ &#39;contacts&#39;,
+ &#39;voxel_coordinates&#39;,
+ &#39;prior_stim_results&#39;,
+ &#39;electrode_coordinates&#39;,
+ &#39;jacksheet&#39;,
+ &#39;good_leads&#39;,
+ &#39;leads&#39;,
+ &#39;area&#39;,
+ &#39;classifier_excluded_leads&#39;,
+ &#39;electrode_categories&#39;,
+ &#39;target_selection_file&#39;,
+ &#39;baseline_classifier&#39;)
 </pre></div>
 </div>
 </div>
@@ -543,7 +549,7 @@ section of the documentation.</p>
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&#39;session_summary&#39;,
+<span></span>(&#39;session_summary&#39;,
  &#39;classifier_summary&#39;,
  &#39;math_summary&#39;,
  &#39;used_classifier&#39;,
@@ -558,7 +564,7 @@ section of the documentation.</p>
  &#39;all_events&#39;,
  &#39;task_events&#39;,
  &#39;math_events&#39;,
- &#39;ps4_events&#39;]
+ &#39;ps4_events&#39;)
 </pre></div>
 </div>
 </div>
@@ -583,9 +589,9 @@ section of the documentation.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-/Volumes/RHINO/protocols/r1/subjects/R1389J/localizations/0/montages/0/neuroradiology/current_processed/pairs.json
-/Volumes/RHINO/protocols/r1/subjects/R1389J/experiments/catFR5/sessions/1/behavioral/current_processed/task_events.json
-/Volumes/RHINO/data10/RAM/subjects/R1389J/tal/VOX_coords_mother.txt
+/mnt/rhino/protocols/r1/subjects/R1389J/localizations/0/montages/0/neuroradiology/current_processed/pairs.json
+/mnt/rhino/protocols/r1/subjects/R1389J/experiments/catFR5/sessions/1/behavioral/current_processed/task_events.json
+/mnt/rhino/data10/RAM/subjects/R1389J/tal/VOX_coords_mother.txt
 </pre></div></div>
 </div>
 </div>
@@ -619,7 +625,7 @@ of subjects to be used.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">r1_data</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;r1&#39;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="s1">&#39;/Volumes/RHINO/&#39;</span><span class="p">)</span>
+<span></span><span class="n">r1_data</span> <span class="o">=</span> <span class="n">get_data_index</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;r1&#39;</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
 <span class="n">r1_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -831,7 +837,8 @@ of subjects to be used.</p>
        &#39;R1385E&#39;, &#39;R1386T&#39;, &#39;R1387E&#39;, &#39;R1390M&#39;, &#39;R1391T&#39;, &#39;R1393T&#39;,
        &#39;R1394E&#39;, &#39;R1395M&#39;, &#39;R1396T&#39;, &#39;R1397D&#39;, &#39;R1398J&#39;, &#39;R1401J&#39;,
        &#39;R1402E&#39;, &#39;R1404E&#39;, &#39;R1405E&#39;, &#39;R1406M&#39;, &#39;R1409D&#39;, &#39;R1412M&#39;,
-       &#39;R1414E&#39;, &#39;R1415T&#39;, &#39;R1416T&#39;, &#39;R1420T&#39;], dtype=object)
+       &#39;R1414E&#39;, &#39;R1415T&#39;, &#39;R1416T&#39;, &#39;R1420T&#39;, &#39;R1421M&#39;, &#39;R1422T&#39;,
+       &#39;R1423E&#39;, &#39;R1425D&#39;, &#39;R1427T&#39;, &#39;R1431J&#39;, &#39;R1438M&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -1105,37 +1112,6 @@ supported method using one of the as_x methods</li>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Custom python class</span>
-<span class="n">session_summary</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;session_summary&#39;</span><span class="p">)</span>
-<span class="nb">type</span><span class="p">(</span><span class="n">session_summary</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Could not import MorletWaveletFilterCppLegacy (single-core C++ version of MorletWaveletFilter): cannot import name &#39;MorletWaveletTransform&#39;
-You can still use MorletWaveletFilter
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
-</div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>ramutils.reports.summary.FRStimSessionSummary
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Python dictionary</span>
 <span class="n">electrode_categories_dict</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;electrode_categories&#39;</span><span class="p">)</span>
 <span class="n">electrode_categories_dict</span>
@@ -1144,7 +1120,7 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[16]:
+<span></span>Out[15]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1167,7 +1143,7 @@ You can still use MorletWaveletFilter
 <h3>Using the Underlying Reader<a class="headerlink" href="#Using-the-Underlying-Reader" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1179,7 +1155,7 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[17]:
+<span></span>Out[16]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1189,7 +1165,7 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [18]:
+<span></span>In [17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1201,7 +1177,7 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[18]:
+<span></span>Out[17]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1238,7 +1214,7 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [19]:
+<span></span>In [18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1250,432 +1226,13 @@ You can still use MorletWaveletFilter
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[19]:
+<span></span>Out[18]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
 <span></span>(0, -1, &#39;X&#39;, -999, &#39;&#39;, &#39;&#39;, &#39;catFR5&#39;, -999, False, &#39;X&#39;, -999, -999, 0, -1, -1, &#39;&#39;, &#39;r1&#39;, False, -999, -999, -999, -999, -999, -999, 1, False, [], &#39;R1389J&#39;, &#39;STIM_ARTIFACT_DETECTION_START&#39;)
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="Loading-from-a-Custom-Location">
-<h3>Loading from a Custom Location<a class="headerlink" href="#Loading-from-a-Custom-Location" title="Permalink to this headline">¶</a></h3>
-<p>Since locations are automatically determined based on the data type, if
-loading from a custom location, be sure to specify the file_type
-parameter when loading the data. One common use case for this
-functionality is that you need to load some data from your scratch or
-home directory that is in a format supported by CMLReaders. Another use
-case is that you may discover that data is residing in a location that
-is not known by CMLReaders. Instead of waiting until the next release of
-the package, you can use a custom file path to load the data, submit an
-issue on Github, and continue with you analysis.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [20]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Loading from a custom location</span>
-<span class="n">event_reader</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s2">&quot;task_events.json&quot;</span><span class="p">)</span>
-<span class="n">event_df</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;task_events&#39;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;task_events.json&#39;</span><span class="p">)</span>
-<span class="n">event_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[20]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>eegoffset</th>
-      <th>category</th>
-      <th>category_num</th>
-      <th>eegfile</th>
-      <th>exp_version</th>
-      <th>experiment</th>
-      <th>intrusion</th>
-      <th>is_stim</th>
-      <th>item_name</th>
-      <th>item_num</th>
-      <th>...</th>
-      <th>recog_rt</th>
-      <th>recognized</th>
-      <th>rectime</th>
-      <th>rejected</th>
-      <th>serialpos</th>
-      <th>session</th>
-      <th>stim_list</th>
-      <th>stim_params</th>
-      <th>subject</th>
-      <th>type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>-1</td>
-      <td>X</td>
-      <td>-999</td>
-      <td></td>
-      <td></td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[]</td>
-      <td>R1389J</td>
-      <td>STIM_ARTIFACT_DETECTION_START</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>5831</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td></td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td></td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>23781</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td></td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td></td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-    <tr>
-      <th>100</th>
-      <td>315125</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td></td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[]</td>
-      <td>R1389J</td>
-      <td>REC_END</td>
-    </tr>
-    <tr>
-      <th>1000</th>
-      <td>2515863</td>
-      <td>Flowers</td>
-      <td>9</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td></td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>LILY</td>
-      <td>112</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>4</td>
-      <td>1</td>
-      <td>True</td>
-      <td>[]</td>
-      <td>R1389J</td>
-      <td>WORD</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 28 columns</p>
-</div></div>
-</div>
-</div>
-</div>
-<div class="section" id="Saving-Data">
-<h2>Saving Data<a class="headerlink" href="#Saving-Data" title="Permalink to this headline">¶</a></h2>
-<p>CMLReaders can also be used to save data in a different format from the
-original files. The three supported output formats are: CSV, JSON, and
-HDF5. However, not all file formats are supported by all of the readers.
-In particular, HDF5 output is only supported for a minimal number of
-data types.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [21]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># JSON to CSV</span>
-<span class="n">event_reader</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;task_events.csv&quot;</span><span class="p">)</span>
-<span class="n">event_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;task_events.csv&quot;</span><span class="p">)</span>
-<span class="n">event_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[21]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>eegoffset</th>
-      <th>category</th>
-      <th>category_num</th>
-      <th>eegfile</th>
-      <th>exp_version</th>
-      <th>experiment</th>
-      <th>intrusion</th>
-      <th>is_stim</th>
-      <th>item_name</th>
-      <th>item_num</th>
-      <th>...</th>
-      <th>recog_rt</th>
-      <th>recognized</th>
-      <th>rectime</th>
-      <th>rejected</th>
-      <th>serialpos</th>
-      <th>session</th>
-      <th>stim_list</th>
-      <th>stim_params</th>
-      <th>subject</th>
-      <th>type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>-1</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[]</td>
-      <td>R1389J</td>
-      <td>STIM_ARTIFACT_DETECTION_START</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>5831</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td>NaN</td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>7790</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td>NaN</td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>9786</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td>NaN</td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>11782</td>
-      <td>X</td>
-      <td>-999</td>
-      <td>R1389J_catFR5_1_28Feb18_1552.h5</td>
-      <td>NaN</td>
-      <td>catFR5</td>
-      <td>-999</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>-1</td>
-      <td>...</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>-999</td>
-      <td>1</td>
-      <td>False</td>
-      <td>[{'amplitude': 500.0, 'anode_label': 'STG6', '...</td>
-      <td>R1389J</td>
-      <td>STIM_ON</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 28 columns</p>
-</div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [22]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># CSV to JSON</span>
-<span class="n">electrode_coord_reader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="s1">&#39;electrode_coordinates&#39;</span><span class="p">)</span>
-<span class="n">electrode_coord_reader</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;electrode_coordinates.json&#39;</span><span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;electrode_coordinates.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">electrode_coord_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-<span class="n">electrode_coord_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[22]:
-</pre></div>
-</div>
-<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>dict_keys([&#39;contact_name&#39;, &#39;contact_type&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, &#39;atlas&#39;, &#39;orient_to&#39;])
-</pre></div>
 </div>
 </div>
 </div>
@@ -1685,12 +1242,10 @@ data types.</p>
 <h3>Loading Multiple Sessions<a class="headerlink" href="#Loading-Multiple-Sessions" title="Permalink to this headline">¶</a></h3>
 <p>CMLReaders is currently designed for loading events one session at a
 time. This may change in the future, but in the interim, it is
-straightforward to load multiple sessions-worth of events. Although it
-can be done more succinctly using a list comprehension, we will use a
-traditional for loop for the sake of clarity.</p>
+straightforward to load multiple sessions-worth of events.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1703,7 +1258,7 @@ traditional for loop for the sake of clarity.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[23]:
+<span></span>Out[19]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1713,11 +1268,12 @@ traditional for loop for the sake of clarity.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_events</span> <span class="o">=</span> <span class="p">[]</span>
+<span></span><span class="c1"># Verbose method</span>
+<span class="n">all_events</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">sessions_completed</span><span class="p">:</span>
     <span class="n">sess_events</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s2">&quot;R1409D&quot;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s2">&quot;FR6&quot;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
                                 <span class="n">localization</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">montage</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;task_events&#39;</span><span class="p">)</span>
@@ -1730,7 +1286,7 @@ traditional for loop for the sake of clarity.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[24]:
+<span></span>Out[20]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1738,12 +1294,64 @@ traditional for loop for the sake of clarity.</p>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Same operation, but with list comprehension</span>
+<span class="n">all_session_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="s1">&#39;R1409D&#39;</span><span class="p">,</span> <span class="n">experiment</span><span class="o">=</span><span class="s1">&#39;FR6&#39;</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">sessions_completed</span><span class="p">])</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">all_sessions_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[21]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>4527
+</pre></div>
+</div>
+</div>
+<p>We can also use the special <code class="docutils literal notranslate"><span class="pre">load_events</span></code> classmethod to load events
+from multiple subjects and/or experiments.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">aggregate_events</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">CMLReader</span><span class="o">.</span><span class="n">load_events</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R1111M&quot;</span><span class="p">,</span> <span class="s2">&quot;R1409D&quot;</span><span class="p">],</span>
+                                             <span class="n">experiments</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">],</span>
+                                             <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+<span class="n">aggregate_events</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>array([&#39;R1111M&#39;, &#39;R1409D&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="Loading-EEG">
 <h3>Loading EEG<a class="headerlink" href="#Loading-EEG" title="Permalink to this headline">¶</a></h3>
+<p>Loading EEG data is a bit more complicated than loading other data
+types. For this reason, rather than using the general <code class="docutils literal notranslate"><span class="pre">load</span></code> method,
+we instead use <code class="docutils literal notranslate"><span class="pre">load_eeg</span></code> which takes special keyword arguments. As
+always, start by instantiating a <code class="docutils literal notranslate"><span class="pre">CMLReader</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1751,11 +1359,13 @@ traditional for loop for the sake of clarity.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Full-Session">
-<h4>Full Session<a class="headerlink" href="#Full-Session" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="Reading-a-full-session">
+<h4>Reading a full session<a class="headerlink" href="#Reading-a-full-session" title="Permalink to this headline">¶</a></h4>
+<p>If we give no parameters to <code class="docutils literal notranslate"><span class="pre">reader.load_eeg</span></code>, then by default all
+data for an entire session will be loaded as the data were recorded:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1764,22 +1374,33 @@ traditional for loop for the sake of clarity.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/depalati/src/cmlreaders/cmlreaders/path_finder.py:225: MultiplePathsFoundWarning: Multiple files found. Returning the first file found
+  &#39;file found&#39;, MultiplePathsFoundWarning)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[26]:
+<span></span>Out[24]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>(1, 100, 1623159)
+<span></span>(1, 100, 1623160)
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="EEG-from-Events">
-<h4>EEG from Events<a class="headerlink" href="#EEG-from-Events" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="Reading-from-events">
+<h4>Reading from events<a class="headerlink" href="#Reading-from-events" title="Permalink to this headline">¶</a></h4>
+<p>To select EEG epochs based on events, first load the events and use
+standard pandas idioms to select events of interest:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1788,9 +1409,13 @@ traditional for loop for the sake of clarity.</p>
 </pre></div>
 </div>
 </div>
+<p>In addition to passing the events, we also need to specify relative
+start and stop times in milliseconds. Below, we will load data for each
+word onset starting at the time the word appeared and ending 100 ms
+later:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [28]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1799,9 +1424,18 @@ traditional for loop for the sake of clarity.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/depalati/src/cmlreaders/cmlreaders/path_finder.py:225: MultiplePathsFoundWarning: Multiple files found. Returning the first file found
+  &#39;file found&#39;, MultiplePathsFoundWarning)
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[28]:
+<span></span>Out[26]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1810,15 +1444,53 @@ traditional for loop for the sake of clarity.</p>
 </div>
 </div>
 </div>
+<div class="section" id="Reading-from-multiple-sessions">
+<h4>Reading from multiple sessions<a class="headerlink" href="#Reading-from-multiple-sessions" title="Permalink to this headline">¶</a></h4>
+<p>Building upon aggregate event loading, we can also load EEG data from
+multiple sessions. The caveat here is that we are restricted to a single
+subject:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">all_fr1_events</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_events</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R1111M&quot;</span><span class="p">],</span> <span class="n">experiments</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FR1&quot;</span><span class="p">],</span> <span class="n">rootdir</span><span class="o">=</span><span class="n">rhino_root</span><span class="p">)</span>
+<span class="n">fr1_words</span> <span class="o">=</span> <span class="n">all_fr1_events</span><span class="p">[</span><span class="n">all_fr1_events</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">]</span>
+<span class="n">fr1_eeg</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">load_eeg</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="n">fr1_words</span><span class="p">,</span> <span class="n">rel_start</span><span class="o">=-</span><span class="mi">100</span><span class="p">,</span> <span class="n">rel_stop</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fr1_eeg</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/depalati/src/cmlreaders/cmlreaders/path_finder.py:225: MultiplePathsFoundWarning: Multiple files found. Returning the first file found
+  &#39;file found&#39;, MultiplePathsFoundWarning)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[27]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>(1020, 100, 100)
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="Converting-EEG-Representation">
 <h4>Converting EEG Representation<a class="headerlink" href="#Converting-EEG-Representation" title="Permalink to this headline">¶</a></h4>
-<p>By default, CMLReaders uses a custom representation of time series data.
+<p>By default, CMLReaders uses a simple container for time series data.
 However, we provide two utility methods for converting this
 representation to a format that is understood by PTSA and MNE, since
 these are common libraries for interacting with EEG data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [29]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1829,17 +1501,17 @@ these are common libraries for interacting with EEG data.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[29]:
+<span></span>Out[28]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>ptsa.data.TimeSeriesX.TimeSeriesX
+<span></span>ptsa.data.timeseries.TimeSeries
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1850,7 +1522,7 @@ these are common libraries for interacting with EEG data.</p>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[30]:
+<span></span>Out[29]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
@@ -1871,10 +1543,10 @@ these are common libraries for interacting with EEG data.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="classifier.html" class="btn btn-neutral float-right" title="Classification from scratch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="data_guide.html" class="btn btn-neutral" title="Data Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="guides.html" class="btn btn-neutral" title="Examples and tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -1883,7 +1555,7 @@ these are common libraries for interacting with EEG data.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017.
+        &copy; Copyright 2018.
 
     </p>
   </div>
@@ -1905,7 +1577,7 @@ these are common libraries for interacting with EEG data.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.0',
+            VERSION:'0.9.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1927,9 +1599,7 @@ these are common libraries for interacting with EEG data.</p>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 

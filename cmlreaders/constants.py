@@ -1,81 +1,117 @@
+# supported protocols
+PROTOCOLS = (
+    "r1",
+    "ltp",
+    "pyfr",
+)
+
+PYFR_SUBJECT_CODE_PREFIXES = ("BW", "CH", "CP", "FR", "FZ", "TJ", "UP")
 
 rhino_paths = {
     # data indices
-    'r1_index': ['protocols/r1.json'],
-    'ltp_index': ['protocols/ltp.json'],
+    "r1_index": ["protocols/r1.json"],
+    "ltp_index": ["protocols/ltp.json"],
+    "pyfr_index": ["data/events/pyFR/pyFR.json"],
 
-    # Localization-level (subject + localization)
+    # root directory to look for pyFR data
+    "pyfr_root": ["data/events/pyFR"],
+
+    # Localization-level (subject + localization_
+    'localization': [
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
+    ],
+
+    # Montage-level (subject + montage)
     'voxel_coordinates': [
-        "data10/RAM/subjects/{subject_localization}/tal/VOX_coords_mother.txt",
+        "data10/RAM/subjects/{subject_montage}/tal/VOX_coords_mother.txt",
     ],
     'prior_stim_results': [
-        'data10/eeg/freesurfer/subjects/{subject_localization}/prior_stim/{subject}_allcords.csv',
+        'data10/eeg/freesurfer/subjects/{subject_montage}/prior_stim/{subject}_allcords.csv',
     ],
     'electrode_coordinates': [
-        'data10/RAM/subjects/{subject_localization}/tal/coords/electrode_coordinates.csv',
-        'data10/RAM/subjects/{subject_localization}/tal/electrode_coordinates.csv',
+        'data10/RAM/subjects/{subject_montage}/tal/coords/electrode_coordinates.csv',
+        'data10/RAM/subjects/{subject_montage}/tal/electrode_coordinates.csv',
     ],
     'jacksheet': [
-        'data10/RAM/subjects/{subject_localization}/docs/jacksheet.txt',
+        'data10/RAM/subjects/{subject_montage}/docs/jacksheet.txt',
     ],
     'area': [
-        'data10/RAM/subjects/{subject_localization}/docs/area.txt',
+        'data10/RAM/subjects/{subject_montage}/docs/area.txt',
     ],
     'electrode_categories': [
-        'data10/RAM/subjects/{subject_localization}/docs/electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/{subject_localization}_electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/electrode_categories_{subject_localization}.txt',
+        'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
+        'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
     ],
     'good_leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/good_leads.txt',
+        'data10/RAM/subjects/{subject_montage}/tal/good_leads.txt',
     ],
     'leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/leads.txt',
+        'data10/RAM/subjects/{subject_montage}/tal/leads.txt',
     ],
     'classifier_excluded_leads': [
-        'data10/RAM/subjects/{subject_localization}/tal/classifier_excluded_leads.txt',
-    ],
-    'localization': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json',
+        'data10/RAM/subjects/{subject_montage}/tal/classifier_excluded_leads.txt',
     ],
     'matlab_bipolar_talstruct': [
-        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_bipol.mat'
+        'data10/RAM/subjects/{subject_montage}/tal/{subject_montage}_talLocs_database_bipol.mat'
     ],
     'matlab_monopolar_talstruct': [
-        'data10/RAM/subjects/{subject_localization}/tal/{subject_localization}_talLocs_database_monopol.mat'
+        'data10/RAM/subjects/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat'
     ],
-    # Montage level (subject + localization + montage)
     'pairs': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
     ],
     'contacts': [
-        'protocols/r1/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json',
+        'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json',
     ],
 
     # Report Data
     'session_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_session_summary.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_session_summary.h5',
     ],
     'classifier_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_classifier_session_{session}.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_classifier_session_{session}.h5',
     ],
     'math_summary': [
-        'scratch/report_database/{subject_localization}_{experiment}_{session}_math_summary.h5',
+        'scratch/report_database/{subject_montage}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        'scratch/report_database/{subject_localization}_{experiment}_*_target_selection_table.csv',
+        'scratch/report_database/{subject_montage}_{experiment}_*_target_selection_table.csv',
     ],
     'baseline_classifier': [
-        'scratch/report_database/{subject_localization}_retrained_classifier.zip',
-        'scratch/report_database/{subject_localization}_{experiment}_all_retrained_classifier.zip',
+        'scratch/report_database/{subject_montage}_retrained_classifier.zip',
+        'scratch/report_database/{subject_montage}_{experiment}_all_retrained_classifier.zip',
     ],
 
     # Session Data
-    'all_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json'],
-    'task_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json'],
-    'math_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json'],
-    'ps4_events': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'],
-    'sources': ['protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json'],
+    "all_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "task_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json",
+        "data/events/pyFR/{subject_montage}_events.mat",
+    ],
+    "math_events": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json",
+        "data/events/pyFR/{subject_montage}_math.mat",
+    ],
+    'ps4_events': [
+        'protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json'
+    ],
+    'sources': [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/sources.json",
+        "data/eeg/{subject}/eeg.noreref/{eeg_basename}.params.txt",
+        "data/eeg/{subject}/eeg.noreref/params.txt",
+
+    ],
+
+    # Processed EEG data basename
+    # For data in /protocols, this gets expanded into either a bunch of files or
+    # a single HDF5 file in the case of later RAM subjects recorded on the ENS.
+    "processed_eeg": [
+        "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_processed/noreref/{basename}"
+    ],
 
     # Ramulator-related information
     'experiment_log': [
@@ -89,6 +125,7 @@ rhino_paths = {
     ],
     'ramulator_session_folder': [
         'data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*',
+        'protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_source/host_pc/*',
     ],
 
     # There can be multiple timestamped folders for the host pc files for when
@@ -126,7 +163,14 @@ rhino_paths = {
 
 # Maintain separate lists of the file types depending on what information is
 # required to be able to find them
-localization_files = [
+localization_files = (
+    'localization',
+)
+
+# All files that change when a montage changes
+montage_files = (
+    'pairs',
+    'contacts',
     'voxel_coordinates',
     'prior_stim_results',
     'electrode_coordinates',
@@ -135,20 +179,16 @@ localization_files = [
     'leads',
     'area',
     'classifier_excluded_leads',
-    'localization',
     'electrode_categories',
     'target_selection_file',
     'baseline_classifier',
-]
-
-# All files that change when a montage changes
-montage_files = ['pairs', 'contacts']
+)
 
 # All files that are constant by subject
 subject_files = []
 
 # All files that vary at the session level
-session_files = [
+session_files = (
     'session_summary',
     'classifier_summary',
     'math_summary',
@@ -166,10 +206,10 @@ session_files = [
     'task_events',
     'math_events',
     'ps4_events'
-]
+)
 
 # All files that require some extra work to identify
-host_pc_files = [
+host_pc_files = (
     'event_log',
     'experiment_config',
     'raw_eeg',
@@ -177,7 +217,12 @@ host_pc_files = [
     'used_classifier',
     'excluded_pairs',
     'all_pairs',
-]
+)
 
 # Files related to in-session classifier retraining
-used_classifier_files = ['used_classifier', 'excluded_pairs', 'all_pairs']
+used_classifier_files = ('used_classifier', 'excluded_pairs', 'all_pairs')
+
+# All Ramulator files/directories
+ramulator_files = (
+    host_pc_files + used_classifier_files + ("ramulator_session_folder",)
+)

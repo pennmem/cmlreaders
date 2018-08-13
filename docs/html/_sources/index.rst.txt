@@ -7,6 +7,7 @@ Computational Memory Lab Data Readers
 
    intro
    data_guide
-   getting_started.ipynb
+   guides
+   shortcuts
    api
    dev
