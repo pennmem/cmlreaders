@@ -133,6 +133,7 @@ class TestCMLReader:
 
     @pytest.mark.rhino
     @pytest.mark.parametrize("subject,experiment,session", [
+        ("R1354E", "PS4_FR5", 1),
         ("R1354E", "PS4_FR", 1),
         ("R1111M", "PS2", 0),
         ("R1025P", "PS1", 0)

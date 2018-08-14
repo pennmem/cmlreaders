@@ -220,6 +220,13 @@ class PathFinder(object):
                 found_files.append(expected_path)
 
         if len(found_files) == 0:
+            # PS4_FR5/catFR5 experiments are sometimes stored without the 5, so
+            # strip the 5 and try again.
+            experiment = kwargs.pop("experiment", "") or ""
+            if experiment.startswith("PS4") and experiment.endswith("5"):
+                kwargs["experiment"] = experiment[:-1]
+                return self._find_single_path(paths, **kwargs)
+
             raise FileNotFoundError("Unable to find the requested file in any "
                                     "of the expected locations:\n {}".format('\n'.join(checked_paths)))
 
