@@ -531,7 +531,7 @@ class EEGReader(BaseCMLReader):
 
         # sanity check on the offsets
 
-        if rel_start is not None and rel_stop is not None and rel_start > rel_stop:
+        if rel_start != 0 and rel_stop != -1 and rel_start > rel_stop:
             raise ValueError('rel_start must precede rel_stop')
 
         for filename in events["eegfile"].unique():
@@ -553,7 +553,7 @@ class EEGReader(BaseCMLReader):
             dtype = sources["data_format"]
 
             # convert events to epochs
-            if len(events) == 0:
+            if rel_start==0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
                 epochs = convert.events_to_epochs(ev,
