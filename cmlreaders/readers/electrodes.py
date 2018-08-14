@@ -1,6 +1,7 @@
 import json
 import os.path
 import scipy.io as sio
+import numpy as np
 from typing import Optional
 
 import pandas as pd
@@ -15,25 +16,41 @@ class MatlabMontageReader(BaseCMLReader):
 
     struct_names = ['bpTalStruct', 'talStruct', 'virtualTalStruct',
                     'subjTalEvents', 'events']
-    struct_name = None
 
-    def load(self, struct_name: Optional[str]=None):
-        self.struct_name = struct_name
-        super(MatlabMontageReader, self).load()
+    data_types = ['matlab_contacts', 'matlab_pairs']
 
     def as_dataframe(self):
 
         data_dict = sio.loadmat(self.file_path)
-        if self.struct_name is None:
-            for name in self.struct_names:
-                if name in data_dict:
-                    self.struct_name = name
-                    break
-            else:
-                raise ValueError("Montage info has unknown name --"
-                                 "please specify with `struct_name` parameter"
-                                 )
-        return pd.DataFrame(data_dict[self.struct_name])
+        for name in self.struct_names:
+            if name in data_dict:
+                self.struct_name = name
+                break
+        else:
+            raise ValueError("Montage info has unknown name ")
+        arr = data_dict[self.struct_name]
+        flat_cols = [c for c in arr.dtype.names if arr[c][0].dtype.names is None]
+        nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
+
+        # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
+
+        df = pd.DataFrame(arr[flat_cols])
+        for col in nested_cols:
+            data = [x if x.shape else x.item() for x in arr[col]]
+            datacols = list(zip(*data))
+            arrcols = []
+            for c in datacols:
+                arrcols.append(np.array(c))
+            names = ['{}.{}'.format(col,n) for n in arr[col][0].dtype.names]
+            types = [x.dtype for x in arrcols]
+            dts = list(zip(names, types))
+            new_arr = np.empty(arr.shape, dts)
+            for (n, c) in zip(names, arrcols):
+                new_arr[n] = c
+
+            df = df.merge(pd.DataFrame(new_arr))
+
+        return df
 
 
 class MontageReader(BaseCMLReader):
