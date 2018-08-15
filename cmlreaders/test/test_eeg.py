@@ -578,6 +578,7 @@ class TestLoadEEG:
         assert len(eeg.channels) == eeg_channels
         assert len(pairs) == pairs_channels
 
+    @pytest.mark.rhino
     @pytest.mark.parametrize(
         "subject,experiment,session,rel_start,rel_stop,samples", [
             ("R1328E", "FR1", 0, 0, 100, 100),
