@@ -577,3 +577,15 @@ class TestLoadEEG:
 
         assert len(eeg.channels) == eeg_channels
         assert len(pairs) == pairs_channels
+
+    @pytest.mark.parametrize(
+        "subject,experiment,session,rel_start,rel_stop,samples", [
+            ("R1328E", "FR1", 0, 0, 100, 100),
+        ]
+    )
+    def test_partial_session(self, subject, experiment, session,
+                             rel_start, rel_stop, samples, rhino_root):
+        """Test loading a partial session without giving events."""
+        reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
+        eeg = reader.load_eeg(rel_start=rel_start, rel_stop=rel_stop)
+        assert eeg.shape[2] == samples
