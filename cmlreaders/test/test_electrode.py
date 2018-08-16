@@ -43,7 +43,7 @@ class TestMontageReader:
 
 class TestMatlabMontageReader:
     @pytest.mark.parametrize("kind", ["matlab_contacts", "matlab_pairs"])
-    def test_load(self,kind):
+    def test_load(self, kind):
         path = datafile("{}.mat".format(kind))
 
         reader = MatlabMontageReader(kind,
@@ -54,8 +54,6 @@ class TestMatlabMontageReader:
 
         assert 'avgSurf.x' in df.columns
         assert 'indivSurf.x' in df.columns
-
-
 
 
 class TestLocalizationReader:
@@ -78,4 +76,4 @@ class TestElectrodeCategoriesReader:
                                            rootdir=rhino_root)
         categories = reader.load()
         for key, len_ in lens.items():
-            assert len(categories[key]) == len_
+            assert len(categories[key]) == len

@@ -2,7 +2,6 @@ import json
 import os.path
 import scipy.io as sio
 import numpy as np
-from typing import Optional
 
 import pandas as pd
 from pandas.io.json import json_normalize
@@ -30,8 +29,8 @@ class MatlabMontageReader(BaseCMLReader):
             raise ValueError("Montage info has unknown name ")
         arr = data_dict[self.struct_name]
         flat_cols = [c for c in arr.dtype.names
-                     if not isinstance(arr[c][0], np.ndarray)
-                     or arr[c][0].dtype.names is None]
+                     if not isinstance(arr[c][0], np.ndarray) or
+                     arr[c][0].dtype.names is None]
         nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
 
         # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
