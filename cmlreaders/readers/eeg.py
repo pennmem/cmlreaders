@@ -232,9 +232,25 @@ class SplitEEGReader(BaseEEGReader):
     channel per file).
 
     """
+    def _get_files(self, glob_pattern: str) -> List[Path]:
+        files = sorted(Path(self.filename).parent.glob(glob_pattern + ".*"))
+        return files
+
     def read(self) -> Tuple[np.ndarray, List[int]]:
-        basename = Path(self.filename).name
-        files = sorted(Path(self.filename).parent.glob(basename + '.*'))
+        pattern = Path(self.filename).name
+        files = self._get_files(pattern)
+
+        # Some experiments have errors in the EEG splitting which results in
+        # mismatches between the names of the actual EEG files and what the
+        # events say they should be.
+        if len(files) is 0:
+            names = Path(self.filename).name.split("_")
+            pattern = "*".join(names)
+            files = self._get_files(pattern)
+
+            if len(files) is 0:
+                raise ValueError("split EEG filenames don't seem to match what"
+                                 " are in the events")
 
         contacts = []
         memmaps = []
