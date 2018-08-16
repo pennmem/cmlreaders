@@ -1,11 +1,56 @@
 import json
 import os.path
+import scipy.io as sio
+import numpy as np
 
 import pandas as pd
 from pandas.io.json import json_normalize
 
 from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
+
+
+class MatlabMontageReader(BaseCMLReader):
+    """ Reads MATLAB montage files. Returns a :class:`pd.DataFrame`."""
+
+    struct_names = ['bpTalStruct', 'talStruct', 'virtualTalStruct',
+                    'subjTalEvents', 'events']
+
+    data_types = ['matlab_contacts', 'matlab_pairs']
+
+    def as_dataframe(self):
+
+        data_dict = sio.loadmat(self.file_path, squeeze_me=True)
+        for name in self.struct_names:
+            if name in data_dict:
+                self.struct_name = name
+                break
+        else:
+            raise ValueError("Montage info has unknown name ")
+        arr = data_dict[self.struct_name]
+        flat_cols = [c for c in arr.dtype.names
+                     if not isinstance(arr[c][0], np.ndarray) or
+                     arr[c][0].dtype.names is None]
+        nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
+
+        # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
+
+        df = pd.DataFrame(arr[flat_cols])
+        for col in nested_cols:
+            subcols = arr[col][0].dtype.names
+            for c in subcols:
+                datacol = [x[c] if x.shape else x[c].item() for x in
+                           arr[col]]
+                idxs = range(len(datacol))
+                new_datacol, new_idxs = list(
+                    zip(*[(x, i) for (x, i) in zip(datacol, idxs) if x])
+                )
+                new_df = pd.DataFrame(np.array(new_datacol),
+                                      index=new_idxs,
+                                      columns=['{}.{}'.format(col, c)])
+                df = df.merge(new_df, how='outer',
+                              left_index=True, right_index=True)
+        return df
 
 
 class MontageReader(BaseCMLReader):
