@@ -21,7 +21,7 @@ class MatlabMontageReader(BaseCMLReader):
 
     def as_dataframe(self):
 
-        data_dict = sio.loadmat(self.file_path)
+        data_dict = sio.loadmat(self.file_path, squeeze_me=True)
         for name in self.struct_names:
             if name in data_dict:
                 self.struct_name = name
@@ -29,27 +29,28 @@ class MatlabMontageReader(BaseCMLReader):
         else:
             raise ValueError("Montage info has unknown name ")
         arr = data_dict[self.struct_name]
-        flat_cols = [c for c in arr.dtype.names if arr[c][0].dtype.names is None]
+        flat_cols = [c for c in arr.dtype.names
+                     if not isinstance(arr[c][0], np.ndarray)
+                     or arr[c][0].dtype.names is None]
         nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
 
         # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
 
         df = pd.DataFrame(arr[flat_cols])
         for col in nested_cols:
-            data = [x if x.shape else x.item() for x in arr[col]]
-            datacols = list(zip(*data))
-            arrcols = []
-            for c in datacols:
-                arrcols.append(np.array(c))
-            names = ['{}.{}'.format(col,n) for n in arr[col][0].dtype.names]
-            types = [x.dtype for x in arrcols]
-            dts = list(zip(names, types))
-            new_arr = np.empty(arr.shape, dts)
-            for (n, c) in zip(names, arrcols):
-                new_arr[n] = c
-
-            df = df.merge(pd.DataFrame(new_arr))
-
+            subcols = arr[col][0].dtype.names
+            for c in subcols:
+                datacol = [x[c] if x.shape else x[c].item() for x in
+                           arr[col]]
+                idxs = range(len(datacol))
+                new_datacol, new_idxs = list(
+                    zip(*[(x, i) for (x, i) in zip(datacol, idxs) if x])
+                )
+                new_df = pd.DataFrame(np.array(new_datacol),
+                                      index=new_idxs,
+                                      columns=['{}.{}'.format(col, c)])
+                df = df.merge(new_df, how='outer',
+                              left_index=True, right_index=True)
         return df
 
 
