@@ -545,6 +545,11 @@ class EEGReader(BaseCMLReader):
         """
         eegs = []
 
+        # sanity check on the offsets
+
+        if rel_start != 0 and rel_stop != -1 and rel_start > rel_stop:
+            raise ValueError('rel_start must precede rel_stop')
+
         for filename in events["eegfile"].unique():
             # select subset of events for this basename
             ev = events[events["eegfile"] == filename]
@@ -564,11 +569,7 @@ class EEGReader(BaseCMLReader):
             dtype = sources["data_format"]
 
             # convert events to epochs
-            if rel_stop < 0:
-                # We're trying to load to the end of the session. Only allow
-                # this in cases where we're trying to load a whole session.
-                if len(events) > 1:
-                    raise ValueError("rel_stop must not be negative")
+            if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
                 epochs = convert.events_to_epochs(ev,
