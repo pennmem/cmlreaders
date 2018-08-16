@@ -44,15 +44,16 @@ class TestMontageReader:
 class TestMatlabMontageReader:
     @pytest.mark.parametrize("kind", ["matlab_contacts", "matlab_pairs"])
     def test_load(self,kind):
-        path = datafile("{}_tal.mat".format(kind))
+        path = datafile("{}.mat".format(kind))
 
         reader = MatlabMontageReader(kind,
                                      subject='R1111M',
-                                     montage=0)
+                                     montage=0,
+                                     file_path=path)
         df = reader.load()
 
         assert 'avgSurf.x' in df.columns
-        assert 'indivSurf.x' in  df.columns
+        assert 'indivSurf.x' in df.columns
 
 
 
