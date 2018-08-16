@@ -41,6 +41,7 @@ def events():
 class TestEEGMetaReader:
     @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample_rate", [
         ("R1389J", "sources.json", "int16", 1641165, 1000),
+        ("R1191J", "multiNSx_sources.json", "int16", 5256192, 1000),
         ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
     ])
     def test_load(self, subject, filename, data_format, n_samples, sample_rate):
@@ -239,6 +240,15 @@ class TestEEGReader:
         assert len(eeg.time) == 100
         assert eeg.data.shape[0] == 2
         assert eeg.channels[index] == channel
+
+    def test_negative_offsets(self, rhino_root):
+        subject, experiment = ("R1298E", "FR1")
+        reader = CMLReader(subject=subject, experiment=experiment, session=0,
+                           rootdir=rhino_root)
+        events = reader.load("events")
+        events = events[events["type"] == "WORD"].iloc[:2]
+        eeg = reader.load_eeg(events=events, rel_start=-100, rel_stop=-20)
+        assert eeg.shape[-1] == 80
 
     @pytest.mark.parametrize("subject", ["R1161E"])
     def test_read_whole_session(self, subject, rhino_root):
@@ -576,3 +586,16 @@ class TestLoadEEG:
 
         assert len(eeg.channels) == eeg_channels
         assert len(pairs) == pairs_channels
+
+    @pytest.mark.rhino
+    @pytest.mark.parametrize(
+        "subject,experiment,session,rel_start,rel_stop,samples", [
+            ("R1328E", "FR1", 0, 0, 100, 100),
+        ]
+    )
+    def test_partial_session(self, subject, experiment, session,
+                             rel_start, rel_stop, samples, rhino_root):
+        """Test loading a partial session without giving events."""
+        reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
+        eeg = reader.load_eeg(rel_start=rel_start, rel_stop=rel_stop)
+        assert eeg.shape[2] == samples

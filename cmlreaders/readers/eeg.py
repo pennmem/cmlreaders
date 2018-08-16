@@ -42,6 +42,8 @@ class EEGMetaReader(BaseCMLReader):
         df = pd.read_json(self.file_path, orient='index')
         sources_info = {}
         for k in df:
+            if any(df[k].apply(lambda x: isinstance(x, dict))):
+                continue
             v = df[k].unique()
             sources_info[k] = v[0] if len(v) == 1 else v
         sources_info['path'] = self.file_path
@@ -230,9 +232,25 @@ class SplitEEGReader(BaseEEGReader):
     channel per file).
 
     """
+    def _get_files(self, glob_pattern: str) -> List[Path]:
+        files = sorted(Path(self.filename).parent.glob(glob_pattern + ".*"))
+        return files
+
     def read(self) -> Tuple[np.ndarray, List[int]]:
-        basename = Path(self.filename).name
-        files = sorted(Path(self.filename).parent.glob(basename + '.*'))
+        pattern = Path(self.filename).name
+        files = self._get_files(pattern)
+
+        # Some experiments have errors in the EEG splitting which results in
+        # mismatches between the names of the actual EEG files and what the
+        # events say they should be.
+        if len(files) is 0:
+            names = Path(self.filename).name.split("_")
+            pattern = "*".join(names)
+            files = self._get_files(pattern)
+
+            if len(files) is 0:
+                raise ValueError("split EEG filenames don't seem to match what"
+                                 " are in the events")
 
         contacts = []
         memmaps = []
@@ -527,6 +545,11 @@ class EEGReader(BaseCMLReader):
         """
         eegs = []
 
+        # sanity check on the offsets
+
+        if rel_start != 0 and rel_stop != -1 and rel_start > rel_stop:
+            raise ValueError('rel_start must precede rel_stop')
+
         for filename in events["eegfile"].unique():
             # select subset of events for this basename
             ev = events[events["eegfile"] == filename]
@@ -546,11 +569,7 @@ class EEGReader(BaseCMLReader):
             dtype = sources["data_format"]
 
             # convert events to epochs
-            if rel_stop < 0:
-                # We're trying to load to the end of the session. Only allow
-                # this in cases where we're trying to load a whole session.
-                if len(events) > 1:
-                    raise ValueError("rel_stop must not be negative")
+            if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
                 epochs = convert.events_to_epochs(ev,

@@ -253,11 +253,16 @@ class CMLReader(object):
 
         """
         kwargs = {
-            'scheme': scheme,
+            "scheme": scheme,
         }
 
+        if rel_start is not None:
+            kwargs["rel_start"] = rel_start
+        if rel_stop is not None:
+            kwargs["rel_stop"] = rel_stop
+
         if events is not None:
-            if rel_start is None or rel_stop is None:
+            if "rel_start" not in kwargs or "rel_stop" not in kwargs:
                 raise IncompatibleParametersError(
                     "rel_start and rel_stop are required keyword arguments"
                     " when passing events"

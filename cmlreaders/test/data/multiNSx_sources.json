@@ -1,0 +1,26 @@
+{
+  "R1191J_TH1_0_25Jun16_1758": {
+    "0": {
+      "data_format": "int16", 
+      "n_samples": 5256196, 
+      "sample_rate": 1000, 
+      "source_file": "160625-1358/np1-001.ns2", 
+      "start_time_ms": 1466877518277, 
+      "start_time_str": "25Jun16_1758"
+    }, 
+    "1": {
+      "data_format": "int16", 
+      "n_samples": 5256192, 
+      "sample_rate": 1000, 
+      "source_file": "160625-1358/np2-001.ns2", 
+      "start_time_ms": 1466877519275, 
+      "start_time_str": "25Jun16_1758"
+    }, 
+    "data_format": "int16", 
+    "n_samples": 5256192, 
+    "sample_rate": 1000, 
+    "source_file": "np1-001.ns2", 
+    "start_time_ms": 1466877518277, 
+    "start_time_str": "25Jun16_1758"
+  }
+}
