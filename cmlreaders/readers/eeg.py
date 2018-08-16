@@ -569,7 +569,7 @@ class EEGReader(BaseCMLReader):
             dtype = sources["data_format"]
 
             # convert events to epochs
-            if rel_start==0 and rel_stop == -1 and len(events) == 1:
+            if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
                 epochs = convert.events_to_epochs(ev,

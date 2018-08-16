@@ -242,12 +242,14 @@ class TestEEGReader:
         assert eeg.channels[index] == channel
 
     def test_negative_offsets(self,rhino_root):
-        subject,experiment = ("R1298E", "FR1")
+        subject, experiment = ("R1298E", "FR1")
         reader = CMLReader(subject=subject, experiment=experiment, session=0,
                            rootdir=rhino_root)
         events = reader.load("events")
         events = events[events["type"] == "WORD"].iloc[:2]
-        eeg = reader.load_eeg(events=events, rel_start= -100, rel_stop=-20)
+        eeg = reader.load_eeg(events=events, rel_start=-100, rel_stop=-20)
+        assert eeg.shape[-1] == 80
+
 
     @pytest.mark.parametrize("subject", ["R1161E"])
     def test_read_whole_session(self, subject, rhino_root):
