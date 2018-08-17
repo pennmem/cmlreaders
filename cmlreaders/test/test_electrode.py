@@ -76,4 +76,4 @@ class TestElectrodeCategoriesReader:
                                            rootdir=rhino_root)
         categories = reader.load()
         for key, len_ in lens.items():
-            assert len(categories[key]) == len
+            assert len(categories[key]) == len_
