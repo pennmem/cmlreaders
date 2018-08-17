@@ -452,8 +452,14 @@ class EEGReader(BaseCMLReader):
                     "EEG data!"
                 )
 
+            # Because of reasons, PS4 experiments may or may not end with a 5.
+            if self.experiment.startswith("PS4") and self.experiment.endswith("5"):
+                experiment = self.experiment[:-1]
+            else:
+                experiment = self.experiment
+
             finder = PathFinder(subject=self.subject,
-                                experiment=self.experiment,
+                                experiment=experiment,
                                 session=self.session,
                                 rootdir=self.rootdir)
 
