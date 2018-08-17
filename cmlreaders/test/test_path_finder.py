@@ -9,14 +9,14 @@ from cmlreaders import constants
 # No timestamped directories case
 
 @pytest.fixture()
-def current_files_subject(rhino_root):
+def current_files_subject_finder(rhino_root):
     finder = PathFinder('R1389J', rootdir=rhino_root, experiment='catFR5',
                         session=1, localization=0, montage=0)
     return finder
 
 
 @pytest.fixture()
-def legacy_files_subject(rhino_root):
+def legacy_files_subject_finder(rhino_root):
     finder = PathFinder('R1111M', rootdir=rhino_root, localization=0)
     return finder
 
@@ -30,25 +30,27 @@ def ramulator_files_finder(rhino_root):
 
 @pytest.mark.rhino
 @pytest.mark.parametrize("file_type", list(constants.rhino_paths.keys()))
-def test_find_file(file_type, current_files_subject, legacy_files_subject):
+def test_find_file(file_type, current_files_subject_finder,
+                   legacy_files_subject_finder):
     if file_type in ['target_selection_table', 'ps4_events']:
         return  # does not exist for stim sessions
     elif file_type == "processed_eeg":
         return  # special case that isn't actually used by PathFinder
 
-    if file_type in ['matlab_bipolar_talstruct', 'matlab_monopolar_talstruct']:
-        myfinder = legacy_files_subject
+    if file_type in ['matlab_bipolar_talstruct', 'matlab_monopolar_talstruct',
+                     'matlab_pairs', 'matlab_contacts']:
+        myfinder = legacy_files_subject_finder
     else:
-        myfinder = current_files_subject
+        myfinder = current_files_subject_finder
 
     file_path = myfinder.find(file_type)
     assert file_path is not None
 
 
 @pytest.mark.rhino
-def test_invalid_file_request(current_files_subject):
+def test_invalid_file_request(current_files_subject_finder):
     with pytest.raises(InvalidDataTypeRequest):
-        current_files_subject.find('fake_file_type')
+        current_files_subject_finder.find('fake_file_type')
 
 
 @pytest.mark.rhino
