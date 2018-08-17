@@ -1,6 +1,22 @@
 Changes
 =======
 
+Version 0.9.3
+-------------
+**Upcoming**
+
+New features: 
+
+* Added support for reading MATLAB montage files (#199)
+
+Bug fixes:
+
+* Fixed issue reading certain sources.json files (#195)
+* Fixed issue loading partial sessions (#204)
+* Fixed issues loading PS4_FR data (#211, #200)
+* `load_eeg` can now load periods entirely preceding
+  an event (#209)
+
 Version 0.9.2
 -------------
 
