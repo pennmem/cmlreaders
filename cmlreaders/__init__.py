@@ -8,5 +8,5 @@ from .path_finder import PathFinder  # noqa
 from .readers import *  # noqa
 from .cmlreader import CMLReader  # noqa
 
-__version__ = "0.9.2"
+__version__ = "0.9.3"
 version_info = namedtuple("VersionInfo", "major,minor,patch")(*__version__.split('.'))
