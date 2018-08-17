@@ -231,7 +231,10 @@ class PathFinder(object):
                                     "of the expected locations:\n {}".format('\n'.join(checked_paths)))
 
         if len(found_files) > 1:
-            warnings.warn('Multiple files found. Returning the first '
-                          'file found', MultiplePathsFoundWarning)
+            msg = (
+                "Multiple files found: {}".format("\n".join(found_files)) +
+                " returning the first file found"
+            )
+            warnings.warn(msg, MultiplePathsFoundWarning)
 
         return found_files[0]
