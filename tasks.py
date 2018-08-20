@@ -19,12 +19,14 @@ def clean(c):
 
 
 @task(pre=[clean])
-def build(c, pyver=None, convert=True):
+def build(c, pyver=None, convert=True, use_local_build_dir=True):
     """Build a conda package.
 
     :param pyver: python version to build for (current interpreter version by
         default)
     :param convert: convert to other platforms after building (default: True)
+    :param use_local_build_dir: use ``build/`` for the build directory rather
+        than the global ``conda-bld`` directory (default: True)
 
     """
     if pyver is None:
@@ -32,9 +34,11 @@ def build(c, pyver=None, convert=True):
 
     cmd = [
         "conda", "build",
-        "--output-folder=build/",
         "--python", pyver,
     ]
+
+    if use_local_build_dir:
+        cmd += ["--output-folder=build/"]
 
     for chan in ["conda-forge", "pennmem"]:
         cmd += ["-c", chan]
@@ -60,8 +64,8 @@ def build(c, pyver=None, convert=True):
 @task(pre=[build])
 def upload(c):
     """Upload packages to Anaconda Cloud."""
-    for platform in ["linux-64", "osx-64", "win-32", "win-64"]:
-        files = glob.glob("build/{}/*.tar.bz2".format(platform))
+    for pform in ["linux-64", "osx-64", "win-32", "win-64"]:
+        files = glob.glob("build/{}/*.tar.bz2".format(pform))
         cmds = ["anaconda upload -u pennmem {}".format(f) for f in files]
         for cmd in cmds:
             c.run(cmd)

@@ -26,7 +26,7 @@ before_install:
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
   - pip install -r requirements.txt
-  - invoke build --no-convert
+  - invoke build --no-convert --no-use-local-build-dir
   - ls $HOME/miniconda/conda-bld/linux-64
   - conda install --use-local $PKG_NAME
 
