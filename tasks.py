@@ -8,9 +8,8 @@ from invoke import task
 
 
 @task
-def clean(c):
+def clean_build(c):
     """Clean the build directory."""
-    print("Removing build dir")
     try:
         shutil.rmtree("build")
         os.mkdir("build")
@@ -18,7 +17,20 @@ def clean(c):
         pass
 
 
-@task(pre=[clean])
+@task
+def clean_docs(c):
+    """Clean built documentation."""
+    shutil.rmtree("docs/html", True)
+    shutil.rmtree("docs/doctrees", True)
+    shutil.rmtree("docs/build", True)
+
+
+@task(pre=[clean_build, clean_docs])
+def clean(c):
+    """Clean build and doc files."""
+
+
+@task(pre=[clean_build])
 def build(c, pyver=None, convert=True, use_local_build_dir=True):
     """Build a conda package.
 
@@ -85,12 +97,8 @@ def test(c, rhino_root=None):
         c.run("pytest --rhino-root={} cmlreaders/".format(rhino_root))
 
 
-@task
+@task(pre=[clean_docs])
 def docs(c):
     """Build documentation."""
-    shutil.rmtree("docs/html", True)
-    shutil.rmtree("docs/doctrees", True)
-    shutil.rmtree("docs/build", True)
-
     with c.cd("docs"):
         c.run("make html")
