@@ -1,0 +1,11 @@
+﻿Field,Units,Description
+``list``,,Current list number
+``serialpos``,,Serial position (at encoding) of the currently presented item
+``item_name``,,Current item
+``item_num``,,Number of the current item in the item pool
+``recalled``,,Flag indicating an item was recalled
+``rectime``,ms,Amount of time since the beginning of the recall period for recalled items
+``intrusion``,,"-1 for extra-list intrusion, ``N`` for item presentation ``N`` lists back"
+``stim_list``,,Flag indicating stimulation was allowed during this list
+``category``,,Category name (in catFR variants)
+``category_num``,,Category number (in catFR variants)
