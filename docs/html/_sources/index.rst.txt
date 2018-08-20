@@ -7,6 +7,7 @@ Computational Memory Lab Data Readers
 
    intro
    data_guide
+   events
    guides
    shortcuts
    api

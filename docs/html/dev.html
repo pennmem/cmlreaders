@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developer’s Guide &mdash; CML Data Readers 0.9.2 documentation</title>
+  <title>Developer’s Guide &mdash; CML Data Readers 0.9.3 documentation</title>
   
 
   
@@ -87,6 +87,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
@@ -94,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-search-paths">Adding new search paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-data-types">Adding new data types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-readers">Adding new readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#releasing-new-versions-and-building-conda-packages">Releasing new versions and building conda packages</a></li>
 </ul>
 </li>
 </ul>
@@ -243,6 +245,38 @@ should be added to <code class="xref py py-mod docutils literal notranslate"><sp
 to the test cases that should already exist for the new reader. For examples,
 see <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.test.test_readers</span></code>.</p>
 </div>
+<div class="section" id="releasing-new-versions-and-building-conda-packages">
+<h2>Releasing new versions and building conda packages<a class="headerlink" href="#releasing-new-versions-and-building-conda-packages" title="Permalink to this headline">¶</a></h2>
+<p>When releasing a new version, be sure to increment the version number in
+<code class="docutils literal notranslate"><span class="pre">cmlreaders/__init__.py</span></code>.</p>
+<p>Several maintenance tasks are handled using <a class="reference external" href="http://www.pyinvoke.org/">Invoke</a> and are defined in
+<code class="docutils literal notranslate"><span class="pre">tasks.py</span></code>. Building a conda package:</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> invoke build
+</pre></div>
+</div>
+<p>Uploading builds to Anaconda Cloud:</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> invoke upload
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This requires that you have already logged in with <code class="docutils literal notranslate"><span class="pre">anaconda</span> <span class="pre">login</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Automated deployment is enabled on TravisCI for every tagged version,
+so the build and upload tasks are only necessary to be run manually
+for debugging purposes or if the automated deployment fails.</p>
+</div>
+<p>Building documentation:</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> invoke docs
+</pre></div>
+</div>
+<p>Running tests:</p>
+<div class="highlight-shell-session notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> invoke <span class="nb">test</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -285,7 +319,7 @@ see <code class="xref py py-mod docutils literal notranslate"><span class="pre">
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.2',
+            VERSION:'0.9.3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

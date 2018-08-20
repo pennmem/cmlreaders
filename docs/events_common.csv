@@ -1,0 +1,8 @@
+Field,Type,Description
+"``subject``	",String,Subject ID
+"``experiment``	",String,Experiment name
+"``session``	",Integer,Session number
+``type``,String,Label indicating the type of event
+``eegoffset``,Integer,Number of EEG samples at which the event occurred
+``eegfile``,String,Base name of associated EEG files
+``stim_params``,List of dictionaries,Stimulation parameters associated with a stim event

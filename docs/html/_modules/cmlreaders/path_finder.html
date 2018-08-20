@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.9.2 documentation</title>
+  <title>cmlreaders.path_finder &mdash; CML Data Readers 0.9.3 documentation</title>
   
 
   
@@ -86,6 +86,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
@@ -185,6 +186,7 @@
                  <span class="n">session</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">localization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">montage</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">eeg_basename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">rootdir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiates a PathFinder object using the known information</span>
 
@@ -228,6 +230,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">localization</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">localization</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">montage</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">montage</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eeg_basename</span> <span class="o">=</span> <span class="n">eeg_basename</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_paths</span> <span class="o">=</span> <span class="n">rhino_paths</span>
 
@@ -320,7 +323,8 @@
                                                <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
                                                <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
                                                <span class="n">localization</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">localization</span><span class="p">,</span>
-                                               <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">)</span>
+                                               <span class="n">montage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">montage</span><span class="p">,</span>
+                                               <span class="n">eeg_basename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eeg_basename</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">expected_path</span>
 
     <span class="k">def</span> <span class="nf">_get_most_recent_ramulator_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_folder_path</span><span class="p">):</span>
@@ -372,12 +376,22 @@
                 <span class="n">found_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">expected_path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># PS4_FR5/catFR5 experiments are sometimes stored without the 5, so</span>
+            <span class="c1"># strip the 5 and try again.</span>
+            <span class="n">experiment</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;experiment&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS4&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">experiment</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;5&quot;</span><span class="p">):</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">experiment</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_single_path</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Unable to find the requested file in any &quot;</span>
                                     <span class="s2">&quot;of the expected locations:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checked_paths</span><span class="p">)))</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_files</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Multiple files found. Returning the first &#39;</span>
-                          <span class="s1">&#39;file found&#39;</span><span class="p">,</span> <span class="n">MultiplePathsFoundWarning</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Multiple files found: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">found_files</span><span class="p">))</span> <span class="o">+</span>
+                <span class="s2">&quot; returning the first file found&quot;</span>
+            <span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">MultiplePathsFoundWarning</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">found_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 </pre></div>
@@ -414,7 +428,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.2',
+            VERSION:'0.9.3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

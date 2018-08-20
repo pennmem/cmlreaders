@@ -1,0 +1,14 @@
+﻿Label,Description
+``SESS_START``,Start of session
+``SESS_END``,End of session
+``COUNTDOWN_START``,Start of the countdown period before each list
+``COUNTDOWN_END``,End of countdown period
+``DISTRACT_START``,Start of distractor
+``DISTRACT_END``,End of distractor
+``REC_START``,Start of recall period
+``REC_END``,End of recall period
+``REC_WORD``,Word recall event
+``REC_WORD_VV``,Non-word vocalization event
+``STIM_ON``,Stimulation onset
+``TRIAL``,Start of a new trial
+``WORD``,Presentation of a word

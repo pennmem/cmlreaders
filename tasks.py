@@ -106,9 +106,12 @@ def test(c, rhino_root=None):
         c.run("pytest --rhino-root={} cmlreaders/".format(rhino_root))
 
 
-@task(pre=[clean_docs])
-def docs(c):
+@task
+def docs(c, clean_first=True):
     """Build documentation."""
+    if clean_first:
+        clean_docs(c)
+
     print("Building documentation")
     with c.cd("docs"):
         c.run("make html")

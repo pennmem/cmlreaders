@@ -1,0 +1,10 @@
+﻿Field,Type,Units,Description
+``amplitude``,Float,µA,Stimulation amplitude
+``anode_label``,String,,Stimulation anode contact label
+``anode_number``,Integer,,Stimulation anode contact number
+``cathode_label``,String,,Stimulation cathode contact label
+``cathode_number``,Integer,,Stimulation cathode contact number
+``pulse_freq``,Integer,Hz,Stimulation pulse train frequency
+``pulse_width``,Integer,µs,Stimulation pulse width
+``n_pulses``,Integer,,Number of stimulation pulses
+``stim_duration``,Integer,ms,Duration of stimulation
