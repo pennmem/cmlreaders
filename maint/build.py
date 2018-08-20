@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+
+from __future__ import print_function
+
 from argparse import ArgumentParser
 import glob
 import os
@@ -68,9 +71,9 @@ def convert():
 
 
 def upload():
-    """Upload pre-built package to conda."""
-    for platform in ['linux-64', 'osx-64', 'win-32', 'win-64']:
-        files = glob.glob('build/{}/*.tar.bz2'.format(platform))
+    """ Upload pre-built package to conda """
+    for pltform in ['linux-64', 'osx-64', 'win-32', 'win-64']:
+        files = glob.glob('build/{}/*.tar.bz2'.format(pltform))
         cmds = ['anaconda upload -u pennmem {}'.format(f) for f in files]
         for cmd in cmds:
             print(cmd)
