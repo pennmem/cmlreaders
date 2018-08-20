@@ -83,3 +83,14 @@ def test(c, rhino_root=None):
         c.run('pytest -m "not rhino" cmlreaders/')
     else:
         c.run("pytest --rhino-root={} cmlreaders/".format(rhino_root))
+
+
+@task
+def docs(c):
+    """Build documentation."""
+    shutil.rmtree("docs/html", True)
+    shutil.rmtree("docs/doctrees", True)
+    shutil.rmtree("docs/build", True)
+
+    with c.cd("docs"):
+        c.run("make html")
