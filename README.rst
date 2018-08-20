@@ -8,7 +8,7 @@ CML Data Readers
    :target: https://codecov.io/gh/pennmem/cmlreaders
 
 .. image:: https://img.shields.io/badge/docs-here-brightgreen.svg
-   :target: https://pennmem.github.io/pennmem/cmlreaders/html/index.html
+   :target: https://pennmem.github.io/cmlreaders/html/index.html
    :alt: docs
 
 .. image:: https://img.shields.io/conda/v/pennmem/cmlreaders.svg
