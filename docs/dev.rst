@@ -70,3 +70,42 @@ Once the reader works, test cases for the data types using the new reader
 should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
 to the test cases that should already exist for the new reader. For examples,
 see :mod:`cmlreaders.test.test_readers`.
+
+Releasing new versions and building conda packages
+--------------------------------------------------
+
+When releasing a new version, be sure to increment the version number in
+``cmlreaders/__init__.py``.
+
+Several maintenance tasks are handled using Invoke_ and are defined in
+``tasks.py``. Building a conda package:
+
+.. code-block:: shell-session
+
+    $ invoke build
+
+Uploading builds to Anaconda Cloud:
+
+.. code-block:: shell-session
+
+    $ invoke upload
+
+.. note:: This requires that you have already logged in with ``anaconda login``.
+
+.. note:: Automated deployment is enabled on TravisCI for every tagged version,
+          so the build and upload tasks are only necessary to be run manually
+          for debugging purposes or if the automated deployment fails.
+
+Building documentation:
+
+.. code-block:: shell-session
+
+    $ invoke docs
+
+Running tests:
+
+.. code-block:: shell-session
+
+    $ invoke test
+
+.. _Invoke: http://www.pyinvoke.org/

@@ -26,13 +26,13 @@ before_install:
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
   - pip install -r requirements.txt
-  - conda build --python=$PYTHON_VERSION conda.recipe
+  - invoke build --no-convert --no-use-local-build-dir
   - ls $HOME/miniconda/conda-bld/linux-64
   - conda install --use-local $PKG_NAME
 
 script:
   - flake8
-  - python -m pytest -m "not rhino"
+  - invoke test
 
 after_success:
   - codecov
