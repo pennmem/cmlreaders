@@ -10,6 +10,7 @@ from invoke import task
 @task
 def clean_build(c):
     """Clean the build directory."""
+    print("Cleaning build")
     try:
         shutil.rmtree("build")
         os.mkdir("build")
@@ -20,6 +21,7 @@ def clean_build(c):
 @task
 def clean_docs(c):
     """Clean built documentation."""
+    print("Cleaning docs")
     shutil.rmtree("docs/html", True)
     shutil.rmtree("docs/doctrees", True)
     shutil.rmtree("docs/build", True)
@@ -28,6 +30,7 @@ def clean_docs(c):
 @task(pre=[clean_build, clean_docs])
 def clean(c):
     """Clean build and doc files."""
+    print("Cleaning all")
 
 
 @task(pre=[clean_build])
@@ -41,6 +44,8 @@ def build(c, pyver=None, convert=True, use_local_build_dir=True):
         than the global ``conda-bld`` directory (default: True)
 
     """
+    print("Building conda package")
+
     if pyver is None:
         pyver = ".".join([str(v) for v in sys.version_info[:2]])
 
@@ -60,6 +65,7 @@ def build(c, pyver=None, convert=True, use_local_build_dir=True):
     c.run(" ".join(cmd))
 
     if convert:
+        print("Converting to other platforms")
         os_name = {
             "darwin": "osx",
             "win32": "win",
@@ -76,6 +82,8 @@ def build(c, pyver=None, convert=True, use_local_build_dir=True):
 @task(pre=[build])
 def upload(c):
     """Upload packages to Anaconda Cloud."""
+    print("Uploading to Anaconda Cloud")
+
     for pform in ["linux-64", "osx-64", "win-32", "win-64"]:
         files = glob.glob("build/{}/*.tar.bz2".format(pform))
         cmds = ["anaconda upload -u pennmem {}".format(f) for f in files]
@@ -91,6 +99,7 @@ def test(c, rhino_root=None):
         tests requiring rhino
 
     """
+    print("Running tests")
     if rhino_root is None:
         c.run('pytest -m "not rhino" cmlreaders/')
     else:
@@ -100,5 +109,6 @@ def test(c, rhino_root=None):
 @task(pre=[clean_docs])
 def docs(c):
     """Build documentation."""
+    print("Building documentation")
     with c.cd("docs"):
         c.run("make html")
