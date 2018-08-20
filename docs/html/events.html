@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Events &mdash; CML Data Readers 0.9.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples and tutorials" href="guides.html" />
+    <link rel="prev" title="Data Guide" href="data_guide.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#common-fields">Common fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stimulation-parameters">Stimulation parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fr-events">FR events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Events</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/events.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="events">
+<h1>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h1>
+<p>Experimental events are stored in a tabular format with a set of common fields.
+These common fields are supplemented by a number of other fields that may be
+specific to a particular experiment or common amongst a subset of experiments.</p>
+<div class="section" id="common-fields">
+<h2>Common fields<a class="headerlink" href="#common-fields" title="Permalink to this headline">¶</a></h2>
+<p>The following fields should be available in events of all experiment types:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">subject</span></code></td>
+<td>String</td>
+<td>Subject ID</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">experiment</span></code></td>
+<td>String</td>
+<td>Experiment name</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">session</span></code></td>
+<td>Integer</td>
+<td>Session number</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>String</td>
+<td>Label indicating the type of event</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">eegoffset</span></code></td>
+<td>Integer</td>
+<td>Number of EEG samples at which the event occurred</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">eegfile</span></code></td>
+<td>String</td>
+<td>Base name of associated EEG files</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">stim_params</span></code></td>
+<td>List of dictionaries</td>
+<td>Stimulation parameters associated with a stim event</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="stimulation-parameters">
+<h3>Stimulation parameters<a class="headerlink" href="#stimulation-parameters" title="Permalink to this headline">¶</a></h3>
+<p>As noted above, stimulation parameters are stored as a list of dictionaries.
+Each dictionary contains the following fields:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">amplitude</span></code></td>
+<td>Float</td>
+<td>µA</td>
+<td>Stimulation amplitude</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">anode_label</span></code></td>
+<td>String</td>
+<td>&#160;</td>
+<td>Stimulation anode contact label</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">anode_number</span></code></td>
+<td>Integer</td>
+<td>&#160;</td>
+<td>Stimulation anode contact number</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cathode_label</span></code></td>
+<td>String</td>
+<td>&#160;</td>
+<td>Stimulation cathode contact label</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">cathode_number</span></code></td>
+<td>Integer</td>
+<td>&#160;</td>
+<td>Stimulation cathode contact number</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pulse_freq</span></code></td>
+<td>Integer</td>
+<td>Hz</td>
+<td>Stimulation pulse train frequency</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">pulse_width</span></code></td>
+<td>Integer</td>
+<td>µs</td>
+<td>Stimulation pulse width</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">n_pulses</span></code></td>
+<td>Integer</td>
+<td>&#160;</td>
+<td>Number of stimulation pulses</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">stim_duration</span></code></td>
+<td>Integer</td>
+<td>ms</td>
+<td>Duration of stimulation</td>
+</tr>
+</tbody>
+</table>
+<p>Some additional fields may also exist, including burst fields which are not
+often used (<code class="docutils literal notranslate"><span class="pre">burst_freq</span></code>, <code class="docutils literal notranslate"><span class="pre">n_bursts</span></code>) and <code class="docutils literal notranslate"><span class="pre">stim_on</span></code> which is 1 for an
+event with stimulation and 0 otherwise.</p>
+</div>
+</div>
+<div class="section" id="fr-events">
+<h2>FR events<a class="headerlink" href="#fr-events" title="Permalink to this headline">¶</a></h2>
+<p>Event types that can be found in most FR-like experiments are:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Label</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SESS_START</span></code></td>
+<td>Start of session</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SESS_END</span></code></td>
+<td>End of session</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">COUNTDOWN_START</span></code></td>
+<td>Start of the countdown period before each list</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">COUNTDOWN_END</span></code></td>
+<td>End of countdown period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DISTRACT_START</span></code></td>
+<td>Start of distractor</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">DISTRACT_END</span></code></td>
+<td>End of distractor</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">REC_START</span></code></td>
+<td>Start of recall period</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC_END</span></code></td>
+<td>End of recall period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">REC_WORD</span></code></td>
+<td>Word recall event</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC_WORD_VV</span></code></td>
+<td>Non-word vocalization event</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">STIM_ON</span></code></td>
+<td>Stimulation onset</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TRIAL</span></code></td>
+<td>Start of a new trial</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">WORD</span></code></td>
+<td>Presentation of a word</td>
+</tr>
+</tbody>
+</table>
+<p>Fields common in most FR-like experiments include:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Units</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">list</span></code></td>
+<td>&#160;</td>
+<td>Current list number</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">serialpos</span></code></td>
+<td>&#160;</td>
+<td>Serial position (at encoding) of the currently presented item</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">item_name</span></code></td>
+<td>&#160;</td>
+<td>Current item</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">item_num</span></code></td>
+<td>&#160;</td>
+<td>Number of the current item in the item pool</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">recalled</span></code></td>
+<td>&#160;</td>
+<td>Flag indicating an item was recalled</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">rectime</span></code></td>
+<td>ms</td>
+<td>Amount of time since the beginning of the recall period for recalled items</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">intrusion</span></code></td>
+<td>&#160;</td>
+<td>-1 for extra-list intrusion, <code class="docutils literal notranslate"><span class="pre">N</span></code> for item presentation <code class="docutils literal notranslate"><span class="pre">N</span></code> lists back</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">stim_list</span></code></td>
+<td>&#160;</td>
+<td>Flag indicating stimulation was allowed during this list</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">category</span></code></td>
+<td>&#160;</td>
+<td>Category name (in catFR variants)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">category_num</span></code></td>
+<td>&#160;</td>
+<td>Category number (in catFR variants)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="guides.html" class="btn btn-neutral float-right" title="Examples and tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="data_guide.html" class="btn btn-neutral" title="Data Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9.3',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

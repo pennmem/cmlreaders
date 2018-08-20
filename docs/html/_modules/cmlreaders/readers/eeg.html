@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.9.2 documentation</title>
+  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.9.3 documentation</title>
   
 
   
@@ -86,6 +86,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../shortcuts.html">Shortcuts for common queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API</a></li>
@@ -197,6 +198,8 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
         <span class="n">sources_info</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">))):</span>
+                <span class="k">continue</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
             <span class="n">sources_info</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">v</span>
         <span class="n">sources_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span>
@@ -385,9 +388,25 @@
 <span class="sd">    channel per file).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_get_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">glob_pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">glob_pattern</span> <span class="o">+</span> <span class="s2">&quot;.*&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">files</span>
+
 <div class="viewcode-block" id="SplitEEGReader.read"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.eeg.SplitEEGReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-        <span class="n">basename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.*&#39;</span><span class="p">))</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_files</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+
+        <span class="c1"># Some experiments have errors in the EEG splitting which results in</span>
+        <span class="c1"># mismatches between the names of the actual EEG files and what the</span>
+        <span class="c1"># events say they should be.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_files</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;split EEG filenames don&#39;t seem to match what&quot;</span>
+                                 <span class="s2">&quot; are in the events&quot;</span><span class="p">)</span>
 
         <span class="n">contacts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">memmaps</span> <span class="o">=</span> <span class="p">[]</span>
@@ -589,8 +608,14 @@
                     <span class="s2">&quot;EEG data!&quot;</span>
                 <span class="p">)</span>
 
+            <span class="c1"># Because of reasons, PS4 experiments may or may not end with a 5.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS4&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;5&quot;</span><span class="p">):</span>
+                <span class="n">experiment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">experiment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span>
+
             <span class="n">finder</span> <span class="o">=</span> <span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
-                                <span class="n">experiment</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span>
+                                <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
                                 <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">,</span>
                                 <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
 
@@ -682,6 +707,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">eegs</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="c1"># sanity check on the offsets</span>
+
+        <span class="k">if</span> <span class="n">rel_start</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rel_stop</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">rel_start</span> <span class="o">&gt;</span> <span class="n">rel_stop</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;rel_start must precede rel_stop&#39;</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">events</span><span class="p">[</span><span class="s2">&quot;eegfile&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
             <span class="c1"># select subset of events for this basename</span>
             <span class="n">ev</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;eegfile&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">filename</span><span class="p">]</span>
@@ -689,9 +719,11 @@
             <span class="c1"># determine experiment, session, dtype, and sample rate</span>
             <span class="n">experiment</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">session</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
             <span class="n">finder</span> <span class="o">=</span> <span class="n">PathFinder</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
                                 <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
                                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
+                                <span class="n">eeg_basename</span><span class="o">=</span><span class="n">basename</span><span class="p">,</span>
                                 <span class="n">rootdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rootdir</span><span class="p">)</span>
             <span class="n">sources</span> <span class="o">=</span> <span class="n">EEGMetaReader</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;sources&quot;</span><span class="p">),</span>
                                              <span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>
@@ -699,11 +731,7 @@
             <span class="n">dtype</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="s2">&quot;data_format&quot;</span><span class="p">]</span>
 
             <span class="c1"># convert events to epochs</span>
-            <span class="k">if</span> <span class="n">rel_stop</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="c1"># We&#39;re trying to load to the end of the session. Only allow</span>
-                <span class="c1"># this in cases where we&#39;re trying to load a whole session.</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;rel_stop must not be negative&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rel_start</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">rel_stop</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">epochs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">epochs</span> <span class="o">=</span> <span class="n">convert</span><span class="o">.</span><span class="n">events_to_epochs</span><span class="p">(</span><span class="n">ev</span><span class="p">,</span>
@@ -773,7 +801,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.2',
+            VERSION:'0.9.3',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
