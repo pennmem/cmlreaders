@@ -156,18 +156,14 @@ class MontageReader(BaseCMLReader):
 
     def as_dataframe(self):
         """Read montage data. This will explicitly use the MATLAB reader logic
-        if the data type starts with "matlab"; otherwise, it will first try to
-        read JSON data, and if that fails, try to read MATLAB.
+        if the filename ends with ".mat" and otherwise uses the newer JSON
+        format.
 
         """
-        if self.data_type.startswith("matlab"):
+        if self.file_path.endswith(".mat"):
             df = self._as_dataframe_matlab()
-
         else:
-            try:
-                df = self._as_dataframe_json()
-            except:
-                df = self._as_dataframe_matlab()
+            df = self._as_dataframe_json()
 
         # rename poorly named columns
         if "contacts" in self.data_type:
