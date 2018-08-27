@@ -3,9 +3,10 @@ Changes
 
 Version 0.9.3
 -------------
-**Upcoming**
 
-New features: 
+**2018-08-17**
+
+New features:
 
 * Added support for reading MATLAB montage files (#199)
 
@@ -16,6 +17,7 @@ Bug fixes:
 * Fixed issues loading PS4_FR data (#211, #200)
 * `load_eeg` can now load periods entirely preceding
   an event (#209)
+
 
 Version 0.9.2
 -------------
