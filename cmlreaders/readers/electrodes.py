@@ -109,9 +109,6 @@ class MontageReader(BaseCMLReader):
 
         df = pd.DataFrame(records)
 
-        if self.read_categories:
-            df = self._insert_categories(df)
-
         return df
 
     def _as_dataframe_matlab(self):
@@ -189,6 +186,13 @@ class MontageReader(BaseCMLReader):
         # sort by contact
         key = "contact" if "contacts" in self.data_type else "contact_1"
         df = df.sort_values(by=key).reset_index(drop=True)
+
+        # try to insert categories; silently fail if it doesn't work
+        if self.read_categories:
+            try:
+                df = self._insert_categories(df)
+            except:  # noqa
+                pass
 
         return df
 

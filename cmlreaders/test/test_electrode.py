@@ -32,14 +32,6 @@ class TestMontageReader:
             assert 'contact_1' in df.columns
             assert 'contact_2' in df.columns
 
-        if montage == 0:
-            filename = datafile("{}_{}.csv".format(subject, kind))
-        else:
-            filename = datafile("{}_{}_{}.csv".format(subject, montage, kind))
-
-        reference = pd.read_csv(filename, index_col=0)
-        assert all(reference == df)
-
     @pytest.mark.parametrize("kind,subject,montage", [
         ("matlab_contacts", "R1001P", 0),
         ("matlab_pairs", "R1001P", 0),
