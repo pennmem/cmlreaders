@@ -62,6 +62,11 @@ class CMLReader(object):
                 for k, v in self.reader_names.items()
             }
 
+    def __repr__(self):
+        return "CMLReader(subject={}, experiment={}, session={})".format(
+            self.subject, self.experiment, self.session
+        )
+
     def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and
         localization nubmers.
