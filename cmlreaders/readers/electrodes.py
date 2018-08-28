@@ -10,49 +10,6 @@ from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
 
 
-class MatlabMontageReader(BaseCMLReader):
-    """ Reads MATLAB montage files. Returns a :class:`pd.DataFrame`."""
-
-    struct_names = ['bpTalStruct', 'talStruct', 'virtualTalStruct',
-                    'subjTalEvents', 'events']
-
-    data_types = ['matlab_contacts', 'matlab_pairs']
-
-    def as_dataframe(self):
-
-        data_dict = sio.loadmat(self.file_path, squeeze_me=True)
-        for name in self.struct_names:
-            if name in data_dict:
-                self.struct_name = name
-                break
-        else:
-            raise ValueError("Montage info has unknown name ")
-        arr = data_dict[self.struct_name]
-        flat_cols = [c for c in arr.dtype.names
-                     if not isinstance(arr[c][0], np.ndarray) or
-                     arr[c][0].dtype.names is None]
-        nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
-
-        # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
-
-        df = pd.DataFrame(arr[flat_cols])
-        for col in nested_cols:
-            subcols = arr[col][0].dtype.names
-            for c in subcols:
-                datacol = [x[c] if x.shape else x[c].item() for x in
-                           arr[col]]
-                idxs = range(len(datacol))
-                new_datacol, new_idxs = list(
-                    zip(*[(x, i) for (x, i) in zip(datacol, idxs) if x])
-                )
-                new_df = pd.DataFrame(np.array(new_datacol),
-                                      index=new_idxs,
-                                      columns=['{}.{}'.format(col, c)])
-                df = df.merge(new_df, how='outer',
-                              left_index=True, right_index=True)
-        return df
-
-
 class MontageReader(BaseCMLReader):
     """Reads montage files (contacts.json, pairs.json). When loading via
     :meth:`CMLReader.load`, pass ``read_categories=True`` to additionally load
@@ -61,9 +18,12 @@ class MontageReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
-    data_types = ["pairs", "contacts"]
-    protocols = ["r1"]
+    data_types = ["pairs", "contacts", "matlab_contacts", "matlab_pairs"]
     caching = "memory"
+
+    # MATLAB struct names
+    struct_names = ['bpTalStruct', 'talStruct', 'virtualTalStruct',
+                    'subjTalEvents', 'events']
 
     read_categories = False
 
@@ -119,7 +79,8 @@ class MontageReader(BaseCMLReader):
 
         return df
 
-    def as_dataframe(self):
+    def _as_dataframe_json(self):
+        """Load montage data from newer JSON formats."""
         with open(self.file_path) as f:
             raw = json.load(f)
 
@@ -148,30 +109,90 @@ class MontageReader(BaseCMLReader):
 
         df = pd.DataFrame(records)
 
+        return df
+
+    def _as_dataframe_matlab(self):
+        """Load montage data from older MATLAB format."""
+        data_dict = sio.loadmat(self.file_path, squeeze_me=True)
+        for name in self.struct_names:
+            if name in data_dict:
+                self.struct_name = name
+                break
+        else:
+            raise ValueError("Montage info has unknown name ")
+        arr = data_dict[self.struct_name]
+        flat_cols = [c for c in arr.dtype.names
+                     if not isinstance(arr[c][0], np.ndarray) or
+                     arr[c][0].dtype.names is None]
+        nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
+
+        # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
+
+        df = pd.DataFrame(arr[flat_cols])
+        for col in nested_cols:
+            subcols = arr[col][0].dtype.names
+            for c in subcols:
+                datacol = [x[c] if x.shape else x[c].item() for x in
+                           arr[col]]
+                idxs = range(len(datacol))
+                new_datacol, new_idxs = list(
+                    zip(*[(x, i) for (x, i) in zip(datacol, idxs) if x])
+                )
+                new_df = pd.DataFrame(np.array(new_datacol),
+                                      index=new_idxs,
+                                      columns=['{}.{}'.format(col, c)])
+                df = df.merge(new_df, how='outer',
+                              left_index=True, right_index=True)
+
+        if hasattr(df.channel.iloc[0], "__len__"):
+            channels = np.array([[ch[0], ch[1]] for ch in df.pop("channel")])
+            df["channel_1"] = channels[:, 0]
+            df["channel_2"] = channels[:, 1]
+
+        return df
+
+    def as_dataframe(self):
+        """Read montage data. This will explicitly use the MATLAB reader logic
+        if the filename ends with ".mat" and otherwise uses the newer JSON
+        format.
+
+        """
+        if self.file_path.endswith(".mat"):
+            df = self._as_dataframe_matlab()
+        else:
+            df = self._as_dataframe_json()
+
         # rename poorly named columns
-        if self.data_type == "contacts":
+        if "contacts" in self.data_type:
             renames = {"channel": "contact"}
         else:
             renames = {"channel_1": "contact_1", "channel_2": "contact_2"}
-        renames.update({"code": "label"})
+
+        renames.update({
+            "code": "label",
+            "tagName": "label",
+            "eType": "type",
+        })
         df = df.rename(renames, axis=1)
 
         # ensure that contact and label appear first
         names = df.columns
-        if self.data_type == "contacts":
-            first = ["contact", "label", "type"]
+        if "contacts" in self.data_type:
+            first = ["contact", "label"]
         else:
-            first = ["contact_1", "contact_2",
-                     "label", "is_stim_only",
-                     "type_1", "type_2"]
+            first = ["contact_1", "contact_2", "label"]
         df = df[first + [name for name in names if name not in first]]
 
         # sort by contact
-        key = "contact" if self.data_type == "contacts" else "contact_1"
+        key = "contact" if "contacts" in self.data_type else "contact_1"
         df = df.sort_values(by=key).reset_index(drop=True)
 
+        # try to insert categories; silently fail if it doesn't work
         if self.read_categories:
-            df = self._insert_categories(df)
+            try:
+                df = self._insert_categories(df)
+            except:  # noqa
+                pass
 
         return df
 

@@ -60,12 +60,14 @@ rhino_paths = {
     ],
     'pairs': [
         'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/pairs.json',
+        'data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_bipol.mat',
     ],
     'matlab_pairs': [
         'data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_bipol.mat',
     ],
     'contacts': [
         'protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json',
+        'data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat',
     ],
     'matlab_contacts': [
         'data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat',

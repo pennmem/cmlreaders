@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from cmlreaders.readers.electrodes import MontageReader, LocalizationReader, \
-    ElectrodeCategoriesReader, MatlabMontageReader
+    ElectrodeCategoriesReader
 from cmlreaders.test.test_readers import datafile
 
 
@@ -13,7 +13,7 @@ class TestMontageReader:
         ("R1006P", 0, 0),
         ("R1006P", 0, 1),
     ])
-    def test_load(self, kind, subject, localization, montage):
+    def test_load_json(self, kind, subject, localization, montage):
         if montage == 0:
             path = datafile("{}_{}.json".format(subject, kind))
         else:
@@ -32,28 +32,24 @@ class TestMontageReader:
             assert 'contact_1' in df.columns
             assert 'contact_2' in df.columns
 
-        if montage == 0:
-            filename = datafile("{}_{}.csv".format(subject, kind))
+    @pytest.mark.parametrize("kind,subject,montage", [
+        ("matlab_contacts", "R1001P", 0),
+        ("matlab_pairs", "R1001P", 0),
+        ("contacts", "R1001P", 0),
+        ("pairs", "R1001P", 0),
+    ])
+    def test_load_matlab(self, kind, subject, montage):
+        reader = MontageReader(kind, subject=subject, localization=0,
+                               montage=montage)
+        path = datafile("{}_{}.mat".format(subject, "pairs" if "pairs" in kind else "contacts"))
+
+        df = reader.fromfile(path)
+
+        if "contacts" in kind:
+            assert "contact" in df.columns
         else:
-            filename = datafile("{}_{}_{}.csv".format(subject, montage, kind))
-
-        reference = pd.read_csv(filename, index_col=0)
-        assert all(reference == df)
-
-
-class TestMatlabMontageReader:
-    @pytest.mark.parametrize("kind", ["matlab_contacts", "matlab_pairs"])
-    def test_load(self, kind):
-        path = datafile("{}.mat".format(kind))
-
-        reader = MatlabMontageReader(kind,
-                                     subject='R1111M',
-                                     montage=0,
-                                     file_path=path)
-        df = reader.load()
-
-        assert 'avgSurf.x' in df.columns
-        assert 'indivSurf.x' in df.columns
+            assert "contact_1" in df.columns
+            assert "contact_2" in df.columns
 
 
 class TestLocalizationReader:
