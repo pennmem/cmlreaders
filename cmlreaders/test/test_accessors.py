@@ -7,8 +7,8 @@ import pytest
 @pytest.fixture
 def events():
     types = (
-        ["WORD"] * random.randint(1, 100) +
-        ["STIM_ON"] * random.randint(1, 100)
+        ["WORD"] * random.randint(30, 100) +
+        ["STIM_ON"] * random.randint(30, 100)
     )
     random.shuffle(types)
 
@@ -28,8 +28,10 @@ def events():
 def stim_param_events(events):
     params = {"field_1": 0,
               "field_2": "hello"}
-    param_list = [[params]] * 70
-    empty_params_list = [[]] * (len(events) - 70)
+    total = len(events)
+    n_params = int(total / 2)
+    param_list = [[params]] * n_params
+    empty_params_list = [[]] * (len(events) - n_params)
     full_list = param_list + empty_params_list
     random.shuffle(full_list)
     events = events.copy()
