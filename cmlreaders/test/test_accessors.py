@@ -24,6 +24,19 @@ def events():
     return df
 
 
+@pytest.fixture
+def stim_param_events(events):
+    params = {"field_1": 0,
+              "field_2": "hello"}
+    param_list = [[params]] * 70
+    empty_params_list = [[]] * (len(events)-70)
+    full_list = param_list+ empty_params_list
+    random.shuffle(full_list)
+    events = events.copy()
+    events['stim_params'] = full_list
+    return events
+
+
 class TestEventsAccessors:
     def test_words(self, events):
         expected = events[events.type == "WORD"]
@@ -38,3 +51,8 @@ class TestEventsAccessors:
         expected_not_recalled = events[(events.type == "WORD") & (events.recalled == 0)]
         assert all(expected_recalled == events.events.words_recalled)
         assert all(expected_not_recalled == events.events.words_not_recalled)
+
+    def test_stim_params(self,stim_param_events):
+        stim_params = stim_param_events.events.stim_params
+        assert all(stim_params.columns == ['field_1', 'field_2'])
+        assert (~stim_params.field_1.isna()).sum() == 70
