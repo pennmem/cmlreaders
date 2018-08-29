@@ -1,5 +1,4 @@
 import pandas as pd
-
 from .decorator import accessor
 
 
@@ -48,3 +47,19 @@ class EventsAccessor(object):
     def stim(self) -> pd.DataFrame:
         """Select all stim events."""
         return self._obj[self._obj["type"] == "STIM_ON"]
+
+    @property
+    def stim_params(self) -> pd.DataFrame:
+        """ Expand the stim_params field in a friendly manner"""
+        sp = [x.stim_params for _, x in self._obj.iterrows()]
+
+        if not all(len(x) < 2 for x in sp if isinstance(x, list)):
+            return self._obj.stim_params
+
+        for x in sp:
+            if len(x) == 0 and isinstance(x, list):
+                x.append({})
+
+        sp = [x[0] if isinstance(x, list) else x for x in sp]
+        df = pd.DataFrame.from_records(sp)
+        return df
