@@ -16,8 +16,10 @@ class EEGContainer(object):
         Sample rate in Hz.
     epochs
         Optional list of tuples defining epochs in ms.
+    events
+        Events corresponding to epochs (optional).
     channels
-        A list of labels for each channel.
+        A list of labels for each channel (optional).
     tstart
         Start time for each epoch in ms (default: 0).
     attrs
@@ -26,11 +28,13 @@ class EEGContainer(object):
     Attributes
     ----------
     data
-        Numpy array shaped as (epochs, channels, time).
+        Numpy array shaped as (number of events, channels, time).
     samplerate
         Sample rate in Hz.
     events
         DataFrame of events.
+    epochs
+        Epoch start and stop times.
     time
         Array of time points in milliseconds.
 
