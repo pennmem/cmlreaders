@@ -28,8 +28,7 @@ def events():
 def stim_param_events(events):
     params = {"field_1": 0,
               "field_2": "hello"}
-    total = len(events)
-    n_params = int(total / 2)
+    n_params = 30
     param_list = [[params]] * n_params
     empty_params_list = [[]] * (len(events) - n_params)
     full_list = param_list + empty_params_list
@@ -57,7 +56,7 @@ class TestEventsAccessors:
     def test_stim_params(self, stim_param_events):
         stim_params = stim_param_events.events.stim_params
         assert all(stim_params.columns == ['field_1', 'field_2'])
-        assert (~stim_params.field_1.isna()).sum() == 70
+        assert (~stim_params.field_1.isna()).sum() == 30
 
 
 @pytest.mark.rhino
