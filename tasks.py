@@ -1,8 +1,10 @@
 import glob
 import os
+from pathlib import Path
 import platform
 import shutil
 import sys
+import webbrowser
 
 from invoke import task
 
@@ -27,7 +29,7 @@ def clean_docs(c):
     shutil.rmtree("docs/build", True)
 
 
-@task(pre=[clean_build, clean_docs])
+@task(post=[clean_build, clean_docs])
 def clean(c):
     """Clean build and doc files."""
     print("Cleaning all")
@@ -107,7 +109,7 @@ def test(c, rhino_root=None):
 
 
 @task
-def docs(c, clean_first=True):
+def docs(c, clean_first=True, browser=False):
     """Build documentation."""
     if clean_first:
         clean_docs(c)
@@ -115,3 +117,7 @@ def docs(c, clean_first=True):
     print("Building documentation")
     with c.cd("docs"):
         c.run("make html")
+
+    if browser:
+        path = Path().joinpath("docs", "html", "index.html").absolute()
+        webbrowser.open("file://{}".format(path))
