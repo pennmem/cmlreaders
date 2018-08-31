@@ -7,6 +7,7 @@ Computational Memory Lab Data Readers
 
    intro
    data_guide
+   RAM_data_description
    events
    guides
    shortcuts
