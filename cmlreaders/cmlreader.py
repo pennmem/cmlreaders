@@ -200,7 +200,8 @@ class CMLReader(object):
             if (
                 self.experiment.startswith("PS") or
                 self.experiment.startswith("TH") or
-                self.experiment.startswith("YC")
+                self.experiment.startswith("YC") or
+                self.experiment.startswith("Location")
             ):
                 data_type = "task_events"
             else:
