@@ -422,13 +422,15 @@ class EEGReader(BaseCMLReader):
             if row["eegfile"].startswith("/"):
                 return row["eegfile"]
 
-            subject = row["subject"]
+            subject = self.subject if self.subject is not None else row["subject"]
+            experiment = self.experiment if self.experiment is not None else row["experiment"]
+            session = self.session if self.session is not None else row["session"]
 
             return "/" + constants.rhino_paths["processed_eeg"][0].format(
                 protocol=get_protocol(subject),
                 subject=subject,
-                experiment=row["experiment"],
-                session=row["session"],
+                experiment=experiment,
+                session=session,
                 basename=row["eegfile"]
             )
 

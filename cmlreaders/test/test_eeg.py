@@ -588,6 +588,21 @@ class TestLoadEEG:
         assert len(pairs) == pairs_channels
 
     @pytest.mark.rhino
+    @pytest.mark.parametrize("subject,experiment,session", [
+        ("R1207J", "catFR1", 1),
+    ])
+    def test_event_discrepancies(self, subject, experiment, session, rhino_root):
+        """Test loading of known subjects with differences between session number in
+        events.json and session number everywhere else.
+
+        """
+        reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
+        pairs = reader.load("pairs")
+        events = reader.load("events")
+
+        reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10, scheme=pairs)
+
+    @pytest.mark.rhino
     @pytest.mark.parametrize(
         "subject,experiment,session,rel_start,rel_stop,samples", [
             ("R1328E", "FR1", 0, 0, 100, 100),
