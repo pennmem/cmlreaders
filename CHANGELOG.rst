@@ -5,9 +5,11 @@ Version 0.9.4
 -------------
 
 **Upcoming**
+
 * Added `stim_params` accessor to unpack the stim_params field
 
 Bug fixes:
+
 * LocationSearch events are 'task_events' by default, similar to PS
 * EEGReader now uses the reader's subject, experiment, session when determining full EEG filename whenever possible
 
