@@ -5,4 +5,4 @@ set -ex
 
 VERSION=`python -c "print(''.join('$PYTHON_VERSION'.split('.')))"`
 invoke build
-anaconda -t $ANACONDA_TOKEN upload build/**/$PKG_NAME-py$VERSION*.tar.bz2
+anaconda -t $ANACONDA_TOKEN upload build/**/$PKG_NAME*-py$VERSION*.tar.bz2
