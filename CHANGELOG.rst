@@ -4,7 +4,7 @@ Changes
 Version 0.9.4
 -------------
 
-**Upcoming**
+**2018-10-4**
 
 * Added `stim_params` accessor to unpack the stim_params field
 
