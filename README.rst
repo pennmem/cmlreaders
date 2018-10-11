@@ -45,6 +45,10 @@ The following assumes you have already installed Anaconda_ or Miniconda_.
     necessary to also install the ``bottleneck`` package::
 
         conda install -y bottleneck
+        
+.. note::
+    At the moment, `cmlreaders` is only visible to conda version 4+, 
+    so if you're still using conda version 3 you are advised to upgrade.
 
 
 Usage examples
