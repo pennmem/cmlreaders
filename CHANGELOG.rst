@@ -1,6 +1,14 @@
 Changes
 =======
 
+Version 0.9.5
+-------------
+**2018-10-12**
+
+* Added ``MNICoordinatesReader`` to read MNI coordinates files
+* MNI coordinates now get added to ``contacts`` and ``pairs``
+  whenever they aren't already present
+
 Version 0.9.4
 -------------
 
