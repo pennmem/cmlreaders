@@ -32,6 +32,9 @@ rhino_paths = {
         'data10/RAM/subjects/{subject_montage}/tal/coords/electrode_coordinates.csv',
         'data10/RAM/subjects/{subject_montage}/tal/electrode_coordinates.csv',
     ],
+    'mni_coordinates': [
+        'data10/RAM/subjects/{subject_montage}/imaging/autoloc/electrodenames_coordinates_mni.csv'
+    ],
     'jacksheet': [
         'data10/RAM/subjects/{subject_montage}/docs/jacksheet.txt',
     ],
@@ -179,6 +182,7 @@ montage_files = (
     'voxel_coordinates',
     'prior_stim_results',
     'electrode_coordinates',
+    'mni_coordinates',
     'jacksheet',
     'good_leads',
     'leads',

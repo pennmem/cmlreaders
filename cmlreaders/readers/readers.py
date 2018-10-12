@@ -14,7 +14,8 @@ from cmlreaders.exc import (
 
 class TextReader(BaseCMLReader):
     """ Generic reader class for reading RAM text files """
-    data_types = ['voxel_coordinates', 'jacksheet', 'classifier_excluded_leads',
+    data_types = ['voxel_coordinates',
+                  'jacksheet', 'classifier_excluded_leads',
                   'good_leads', 'leads', 'area']
     protocols = ["r1"]
 
@@ -47,6 +48,22 @@ class TextReader(BaseCMLReader):
             df = pd.read_csv(self.file_path, sep=sep, names=self._headers)
 
         return df
+
+
+class MNICoordinatesReader(TextReader):
+
+    data_types = ['mni_coordinates']
+
+    protocols = ['r1']
+
+    headers = {
+        'mni_coordinates': ['label', 'mni.x', 'mni.y', 'mni.z',
+                                     'x1', 'x2', 'x3', 'x4', 'x5'],  # Ignoring these last 5 fields at the moment
+    }
+
+    def as_dataframe(self):
+        df = super(MNICoordinatesReader, self).as_dataframe()
+        return df[['label', 'mni.x', 'mni.y', 'mni.z']]
 
 
 class BaseCSVReader(BaseCMLReader):

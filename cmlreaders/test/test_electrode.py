@@ -1,8 +1,10 @@
 import pandas as pd
 import pytest
+from numpy.testing import assert_array_almost_equal
 
 from cmlreaders.readers.electrodes import MontageReader, LocalizationReader, \
     ElectrodeCategoriesReader
+from cmlreaders.readers.readers import MNICoordinatesReader
 from cmlreaders.test.test_readers import datafile
 
 
@@ -73,3 +75,36 @@ class TestElectrodeCategoriesReader:
         categories = reader.load()
         for key, len_ in lens.items():
             assert len(categories[key]) == len_
+
+
+@pytest.mark.rhino
+class TestWithMNICoordinatesReader:
+    @pytest.mark.parametrize("subject, montage, data_type",
+                             [
+                                 ("R1400N", 0, "contacts"),
+                             ])
+    def test_compare_with_json(self, subject, montage, data_type, rhino_root):
+        mni_reader = MNICoordinatesReader(
+            data_type='mni_coordinates',
+            subject=subject,
+            montage=montage,
+            rootdir=rhino_root
+        )
+        mni_df = mni_reader.as_dataframe()
+
+        montage_reader = MontageReader(data_type, subject=subject, montage=montage, rootdir=rhino_root)
+        montage_df = montage_reader.as_dataframe()
+
+        assert_array_almost_equal(mni_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']],
+                                  montage_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']])
+
+    @pytest.mark.parametrize("subject, montage",
+                             [
+                                 ('R1001P', 0),
+                             ])
+    @pytest.mark.parametrize("data_type", ['contacts', 'pairs'])
+    def test_add_mni_coords(self, subject, montage, data_type, rhino_root):
+
+        montage = MontageReader(data_type, subject=subject, montage=montage, rootdir=rhino_root).as_dataframe()
+
+        assert 'mni.x' in montage.columns
