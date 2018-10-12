@@ -182,7 +182,7 @@ montage_files = (
     'voxel_coordinates',
     'prior_stim_results',
     'electrode_coordinates',
-    'mni_coordinates'
+    'mni_coordinates',
     'jacksheet',
     'good_leads',
     'leads',

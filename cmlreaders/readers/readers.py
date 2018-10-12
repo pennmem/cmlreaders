@@ -52,13 +52,13 @@ class TextReader(BaseCMLReader):
 
 class MNICoordinatesReader(TextReader):
 
-    data_types = ['mni_coordinates',]
+    data_types = ['mni_coordinates']
 
     protocols = ['r1']
 
     headers = {
-        'mni_coordinates': ['label', 'mni.x','mni.y','mni.z',
-                            'x1','x2','x3','x4','x5'] # Ignoring these last 5 fields at the moment
+        'mni_coordinates': ['label', 'mni.x', 'mni.y', 'mni.z',
+                                     'x1', 'x2', 'x3', 'x4', 'x5'],  # Ignoring these last 5 fields at the moment
     }
 
     def as_dataframe(self):

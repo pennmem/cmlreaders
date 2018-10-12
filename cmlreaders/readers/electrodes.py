@@ -8,6 +8,7 @@ from pandas.io.json import json_normalize
 
 from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
+from cmlreaders.readers.readers import MNICoordinatesReader
 
 
 class MontageReader(BaseCMLReader):
@@ -76,6 +77,29 @@ class MontageReader(BaseCMLReader):
             column[i] = cat
 
         df["category"] = column
+
+        return df
+
+    def _insert_mni_coordinates(self, df: pd.DataFrame) -> pd.DataFrame:
+        mni_reader = MNICoordinatesReader(
+            data_type='mni_coordinates',
+            subject=self.subject,
+            experiment=self.experiment,
+            session=self.session,
+            localization=self.localization,
+            montage=self.montage,
+            rootdir=self.rootdir,
+        )
+        mni_coords = mni_reader.as_dataframe()
+        mni_coords['label'] = [lbl.upper() for lbl in mni_coords['label']]  # Normalize labels to upper case
+        if 'pairs' in self.data_type:
+            mni_coords = mni_coords.set_index('label')
+            pair_labels = [p.upper().split('-') for p in df.label]  # Normalize labels to upper case
+            mni_coords = [mni_coords.loc[p, ['mni.x', 'mni.y', 'mni.z']].mean()
+                          for p in pair_labels]
+            mni_coords = pd.DataFrame(data=mni_coords, index=df.label).reset_index()
+
+        df = df.merge(mni_coords, how='left', on='label')
 
         return df
 
@@ -192,6 +216,13 @@ class MontageReader(BaseCMLReader):
             try:
                 df = self._insert_categories(df)
             except:  # noqa
+                pass
+
+        # Insert MNI coordinates if they're missing
+        if not any('mni' in c for c in df.columns) and self.subject:
+            try:
+                df = self._insert_mni_coordinates(df)
+            except FileNotFoundError:
                 pass
 
         return df
