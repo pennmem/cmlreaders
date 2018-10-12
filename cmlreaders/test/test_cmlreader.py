@@ -49,7 +49,7 @@ class TestCMLReader:
         ("LTP093", "ltpFR2", 0, None),
     ])
     @pytest.mark.parametrize("file_type", [
-        'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
+        'voxel_coordinates', 'classifier_excluded_leads', 'mni_coordinates', 'jacksheet',
         'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
         'target_selection_table', 'electrode_categories', 'classifier_summary',
         'math_summary', 'session_summary', 'pairs', 'contacts', 'localization',
