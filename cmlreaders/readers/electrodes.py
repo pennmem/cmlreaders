@@ -9,6 +9,8 @@ from pandas.io.json import json_normalize
 from cmlreaders import exc
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.readers.readers import MNICoordinatesReader
+import cmlreaders.warnings
+import warnings
 
 
 class MontageReader(BaseCMLReader):
@@ -215,15 +217,15 @@ class MontageReader(BaseCMLReader):
         if self.read_categories:
             try:
                 df = self._insert_categories(df)
-            except:  # noqa
+            except Exception:  # noqa
                 pass
 
-        # Insert MNI coordinates if they're missing
+        # Insert MNI coordinates if they're missing; emit a warning if it doesn't work
         if not any('mni' in c for c in df.columns) and self.subject:
             try:
                 df = self._insert_mni_coordinates(df)
-            except FileNotFoundError:
-                pass
+            except Exception:  # noqa
+                warnings.warn(cmlreaders.warnings.MissingCoordinatesWarning("Could not load MNI coordinates"))
 
         return df
 

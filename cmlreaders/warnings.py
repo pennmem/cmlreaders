@@ -10,3 +10,7 @@ class MissingChannelsWarning(RuntimeWarning):
     and what are available.
 
     """
+
+class MissingCoordinatesWarning(UserWarning):
+    """ Warning when coordinates could not be loaded
+    """
