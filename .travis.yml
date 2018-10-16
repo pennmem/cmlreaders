@@ -8,7 +8,6 @@ env:
     - CC=gcc-7
     - CXX=g++-7
     - PKG_NAME=cmlreaders
-    - PKG_BUILDNUM=1
   matrix:
     - PYTHON_VERSION=3.5
     - PYTHON_VERSION=3.6
