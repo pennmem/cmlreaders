@@ -11,6 +11,7 @@ class MissingChannelsWarning(RuntimeWarning):
 
     """
 
+
 class MissingCoordinatesWarning(UserWarning):
     """ Warning when coordinates could not be loaded
     """
