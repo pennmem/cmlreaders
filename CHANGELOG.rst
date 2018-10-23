@@ -1,6 +1,13 @@
 Changes
 =======
 
+Version 0.9.5a
+--------------
+**2018-10-23**
+
+* Fixed jacksheet parsing
+
+
 Version 0.9.5
 -------------
 **2018-10-12**
