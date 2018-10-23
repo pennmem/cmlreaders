@@ -36,7 +36,7 @@ class TextReader(BaseCMLReader):
 
     def as_dataframe(self):
         if self.data_type == "jacksheet":
-            sep = None  # autodetect if separated by space or tab
+            sep = '\s+'  # Split on any whitespace
         else:
             sep = ","  # read_csv's default value
 
