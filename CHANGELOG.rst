@@ -1,12 +1,12 @@
 Changes
 =======
 
-Version 0.9.5a
---------------
+Version 0.9.6
+-------------
 **2018-10-23**
 
 * Fixed jacksheet parsing
-
+* Failure to add MNI coordinates to ``contacts`` or ``pairs`` no longer critical
 
 Version 0.9.5
 -------------
