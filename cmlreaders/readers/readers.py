@@ -10,7 +10,6 @@ from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
     MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
 )
-import pandas.errors as pd_errors
 
 
 class TextReader(BaseCMLReader):
