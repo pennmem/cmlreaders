@@ -71,6 +71,16 @@ should be added to :mod:`cmlreaders.test.test_cmlreader`. These are in addition
 to the test cases that should already exist for the new reader. For examples,
 see :mod:`cmlreaders.test.test_readers`.
 
+Adding new EEG source formats
+-----------------------------
+
+Support for new EEG formats is added by extending
+:class:`cmlreaders.readers.eeg.BaseEEGReader` and implementing the ``read`` method.
+Once this is done, edit :func:`cmlreaders.readers.eeg.EEGReader._get_reader_class`
+to return your new class (the class itself, not an instance of it) when
+given a filename of the appropriate kind.
+
+
 Releasing new versions and building conda packages
 --------------------------------------------------
 
