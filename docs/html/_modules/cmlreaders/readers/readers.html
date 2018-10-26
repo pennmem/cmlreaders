@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.9.3 documentation</title>
+  <title>cmlreaders.readers.readers &mdash; CML Data Readers 0.9.6 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -86,6 +85,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RAM_data_description.html">RAM Public Data Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../shortcuts.html">Shortcuts for common queries</a></li>
@@ -170,7 +170,8 @@
 
 <div class="viewcode-block" id="TextReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader">[docs]</a><span class="k">class</span> <span class="nc">TextReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Generic reader class for reading RAM text files &quot;&quot;&quot;</span>
-    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">,</span> <span class="s1">&#39;jacksheet&#39;</span><span class="p">,</span> <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">,</span>
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;voxel_coordinates&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;jacksheet&#39;</span><span class="p">,</span> <span class="s1">&#39;classifier_excluded_leads&#39;</span><span class="p">,</span>
                   <span class="s1">&#39;good_leads&#39;</span><span class="p">,</span> <span class="s1">&#39;leads&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">]</span>
     <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;r1&quot;</span><span class="p">]</span>
 
@@ -191,7 +192,7 @@
 
 <div class="viewcode-block" id="TextReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.TextReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;jacksheet&quot;</span><span class="p">:</span>
-            <span class="n">sep</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># autodetect if separated by space or tab</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="s1">&#39;\s+&#39;</span>  <span class="c1"># Split on any whitespace</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span>  <span class="c1"># read_csv&#39;s default value</span>
 
@@ -203,6 +204,22 @@
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_headers</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">df</span></div></div>
+
+
+<div class="viewcode-block" id="MNICoordinatesReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.MNICoordinatesReader">[docs]</a><span class="k">class</span> <span class="nc">MNICoordinatesReader</span><span class="p">(</span><span class="n">TextReader</span><span class="p">):</span>
+
+    <span class="n">data_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;mni_coordinates&#39;</span><span class="p">]</span>
+
+    <span class="n">protocols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r1&#39;</span><span class="p">]</span>
+
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;mni_coordinates&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.x&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.y&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.z&#39;</span><span class="p">,</span>
+                                     <span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">,</span> <span class="s1">&#39;x4&#39;</span><span class="p">,</span> <span class="s1">&#39;x5&#39;</span><span class="p">],</span>  <span class="c1"># Ignoring these last 5 fields at the moment</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="MNICoordinatesReader.as_dataframe"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.MNICoordinatesReader.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MNICoordinatesReader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.x&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.y&#39;</span><span class="p">,</span> <span class="s1">&#39;mni.z&#39;</span><span class="p">]]</span></div></div>
 
 
 <div class="viewcode-block" id="BaseCSVReader"><a class="viewcode-back" href="../../../api.html#cmlreaders.readers.readers.BaseCSVReader">[docs]</a><span class="k">class</span> <span class="nc">BaseCSVReader</span><span class="p">(</span><span class="n">BaseCMLReader</span><span class="p">):</span>
@@ -380,7 +397,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.3',
+            VERSION:'0.9.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -395,10 +412,7 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

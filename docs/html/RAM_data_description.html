@@ -1,0 +1,874 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>RAM Public Data Description &mdash; CML Data Readers 0.9.6 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Events" href="events.html" />
+    <link rel="prev" title="Data Guide" href="data_guide.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CML Data Readers
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RAM Public Data Description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#metadata">MetaData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#directories">Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#files">Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fr-and-catfr">FR and catFR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pal">PAL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yc">YC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#th-and-thr">TH and THR</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#montage-information-pairs-and-contacts">Montage information (pairs and contacts)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">Developer’s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CML Data Readers</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>RAM Public Data Description</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/RAM_data_description.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="ram-public-data-description">
+<h1>RAM Public Data Description<a class="headerlink" href="#ram-public-data-description" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document was converted from the Word document that accompanies
+the RAM public data releases.</p>
+</div>
+<p>This document contains a listing and description of the various data
+included in this public data archive, with requests made via the URL:
+<a class="reference external" href="http://memory.psych.upenn.edu/RAM_Public_Data">http://memory.psych.upenn.edu/RAM_Public_Data</a></p>
+<p>Instructions to download and extract data:</p>
+<ul class="simple">
+<li>Replace &lt;date&gt; with the data of the specific release you are
+downloading/extracting</li>
+<li>Download all the files named “Release_&lt;date&gt;.tar.gz.__” into a
+common directory.</li>
+<li>Combine and untar all the split files containing event, eeg, and
+localization data:<ul>
+<li>Max/Linux: Using the terminal, run “cat Release_&lt;date&gt;.tar.gz.*
+| tar xzvf –“ in the directory with the downloaded files.</li>
+<li>Windows: Use <a class="reference external" href="http://www.rarlab.com/">Winrar</a> or a similar
+application.</li>
+</ul>
+</li>
+<li>Download “Release_Metadata_&lt;date&gt;.tar.gz” and untar:<ul>
+<li>Max/Linux: Using the terminal, run command “tar -xzvf
+Release_Metadata_&lt;date&gt;.tar.gz“.</li>
+<li>Windows: Use <a class="reference external" href="http://www.rarlab.com/">Winrar</a> or a similar
+application.</li>
+</ul>
+</li>
+</ul>
+<p>Description of data contents follow:</p>
+<div class="section" id="metadata">
+<h2>MetaData<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
+<p><strong>design_documents</strong> word documents containing detailed descriptions of
+the implementations of behavioral tasks FR1/2/3, CatFR1/2/3, PAL1/2/3, YC1/2,
+TH1/TH3</p>
+<p><strong>session_notes</strong> for each subject, contains tester notes and comments
+for each session</p>
+<p><strong>electrode_categories</strong> for each subject, lists electrode contacts in
+the seizure onset zone, exhibiting frequent interictal activity, residing in a
+brain lesion, or labelled as bad/broken by the clinical staff</p>
+<p><strong>RAM_subject_demographics.csv</strong> for each subject, the age (at testing),
+gender, race, ethnicity, and handedness</p>
+</div>
+<div class="section" id="directories">
+<h2>Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Directory</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">/protocols/&lt;protocol&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;protocol&gt;</span></code> is the code for the protocol under which an experiment took place. In this archive, the protocol is ‘r1’</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">subjects/&lt;subject&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;subject&gt;</span></code> is the 6-character code representing a participant in an experiment. All data related to the subject is placed under this directory</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">experiments/&lt;experiment&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;experiment&gt;</span></code> is the name of the task in which the subject participated. One of: FR1, FR2, FR3, catFR1, catFR2, catFR3, PAL1, PAL2, PAL3, YC1, YC2, TH1, TH3</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sessions/&lt;session&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;session&gt;</span></code> is a zero-indexed identifier for a session of an experiment</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">localizations/&lt;localization&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;localization&gt;</span></code> is a zero-indexed number that identifies a reimplant. Data concerning localization of electrodes for this implant is contained in this directory.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">montages/&lt;montage&gt;</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;montage&gt;</span></code> is a zero-indexed number that identifies a montage change. Note that montage numbers do not reset in the case of a new localization.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="files">
+<h2>Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">File</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">protocols/r1.json</span></code></td>
+<td>A complete index of all information stored within the archive. JSON objects for each subject-session contain paths to the relevant files.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sessions/#/behavioral/current_processed/events.json</span></code></td>
+<td>Lists of JSON objects containing information about the behavioral events and stimulus presentations that occurred during an experiment</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">sessions/#/ephys/current_processed/sources.json</span></code></td>
+<td>List of JSON objects containing information about the eeg files contained in the noreref directory.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sessions/#/ephys/current_processed/noreref</span></code></td>
+<td>Each file contains raw binary, EEG data split by channel (denoted by suffix, i.e. .001 = Channel 1, etc.).</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">montages/#/neuroradiology/current_processed/pairs.json</span></code></td>
+<td>JSON objects containing localization information for neighboring pairs of implanted electrodes</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">montages/#/neuroradiology/current_processed/contacts.json</span></code></td>
+<td>JSON objects containing localization information for each individual implanted electrode</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#/surf/lh.pial,</span> <span class="pre">#/surf/rh.pial</span></code></td>
+<td>Freesurfer files for each hemisphere containing the reconstructed surface of each subject’s brain</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>JSON events structures are present for each session. Each events
+structure consists of an array of objects, in which the object consists
+of fields that specify information about the event in question. The
+following fields exist across every experiment:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Term</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Protocol</td>
+<td>The protocol number under which the subject was run. For the subjects contained in this archive, the protocol will always be ‘r1’</td>
+</tr>
+<tr class="row-odd"><td>Subject</td>
+<td>The code of the subject that participated in this session</td>
+</tr>
+<tr class="row-even"><td>Montage</td>
+<td>A decimal number representing the localization and montage numbers of the subject during this experiment. Localization 1, montage 2 is represented as 1.2</td>
+</tr>
+<tr class="row-odd"><td>Experiment</td>
+<td>Experiment name</td>
+</tr>
+<tr class="row-even"><td>Session</td>
+<td>Session number</td>
+</tr>
+<tr class="row-odd"><td>Type</td>
+<td>A label for the event. Event types differ across experiments.</td>
+</tr>
+<tr class="row-even"><td>mstime</td>
+<td>Epoch time in ms at which the event took place</td>
+</tr>
+<tr class="row-odd"><td>msoffset</td>
+<td>The amount of time in ms that it took for the call in question to return. Represents an uncertainty in the timing of the event</td>
+</tr>
+<tr class="row-even"><td>eegoffset</td>
+<td>The number of samples into the eeg file at which the event took place</td>
+</tr>
+<tr class="row-odd"><td>eegfile</td>
+<td>The basename of the eeg file that contains the recordings for this session. Eeg files can be located in the corresponding ephys folder for the session</td>
+</tr>
+<tr class="row-even"><td>exp_version</td>
+<td>Experiment software version number</td>
+</tr>
+<tr class="row-odd"><td>stim_params</td>
+<td>A list of the stimulation parameters that were applied during or around that event. If no stimulation was applied, this value is an empty list</td>
+</tr>
+</tbody>
+</table>
+<p>The <code class="docutils literal notranslate"><span class="pre">stim_params</span></code> list contains the following fields:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">anode_number</span></code></td>
+<td>Channel number of the stimulated anode. This number corresponds to a localization made in pairs.json and contacts.json for this montage.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cathode_number</span></code></td>
+<td>Channel number of the stimulated cathode</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">anode_label</span></code></td>
+<td>Channel label of the stimulated anode</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cathode_label</span></code></td>
+<td>Channel label of the stimulated cathode</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">amplitude</span></code></td>
+<td>Amplitude of stimulation in microamps</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pulse_freq</span></code></td>
+<td>The frequency of the train of pulses used for stimulation</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">n_pulses</span></code></td>
+<td>The number of stimulation pulses delivered in the stimulation train</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">burst_freq</span></code></td>
+<td>Not used in this data set</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">n_bursts</span></code></td>
+<td>Not used in this data set</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pulse_width</span></code></td>
+<td>Width of an individual pulse in microseconds</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">stim_on</span></code></td>
+<td>Whether stimulation was being applied during this specific event</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">stim_duration</span></code></td>
+<td>Approximate duration of the stimulation (in milliseconds)</td>
+</tr>
+</tbody>
+</table>
+<p>The remaining portion of this document describes the specific fields that
+pertain to each experiment.</p>
+<div class="section" id="fr-and-catfr">
+<h3>FR and catFR<a class="headerlink" href="#fr-and-catfr" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Event type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SESS_START</span></code>/<code class="docutils literal notranslate"><span class="pre">SESS_END</span></code></td>
+<td>The start and end of a session</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">COUNTDOWN_START</span></code>/<code class="docutils literal notranslate"><span class="pre">COUNTDOWN_END</span></code></td>
+<td>The start and end of the countdown period that occurs prior to each list</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DISTRACT_START</span></code>/<code class="docutils literal notranslate"><span class="pre">DISTRACT_END</span></code></td>
+<td>The start and ends of the math distractor period that occurs between encoding and retrieval. “PRACTICE” indicates that the distractor period occurred on the initial practice list.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC_START</span></code>/<code class="docutils literal notranslate"><span class="pre">REC_END</span></code></td>
+<td>The start and end of the recall period.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">REC_WORD</span></code></td>
+<td>The recall of a word</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC_WORD_VV</span></code></td>
+<td>Production of a non-word vocalization</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">STIM_ON</span></code></td>
+<td>Indicates the onset of stimulation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TRIAL</span></code></td>
+<td>The start of a trial</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">WORD</span></code></td>
+<td>The presentation of a word</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">list</span></code></td>
+<td>The number of the current list. -1 indicates a practice list</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">serialpos</span></code></td>
+<td>The serial position (at encoding) of the currently presented or recalled item</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">word</span></code></td>
+<td>The currently presented or recalled word</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">wordno</span></code></td>
+<td>The number in the wordpool of the currently presented or recalled item</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">recalled</span></code></td>
+<td>A boolean flag to indicate during WORD events whether the currently presented word was subsequently recalled, and during REC_WORD events whether the current presented word was a successful recall</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">rectime</span></code></td>
+<td>During REC_WORD events, the amount of time elapsed (in ms) since the beginning of the recall period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">intrusion</span></code></td>
+<td>During REC_WORD events, -1 indicates an extra-list intrusion and a positive number N indicates that the word presentation occurred N lists back</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">stim_list</span></code></td>
+<td>During FR2/3, indicates that stimulation occurred on a given list</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">is_stim</span></code></td>
+<td>During FR2/3, Indicates that stimulation occurred during an item’s presentation</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">category</span></code></td>
+<td>(catFR only) the category that the currently presented word belongs to</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">category_num</span></code></td>
+<td>(catFR only) a numerical identifier for the category of the current word</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pal">
+<h3>PAL<a class="headerlink" href="#pal" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Event type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SESS_START/SESS_END</span></code></td>
+<td>The start and end of a session</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ENCODING_START</span></code></td>
+<td>The start of the encoding period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">MATH_START</span></code>/<code class="docutils literal notranslate"><span class="pre">MATH_END</span></code></td>
+<td>The start and end of the math distractor period</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC_START</span></code>/<code class="docutils literal notranslate"><span class="pre">REC_END</span></code></td>
+<td>The start and end of the recall period for individual items during retrieval</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">REC_EVENT</span></code></td>
+<td>A recall or vocalization</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">STUDY_PAIR</span></code></td>
+<td>The presentation of a pair of items during encoding</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">STUDY_ORIENT</span></code></td>
+<td>The appearance of the orient cue before words during encoding</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TEST_PROBE</span></code></td>
+<td>The presentation of a word during retrieval</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">TEST_ORIENT</span></code></td>
+<td>The appearance of the orient cue before words during retrieval</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TEST_START</span></code></td>
+<td>The start of the retrieval period</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">resp_word</span></code></td>
+<td>The word that was recalled for the current pair</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">probe_word</span></code></td>
+<td>The word that was shown as the probe for the current pair</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">probepos</span></code></td>
+<td>The position in which the probe from the current pair was presented at  retrieval</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cue_direction</span></code></td>
+<td>Whether the top (1) or bottom (0) item was presented as the probe</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">is_stim</span></code></td>
+<td>Whether stimulation occurred during the given event</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">resp_pass</span></code></td>
+<td>Whether the current item was responded to with PASS as the only recall</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">RT</span></code></td>
+<td>The amount of time (in ms) that elapsed between the presentation of the probe and the recall</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">serialpos</span></code></td>
+<td>The position in which the current pair was presented during encoding</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">stim_list</span></code></td>
+<td>Whether stimulation was applied during the current list</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">correct</span></code></td>
+<td>Whether a correct recall was made during the retrieval period</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">study_1</span></code></td>
+<td>The word that was presented at the top during encoding</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">study_2</span></code></td>
+<td>The word that was presented at the bottom during encoding</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">vocalization</span></code></td>
+<td>Whether the current recall was a non-word vocalization</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">stim_type</span></code></td>
+<td>Whether stimulation on this list occurred at encoding or retrieval</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">intrusion</span></code></td>
+<td>On incorrect recalls, -1 if the word was an extra-list intrusion, 0 if the word came from the current list, and N (N&gt;1) if the word was presented N lists back</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">list</span></code></td>
+<td>The number of the current list (-1 for practice)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">expecting_word</span></code></td>
+<td>The word that was intended to be recalled during retrieval</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="yc">
+<h3>YC<a class="headerlink" href="#yc" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Event type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">NAV_LEARN</span></code></td>
+<td>A trial in which the subject is driven automatically to the target object with the object visible</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">NAV_PRACTICE_LEARN</span></code></td>
+<td>Same as NAV_LEARN, but considered practice</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">NAV_PRACTICE_TEST</span></code></td>
+<td>Same as NAV_TEST, but considered practice</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">NAV_TEST</span></code></td>
+<td>A trial in which the subject drives to where they believe the invisible target object is located</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>obj_locs</td>
+<td>XY coordinate of the target object</td>
+</tr>
+<tr class="row-odd"><td>stimulus_num</td>
+<td>The current trial count within a session</td>
+</tr>
+<tr class="row-even"><td>resp_reaction_time</td>
+<td>Length of time (seconds) to initiate movement</td>
+</tr>
+<tr class="row-odd"><td>start_locs</td>
+<td>XY coordinate of the starting location</td>
+</tr>
+<tr class="row-even"><td>env_size</td>
+<td>Array representing the bounds of the environent [minimum x, maximum x, minimum y, maximum y]</td>
+</tr>
+<tr class="row-odd"><td>resp_path_length</td>
+<td>Number of units traversed on the path taken between start_locs and resp_locs</td>
+</tr>
+<tr class="row-even"><td>resp_dist_err</td>
+<td>Euclidean distance between the target location (obj_locs) and the response location (resp_locs)</td>
+</tr>
+<tr class="row-odd"><td>is_stim</td>
+<td>Indicates whether the current NAV_LEARN, NAV_LEARN, NAV_TEST set was stimulated or unstimulated</td>
+</tr>
+<tr class="row-even"><td>resp_performance_factor</td>
+<td>Normalized distance between the target location (obj_locs) and the response location (resp_locs). &nbsp;0 is a perfect response, 1 is the worst possible response.</td>
+</tr>
+<tr class="row-odd"><td>recalled</td>
+<td>Indicates whether the euclidean distance error for the current NAV_LEARN, NAV_LEARN, NAV_TEST set was below the median of the subject’s distance errors</td>
+</tr>
+<tr class="row-even"><td>resp_locs</td>
+<td>XY coordinate of the response location</td>
+</tr>
+<tr class="row-odd"><td>path</td>
+<td>Contains the subarrays ‘x’, ‘y’, ‘direction’, and ‘time’ detailing the path taken between start_locs and resp_locs</td>
+</tr>
+<tr class="row-even"><td>resp_travel_time</td>
+<td>Once movement is initiated, the length of time (seconds) spent navigating</td>
+</tr>
+<tr class="row-odd"><td>block_num</td>
+<td>The number of the current NAV_LEARN, NAV_LEARN, NAV_TEST set</td>
+</tr>
+<tr class="row-even"><td>stimulus</td>
+<td>The identity of the current target object</td>
+</tr>
+<tr class="row-odd"><td>paired_block</td>
+<td>Indicates the block used to counterbalance the current block</td>
+</tr>
+<tr class="row-even"><td>block</td>
+<td>The number of the current block. One block is composed of one pair of NAV_LEARN, NAV_LEARN, NAV_TEST sets</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="th-and-thr">
+<h3>TH and THR<a class="headerlink" href="#th-and-thr" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Event type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">CHEST</span></code></td>
+<td>The opening of a treasure chest. The chest can either be filled with a study object or empty</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">REC</span></code></td>
+<td>The moment a response position is chosen</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>trial</td>
+<td>trial number, zero indexed. Values will range from 0 – 39 in a full session</td>
+</tr>
+<tr class="row-odd"><td>chestNum</td>
+<td>chest number within a given trial (1 – 3 or 4, depending on listLength. One indexed).</td>
+</tr>
+<tr class="row-even"><td>block</td>
+<td>block number, zero indexed. Values will range from 0 – 4 in a full session.</td>
+</tr>
+<tr class="row-odd"><td>listLength</td>
+<td>(2 or 3) – Indicates how many filled chests were present for the current trial.</td>
+</tr>
+<tr class="row-even"><td>radius_size</td>
+<td>Float (constant across all events) indicating the size (in VR units) of the selection circle radius.</td>
+</tr>
+<tr class="row-odd"><td>is_stim</td>
+<td>(0 or 1) – Indicates whether electrical stimulation was received during this event. For the TH1 task, this is always 0.</td>
+</tr>
+<tr class="row-even"><td>stim_list</td>
+<td>(0 or 1) – Indicates whether electrical stimulation was received during this trial. For the TH1 task, this is always 0.</td>
+</tr>
+<tr class="row-odd"><td>locationX</td>
+<td>X-coordinate of current chest position.</td>
+</tr>
+<tr class="row-even"><td>locationY</td>
+<td>Y-coordinate of current chest position.</td>
+</tr>
+<tr class="row-odd"><td>item_name</td>
+<td>String identifying the current item. If empty, the chest contained no item.</td>
+</tr>
+<tr class="row-even"><td>navStartLocationX</td>
+<td>X-coordinate of starting position for the current trial.</td>
+</tr>
+<tr class="row-odd"><td>navStartLocationY</td>
+<td>Y-coordinate of starting position for the current trial.</td>
+</tr>
+<tr class="row-even"><td>isRecFromNearSide</td>
+<td>(0 or 1) - Indicates whether the correct item location is in the near half or far half of the field, relative to the retrieval viewpoint location.</td>
+</tr>
+<tr class="row-odd"><td>isRecFromStartSide</td>
+<td>(0 or 1) - Indicates whether the retrieval viewpoint location is the same side of the field as where the trial started.</td>
+</tr>
+<tr class="row-even"><td>reactionTime</td>
+<td>Float indicating the amount of time (in ms) between when the item probe was given and when the response location was selected.</td>
+</tr>
+<tr class="row-odd"><td>confidence</td>
+<td>(0, 1, 2) – Indicates whether the subject selected the low, medium, or high confidence response for the item.</td>
+</tr>
+<tr class="row-even"><td>recStartLocationX</td>
+<td>X-coordinate of the retrieval period viewpoint for the current trial.</td>
+</tr>
+<tr class="row-odd"><td>recStartLocationY</td>
+<td>Y-coordinate of the retrieval period viewpoint for the current trial.</td>
+</tr>
+<tr class="row-even"><td>distErr</td>
+<td>Float indicating the Euclidean distance between the true chest location for this item and the response location.</td>
+</tr>
+<tr class="row-odd"><td>recalled</td>
+<td>(0 or 1) – Indicates whether the chosen response location fell within radius_size of the correct location.</td>
+</tr>
+<tr class="row-even"><td>normErr</td>
+<td>Float (between 0 and 1) indicating normalized distance error, where 0 is a perfect response and 1 is the worst possible response, given the object’s location.</td>
+</tr>
+<tr class="row-odd"><td>chosenLocationX</td>
+<td>X-coordinate of current response position.</td>
+</tr>
+<tr class="row-even"><td>chosenLocationY</td>
+<td>Y-coordinate of current response position.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="montage-information-pairs-and-contacts">
+<h2>Montage information (pairs and contacts)<a class="headerlink" href="#montage-information-pairs-and-contacts" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pairs.json</span></code> and <code class="docutils literal notranslate"><span class="pre">contacts.json</span></code> files contains a “contacts” object,
+which in turn contains an object for each contact, with the contact
+label as the key. The fields within the contact are:</p>
+<table border="1" class="colwidths-auto docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">atlases.avg</span></code></td>
+<td>Registered to an internally made average brain</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">atlases.avg.dural</span></code></td>
+<td>Registered to the average brain, snapped to the dural surface</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">atlases.ind</span></code></td>
+<td>Registered to the subjects individual brain</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">atlases.ind.dural</span></code></td>
+<td>Registered to the subjects individual brain, snapped to the dural surface</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">atlases.mni</span></code></td>
+<td>Coordinates in MNI space</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">atlases.tal</span></code></td>
+<td>Coordinates in Talairach space</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">channel</span></code></td>
+<td>Channel number of the contact</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">code</span></code></td>
+<td>Label for the contact</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">type</span></code></td>
+<td>One of “s”, “g”, or “d”, representing strips, grids, or depths respectively</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="events.html" class="btn btn-neutral float-right" title="Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="data_guide.html" class="btn btn-neutral" title="Data Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.9.6',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

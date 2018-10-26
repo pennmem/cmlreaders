@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Computational Memory Lab Data Readers &mdash; CML Data Readers 0.9.3 documentation</title>
+  <title>Computational Memory Lab Data Readers &mdash; CML Data Readers 0.9.6 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -87,6 +86,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RAM_data_description.html">RAM Public Data Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
@@ -187,6 +187,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RAM_data_description.html">RAM Public Data Description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RAM_data_description.html#metadata">MetaData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RAM_data_description.html#directories">Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RAM_data_description.html#files">Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RAM_data_description.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RAM_data_description.html#montage-information-pairs-and-contacts">Montage information (pairs and contacts)</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">Events</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="events.html#common-fields">Common fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="events.html#fr-events">FR events</a></li>
@@ -212,6 +220,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dev.html#adding-new-search-paths">Adding new search paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#adding-new-data-types">Adding new data types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#adding-new-readers">Adding new readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#adding-new-eeg-source-formats">Adding new EEG source formats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#releasing-new-versions-and-building-conda-packages">Releasing new versions and building conda packages</a></li>
 </ul>
 </li>
@@ -259,7 +268,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.3',
+            VERSION:'0.9.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -274,10 +283,7 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.9.3 documentation</title>
+  <title>cmlreaders.cmlreader &mdash; CML Data Readers 0.9.6 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -86,6 +85,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RAM_data_description.html">RAM Public Data Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../shortcuts.html">Shortcuts for common queries</a></li>
@@ -217,6 +217,11 @@
                 <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">readers</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">protocols</span>
                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader_names</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;CMLReader(subject=</span><span class="si">{}</span><span class="s2">, experiment=</span><span class="si">{}</span><span class="s2">, session=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_load_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Loads the data index. Used internally to determine montage and</span>
@@ -351,7 +356,8 @@
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PS&quot;</span><span class="p">)</span> <span class="ow">or</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;TH&quot;</span><span class="p">)</span> <span class="ow">or</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;YC&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;YC&quot;</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Location&quot;</span><span class="p">)</span>
             <span class="p">):</span>
                 <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;task_events&quot;</span>
             <span class="k">else</span><span class="p">:</span>
@@ -513,7 +519,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.3',
+            VERSION:'0.9.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -528,10 +534,7 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

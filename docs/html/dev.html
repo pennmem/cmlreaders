@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developer’s Guide &mdash; CML Data Readers 0.9.3 documentation</title>
+  <title>Developer’s Guide &mdash; CML Data Readers 0.9.6 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -87,6 +86,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RAM_data_description.html">RAM Public Data Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shortcuts.html">Shortcuts for common queries</a></li>
@@ -95,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-search-paths">Adding new search paths</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-data-types">Adding new data types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-new-readers">Adding new readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-new-eeg-source-formats">Adding new EEG source formats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#releasing-new-versions-and-building-conda-packages">Releasing new versions and building conda packages</a></li>
 </ul>
 </li>
@@ -245,6 +246,14 @@ should be added to <code class="xref py py-mod docutils literal notranslate"><sp
 to the test cases that should already exist for the new reader. For examples,
 see <code class="xref py py-mod docutils literal notranslate"><span class="pre">cmlreaders.test.test_readers</span></code>.</p>
 </div>
+<div class="section" id="adding-new-eeg-source-formats">
+<h2>Adding new EEG source formats<a class="headerlink" href="#adding-new-eeg-source-formats" title="Permalink to this headline">¶</a></h2>
+<p>Support for new EEG formats is added by extending
+<a class="reference internal" href="api.html#cmlreaders.readers.eeg.BaseEEGReader" title="cmlreaders.readers.eeg.BaseEEGReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">cmlreaders.readers.eeg.BaseEEGReader</span></code></a> and implementing the <code class="docutils literal notranslate"><span class="pre">read</span></code> method.
+Once this is done, edit <code class="xref py py-func docutils literal notranslate"><span class="pre">cmlreaders.readers.eeg.EEGReader._get_reader_class()</span></code>
+to return your new class (the class itself, not an instance of it) when
+given a filename of the appropriate kind.</p>
+</div>
 <div class="section" id="releasing-new-versions-and-building-conda-packages">
 <h2>Releasing new versions and building conda packages<a class="headerlink" href="#releasing-new-versions-and-building-conda-packages" title="Permalink to this headline">¶</a></h2>
 <p>When releasing a new version, be sure to increment the version number in
@@ -319,7 +328,7 @@ for debugging purposes or if the automated deployment fails.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.3',
+            VERSION:'0.9.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -334,10 +343,7 @@ for debugging purposes or if the automated deployment fails.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

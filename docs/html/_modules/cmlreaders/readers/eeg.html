@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.9.3 documentation</title>
+  <title>cmlreaders.readers.eeg &mdash; CML Data Readers 0.9.6 documentation</title>
   
 
   
@@ -24,8 +24,7 @@
 
   
 
-  
-    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/theme_overrides.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -86,6 +85,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../data_guide.html">Data Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RAM_data_description.html">RAM Public Data Description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../events.html">Events</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../guides.html">Examples and tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../shortcuts.html">Shortcuts for common queries</a></li>
@@ -578,13 +578,15 @@
             <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;eegfile&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;eegfile&quot;</span><span class="p">]</span>
 
-            <span class="n">subject</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+            <span class="n">experiment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">]</span>
+            <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">]</span>
 
             <span class="k">return</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">constants</span><span class="o">.</span><span class="n">rhino_paths</span><span class="p">[</span><span class="s2">&quot;processed_eeg&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">protocol</span><span class="o">=</span><span class="n">get_protocol</span><span class="p">(</span><span class="n">subject</span><span class="p">),</span>
                 <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-                <span class="n">experiment</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;experiment&quot;</span><span class="p">],</span>
-                <span class="n">session</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;session&quot;</span><span class="p">],</span>
+                <span class="n">experiment</span><span class="o">=</span><span class="n">experiment</span><span class="p">,</span>
+                <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
                 <span class="n">basename</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;eegfile&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
@@ -801,7 +803,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.3',
+            VERSION:'0.9.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -816,10 +818,7 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {
