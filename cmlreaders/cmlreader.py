@@ -226,6 +226,7 @@ class CMLReader(object):
 
     def load_eeg(self, events: Optional[pd.DataFrame] = None,
                  rel_start: int = None, rel_stop: int = None,
+                 clean: Optional[bool] = False,
                  scheme: Optional[pd.DataFrame] = None):
         """Load EEG data.
 
@@ -240,10 +241,14 @@ class CMLReader(object):
         rel_stop
             Stop time in ms relative to passed event onsets. This  parameter is
             required when passing events and not used otherwise.
+        clean
+            If True, load re-referenced, filtered, and ICA/LCF-cleaned version of
+            data (currently available for scalp EEG only). If false, load raw data.
         scheme
             When specified, a bipolar scheme to rereference the data with and/or
             filter by channel. Rereferencing is only possible if the data were
-            recorded in monopolar (a.k.a. common reference) mode.
+            recorded in monopolar (a.k.a. common reference) mode. (Currently
+            available for iEEG only.)
 
         Returns
         -------
@@ -260,6 +265,7 @@ class CMLReader(object):
         """
         kwargs = {
             "scheme": scheme,
+            "clean": clean
         }
 
         if rel_start is not None:
@@ -277,7 +283,7 @@ class CMLReader(object):
             kwargs.update({
                 'events': events,
                 'rel_start': rel_start,
-                'rel_stop': rel_stop,
+                'rel_stop': rel_stop
             })
 
         return self.load('eeg', **kwargs)

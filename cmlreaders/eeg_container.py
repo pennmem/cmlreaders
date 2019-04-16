@@ -247,18 +247,43 @@ class EEGContainer(object):
             coords=coords,
         )
 
-    def to_mne(self) -> "mne.EpochsArray":
-        """Convert data to MNE's ``EpochsArray`` format."""
+    def to_mne(self) -> "mne.EpochsArray or mne.RawArray":
+        """
+        Convert data to MNE's RawArray or EpochsArray format. If loading continuous data, a RawArray will be returned.
+        If loading epoched data, an EpochsArray will be returned. Events are accessible made accessible through the
+        'events' field of the RawArray/EpochsArray's info.
+
+        If the data was originally loaded into the EEGContainer using MNE, the returned MNE object will retain the
+        original info structure created by mne.io.read_raw_*. Otherwise, a default info object will be attached to the
+        RawArray/EpochsArray.
+
+        :return: A RawArray or EpochsArray constructed from the EEGContainer's data.
+        """
         import mne
 
-        info = mne.create_info([str(c) for c in self.channels], self.samplerate,
-                               ch_types='eeg')
+        # Create a default info object if one has not been provided
+        if "mne_info" not in self.attrs:
+            info = mne.create_info([str(c) for c in self.channels], self.samplerate, ch_types='eeg')
+        # Otherwise, use the info from the session's first recording
+        else:
+            info = self.attrs["mne_info"][0]
 
-        events = np.empty([self.data.shape[0], 3], dtype=int)
-        events[:, 0] = list(range(self.data.shape[0]))
-        # FIXME: are these ok?
-        events[:, 1] = 0
-        events[:, 2] = 1
+        # Return RawArray if loading continuous data (must be from from a single recording)
+        if len(self.epochs) == 1 and np.all(self.epochs[0] == np.array([0, None])):
+            eeg = mne.io.RawArray(self.data[0], info, first_samp=0, verbose=False)
+        # Return EpochsArray if loading epoched data
+        else:
+            eeg = mne.EpochsArray(self.data, info, verbose=False)
 
-        epochs = mne.EpochsArray(self.data, info, events, verbose=False)
-        return epochs
+        # Attach events to MNE object as record array
+        if self.events is not None:
+            events = self.events.to_records()
+        else:
+            columns = ["eegoffset", "epoch_end"]
+            if len(self.epochs[0]) > 2:
+                columns = [columns[i] if i < 2 else "column_{}".format(i)
+                           for i in range(len(self.epochs[0]))]
+            events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
+        eeg.info['events'] = events
+
+        return eeg

@@ -85,9 +85,13 @@ class BaseEEGReader(ABC):
     epochs
         Epochs to include. Epochs are defined with start and stop sample
         counts.
+    clean
+        If True, load re-referenced, filtered, and ICA/LCF-cleaned version of
+        data (currently available for scalp EEG only). If false, load raw data.
     scheme
         Scheme data to use for rereferencing/channel filtering. This should be
-        loaded/manipulated from ``pairs.json`` data.
+        loaded/manipulated from ``pairs.json`` data. (Currently available for
+        iEEG only.)
 
     Notes
     -----
@@ -98,10 +102,12 @@ class BaseEEGReader(ABC):
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
                  epochs: List[Tuple[int, Union[int, None]]],
+                 clean: bool,
                  scheme: Union[pd.DataFrame, None]):
         self.filename = filename
         self.dtype = dtype
         self.epochs = epochs
+        self.clean = clean
         self.scheme = scheme
 
         try:
@@ -368,6 +374,51 @@ class RamulatorHDF5Reader(BaseEEGReader):
         return data[:, channel_inds, :], labels
 
 
+class ScalpEEGReader(BaseEEGReader):
+
+    def read(self):
+        import mne
+
+        # To read cleaned/preprocessed data (.fif)
+        if self.clean:
+            clean_eegfile = os.path.splitext(self.filename)[0] + '_clean_raw.fif'
+            eeg = mne.io.read_raw_fif(clean_eegfile, preload=True)
+        # To read BioSemi data (.bdf)
+        elif self.dtype == '.bdf':
+            eeg = mne.io.read_raw_edf(self.filename, eog=['EXG1', 'EXG2', 'EXG3', 'EXG4'],
+                                       misc=['EXG5', 'EXG6', 'EXG7', 'EXG8'], stim_channel='Status',
+                                       montage='biosemi128', preload=True)
+        # To read EGI data (.raw/.mff)
+        else:
+            eeg = mne.io.read_raw_egi(self.filename, preload=True)
+            eeg.rename_channels({'E129': 'Cz'})
+            eeg.set_montage(mne.channels.read_montage('GSN-HydroCel-129'))
+            eeg.set_channel_types({'E8': 'eog', 'E25': 'eog', 'E126': 'eog', 'E127': 'eog', 'Cz': 'misc'})
+
+        # If no event information is provided, return continuous data as a single epoch
+        if self.epochs is None:
+            data = np.expand_dims(eeg._data, axis=0)
+        # If event information is provided, return epoched data
+        else:
+            # Remove any events that run beyond the beginning or end of the EEG recording
+            truncated_events_pre = 0
+            truncated_events_post = 0
+            while self.epochs['epochs'][0, 0] + eeg.info['sfreq'] * self.epochs['tmin'] < 0:
+                self.epochs['epochs'] = self.epochs['epochs'][1:]
+                truncated_events_pre += 1
+            while self.epochs['epochs'][-1, 0] + eeg.info['sfreq'] * self.epochs['tmax'] >= eeg.n_times:
+                self.epochs['epochs'] = self.epochs['epochs'][:-1]
+                truncated_events_post += 1
+            # Cut continuous data into epochs
+            eeg = mne.Epochs(eeg, self.epochs['epochs'], tmin=self.epochs['tmin'], tmax=self.epochs['tmax'], preload=True)
+            data = eeg._data
+            # Add information about how many events needed to be truncated
+            eeg.info['truncated_events_pre'] = truncated_events_pre
+            eeg.info['truncated_events_post'] = truncated_events_post
+
+        return data, eeg.info
+
+
 class EEGReader(BaseCMLReader):
     """Reads EEG data.
 
@@ -408,6 +459,7 @@ class EEGReader(BaseCMLReader):
     default_representation = "timeseries"
 
     # referencing scheme
+    clean = None  # type: bool
     scheme = None  # type: pd.DataFrame
 
     def _eegfile_absolute(self, events: pd.DataFrame) -> pd.DataFrame:
@@ -500,6 +552,7 @@ class EEGReader(BaseCMLReader):
         # sample_rate = info["sample_rate"]
         # dtype = info["data_format"]
 
+        self.clean = kwargs.get("clean", None)
         self.scheme = kwargs.get("scheme", None)
 
         events = self._eegfile_absolute(events.copy())
@@ -519,6 +572,8 @@ class EEGReader(BaseCMLReader):
         """Return the class to use for loading EEG data."""
         if basename.endswith(".h5"):
             return RamulatorHDF5Reader
+        elif basename.endswith(('.bdf', '.mff', '.raw')):
+            return ScalpEEGReader
         elif basename.endswith(".npy"):
             return NumpyEEGReader
         else:
@@ -575,14 +630,23 @@ class EEGReader(BaseCMLReader):
                                              subject=self.subject)
             sample_rate = sources["sample_rate"]
             dtype = sources["data_format"]
+            is_scalp = dtype in (".bdf", ".raw", ".mff")
 
-            # convert events to epochs
+            # Convert events to epochs (onset & offset times)
             if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
-                epochs = convert.events_to_epochs(ev,
-                                                  rel_start, rel_stop,
-                                                  sample_rate)
+                epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
+
+            # Scalp EEG reader requires onsets, rel_start (in sec), and rel_stop (in sec) to cut data into epochs
+            if is_scalp:
+                on_off_epochs = epochs  # The onset & offset times will still be passed to the EEGContainer later
+                if rel_start == 0 and rel_stop == -1 and len(events) == 1:
+                    epochs = None
+                else:
+                    epochs = np.zeros((len(ev), 3), dtype=int)
+                    epochs[:, 0] = ev["eegoffset"]
+                    epochs = dict(epochs=epochs, tmin=rel_start/1000., tmax=rel_stop/1000.)
 
             root = get_root_dir(self.rootdir)
             eeg_filename = os.path.join(root, filename.lstrip("/"))
@@ -590,12 +654,25 @@ class EEGReader(BaseCMLReader):
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
                                   epochs=epochs,
-                                  scheme=self.scheme)
-            data, contacts = reader.read()
+                                  clean=self.clean,
+                                  scheme=self.scheme,)
+            data, info = reader.read()  # if scalp EEG, info is an MNE Info object; if iEEG, info is a list of contacts
 
-            if self.scheme is not None:
-                data, labels = reader.rereference(data, contacts)
-                channels = labels
+            attrs = {}
+            if is_scalp:
+                # Pass MNE info and events as extra attributes, to be able to fully reconstruct MNE Raw/Epochs objects
+                attrs["mne_info"] = info
+                channels = info["ch_names"]
+                if epochs is not None:
+                    # Crop out any events/epoch times that ran beyond the bounds of the EEG recording
+                    te_pre = info["truncated_events_pre"] if info["truncated_events_pre"] > 0 else None
+                    te_post = -info["truncated_events_post"] if info["truncated_events_post"] > 0 else None
+                    on_off_epochs = on_off_epochs[te_pre:te_post]
+                    ev = ev[te_pre:te_post]
+                # Pass the onset & offset time epoch list to EEGContainer, NOT the MNE-formatted epoch list
+                epochs = on_off_epochs
+            elif self.scheme is not None:
+                data, channels = reader.rereference(data, info)
             else:
                 channels = ["CH{}".format(n + 1) for n in range(data.shape[1])]
 
@@ -607,6 +684,7 @@ class EEGReader(BaseCMLReader):
                     events=ev,
                     channels=channels,
                     tstart=rel_start,
+                    attrs=attrs
                 )
             )
 
