@@ -71,7 +71,7 @@ def get_protocol(subject: str) -> str:
     """
     if subject.startswith("R1"):
         return "r1"
-    elif subject.startswith("LTP"):
+    elif subject.startswith("LTP") or subject.startswith("PLTP"):
         return "ltp"
     elif subject[:2] in constants.PYFR_SUBJECT_CODE_PREFIXES:
         return "pyfr"
