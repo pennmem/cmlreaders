@@ -212,7 +212,7 @@ class EEGContainer(object):
         """Apply a filter to the data and return a new :class:`EEGContainer`."""
         raise NotImplementedError
 
-    def to_ptsa(self) -> "TimeSeries":
+    def to_ptsa(self) -> "TimeSeries":  # noqa: F821
         """Convert to a PTSA :class:`TimeSeriesX` object.
 
         Notes
@@ -247,7 +247,7 @@ class EEGContainer(object):
             coords=coords,
         )
 
-    def to_mne(self) -> "mne.EpochsArray or mne.RawArray":
+    def to_mne(self) -> Union["mne.EpochsArray", "mne.io.RawArray"]:  # noqa: F821
         """
         Convert data to MNE's RawArray or EpochsArray format. If loading continuous data, a RawArray will be returned.
         If loading epoched data, an EpochsArray will be returned. Events are accessible made accessible through the

@@ -249,12 +249,12 @@ class SplitEEGReader(BaseEEGReader):
         # Some experiments have errors in the EEG splitting which results in
         # mismatches between the names of the actual EEG files and what the
         # events say they should be.
-        if len(files) is 0:
+        if len(files) == 0:
             names = Path(self.filename).name.split("_")
             pattern = "*".join(names)
             files = self._get_files(pattern)
 
-            if len(files) is 0:
+            if len(files) == 0:
                 raise ValueError("split EEG filenames don't seem to match what"
                                  " are in the events")
 
@@ -343,8 +343,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
         # the recorded data.
         all_nums_array = np.asarray(all_nums)
         valid_mask = (
-            (self.scheme["contact_1"].isin(all_nums_array[:, 0])) &
-            (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
+            (self.scheme["contact_1"].isin(all_nums_array[:, 0]))
+            & (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
         )
 
         if not len(self.scheme[valid_mask]):
@@ -368,8 +368,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
         labels = self.scheme[valid_mask]["label"].tolist()
 
         # allow a subset of channels
-        channel_inds = [chan in scheme_nums or
-                        (chan[1], chan[0]) in scheme_nums
+        channel_inds = [chan in scheme_nums
+                        or (chan[1], chan[0]) in scheme_nums
                         for chan in list(all_nums)]
         return data[:, channel_inds, :], labels
 
@@ -386,8 +386,8 @@ class ScalpEEGReader(BaseEEGReader):
         # To read BioSemi data (.bdf)
         elif self.dtype == '.bdf':
             eeg = mne.io.read_raw_edf(self.filename, eog=['EXG1', 'EXG2', 'EXG3', 'EXG4'],
-                                       misc=['EXG5', 'EXG6', 'EXG7', 'EXG8'], stim_channel='Status',
-                                       montage='biosemi128', preload=True)
+                                      misc=['EXG5', 'EXG6', 'EXG7', 'EXG8'], stim_channel='Status',
+                                      montage='biosemi128', preload=True)
         # To read EGI data (.raw/.mff)
         else:
             eeg = mne.io.read_raw_egi(self.filename, preload=True)
@@ -524,8 +524,8 @@ class EEGReader(BaseCMLReader):
             # Select only a single event with a valid eegfile just to get the
             # filename
             valid = all_events[
-                (all_events["eegfile"].notnull()) &
-                (all_events["eegfile"].str.len() > 0)
+                (all_events["eegfile"].notnull())
+                & (all_events["eegfile"].str.len() > 0)
             ]
             events = pd.DataFrame(valid.iloc[0]).T.reset_index(drop=True)
 
@@ -646,7 +646,7 @@ class EEGReader(BaseCMLReader):
                 else:
                     epochs = np.zeros((len(ev), 3), dtype=int)
                     epochs[:, 0] = ev["eegoffset"]
-                    epochs = dict(epochs=epochs, tmin=rel_start/1000., tmax=rel_stop/1000.)
+                    epochs = dict(epochs=epochs, tmin=rel_start / 1000., tmax=rel_stop / 1000.)
 
             root = get_root_dir(self.rootdir)
             eeg_filename = os.path.join(root, filename.lstrip("/"))

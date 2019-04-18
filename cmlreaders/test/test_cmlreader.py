@@ -17,7 +17,7 @@ datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 class TestCMLReader:
     @pytest.mark.parametrize("protocol", ["all", "r1"])
     def test_get_data_index(self, protocol):
-        if protocol is "all":
+        if protocol == "all":
             path = resource_filename("cmlreaders.test.data", "r1.json")
         else:
             path = resource_filename("cmlreaders.test.data", protocol + ".json")

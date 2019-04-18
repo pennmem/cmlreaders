@@ -75,8 +75,8 @@ def generate_pyfr_index(outdir: str, rootdir: str):
         try:
             unique_sessions = np.unique(events["session"]).tolist()
         except ValueError:
-            warnings.warn("No session field found for {};".format(subject) +
-                          " assuming single session", UserWarning)
+            warnings.warn("No session field found for {};".format(subject)
+                          + " assuming single session", UserWarning)
             unique_sessions = [0]
 
         subjects += [subject] * len(unique_sessions)

@@ -542,8 +542,8 @@ class TestLoadEEG:
         while not good_sample:
             events = events.copy()[events["type"] == "WORD"].sample(20)
             good_sample = (
-                all([s in events.subject.values for s in subjects]) and
-                all([e in events.experiment.values for e in experiments])
+                all([s in events.subject.values for s in subjects])
+                and all([e in events.experiment.values for e in experiments])
             )
 
         reader = CMLReader(events["subject"].unique()[0], rootdir=rhino_root)

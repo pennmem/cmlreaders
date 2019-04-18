@@ -61,9 +61,9 @@ class MontageReader(BaseCMLReader):
             categories = category_reader.load()
         except IOError:
             raise exc.MissingDataError(
-                "Cannot find electrode category information for " +
-                "{}, {} session {},".format(self.subject, self.experiment, self.session) +
-                "localization {}, montage {}".format(self.localization, self.montage)
+                "Cannot find electrode category information for "
+                + "{}, {} session {},".format(self.subject, self.experiment, self.session)
+                + "localization {}, montage {}".format(self.localization, self.montage)
             )
 
         column = [None] * len(df)
@@ -148,8 +148,8 @@ class MontageReader(BaseCMLReader):
             raise ValueError("Montage info has unknown name ")
         arr = data_dict[self.struct_name]
         flat_cols = [c for c in arr.dtype.names
-                     if not isinstance(arr[c][0], np.ndarray) or
-                     arr[c][0].dtype.names is None]
+                     if not isinstance(arr[c][0], np.ndarray)
+                     or arr[c][0].dtype.names is None]
         nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
 
         # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
