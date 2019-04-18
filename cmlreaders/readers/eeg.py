@@ -385,8 +385,8 @@ class ScalpEEGReader(BaseEEGReader):
 
         # To read cleaned/preprocessed data (.fif)
         if self.clean:
-            clean_eegfile = os.path.splitext(self.filename)[0] + \
-                            '_clean_raw.fif'
+            clean_eegfile = \
+                os.path.splitext(self.filename)[0] + '_clean_raw.fif'
             eeg = mne.io.read_raw_fif(clean_eegfile, preload=True)
         # To read BioSemi data (.bdf)
         elif self.dtype == '.bdf':

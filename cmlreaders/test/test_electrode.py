@@ -101,10 +101,10 @@ class TestWithMNICoordinatesReader:
                                        montage=montage, rootdir=rhino_root)
         montage_df = montage_reader.as_dataframe()
 
-        assert_array_almost_equal(mni_df.sort_values(by='label')[
-                                      ['mni.x', 'mni.y', 'mni.z']],
-                                  montage_df.sort_values(by='label')[
-                                      ['mni.x', 'mni.y', 'mni.z']])
+        assert_array_almost_equal(
+            mni_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']],
+            montage_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']]
+        )
 
     @pytest.mark.parametrize("subject, montage",
                              [

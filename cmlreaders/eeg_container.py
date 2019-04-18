@@ -254,7 +254,8 @@ class EEGContainer(object):
             coords=coords,
         )
 
-    def to_mne(self) -> Union["mne.EpochsArray", "mne.io.RawArray"]:  # noqa: F821
+    def to_mne(self) -> \
+            Union["mne.EpochsArray", "mne.io.RawArray"]:  # noqa: F821
         """
         Convert data to MNE's RawArray or EpochsArray format. If loading
         continuous data, a RawArray will be returned. If loading epoched data,

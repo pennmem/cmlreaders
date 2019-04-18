@@ -39,12 +39,14 @@ def events():
 
 
 class TestEEGMetaReader:
-    @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample"
-                             "rate", [
-        ("R1389J", "sources.json", "int16", 1641165, 1000),
-        ("R1191J", "multiNSx_sources.json", "int16", 5256192, 1000),
-        ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
-    ])
+    @pytest.mark.parametrize(
+        "subject,filename,data_format,n_samples,sample_rate",
+        [
+            ("R1389J", "sources.json", "int16", 1641165, 1000),
+            ("R1191J", "multiNSx_sources.json", "int16", 5256192, 1000),
+            ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
+        ]
+    )
     def test_load(self, subject, filename, data_format, n_samples,
                   sample_rate):
         path = resource_filename("cmlreaders.test.data", filename)
@@ -66,10 +68,10 @@ class TestBaseEEGReader:
 
     @pytest.mark.parametrize("use_scheme", [True, False])
     def test_include_contact(self, use_scheme):
-        scheme = pd.DataFrame({
-            "contact_1": list(range(1, 10)),
-            "contact_2": list(range(2, 11)),
-        }) if use_scheme else None
+        scheme = pd.DataFrame(
+            {"contact_1": list(range(1, 10)),
+             "contact_2": list(range(2, 11))}
+        ) if use_scheme else None
 
         reader = self.make_reader(scheme)
 

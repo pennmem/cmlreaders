@@ -40,7 +40,8 @@ class BaseRAMReportDataReader(BaseCMLReader):
     def as_pyobject(self):
         """Return data as a python object specific to this data type."""
         if self.data_type in self.pyclass_mapping:
-            return self.pyclass_mapping[self.data_type].from_hdf(self.file_path)
+            return self.pyclass_mapping[self.data_type].from_hdf(
+                self.file_path)
 
     def as_dataframe(self):
         raise exc.UnsupportedRepresentation("Unable to represent this data as "
