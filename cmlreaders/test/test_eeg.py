@@ -58,8 +58,8 @@ class TestEEGMetaReader:
 
 class TestBaseEEGReader:
     @staticmethod
-    def make_reader(scheme=None):
-        return DummyReader("", np.int16, [(0, None)], scheme=scheme)
+    def make_reader(scheme=None, clean=False):
+        return DummyReader("", np.int16, [(0, None)], scheme=scheme, clean=clean)
 
     @pytest.mark.parametrize("use_scheme", [True, False])
     def test_include_contact(self, use_scheme):
@@ -121,7 +121,7 @@ class TestFileReaders:
 
     def test_npy_reader(self):
         filename = resource_filename("cmlreaders.test.data", "eeg.npy")
-        reader = NumpyEEGReader(filename, np.int16, [(0, -1)], None)
+        reader = NumpyEEGReader(filename, np.int16, [(0, -1)], None, False)
         ts, contacts = reader.read()
         assert ts.shape == (1, 32, 1000)
 
@@ -136,7 +136,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, dtype, epochs, None)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 100, 100)
@@ -150,7 +150,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = SplitEEGReader(filename, dtype, epochs, None)
+        eeg_reader = SplitEEGReader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
 
         assert ts.shape == (len(epochs), 123, 102)
@@ -175,7 +175,7 @@ class TestFileReaders:
         rel_start, rel_stop = 0, 200
         epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
 
-        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs, None)
+        eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
 
         num_channels = len(CMLReader(subject, experiment, session, rootdir=rhino_root).load('pairs'))
@@ -185,7 +185,7 @@ class TestFileReaders:
 
     def test_ramulator_hdf5_reader(self):
         filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
-        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)], None)
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)], None, False)
         ts, channels = reader.read()
 
         time_steps = 3000
@@ -340,7 +340,7 @@ class TestEEGReader:
         events = all_events[all_events["type"] == "WORD"]
 
         eeg = reader.load_eeg(events, rel_start=-100, rel_stop=100,
-                              scheme=scheme)
+                              scheme=scheme, clean=False)
 
         assert eeg.shape[0] == len(events)
         assert eeg.shape[1] == expected_channels
@@ -512,7 +512,7 @@ class TestRereference:
             reader = EEGReader("eeg", subject="R1111M")
             eeg = reader.load(events=self.events(str(eeg_path)),
                               rel_start=0, rel_stop=self.data.shape[-1],
-                              scheme=scheme)
+                              scheme=scheme, clean=False)
             assert_equal(eeg.data[0], self.reref_data)
 
 
@@ -582,7 +582,7 @@ class TestLoadEEG:
 
         with pytest.warns(MissingChannelsWarning):
             eeg = reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10,
-                                  scheme=pairs)
+                                  scheme=pairs, clean=False)
 
         assert len(eeg.channels) == eeg_channels
         assert len(pairs) == pairs_channels
@@ -600,7 +600,7 @@ class TestLoadEEG:
         pairs = reader.load("pairs")
         events = reader.load("events")
 
-        reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10, scheme=pairs)
+        reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10, scheme=pairs, clean=False)
 
     @pytest.mark.rhino
     @pytest.mark.parametrize(

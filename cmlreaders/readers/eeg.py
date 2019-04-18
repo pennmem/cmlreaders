@@ -85,13 +85,13 @@ class BaseEEGReader(ABC):
     epochs
         Epochs to include. Epochs are defined with start and stop sample
         counts.
-    clean
-        If True, load re-referenced, filtered, and ICA/LCF-cleaned version of
-        data (currently available for scalp EEG only). If false, load raw data.
     scheme
         Scheme data to use for rereferencing/channel filtering. This should be
         loaded/manipulated from ``pairs.json`` data. (Currently available for
         iEEG only.)
+    clean
+        If True, load re-referenced, filtered, and ICA/LCF-cleaned version of
+        data (currently available for scalp EEG only). If false, load raw data.
 
     Notes
     -----
@@ -654,8 +654,8 @@ class EEGReader(BaseCMLReader):
             reader = reader_class(filename=eeg_filename,
                                   dtype=dtype,
                                   epochs=epochs,
-                                  clean=self.clean,
-                                  scheme=self.scheme,)
+                                  scheme=self.scheme,
+                                  clean=self.clean)
             data, info = reader.read()  # if scalp EEG, info is an MNE Info object; if iEEG, info is a list of contacts
 
             attrs = {}
