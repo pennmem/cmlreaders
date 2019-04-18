@@ -58,8 +58,8 @@ class TestEEGMetaReader:
 
 class TestBaseEEGReader:
     @staticmethod
-    def make_reader(scheme=None, clean=False):
-        return DummyReader("", np.int16, [(0, None)], scheme=scheme, clean=clean)
+    def make_reader(scheme=None):
+        return DummyReader("", np.int16, [(0, None)], scheme=scheme)
 
     @pytest.mark.parametrize("use_scheme", [True, False])
     def test_include_contact(self, use_scheme):
