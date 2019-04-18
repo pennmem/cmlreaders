@@ -102,13 +102,13 @@ class BaseEEGReader(ABC):
     """
     def __init__(self, filename: str, dtype: Type[np.dtype],
                  epochs: List[Tuple[int, Union[int, None]]],
-                 clean: Union[bool, None],
-                 scheme: Union[pd.DataFrame, None]):
+                 scheme: Union[pd.DataFrame, None],
+                 clean: Union[bool, None]):
         self.filename = filename
         self.dtype = dtype
         self.epochs = epochs
-        self.clean = False if clean is None else clean
         self.scheme = scheme
+        self.clean = False if clean is None else clean
 
         try:
             if self.scheme_type == "contacts":
