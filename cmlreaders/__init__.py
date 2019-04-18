@@ -9,4 +9,5 @@ from .readers import *  # noqa
 from .cmlreader import CMLReader  # noqa
 
 __version__ = "0.9.7"
-version_info = namedtuple("VersionInfo", "major,minor,patch")(*__version__.split('.'))
+version_info = namedtuple("VersionInfo", "major,minor,patch")(
+    *__version__.split('.'))

@@ -51,8 +51,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
     should use the reader.
 
     By default, readers are assumed to work with all protocol types. If only a
-    subset of protocols support a data type, then they should be specified using
-    the ``protocols`` variable.
+    subset of protocols support a data type, then they should be specified
+    using the ``protocols`` variable.
 
     Results from calling :meth:`load` may be cached. This is configured by
     setting the ``caching`` variable which defaults to ``None`` (caching
@@ -125,9 +125,12 @@ class BaseCMLReader(object, metaclass=_MetaReader):
 
         """
         if self._file_path is None and self.data_type != 'eeg':
-            finder = PathFinder(subject=self.subject, experiment=self.experiment,
-                                session=self.session, localization=self.localization,
-                                montage=self.montage, eeg_basename=self.eeg_basename,
+            finder = PathFinder(subject=self.subject,
+                                experiment=self.experiment,
+                                session=self.session,
+                                localization=self.localization,
+                                montage=self.montage,
+                                eeg_basename=self.eeg_basename,
                                 rootdir=self.rootdir)
             self._file_path = finder.find(self.data_type)
         return self._file_path
@@ -148,7 +151,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
         path
             Path to the file to load.
         subject
-            Subject code to use; required when we need to determine the protocol
+            Subject code to use; required when we need to determine the
+            protocol
         experiment
         session
         data_type

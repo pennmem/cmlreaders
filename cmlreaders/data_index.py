@@ -124,9 +124,11 @@ def get_data_index(kind: str = "all",
     data = []
 
     if kind == "ltp" or kind == "all":
-        data.append(_index_dict_to_dataframe(read_index(finder.find("ltp_index"))))
+        data.append(_index_dict_to_dataframe(read_index(
+            finder.find("ltp_index"))))
     if kind == "r1" or kind == "all":
-        data.append(_index_dict_to_dataframe(read_index(finder.find("r1_index"))))
+        data.append(_index_dict_to_dataframe(read_index(
+            finder.find("r1_index"))))
     if kind == "pyfr" or kind == "all":
         data.append(pd.read_json(finder.find("pyfr_index")))
 

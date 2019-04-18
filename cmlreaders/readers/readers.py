@@ -58,8 +58,8 @@ class MNICoordinatesReader(TextReader):
 
     headers = {
         'mni_coordinates': ['label', 'mni.x', 'mni.y', 'mni.z',
-                                     'x1', 'x2', 'x3', 'x4', 'x5'],  # Ignoring these last 5 fields at the moment
-    }
+                                     'x1', 'x2', 'x3', 'x4', 'x5'],
+    }  # Ignoring these last 5 fields at the moment
 
     def as_dataframe(self):
         df = super(MNICoordinatesReader, self).as_dataframe()
@@ -102,7 +102,8 @@ class RamulatorEventLogReader(BaseCMLReader):
 
     def __init__(self, data_type, subject, experiment, session, file_path=None,
                  rootdir="/", **kwargs):
-        super(RamulatorEventLogReader, self).__init__(data_type, subject=subject,
+        super(RamulatorEventLogReader, self).__init__(data_type,
+                                                      subject=subject,
                                                       experiment=experiment,
                                                       session=session,
                                                       file_path=file_path,
@@ -149,7 +150,8 @@ class EventReader(BaseCMLReader):
         return pd.read_json(self.file_path)
 
     def _read_matlab_events(self) -> pd.DataFrame:
-        df = pd.DataFrame(sio.loadmat(self.file_path, squeeze_me=True)["events"])
+        df = pd.DataFrame(sio.loadmat(self.file_path,
+                                      squeeze_me=True)["events"])
 
         if self.session is not None:
             df = df[df["session"] == self.session]
@@ -185,17 +187,15 @@ class ClassifierContainerReader(BaseCMLReader):
 
     def __init__(self, data_type, subject, experiment, session, localization,
                  file_path=None, rootdir="/", **kwargs):
-        super(ClassifierContainerReader, self).__init__(data_type,
-                                                        subject=subject,
-                                                        experiment=experiment,
-                                                        session=session,
-                                                        localization=localization,
-                                                        file_path=file_path,
-                                                        rootdir=rootdir)
+        super(ClassifierContainerReader, self
+              ).__init__(data_type, subject=subject, experiment=experiment,
+                         session=session, localization=localization,
+                         file_path=file_path, rootdir=rootdir)
         try:
             from classiflib.container import ClassifierContainer
         except ImportError:
-            raise UnmetOptionalDependencyError("Install classiflib to use this reader")
+            raise UnmetOptionalDependencyError(
+                "Install classiflib to use this reader")
 
         self.pyclass_mapping = {
             'classifier': ClassifierContainer
@@ -206,4 +206,5 @@ class ClassifierContainerReader(BaseCMLReader):
         return summary_obj.load(self.file_path)
 
     def as_dataframe(self):
-        raise UnsupportedRepresentation("Unable to represent classifier as a dataframe")
+        raise UnsupportedRepresentation(
+            "Unable to represent classifier as a dataframe")

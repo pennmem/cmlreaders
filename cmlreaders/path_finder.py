@@ -178,7 +178,8 @@ class PathFinder(object):
         # Remove all invalid names (valid = only contains numbers and _)
         timestamped_directories = [
             d for d in timestamped_directories
-            if os.path.isdir(d) and all([c in string.digits for c in os.path.basename(d).replace('_', '')])
+            if os.path.isdir(d) and all([c in string.digits for c in
+                                         os.path.basename(d).replace('_', '')])
         ]
 
         # Sort such that most recent appears first
@@ -226,12 +227,14 @@ class PathFinder(object):
                 kwargs["experiment"] = experiment[:-1]
                 return self._find_single_path(paths, **kwargs)
 
-            raise FileNotFoundError("Unable to find the requested file in any "
-                                    "of the expected locations:\n {}".format('\n'.join(checked_paths)))
+            raise FileNotFoundError(
+                "Unable to find the requested file in any of the expected "
+                "locations:\n {}".format('\n'.join(checked_paths)))
 
         if len(found_files) > 1:
             msg = (
-                "Multiple files found: {}".format("\n".join(found_files)) + " returning the first file found"
+                "Multiple files found: {}".format("\n".join(found_files)) +
+                " returning the first file found"
             )
             warnings.warn(msg, MultiplePathsFoundWarning)
 

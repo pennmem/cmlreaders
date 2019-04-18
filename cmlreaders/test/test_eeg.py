@@ -39,12 +39,14 @@ def events():
 
 
 class TestEEGMetaReader:
-    @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample_rate", [
+    @pytest.mark.parametrize("subject,filename,data_format,n_samples,sample"
+                             "rate", [
         ("R1389J", "sources.json", "int16", 1641165, 1000),
         ("R1191J", "multiNSx_sources.json", "int16", 5256192, 1000),
         ("TJ001", "TJ001_pyFR_params.txt", "int16", None, 400.0),
     ])
-    def test_load(self, subject, filename, data_format, n_samples, sample_rate):
+    def test_load(self, subject, filename, data_format, n_samples,
+                  sample_rate):
         path = resource_filename("cmlreaders.test.data", filename)
         sources = EEGMetaReader.fromfile(path, subject=subject)
 
@@ -59,7 +61,8 @@ class TestEEGMetaReader:
 class TestBaseEEGReader:
     @staticmethod
     def make_reader(scheme=None, clean=False):
-        return DummyReader("", np.int16, [(0, None)], scheme=scheme, clean=clean)
+        return DummyReader("", np.int16, [(0, None)], scheme=scheme,
+                           clean=clean)
 
     @pytest.mark.parametrize("use_scheme", [True, False])
     def test_include_contact(self, use_scheme):
@@ -80,7 +83,8 @@ class TestBaseEEGReader:
                 assert not reader.include_contact(i)
 
     @pytest.mark.parametrize("filename,expected", [
-        (resource_filename("cmlreaders.test.data", "contacts.json"), "contacts"),
+        (resource_filename("cmlreaders.test.data", "contacts.json"),
+         "contacts"),
         (resource_filename("cmlreaders.test.data", "pairs.json"), "pairs"),
         ("", None)
     ])
@@ -130,11 +134,13 @@ class TestFileReaders:
 
     @pytest.mark.rhino
     def test_split_eeg_reader(self, rhino_root):
-        basename, sample_rate, dtype, filename = self.get_meta('R1111M', 'FR1', 0, rhino_root)
+        basename, sample_rate, dtype, filename = self.get_meta('R1111M', 'FR1',
+                                                               0, rhino_root)
 
         events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
         rel_start, rel_stop = 0, 200
-        epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
+        epochs = convert.events_to_epochs(events, rel_start, rel_stop,
+                                          sample_rate)
 
         eeg_reader = SplitEEGReader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
@@ -144,11 +150,13 @@ class TestFileReaders:
 
     @pytest.mark.rhino
     def test_split_eeg_reader_missing_contacts(self, rhino_root):
-        basename, sample_rate, dtype, filename = self.get_meta('R1006P', 'FR2', 0, rhino_root)
+        basename, sample_rate, dtype, filename = self.get_meta('R1006P', 'FR2',
+                                                               0, rhino_root)
 
         events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
         rel_start, rel_stop = 0, 200
-        epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
+        epochs = convert.events_to_epochs(events, rel_start, rel_stop,
+                                          sample_rate)
 
         eeg_reader = SplitEEGReader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
@@ -173,19 +181,22 @@ class TestFileReaders:
 
         events = pd.DataFrame({"eegoffset": list(range(0, 500, 100))})
         rel_start, rel_stop = 0, 200
-        epochs = convert.events_to_epochs(events, rel_start, rel_stop, sample_rate)
+        epochs = convert.events_to_epochs(events, rel_start, rel_stop,
+                                          sample_rate)
 
         eeg_reader = RamulatorHDF5Reader(filename, dtype, epochs, None, False)
         ts, contacts = eeg_reader.read()
 
-        num_channels = len(CMLReader(subject, experiment, session, rootdir=rhino_root).load('pairs'))
+        num_channels = len(CMLReader(subject, experiment, session,
+                                     rootdir=rhino_root).load('pairs'))
 
         time_steps = 200
         assert ts.shape == (len(epochs), num_channels, time_steps)
 
     def test_ramulator_hdf5_reader(self):
         filename = resource_filename('cmlreaders.test.data', 'eeg.h5')
-        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)], None, False)
+        reader = RamulatorHDF5Reader(filename, np.int16, [(0, None)], None,
+                                     False)
         ts, channels = reader.read()
 
         time_steps = 3000
@@ -199,7 +210,8 @@ class TestFileReaders:
 
         filename = resource_filename("cmlreaders.test.data", "eeg.h5")
 
-        make_reader = partial(RamulatorHDF5Reader, filename, np.int16, [(0, None)])
+        make_reader = partial(RamulatorHDF5Reader, filename, np.int16,
+                              [(0, None)])
         reader = make_reader(pairs, False)
         ts, contacts = reader.read()
 
@@ -281,12 +293,15 @@ class TestEEGReader:
         with pytest.raises(ErrorType):
             reader.load_eeg(events=word_events)
 
-    @pytest.mark.parametrize("subject,scheme_type,reref_possible,index,channel", [
-        ("R1384J", "pairs", False, 43, "LS12-LS1"),
-        ("R1111M", "pairs", True, 43, "LPOG23-LPOG31"),
-        ("R1111M", "contacts", True, 43, "LPOG44"),
-        ("R1286J", "contacts", True, 43, "LJ16")
-    ])
+    @pytest.mark.parametrize(
+        "subject,scheme_type,reref_possible,index,channel",
+        [
+            ("R1384J", "pairs", False, 43, "LS12-LS1"),
+            ("R1111M", "pairs", True, 43, "LPOG23-LPOG31"),
+            ("R1111M", "contacts", True, 43, "LPOG44"),
+            ("R1286J", "contacts", True, 43, "LJ16")
+        ]
+    )
     def test_rereference(self, subject, scheme_type, reref_possible, index,
                          channel, rhino_root):
         reader = CMLReader(subject=subject, experiment='FR1', session=0,
@@ -322,11 +337,17 @@ class TestEEGReader:
             assert data.channels[index] == channel
 
     @pytest.mark.rhino
-    @pytest.mark.parametrize("subject,region_key,region_name,expected_channels,tlen", [
-        ("R1384J", "ind.region", "insula", 10, 200),  # Ramulator bipolar
-        ("R1288P", "ind.region", "lateralorbitofrontal", 5, 200),  # Ramulator monopolar (but will load from split...)
-        ("R1111M", "ind.region", "middletemporal", 18, 100),  # "split" EEG
-    ])
+    @pytest.mark.parametrize(
+        "subject,region_key,region_name,expected_channels,tlen",
+        [
+            # Ramulator bipolar
+            ("R1384J", "ind.region", "insula", 10, 200),
+            # Ramulator monopolar (but will load from split...)
+            ("R1288P", "ind.region", "lateralorbitofrontal", 5, 200),
+            # "Split" EEG
+            ("R1111M", "ind.region", "middletemporal", 18, 100),
+        ]
+    )
     def test_filter_channels(self, subject, region_key, region_name,
                              expected_channels, tlen, rhino_root):
         """Test that we can actually filter channels. This happens via
@@ -356,7 +377,8 @@ class TestEEGReader:
             "/data1/eeg/TJ001/eeg.reref/TJ001_16Jan09_1107",
         ]),
         ("R1389J", "task_events.json", [
-            "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
+            "/protocols/r1/subjects/R1389J/experiments/catFR1/sessions/0/ephys"
+            "/current_processed/noreref/R1389J_catFR1_0_20Feb18_1720.h5",
         ]),
     ])
     def test_eeg_absolute(self, subject, events_filename, expected_basenames):
@@ -365,7 +387,8 @@ class TestEEGReader:
         reader = EEGReader("eeg", subject)
         new_events = reader._eegfile_absolute(events)
 
-        for eegfile in new_events[new_events["eegfile"].notnull()]["eegfile"].unique():
+        for eegfile in new_events[
+                new_events["eegfile"].notnull()]["eegfile"].unique():
             assert eegfile in expected_basenames
 
 
@@ -477,10 +500,12 @@ class TestRereference:
                 for key, value in bpinfo.items():
                     bpgroup[key] = value
 
-                hfile.create_dataset("monopolar_possible", dtype=np.int, data=[0])
+                hfile.create_dataset("monopolar_possible", dtype=np.int,
+                                     data=[0])
                 data = self.reref_data.transpose()
             else:
-                hfile.create_dataset("monopolar_possible", dtype=np.int, data=[1])
+                hfile.create_dataset("monopolar_possible", dtype=np.int,
+                                     data=[1])
                 data = self.data.transpose()
 
             hfile["ports"] = [i + 1 for i in range(3)]
@@ -518,13 +543,15 @@ class TestRereference:
 
 class TestLoadEEG:
     def test_load_with_empty_events(self):
-        sources_file = resource_filename("cmlreaders.test.data", "sources.json")
+        sources_file = resource_filename("cmlreaders.test.data",
+                                         "sources.json")
         with patch.object(PathFinder, "find", return_value=sources_file):
             reader = EEGReader("eeg")
 
             with pytest.raises(ValueError):
                 data = np.random.random((10, 10, 10))
-                with patch.object(RamulatorHDF5Reader, "read", return_value=[data, None]):
+                with patch.object(RamulatorHDF5Reader, "read",
+                                  return_value=[data, None]):
                     reader.load()
 
     @pytest.mark.rhino
@@ -535,7 +562,8 @@ class TestLoadEEG:
         (["TJ015"], ["pyFR"]),
     ])
     def test_load_multisession(self, subjects, experiments, rhino_root):
-        events = CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+        events = CMLReader.load_events(subjects, experiments,
+                                       rootdir=rhino_root)
 
         good_sample = False
 
@@ -567,9 +595,10 @@ class TestLoadEEG:
             assert experiment in set(events["experiment"])
 
     @pytest.mark.rhino
-    @pytest.mark.parametrize("subject,experiment,session,eeg_channels,pairs_channels", [
-        ("R1387E", "catFR5", 0, 120, 125),
-    ])
+    @pytest.mark.parametrize(
+        "subject,experiment,session,eeg_channels,pairs_channels",
+        [("R1387E", "catFR5", 0, 120, 125)]
+    )
     def test_channel_discrepancies(self, subject, experiment, session,
                                    eeg_channels, pairs_channels, rhino_root):
         """Test loading of known subjects with differences between channels in
@@ -591,16 +620,19 @@ class TestLoadEEG:
     @pytest.mark.parametrize("subject,experiment,session", [
         ("R1207J", "catFR1", 1),
     ])
-    def test_event_discrepancies(self, subject, experiment, session, rhino_root):
-        """Test loading of known subjects with differences between session number in
-        events.json and session number everywhere else.
+    def test_event_discrepancies(self, subject, experiment, session,
+                                 rhino_root):
+        """
+        Test loading of known subjects with differences between session number
+        in events.json and session number everywhere else.
 
         """
         reader = CMLReader(subject, experiment, session, rootdir=rhino_root)
         pairs = reader.load("pairs")
         events = reader.load("events")
 
-        reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10, scheme=pairs, clean=False)
+        reader.load_eeg(events.sample(n=1), rel_start=0, rel_stop=10,
+                        scheme=pairs, clean=False)
 
     @pytest.mark.rhino
     @pytest.mark.parametrize(

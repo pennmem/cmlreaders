@@ -24,8 +24,8 @@ class CMLReader(object):
     the data types understood by :class:`cmlreaders.PathFinder` and defined in
     :mod:`cmlreaders.constants`. Values are the name of the reader class
     that should be used for loading/reading the data type. When an instance of
-    :class:`cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary is
-    created that maps the data types to the actual reader class, rather than
+    :class:`cmlreaders.cmlreader.CMLReader` is instantiated, a new dictionary
+    is created that maps the data types to the actual reader class, rather than
     just the class name. In essence, :class:`cmlreaders.cmlreader.CMLReader` is
     a factory that routes the requests for loading a particular data type to
     the reader defined to handle that data.
@@ -242,13 +242,14 @@ class CMLReader(object):
             Stop time in ms relative to passed event onsets. This  parameter is
             required when passing events and not used otherwise.
         scheme
-            When specified, a bipolar scheme to rereference the data with and/or
-            filter by channel. Rereferencing is only possible if the data were
-            recorded in monopolar (a.k.a. common reference) mode. (Currently
-            available for iEEG only.)
+            When specified, a bipolar scheme to rereference the data with
+            and/or filter by channel. Rereferencing is only possible if the
+            data were recorded in monopolar (a.k.a. common reference) mode.
+            (Currently available for iEEG only.)
         clean
-            If True, load re-referenced, filtered, and ICA/LCF-cleaned version of
-            data (currently available for scalp EEG only). If false, load raw data.
+            If True, load re-referenced, filtered, and ICA/LCF-cleaned version
+            of data (currently available for scalp EEG only). If false, load
+            raw data.
 
         Returns
         -------
@@ -326,7 +327,8 @@ class CMLReader(object):
 
         for subject in subjects:
             for experiment in experiments:
-                mask = (df["subject"] == subject) & (df["experiment"] == experiment)
+                mask = (df["subject"] == subject) &\
+                       (df["experiment"] == experiment)
                 sessions = df[mask]["session"].unique()
 
                 for session in sessions:

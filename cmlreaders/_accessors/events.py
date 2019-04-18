@@ -30,7 +30,8 @@ class EventsAccessor(object):
 
     def _words_recalled_or_not(self, recalled: bool) -> pd.DataFrame:
         recalled = int(recalled)
-        mask = (self._obj["type"] == "WORD") & (self._obj["recalled"] == recalled)
+        mask = (self._obj["type"] == "WORD") &\
+               (self._obj["recalled"] == recalled)
         return self._obj[mask]
 
     @property

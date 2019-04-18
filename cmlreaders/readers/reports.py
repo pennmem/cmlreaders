@@ -43,7 +43,8 @@ class BaseRAMReportDataReader(BaseCMLReader):
             return self.pyclass_mapping[self.data_type].from_hdf(self.file_path)
 
     def as_dataframe(self):
-        raise exc.UnsupportedRepresentation("Unable to represent this data as a dataframe")
+        raise exc.UnsupportedRepresentation("Unable to represent this data as "
+                                            "a dataframe")
 
 
 class RAMReportClassifierSummaryReader(BaseRAMReportDataReader):
@@ -52,9 +53,9 @@ class RAMReportClassifierSummaryReader(BaseRAMReportDataReader):
 
     Notes
     -----
-    By default, a python class is returned. For report data read with this class
-    a python object is the only supported return type. The returned class will
-    be `ramutils.reports.summary.ClassifierSummary`
+    By default, a python class is returned. For report data read with this
+    class a python object is the only supported return type. The returned class
+    will be `ramutils.reports.summary.ClassifierSummary`
 
     """
     data_types = ["classifier_summary"]
@@ -62,8 +63,8 @@ class RAMReportClassifierSummaryReader(BaseRAMReportDataReader):
 
 class RAMReportSummaryDataReader(BaseRAMReportDataReader):
     """
-        Reader class for session and math summary data produced in the reporting
-        pipeline
+        Reader class for session and math summary data produced in the
+        reporting pipeline
 
     Notes
     -----

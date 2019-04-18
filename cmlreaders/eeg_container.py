@@ -63,7 +63,8 @@ class EEGContainer(object):
 
         if epochs is not None:
             if len(epochs) != self.data.shape[0]:
-                raise ValueError("epochs must be the same length as the first data dimension")
+                raise ValueError("epochs must be the same length as the first "
+                                 "data dimension")
             self.epochs = epochs
         else:
             self.epochs = [(-1, -1) for _ in range(self.data.shape[0])]
@@ -72,8 +73,8 @@ class EEGContainer(object):
             if len(channels) != self.data.shape[1]:
                 raise ValueError(
                     "len(channels) (%d) "
-                    "must be the same length as the second data dimension (%d)" %
-                    (len(channels), self.data.shape[1]))
+                    "must be the same length as the second data dimension (%d)"
+                    % (len(channels), self.data.shape[1]))
             self.channels = channels
         else:
             self.channels = np.linspace(1, self.data.shape[1],
@@ -88,7 +89,8 @@ class EEGContainer(object):
         return np.arange(tstart, n_samples * rate + tstart, rate)
 
     @classmethod
-    def concatenate(cls, containers: List["EEGContainer"], dim="events") -> "EEGContainer":
+    def concatenate(cls, containers: List["EEGContainer"], dim="events") -> \
+            "EEGContainer":
         """Concatenate several :class:`EEGContainer` objects.
 
         Parameters
@@ -123,7 +125,8 @@ class EEGContainer(object):
             raise ValueError("Sample rates must be the same for all series")
 
         def check_samples():
-            if not all([s.shape[-1] == containers[0].shape[-1] for s in containers]):
+            if not all([s.shape[-1] == containers[0].shape[-1]
+                        for s in containers]):
                 raise ValueError("Number of samples must match to concatenate"
                                  " events")
 
@@ -144,7 +147,8 @@ class EEGContainer(object):
             last = containers[0].time[-1]
             for s in containers[1:]:
                 if last + step != s.time[0]:
-                    raise ValueError("Start times are not properly aligned for concatenation")
+                    raise ValueError("Start times are not properly aligned for"
+                                     " concatenation")
                 last += step
 
         attrs = {
@@ -209,7 +213,9 @@ class EEGContainer(object):
                             attrs=self.attrs)
 
     def filter(self, filter) -> "EEGContainer":
-        """Apply a filter to the data and return a new :class:`EEGContainer`."""
+        """
+        Apply a filter to the data and return a new :class:`EEGContainer`.
+        """
         raise NotImplementedError
 
     def to_ptsa(self) -> "TimeSeries":  # noqa: F821
@@ -232,7 +238,8 @@ class EEGContainer(object):
             if len(self.epochs[0]) > 2:
                 columns = [columns[i] if i < 2 else "column_{}".format(i)
                            for i in range(len(self.epochs[0]))]
-            events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
+            events = pd.DataFrame(self.epochs, columns=columns).to_records(
+                index=False)
 
         coords = {
             "event": events,
@@ -249,31 +256,37 @@ class EEGContainer(object):
 
     def to_mne(self) -> Union["mne.EpochsArray", "mne.io.RawArray"]:  # noqa: F821
         """
-        Convert data to MNE's RawArray or EpochsArray format. If loading continuous data, a RawArray will be returned.
-        If loading epoched data, an EpochsArray will be returned. Events are accessible made accessible through the
-        'events' field of the RawArray/EpochsArray's info.
+        Convert data to MNE's RawArray or EpochsArray format. If loading
+        continuous data, a RawArray will be returned. If loading epoched data,
+        an EpochsArray will be returned. Events are accessible made accessible
+        through the 'events' field of the RawArray/EpochsArray's info.
 
-        If the data was originally loaded into the EEGContainer using MNE, the returned MNE object will retain the
-        original info structure created by mne.io.read_raw_*. Otherwise, a default info object will be attached to the
-        RawArray/EpochsArray.
+        If the data was originally loaded into the EEGContainer using MNE, the
+        returned MNE object will retain the original info structure created by
+        mne.io.read_raw_*. Otherwise, a default info object will be attached to
+        the RawArray/EpochsArray.
 
-        :return: A RawArray or EpochsArray constructed from the EEGContainer's data.
+        :return: A RawArray or EpochsArray constructed from the EEGContainer's
+                data.
         """
         import mne
 
         # Create a default info object if one has not been provided
         if "mne_info" not in self.attrs:
-            info = mne.create_info([str(c) for c in self.channels], self.samplerate, ch_types='eeg')
+            info = mne.create_info([str(c) for c in self.channels],
+                                   self.samplerate, ch_types='eeg')
         # Otherwise, use the info from the session's first recording
         else:
             info = self.attrs["mne_info"][0]
 
-        # Return RawArray if loading continuous data (must be from from a single recording)
-        if len(self.epochs) == 1 and np.all(self.epochs[0] == np.array([0, None])):
-            eeg = mne.io.RawArray(self.data[0], info, first_samp=0, verbose=False)
+        # Return RawArray if loading continuous data (must be from from a
+        # single recording)
+        if len(self.epochs) == 1 and \
+                np.all(self.epochs[0] == np.array([0, None])):
+            eeg = mne.io.RawArray(self.data[0], info, first_samp=0)
         # Return EpochsArray if loading epoched data
         else:
-            eeg = mne.EpochsArray(self.data, info, verbose=False)
+            eeg = mne.EpochsArray(self.data, info)
 
         # Attach events to MNE object as record array
         if self.events is not None:
@@ -283,7 +296,8 @@ class EEGContainer(object):
             if len(self.epochs[0]) > 2:
                 columns = [columns[i] if i < 2 else "column_{}".format(i)
                            for i in range(len(self.epochs[0]))]
-            events = pd.DataFrame(self.epochs, columns=columns).to_records(index=False)
+            events = pd.DataFrame(self.epochs, columns=columns).to_records(
+                index=False)
         eeg.info['events'] = events
 
         return eeg

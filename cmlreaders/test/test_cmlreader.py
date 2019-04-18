@@ -20,21 +20,25 @@ class TestCMLReader:
         if protocol == "all":
             path = resource_filename("cmlreaders.test.data", "r1.json")
         else:
-            path = resource_filename("cmlreaders.test.data", protocol + ".json")
+            path = resource_filename("cmlreaders.test.data",
+                                     protocol + ".json")
 
         with patch.object(PathFinder, "find", return_value=path):
             ix = CMLReader.get_data_index(protocol)
             assert all(ix == get_data_index(protocol))
 
-    @pytest.mark.parametrize("subject,experiment,session,localization,montage", [
-        ("R1278E", "catFR1", 0, 0, 1),
-        ("R1278E", "catFR1", None, 0, 1),
-        ("R1278E", "PAL1", None, 2, 2),
-        ("R1278E", "PAL3", 2, 2, 2),
-        ("R1278E", "TH1", 0, 0, 0),
-        ("R1278E", "TH1", None, 0, 0),
-        ("LTP093", "ltpFR2", 0, None, None)
-    ])
+    @pytest.mark.parametrize(
+        "subject,experiment,session,localization,montage",
+        [
+            ("R1278E", "catFR1", 0, 0, 1),
+            ("R1278E", "catFR1", None, 0, 1),
+            ("R1278E", "PAL1", None, 2, 2),
+            ("R1278E", "PAL3", 2, 2, 2),
+            ("R1278E", "TH1", 0, 0, 0),
+            ("R1278E", "TH1", None, 0, 0),
+            ("LTP093", "ltpFR2", 0, None, None)
+        ]
+    )
     def test_determine_localization_or_montage(self, subject, experiment,
                                                session, localization, montage):
         with patched_cmlreader():
@@ -49,12 +53,13 @@ class TestCMLReader:
         ("LTP093", "ltpFR2", 0, None),
     ])
     @pytest.mark.parametrize("file_type", [
-        'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet', 'mni_coordinates',
-        'good_leads', 'leads', 'electrode_coordinates', 'prior_stim_results',
-        'target_selection_table', 'electrode_categories', 'classifier_summary',
-        'math_summary', 'session_summary', 'pairs', 'contacts', 'localization',
-        'baseline_classifier', 'used_classifier', 'events', 'all_events',
-        'task_events', 'math_events'
+        'voxel_coordinates', 'classifier_excluded_leads', 'jacksheet',
+        'mni_coordinates', 'good_leads', 'leads', 'electrode_coordinates',
+        'prior_stim_results', 'target_selection_table', 'electrode_categories',
+        'classifier_summary', 'math_summary', 'session_summary', 'pairs',
+        'contacts', 'localization', 'baseline_classifier', 'used_classifier',
+        'events', 'all_events', 'task_events', 'math_events'
+
     ])
     def test_load_from_rhino(self, subject, experiment, session, localization,
                              file_type, rhino_root):
@@ -106,8 +111,8 @@ class TestCMLReader:
     def test_load(self, file_type):
         with patched_cmlreader(datafile(file_type)):
             data_type = os.path.splitext(file_type)[0]
-            reader = CMLReader(subject="R1405E", localization=0, experiment="FR5",
-                               session=1)
+            reader = CMLReader(subject="R1405E", localization=0,
+                               experiment="FR5", session=1)
             reader.load(data_type=data_type)
 
     # FIXME: find a good way to test ramutils-requiring things
@@ -122,15 +127,15 @@ class TestCMLReader:
     ])
     def test_get_reader(self, file_type):
         with patched_cmlreader():
-            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                               session=0, montage=0)
+            reader = CMLReader(subject='R1405E', localization=0,
+                               experiment='FR1', session=0, montage=0)
             reader_obj = reader.get_reader(file_type)
             assert type(reader_obj) == reader.readers[file_type]
 
     def test_load_unimplemented(self):
         with patched_cmlreader():
-            reader = CMLReader(subject='R1405E', localization=0, experiment='FR1',
-                               session=0, montage=0)
+            reader = CMLReader(subject='R1405E', localization=0,
+                               experiment='FR1', session=0, montage=0)
             with pytest.raises(NotImplementedError):
                 reader.load("fake_data")
 
@@ -156,7 +161,8 @@ class TestLoadMontage:
             assert "category" in df.columns
             for category, labels in categories.items():
                 mask = df["label"].isin(labels)
-                assert all([category in entry for entry in df[mask]["category"]])
+                assert all([category in entry
+                            for entry in df[mask]["category"]])
         else:
             assert "category" not in df.columns
 
@@ -174,7 +180,8 @@ class TestLoadMontage:
 
         with ExitStack() as stack:
             stack.enter_context(patched_cmlreader())
-            stack.enter_context(patch.object(PathFinder, "find", return_value=""))
+            stack.enter_context(patch.object(PathFinder, "find",
+                                             return_value=""))
             stack.enter_context(patch.object(ElectrodeCategoriesReader, "load",
                                 return_value=categories))
             stack.enter_context(patch.object(MontageReader, "_file_path",
@@ -185,7 +192,8 @@ class TestLoadMontage:
 
         self.assert_categories_correct(df, categories, read_categories)
 
-    @pytest.mark.filterwarnings("ignore::RuntimeWarning")  # from PathFinder finding multiple files
+    # from PathFinder finding multiple files
+    @pytest.mark.filterwarnings("ignore::RuntimeWarning")
     @pytest.mark.rhino
     @pytest.mark.parametrize("kind", ["contacts", "pairs"])
     @pytest.mark.parametrize("read_categories", [True, False])
@@ -216,9 +224,11 @@ class TestLoadAggregate:
                          rhino_root):
         if subjects is experiments is None:
             with pytest.raises(ValueError):
-                CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+                CMLReader.load_events(subjects, experiments,
+                                      rootdir=rhino_root)
             return
 
-        events = CMLReader.load_events(subjects, experiments, rootdir=rhino_root)
+        events = CMLReader.load_events(subjects, experiments,
+                                       rootdir=rhino_root)
         size = len(events.groupby(["subject", "experiment", "session"]).size())
         assert size == unique_sessions

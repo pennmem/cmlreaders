@@ -62,8 +62,10 @@ class MontageReader(BaseCMLReader):
         except IOError:
             raise exc.MissingDataError(
                 "Cannot find electrode category information for " +
-                "{}, {} session {},".format(self.subject, self.experiment, self.session) +
-                "localization {}, montage {}".format(self.localization, self.montage)
+                "{}, {} session {},".format(
+                    self.subject, self.experiment, self.session) +
+                "localization {}, montage {}".format(
+                    self.localization, self.montage)
             )
 
         column = [None] * len(df)
@@ -93,13 +95,16 @@ class MontageReader(BaseCMLReader):
             rootdir=self.rootdir,
         )
         mni_coords = mni_reader.as_dataframe()
-        mni_coords['label'] = [lbl.upper() for lbl in mni_coords['label']]  # Normalize labels to upper case
+        # Normalize labels to upper case
+        mni_coords['label'] = [lbl.upper() for lbl in mni_coords['label']]
         if 'pairs' in self.data_type:
             mni_coords = mni_coords.set_index('label')
-            pair_labels = [p.upper().split('-') for p in df.label]  # Normalize labels to upper case
+            # Normalize labels to upper case
+            pair_labels = [p.upper().split('-') for p in df.label]
             mni_coords = [mni_coords.loc[p, ['mni.x', 'mni.y', 'mni.z']].mean()
                           for p in pair_labels]
-            mni_coords = pd.DataFrame(data=mni_coords, index=df.label).reset_index()
+            mni_coords = pd.DataFrame(data=mni_coords,
+                                      index=df.label).reset_index()
 
         df = df.merge(mni_coords, how='left', on='label')
 
@@ -113,8 +118,8 @@ class MontageReader(BaseCMLReader):
             # we're using fromfile, so we need to infer subject/data_type
             if not len(self.data_type):
                 self.data_type = (
-                    "contacts" if "contacts" in os.path.basename(self.file_path)
-                    else "pairs"
+                    "contacts" if "contacts" in os.path.basename(
+                        self.file_path) else "pairs"
                 )
 
             subject_key = [key for key in raw.keys() if key != "version"][0]
@@ -148,10 +153,12 @@ class MontageReader(BaseCMLReader):
             raise ValueError("Montage info has unknown name ")
         arr = data_dict[self.struct_name]
         flat_cols = [c for c in arr.dtype.names
-                     if not isinstance(arr[c][0], np.ndarray) or arr[c][0].dtype.names is None]
+                     if not isinstance(arr[c][0], np.ndarray) or
+                     arr[c][0].dtype.names is None]
         nested_cols = [c for c in arr.dtype.names if c not in flat_cols]
 
-        # I'll implement arbitrary nesting as soon as you show me an example with depth > 1
+        # I'll implement arbitrary nesting as soon as you show me an example
+        # with depth > 1
 
         df = pd.DataFrame(arr[flat_cols])
         for col in nested_cols:
@@ -219,12 +226,14 @@ class MontageReader(BaseCMLReader):
             except Exception:  # noqa
                 pass
 
-        # Insert MNI coordinates if they're missing; emit a warning if it doesn't work
+        # Insert MNI coordinates if they're missing; emit a warning if it
+        # doesn't work
         if not any('mni' in c for c in df.columns) and self.subject:
             try:
                 df = self._insert_mni_coordinates(df)
             except Exception:  # noqa
-                warnings.warn(cmlreaders.warnings.MissingCoordinatesWarning("Could not load MNI coordinates"))
+                warnings.warn(cmlreaders.warnings.MissingCoordinatesWarning(
+                    "Could not load MNI coordinates"))
 
         return df
 
@@ -260,13 +269,16 @@ class LocalizationReader(BaseCMLReader):
                 p['names'] = tuple(p['names'])
                 p.update({"type": lead["type"]})
 
-        flat_contact_data = list(itertools.chain(*[x["contacts"] for x in leads]))
-        flat_pairs_data = list(itertools.chain(*[x["pairs"] for x in leads]))
+        flat_contact_data = list(itertools.chain(*[x["contacts"]
+                                                   for x in leads]))
+        flat_pairs_data = list(itertools.chain(*[x["pairs"]
+                                                 for x in leads]))
         all_data = [
             json_normalize(flat_contact_data).set_index('name'),
             json_normalize(flat_pairs_data).set_index('names')
         ]
-        combined_df = pd.concat(all_data, keys=['contacts', 'pairs'], sort=True)
+        combined_df = pd.concat(all_data, keys=['contacts', 'pairs'],
+                                sort=True)
         return combined_df
 
 
@@ -289,8 +301,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         Returns
         -------
         groups: dict,
-            dictionary mapping relevant field values (bad channel, SOZ, etc.) to
-            the corresponding channels
+            dictionary mapping relevant field values (bad channel, SOZ, etc.)
+            to the corresponding channels
 
         Notes
         -----
@@ -304,7 +316,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
             'interictal', 'interictal spiking', 'interictal spikes',
             'ictal onset', 'ictal onset:', 'interictal spiking:',
             'brain lesions', 'brain lesions:', 'octal onset zone',
-            'bad electrodes', 'bad electrodes:', 'broken leads', 'broken leads:'
+            'bad electrodes', 'bad electrodes:', 'broken leads',
+            'broken leads:'
         }
 
         with open(self.file_path, 'r') as f:
@@ -316,7 +329,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         groups = {}  # Save the groups here
 
         for index, line in enumerate(ch_info[2:]):
-            # We skip to two because all files start with line one being subject
+            # We skip to 2 because all files start with line 1 being subject
             # followed by another line of '', if the user wishes to access the
             # information feel free to modify below. Blank spaces used to
             # seperate, if we encountered one count increases
@@ -335,20 +348,20 @@ class ElectrodeCategoriesReader(BaseCMLReader):
                 group_name = line.lower()
                 groups[group_name] = []
                 # Sanity check to ensure that they had a '' after the relevant
-                if ch_info[2:][index + 1] != '':  # Skipping two for same reason
+                if ch_info[2:][index + 1] != '':  # Skipping 2 for same reason
                     count += 1
                 continue
 
             # Triggered when inside of a group e.g. they're channel names
-            if (count == 1) and (line != ''):  # indicates start of group values
+            if (count == 1) and (line != ''):  # start of group values
                 groups[group_name].append(line)
 
         return groups
 
     def _get_categories_dict(self) -> dict:
         """Return electrode categories from relevant textfile; ensures that the
-        fields are consistent regardless of the actual field the RA entered into
-        the textfile
+        fields are consistent regardless of the actual field the RA entered
+        into the textfile
 
         Returns
         -------
@@ -386,7 +399,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
 
         e_cat_reader = self._read_categories()
         if e_cat_reader is not None:
-            e_cat_reader = {convert[v]: np.array([s.upper() for s in e_cat_reader[v]])
+            e_cat_reader = {convert[v]:
+                                np.array([s.upper() for s in e_cat_reader[v]])
                             for k, v in enumerate(e_cat_reader)}
 
         return e_cat_reader

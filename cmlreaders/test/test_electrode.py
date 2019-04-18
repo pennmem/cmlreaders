@@ -43,7 +43,9 @@ class TestMontageReader:
     def test_load_matlab(self, kind, subject, montage):
         reader = MontageReader(kind, subject=subject, localization=0,
                                montage=montage)
-        path = datafile("{}_{}.mat".format(subject, "pairs" if "pairs" in kind else "contacts"))
+        path = datafile("{}_{}.mat".format(subject,
+                                           "pairs" if "pairs" in kind
+                                           else "contacts"))
 
         df = reader.fromfile(path)
 
@@ -57,7 +59,8 @@ class TestMontageReader:
 class TestLocalizationReader:
     def test_load(self):
         path = datafile('localization.json')
-        reader = LocalizationReader('localization', subject='R1405E', file_path=path)
+        reader = LocalizationReader('localization', subject='R1405E',
+                                    file_path=path)
         df = reader.load()
         assert isinstance(df, pd.DataFrame)
 
@@ -65,8 +68,10 @@ class TestLocalizationReader:
 @pytest.mark.rhino
 class TestElectrodeCategoriesReader:
     @pytest.mark.parametrize("subject,lens", [
-        ("R1111M", {'soz': 9, 'interictal': 15, 'brain_lesion': 5, 'bad_channel': 6}),
-        ("R1052E", {'soz': 2, 'interictal': 14, 'brain_lesion': 0, 'bad_channel': 0})
+        ("R1111M", {'soz': 9, 'interictal': 15, 'brain_lesion': 5,
+                    'bad_channel': 6}),
+        ("R1052E", {'soz': 2, 'interictal': 14, 'brain_lesion': 0,
+                    'bad_channel': 0})
     ])
     def test_load(self, subject, lens, rhino_root):
         reader = ElectrodeCategoriesReader('electrode_categories',
@@ -92,11 +97,14 @@ class TestWithMNICoordinatesReader:
         )
         mni_df = mni_reader.as_dataframe()
 
-        montage_reader = MontageReader(data_type, subject=subject, montage=montage, rootdir=rhino_root)
+        montage_reader = MontageReader(data_type, subject=subject,
+                                       montage=montage, rootdir=rhino_root)
         montage_df = montage_reader.as_dataframe()
 
-        assert_array_almost_equal(mni_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']],
-                                  montage_df.sort_values(by='label')[['mni.x', 'mni.y', 'mni.z']])
+        assert_array_almost_equal(mni_df.sort_values(by='label')[
+                                      ['mni.x', 'mni.y', 'mni.z']],
+                                  montage_df.sort_values(by='label')[
+                                      ['mni.x', 'mni.y', 'mni.z']])
 
     @pytest.mark.parametrize("subject, montage",
                              [
@@ -105,6 +113,7 @@ class TestWithMNICoordinatesReader:
     @pytest.mark.parametrize("data_type", ['contacts', 'pairs'])
     def test_add_mni_coords(self, subject, montage, data_type, rhino_root):
 
-        montage = MontageReader(data_type, subject=subject, montage=montage, rootdir=rhino_root).as_dataframe()
+        montage = MontageReader(data_type, subject=subject, montage=montage,
+                                rootdir=rhino_root).as_dataframe()
 
         assert 'mni.x' in montage.columns

@@ -1,3 +1,5 @@
+# flake8: noqa
+
 # supported protocols
 PROTOCOLS = (
     "r1",

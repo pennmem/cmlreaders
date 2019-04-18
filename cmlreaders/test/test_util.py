@@ -5,7 +5,8 @@ from random import shuffle
 import pytest
 
 from cmlreaders import exc
-from cmlreaders.util import DefaultTuple, get_protocol, get_root_dir, is_rerefable
+from cmlreaders.util import DefaultTuple, get_protocol, get_root_dir,\
+    is_rerefable
 
 
 @contextmanager
@@ -66,7 +67,8 @@ def test_get_root_dir(path, with_env_var):
     ("R1409D", "FR6", 0, False),
 ])
 def test_isrerefable(subject, experiment, session, result, rhino_root):
-    assert is_rerefable(subject, experiment, session, rootdir=rhino_root) == result
+    assert is_rerefable(subject, experiment, session, rootdir=rhino_root) == \
+           result
 
 
 class TestDefaultTuple:

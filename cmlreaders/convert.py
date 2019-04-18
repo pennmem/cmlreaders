@@ -21,8 +21,8 @@ def milliseconds_to_samples(millis: Union[int, float],
     return int(sample_rate * millis / 1000.)
 
 
-def samples_to_milliseconds(samples: int,
-                            sample_rate: Union[int, float]) -> Union[int, float]:
+def samples_to_milliseconds(samples: int, sample_rate: Union[int, float]) -> \
+        Union[int, float]:
     """Convert samples to milliseconds.
 
     Parameters

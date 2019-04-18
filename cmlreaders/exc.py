@@ -41,7 +41,8 @@ class IncompatibleParametersError(CMLReaderException):
 
 
 class UnmetOptionalDependencyError(CMLReaderException):
-    """ Raised when an optional dependency is used without having first been installed """
+    """ Raised when an optional dependency is used without having first been
+    installed """
 
 
 class UnsupportedExperimentError(CMLReaderException):

@@ -6,7 +6,8 @@ import pandas as pd
 import pytest
 from pkg_resources import resource_filename
 
-from cmlreaders.exc import UnsupportedRepresentation, UnsupportedExperimentError
+from cmlreaders.exc import UnsupportedRepresentation,\
+    UnsupportedExperimentError
 from cmlreaders.readers.electrodes import (
     ElectrodeCategoriesReader,
     MontageReader
@@ -30,8 +31,8 @@ datafile = functools.partial(resource_filename, 'cmlreaders.test.data')
 class TestTextReader:
     @pytest.mark.parametrize("method", ['dataframe', 'recarray', 'dict'])
     @pytest.mark.parametrize("data_type", [
-        "voxel_coordinates", "leads", "classifier_excluded_leads", "good_leads",
-        "jacksheet", "area"])
+        "voxel_coordinates", "leads", "classifier_excluded_leads",
+        "good_leads", "jacksheet", "area"])
     @pytest.mark.parametrize("subject,localization", [
         ('R1389J', '0'),
     ])
@@ -55,7 +56,8 @@ class TestTextReader:
         ("R1406M", datafile("R1406M_jacksheet.txt"), "\t"),
     ])
     def test_read_jacksheet(self, subject, filename, sep):
-        js = TextReader.fromfile(filename, subject=subject, data_type="jacksheet")
+        js = TextReader.fromfile(filename, subject=subject,
+                                 data_type="jacksheet")
 
         assert "number" in js.columns
         assert "label" in js.columns
@@ -112,7 +114,8 @@ class TestRamulatorEventLogReader:
                         rhino_root):
         file_path = datafile(data_type + ".json")
         reader = RamulatorEventLogReader(data_type, subject=subject,
-                                         experiment=experiment, session=session,
+                                         experiment=experiment,
+                                         session=session,
                                          file_path=file_path,
                                          rootdir=rhino_root)
         expected_types = {
@@ -160,7 +163,8 @@ class TestEventReader:
 @pytest.mark.skip(reason="TODO: reenable ramutils tests")
 class TestBaseReportDataReader:
     @patch("ramutils.reports.summary.ClassifierSummary")
-    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict', 'recarray'])
+    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'dict',
+                                        'recarray'])
     @pytest.mark.parametrize("data_type", ['classifier_summary'])
     @pytest.mark.parametrize("subject,experiment,session", [
         ('R1409D', 'catFR1', '1'),
@@ -169,9 +173,12 @@ class TestBaseReportDataReader:
                         experiment, session):
         file_path = datafile(data_type + ".h5")
 
-        reader = BaseRAMReportDataReader(data_type, subject=subject,
-                                         experiment=experiment, session=session,
-                                         localization=0, file_path=file_path)
+        reader = BaseRAMReportDataReader(data_type,
+                                         subject=subject,
+                                         experiment=experiment,
+                                         session=session,
+                                         localization=0,
+                                         file_path=file_path)
 
         method_name = "as_{}".format(method)
         callable_method = getattr(reader, method_name)
@@ -188,15 +195,19 @@ class TestBaseReportDataReader:
 
 @pytest.mark.skip(reason="TODO: reenable ramutils tests")
 class TestReportSummaryReader:
-    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray', 'dict'])
+    @pytest.mark.parametrize("method", ['pyobject', 'dataframe', 'recarray',
+                                        'dict'])
     @pytest.mark.parametrize("data_type", ["session_summary"])
     def test_as_methods(self, method, data_type):
         file_path = datafile(data_type + ".h5")
 
         with patch("ramutils.reports.summary.FRStimSessionSummary") as cls:
-            reader = RAMReportSummaryDataReader(data_type, subject='R1409D',
-                                                experiment='catFR5', session=1,
-                                                localization=0, file_path=file_path)
+            reader = RAMReportSummaryDataReader(data_type,
+                                                subject='R1409D',
+                                                experiment='catFR5',
+                                                session=1,
+                                                localization=0,
+                                                file_path=file_path)
 
             method_name = "as_{}".format(method)
             func = getattr(reader, method_name)
@@ -205,9 +216,12 @@ class TestReportSummaryReader:
 
     def test_load_nonstim_session(self):
         file_path = datafile('session_summary' + ".h5")
-        reader = RAMReportSummaryDataReader('session_summary', subject='R1409D',
-                                            experiment='catFR1', session=1,
-                                            localization=0, file_path=file_path)
+        reader = RAMReportSummaryDataReader('session_summary',
+                                            subject='R1409D',
+                                            experiment='catFR1',
+                                            session=1,
+                                            localization=0,
+                                            file_path=file_path)
         with pytest.raises(UnsupportedExperimentError):
             reader.as_pyobject()
 

@@ -48,8 +48,10 @@ class TestEventsAccessors:
         assert all(expected == events.events.stim)
 
     def test_recalled_words(self, events):
-        expected_recalled = events[(events.type == "WORD") & (events.recalled == 1)]
-        expected_not_recalled = events[(events.type == "WORD") & (events.recalled == 0)]
+        expected_recalled = events[(events.type == "WORD") &
+                                   (events.recalled == 1)]
+        expected_not_recalled = events[(events.type == "WORD") &
+                                       (events.recalled == 0)]
         assert all(expected_recalled == events.events.words_recalled)
         assert all(expected_not_recalled == events.events.words_not_recalled)
 
@@ -73,7 +75,8 @@ class TestEventsAccessors:
                          ]
                          )
 def test_stim_params_rhino(rhino_root, subject, experiment, session):
-    reader = cmlreaders.CMLReader(subject, experiment, session, rootdir=rhino_root)
+    reader = cmlreaders.CMLReader(subject, experiment, session,
+                                  rootdir=rhino_root)
     events = reader.load('task_events')
     stim_params = events.events.stim_params
     assert len(stim_params.columns) > 1

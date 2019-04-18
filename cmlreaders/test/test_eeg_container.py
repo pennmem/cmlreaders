@@ -77,7 +77,8 @@ class TestEEGContainer:
         ts = EEGContainer(data, 100)
         new_ts = ts.resample(200)
         assert len(new_ts.time) == 2 * len(ts.time)
-        assert (new_ts.time[1] - new_ts.time[0]) * 2 == (ts.time[1] - ts.time[0])
+        assert (new_ts.time[1] - new_ts.time[0]) * 2 == \
+               (ts.time[1] - ts.time[0])
 
     @pytest.mark.parametrize("dim", ["events", "time"])
     def test_concatenate(self, dim):
@@ -121,7 +122,8 @@ class TestEEGContainer:
             epochs = [(i, i + 100) for i in range(data.shape[0])]
             ts = EEGContainer(data, rate, epochs=epochs)
         else:
-            filename = resource_filename("cmlreaders.test.data", "R1111M_FR1_0_events.json")
+            filename = resource_filename("cmlreaders.test.data",
+                                         "R1111M_FR1_0_events.json")
             events = pd.read_json(filename).iloc[:data.shape[0]]
             ts = EEGContainer(data, rate, events=events)
 
