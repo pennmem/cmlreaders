@@ -400,7 +400,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         e_cat_reader = self._read_categories()
         if e_cat_reader is not None:
             e_cat_reader = {convert[v]:
-                                np.array([s.upper() for s in e_cat_reader[v]])
+                            np.array([s.upper() for s in e_cat_reader[v]])
                             for k, v in enumerate(e_cat_reader)}
 
         return e_cat_reader
