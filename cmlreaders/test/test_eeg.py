@@ -200,14 +200,14 @@ class TestFileReaders:
         filename = resource_filename("cmlreaders.test.data", "eeg.h5")
 
         make_reader = partial(RamulatorHDF5Reader, filename, np.int16, [(0, None)])
-        reader = make_reader(pairs)
+        reader = make_reader(pairs, False)
         ts, contacts = reader.read()
 
         new_ts, _ = reader.rereference(ts, contacts)
         assert (new_ts == ts).all()
 
         pairs = pairs[:10]
-        reader = make_reader(pairs)
+        reader = make_reader(pairs, False)
         ts, contacts = reader.read()
         new_ts, _ = reader.rereference(ts, contacts)
         assert (new_ts == ts[:, :10, :]).all()
@@ -218,7 +218,7 @@ class TestFileReaders:
             "contact_2": [400],
             "label": ["DNE12"],
         })
-        reader = make_reader(scheme)
+        reader = make_reader(scheme, False)
         ts, contacts = reader.read()
         with pytest.raises(exc.RereferencingNotPossibleError):
             reader.rereference(ts, contacts)
