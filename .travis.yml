@@ -31,7 +31,7 @@ install:
   - conda install --use-local $PKG_NAME
 
 script:
-  - flake8
+  - flake8 --ignore W504
   - invoke test
 
 after_success:

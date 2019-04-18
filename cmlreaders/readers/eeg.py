@@ -343,8 +343,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
         # the recorded data.
         all_nums_array = np.asarray(all_nums)
         valid_mask = (
-            (self.scheme["contact_1"].isin(all_nums_array[:, 0]))
-            & (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
+            (self.scheme["contact_1"].isin(all_nums_array[:, 0])) &
+            (self.scheme["contact_2"].isin(all_nums_array[:, 1]))
         )
 
         if not len(self.scheme[valid_mask]):
@@ -368,9 +368,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
         labels = self.scheme[valid_mask]["label"].tolist()
 
         # allow a subset of channels
-        channel_inds = [chan in scheme_nums
-                        or (chan[1], chan[0]) in scheme_nums
-                        for chan in list(all_nums)]
+        channel_inds = [chan in scheme_nums or (chan[1], chan[0]) in scheme_nums for chan in list(all_nums)]
         return data[:, channel_inds, :], labels
 
 
@@ -410,7 +408,8 @@ class ScalpEEGReader(BaseEEGReader):
                 self.epochs['epochs'] = self.epochs['epochs'][:-1]
                 truncated_events_post += 1
             # Cut continuous data into epochs
-            eeg = mne.Epochs(eeg, self.epochs['epochs'], tmin=self.epochs['tmin'], tmax=self.epochs['tmax'], preload=True)
+            eeg = mne.Epochs(eeg, self.epochs['epochs'], tmin=self.epochs['tmin'], tmax=self.epochs['tmax'],
+                             preload=True)
             data = eeg._data
             # Add information about how many events needed to be truncated
             eeg.info['truncated_events_pre'] = truncated_events_pre
@@ -524,8 +523,8 @@ class EEGReader(BaseCMLReader):
             # Select only a single event with a valid eegfile just to get the
             # filename
             valid = all_events[
-                (all_events["eegfile"].notnull())
-                & (all_events["eegfile"].str.len() > 0)
+                (all_events["eegfile"].notnull()) &
+                (all_events["eegfile"].str.len() > 0)
             ]
             events = pd.DataFrame(valid.iloc[0]).T.reset_index(drop=True)
 

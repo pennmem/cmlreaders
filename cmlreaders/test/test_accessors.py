@@ -7,8 +7,8 @@ import pytest
 @pytest.fixture
 def events():
     types = (
-        ["WORD"] * random.randint(30, 100)
-        + ["STIM_ON"] * random.randint(30, 100)
+        ["WORD"] * random.randint(30, 100) +
+        ["STIM_ON"] * random.randint(30, 100)
     )
     random.shuffle(types)
 
