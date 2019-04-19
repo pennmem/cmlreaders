@@ -9,7 +9,9 @@ env:
     - CXX=g++-7
     - PKG_NAME=cmlreaders
   matrix:
-    - PYTHON_VERSION=3.5
+    # For some reason, Anaconda 4.6.12 fails to install on Python 3.5. Commenting 3.5 out until
+    # we get the environment to build on Python 3.5 again.
+    #- PYTHON_VERSION=3.5
     - PYTHON_VERSION=3.6
     - PYTHON_VERSION=3.7
 
@@ -19,7 +21,7 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  #- conda update -q conda
+  - conda update -q conda
   - conda info -a
   - conda install -q python=$PYTHON_VERSION conda-build anaconda-client
 
