@@ -287,7 +287,7 @@ class EEGContainer(object):
             eeg = mne.io.RawArray(self.data[0], info, first_samp=0)
         # Return EpochsArray if loading epoched data
         else:
-            eeg = mne.EpochsArray(self.data, info)
+            eeg = mne.EpochsArray(self.data, info, tmin=self.time[0] / 1000.)
 
         # Attach events to MNE object as record array
         if self.events is not None:
