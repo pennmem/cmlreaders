@@ -268,11 +268,6 @@ class CMLReader(object):
             "scheme": scheme,
             "clean": clean
         }
-
-        self.subject = subject
-        self.experiment = experiment
-        self.session = session
-
         if rel_start is not None:
             kwargs["rel_start"] = rel_start
         if rel_stop is not None:
