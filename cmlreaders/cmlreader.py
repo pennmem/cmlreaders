@@ -269,18 +269,49 @@ class CMLReader(object):
             "clean": clean
         }
 
+        self.subject = subject
+        self.experiment = experiment
+        self.session = session
+
         if rel_start is not None:
             kwargs["rel_start"] = rel_start
         if rel_stop is not None:
             kwargs["rel_stop"] = rel_stop
 
         if events is not None:
+            # Unless prevented here, cmlreader will take any events
+            # regardless of which subject and session it was
+            # initialized with. This appears to work in many cases,
+            # but can produce errors. Long term solution is to rewrite
+            # cmlreader to be more flexible and robust, but for now we
+            # are limiting the load_eeg method to only apply to events
+            # for the subject and session with which the cmlreader
+            # object was initialized with:
+            if 'subject' in events:
+                if len(np.unique(events['subject'])) != 1:
+                    raise ValueError(
+                        'Events must correspond to one subject only')
+                if events['subject'][0] != self.subject:
+                    raise ValueError(
+                        'Events must correspond to the subject with which ' +
+                        'the reader was initialized: ' +
+                        self.subject + ' (events correspond to ' +
+                        events['subject'][0] + ')')
+            if 'session' in events:
+                if len(np.unique(events['session'])) != 1:
+                    raise ValueError(
+                        'Events must correspond to one session only')
+                if events['session'][0] != self.session:
+                    raise ValueError(
+                        'Events must correspond to the session with which ' +
+                        'the reader was initialized: ' +
+                        self.session + ' (events correspond to ' +
+                        events['session'][0] + ')')
+                
             if "rel_start" not in kwargs or "rel_stop" not in kwargs:
                 raise IncompatibleParametersError(
                     "rel_start and rel_stop are required keyword arguments"
-                    " when passing events"
-                )
-
+                    " when passing events")
             kwargs.update({
                 'events': events,
                 'rel_start': rel_start,
