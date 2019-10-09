@@ -343,6 +343,13 @@ class RamulatorHDF5Reader(BaseEEGReader):
                     bpinfo['ch0_label'][:], bpinfo['ch1_label'][:]
                 )
             ]
+            # added this to filter the montage, removing dupes in the same way as above in the read() function
+            idxs = np.empty(len(all_nums), dtype=bool)
+            idxs.fill(True)
+            for i, pair in enumerate(all_nums):
+                if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
+                    idxs[i] = False
+            all_nums=list(compress(all_nums,idxs))
 
         # Create a mask of channels that appear in both the passed scheme and
         # the recorded data.
