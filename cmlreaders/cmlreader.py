@@ -286,22 +286,22 @@ class CMLReader(object):
                 if len(np.unique(events['subject'])) != 1:
                     raise ValueError(
                         'Events must correspond to one subject only')
-                if events['subject'][0] != self.subject:
+                if events['subject'].iloc[0]!= self.subject:
                     raise ValueError(
                         'Events must correspond to the subject with which ' +
                         'the reader was initialized: ' +
                         self.subject + ' (events correspond to ' +
-                        events['subject'][0] + ')')
+                        events['subject'].iloc[0] + ')')
             if 'session' in events:
                 if len(np.unique(events['session'])) != 1:
                     raise ValueError(
                         'Events must correspond to one session only')
-                if events['session'][0] != self.session:
+                if events['session'].iloc[0] != self.session:
                     raise ValueError(
                         'Events must correspond to the session with which ' +
                         'the reader was initialized: ' +
                         self.session + ' (events correspond to ' +
-                        events['session'][0] + ')')
+                        events['session'].iloc[0] + ')')
                 
             if "rel_start" not in kwargs or "rel_stop" not in kwargs:
                 raise IncompatibleParametersError(
