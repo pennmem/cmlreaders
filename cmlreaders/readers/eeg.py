@@ -20,7 +20,7 @@ from cmlreaders.path_finder import PathFinder
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
 from cmlreaders.warnings import MissingChannelsWarning
-
+from itertools import compress
 
 class EEGMetaReader(BaseCMLReader):
     """Reads the ``sources.json`` or ``params.txt`` files which describes
