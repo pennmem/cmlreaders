@@ -286,7 +286,7 @@ class CMLReader(object):
                 if len(np.unique(events['subject'])) != 1:
                     raise ValueError(
                         'Events must correspond to one subject only')
-                if events['subject'].iloc[0]!= self.subject:
+                if events['subject'].iloc[0] != self.subject:
                     raise ValueError(
                         'Events must correspond to the subject with which ' +
                         'the reader was initialized: ' +
