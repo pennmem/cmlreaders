@@ -301,7 +301,7 @@ class CMLReader(object):
                         'Events must correspond to the session with which ' +
                         'the reader was initialized: ' +
                         self.session + ' (events correspond to ' +
-                        events['session'].iloc[0] + ')') 
+                        events['session'].iloc[0] + ')')
             if "rel_start" not in kwargs or "rel_stop" not in kwargs:
                 raise IncompatibleParametersError(
                     "rel_start and rel_stop are required keyword arguments"
