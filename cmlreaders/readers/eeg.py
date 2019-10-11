@@ -344,7 +344,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
                     bpinfo['ch0_label'][:], bpinfo['ch1_label'][:]
                 )
             ]
-            # added this to filter the montage, removing dupes 
+            # added this to filter the montage, removing dupes
             # in the same way as above in the read() function
             idxs = np.empty(len(all_nums), dtype=bool)
             idxs.fill(True)
