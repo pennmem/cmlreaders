@@ -45,8 +45,6 @@ rhino_paths = {
     ],
     'electrode_categories': [
         'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
     ],
     'good_leads': [
         'data10/RAM/subjects/{subject_montage}/tal/good_leads.txt',
@@ -80,20 +78,20 @@ rhino_paths = {
 
     # Report Data
     'session_summary': [
-        'scratch/report_database/{subject_montage}_{experiment}_{session}_session_summary.h5',
+        'data10/RAM/report_database/{subject_montage}_{experiment}_{session}_session_summary.h5',
     ],
     'classifier_summary': [
-        'scratch/report_database/{subject_montage}_{experiment}_{session}_classifier_session_{session}.h5',
+        'data10/RAM/report_database/{subject_montage}_{experiment}_{session}_classifier_session_{session}.h5',
     ],
     'math_summary': [
-        'scratch/report_database/{subject_montage}_{experiment}_{session}_math_summary.h5',
+        'data10/RAM/report_database/{subject_montage}_{experiment}_{session}_math_summary.h5',
     ],
     'target_selection_table': [
-        'scratch/report_database/{subject_montage}_{experiment}_*_target_selection_table.csv',
+        'data10/RAM/report_database/{subject_montage}_{experiment}_*_target_selection_table.csv',
     ],
     'baseline_classifier': [
-        'scratch/report_database/{subject_montage}_retrained_classifier.zip',
-        'scratch/report_database/{subject_montage}_{experiment}_all_retrained_classifier.zip',
+        'data10/RAM/report_database/{subject_montage}_retrained_classifier.zip',
+        'data10/RAM/report_database/{subject_montage}_{experiment}_all_retrained_classifier.zip',
     ],
 
     # Session Data
