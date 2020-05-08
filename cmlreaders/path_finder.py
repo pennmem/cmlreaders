@@ -188,12 +188,12 @@ class PathFinder(object):
         if len(timestamped_directories) == 0:
             raise RuntimeError("No timestamped folder found in host_pc folder")
 
-        if len(timestamped_directories) > 1:
-            warnings.warn(
-                "Multiple timestamped directories found. "
-                "The most recent will be returned",
-                MultiplePathsFoundWarning
-            )
+        #if len(timestamped_directories) > 1:
+        #    warnings.warn(
+        #        "Multiple timestamped directories found. "
+        #        "The most recent will be returned",
+        #        MultiplePathsFoundWarning
+        #    )
 
         # Only return the values from the final "/" to the end
         latest = timestamped_directories[0]
@@ -231,11 +231,11 @@ class PathFinder(object):
                 "Unable to find the requested file in any of the expected "
                 "locations:\n {}".format('\n'.join(checked_paths)))
 
-        if len(found_files) > 1:
-            msg = (
-                "Multiple files found: {}".format("\n".join(found_files)) +
-                " returning the first file found"
-            )
-            warnings.warn(msg, MultiplePathsFoundWarning)
+        #if len(found_files) > 1:
+        #    msg = (
+        #        "Multiple files found: {}".format("\n".join(found_files)) +
+        #        " returning the first file found"
+        #    )
+        #    warnings.warn(msg, MultiplePathsFoundWarning)
 
         return found_files[0]
