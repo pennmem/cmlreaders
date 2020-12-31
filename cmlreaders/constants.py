@@ -44,7 +44,8 @@ rhino_paths = {
         'data10/RAM/subjects/{subject_montage}/docs/area.txt',
     ],
     'electrode_categories': [
-        'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
+        'data10/RAM/electrode_categories/{subject_montage}_electrode_categories.txt',
+	'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
         'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
         'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
     ],
