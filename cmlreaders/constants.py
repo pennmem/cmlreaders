@@ -44,10 +44,10 @@ rhino_paths = {
         'data10/RAM/subjects/{subject_montage}/docs/area.txt',
     ],
     'electrode_categories': [
-        'data10/RAM/electrode_categories/{subject_montage}_electrode_categories.txt',
-	'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
-        'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
+        'data10/RAM/electrode_categories/{subject_montage}_electrode_categories.txt'#, 
+# 	'data10/RAM/subjects/{subject_montage}/docs/electrode_categories.txt', # 2020-01-07 JS-We decided to only use a single, master folder
+#         'scratch/pwanda/electrode_categories/{subject_montage}_electrode_categories.txt',
+#         'scratch/pwanda/electrode_categories/electrode_categories_{subject_montage}.txt',
     ],
     'good_leads': [
         'data10/RAM/subjects/{subject_montage}/tal/good_leads.txt',
