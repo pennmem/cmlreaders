@@ -434,6 +434,7 @@ class ScalpEEGReader(BaseEEGReader):
             eeg = mne.Epochs(eeg, self.epochs['epochs'],
                              tmin=self.epochs['tmin'],
                              tmax=self.epochs['tmax'],
+			     baseline=None,
                              preload=True)
             data = eeg._data
             # Add information about how many events needed to be truncated
