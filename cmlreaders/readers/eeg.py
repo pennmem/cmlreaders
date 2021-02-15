@@ -399,11 +399,11 @@ class ScalpEEGReader(BaseEEGReader):
             eeg = mne.io.read_raw_fif(clean_eegfile, preload=True)
         # To read BioSemi data (.bdf)
         elif self.dtype == '.bdf':
-            eeg = mne.io.read_raw_edf(self.filename,
+            eeg = mne.io.read_raw_bdf(self.filename,
                                       eog=['EXG1', 'EXG2', 'EXG3', 'EXG4'],
                                       misc=['EXG5', 'EXG6', 'EXG7', 'EXG8'],
                                       stim_channel='Status',
-                                      montage='biosemi128', preload=True)
+                                      preload=True)
         # To read EGI data (.raw/.mff)
         else:
             eeg = mne.io.read_raw_egi(self.filename, preload=True)
