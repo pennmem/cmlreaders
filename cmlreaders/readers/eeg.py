@@ -408,7 +408,7 @@ class ScalpEEGReader(BaseEEGReader):
         else:
             eeg = mne.io.read_raw_egi(self.filename, preload=True)
             eeg.rename_channels({'E129': 'Cz'})
-            eeg.set_montage(mne.channels.read_montage('GSN-HydroCel-129'))
+            eeg.set_montage(mne.channels.make_standard_montage('GSN-HydroCel-129'))
             eeg.set_channel_types({'E8': 'eog', 'E25': 'eog', 'E126': 'eog',
                                    'E127': 'eog', 'Cz': 'misc'})
 
