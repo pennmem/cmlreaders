@@ -314,7 +314,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         relevant = {
             'seizure onset zone', 'seizure onset zones', 'seizure onset',
             'interictal spiking', 'interictal spikes', 'interictal spikes:',
-            'ictal onset', 'ictal onset:', 'interictal spiking:', 'interictal:',
+            'ictal onset', 'ictal onset:',
+            'interictal spiking:', 'interictal:',
             'brain lesions', 'brain lesions:', 'octal onset zone',
             'bad electrodes', 'bad electrodes:', 'broken leads',
             'broken leads:'
