@@ -8,6 +8,7 @@ env:
     - CC=gcc-7
     - CXX=g++-7
     - PKG_NAME=cmlreaders
+    - PY_IGNORE_IMPORTMISMATCH=1
   matrix:
     # For some reason, Anaconda 4.6.12 fails to install on Python 3.5. Commenting 3.5 out until
     # we get the environment to build on Python 3.5 again.
