@@ -313,8 +313,8 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         # Used to indicate relevant strings in the text files
         relevant = {
             'seizure onset zone', 'seizure onset zones', 'seizure onset',
-            'interictal spiking', 'interictal spikes','interictal spikes:',
-            'ictal onset', 'ictal onset:', 'interictal spiking:','interictal:',
+            'interictal spiking', 'interictal spikes', 'interictal spikes:',
+            'ictal onset', 'ictal onset:', 'interictal spiking:', 'interictal:',
             'brain lesions', 'brain lesions:', 'octal onset zone',
             'bad electrodes', 'bad electrodes:', 'broken leads',
             'broken leads:'

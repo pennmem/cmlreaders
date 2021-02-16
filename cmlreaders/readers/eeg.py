@@ -408,7 +408,8 @@ class ScalpEEGReader(BaseEEGReader):
         else:
             eeg = mne.io.read_raw_egi(self.filename, preload=True)
             eeg.rename_channels({'E129': 'Cz'})
-            eeg.set_montage(mne.channels.make_standard_montage('GSN-HydroCel-129'))
+            eeg.set_montage(
+                mne.channels.make_standard_montage('GSN-HydroCel-129'))
             eeg.set_channel_types({'E8': 'eog', 'E25': 'eog', 'E126': 'eog',
                                    'E127': 'eog', 'Cz': 'misc'})
 
@@ -434,7 +435,7 @@ class ScalpEEGReader(BaseEEGReader):
             eeg = mne.Epochs(eeg, self.epochs['epochs'],
                              tmin=self.epochs['tmin'],
                              tmax=self.epochs['tmax'],
-			     baseline=None,
+                             baseline=None,
                              preload=True)
             data = eeg._data
             # Add information about how many events needed to be truncated
