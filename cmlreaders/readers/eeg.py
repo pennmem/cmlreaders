@@ -399,16 +399,17 @@ class ScalpEEGReader(BaseEEGReader):
             eeg = mne.io.read_raw_fif(clean_eegfile, preload=True)
         # To read BioSemi data (.bdf)
         elif self.dtype == '.bdf':
-            eeg = mne.io.read_raw_edf(self.filename,
+            eeg = mne.io.read_raw_bdf(self.filename,
                                       eog=['EXG1', 'EXG2', 'EXG3', 'EXG4'],
                                       misc=['EXG5', 'EXG6', 'EXG7', 'EXG8'],
                                       stim_channel='Status',
-                                      montage='biosemi128', preload=True)
+                                      preload=True)
         # To read EGI data (.raw/.mff)
         else:
             eeg = mne.io.read_raw_egi(self.filename, preload=True)
             eeg.rename_channels({'E129': 'Cz'})
-            eeg.set_montage(mne.channels.read_montage('GSN-HydroCel-129'))
+            eeg.set_montage(
+                mne.channels.make_standard_montage('GSN-HydroCel-129'))
             eeg.set_channel_types({'E8': 'eog', 'E25': 'eog', 'E126': 'eog',
                                    'E127': 'eog', 'Cz': 'misc'})
 
@@ -434,6 +435,7 @@ class ScalpEEGReader(BaseEEGReader):
             eeg = mne.Epochs(eeg, self.epochs['epochs'],
                              tmin=self.epochs['tmin'],
                              tmax=self.epochs['tmax'],
+                             baseline=None,
                              preload=True)
             data = eeg._data
             # Add information about how many events needed to be truncated
