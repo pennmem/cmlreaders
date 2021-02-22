@@ -168,7 +168,7 @@ class MontageReader(BaseCMLReader):
                            arr[col]]
                 idxs = range(len(datacol))
                 new_datacol, new_idxs = list(
-                    zip(*[(x, i) for (x, i) in zip(datacol, idxs) if x])
+                    zip(*[(x, i) for (x, i) in zip(datacol, idxs)])
                 )
                 new_df = pd.DataFrame(np.array(new_datacol),
                                       index=new_idxs,

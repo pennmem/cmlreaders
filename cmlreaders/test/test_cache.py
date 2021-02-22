@@ -34,7 +34,14 @@ def pairs_reader():
 
 
 def test_clear_all(caching_enabled, contacts_reader, pairs_reader):
+    cache.clear_all()
+
+    assert BaseCMLReader.get_instance_count() == 0
+
     contacts_reader.load()
+
+    assert BaseCMLReader.get_instance_count() == 1
+
     pairs_reader.load()
 
     assert BaseCMLReader.get_instance_count() == 2
