@@ -57,7 +57,7 @@ class EEGMetaReader(BaseCMLReader):
         sources.json.
 
         """
-        df = pd.read_table(self.file_path, sep=' ', header=None, index_col=0).T
+        df = pd.read_csv(self.file_path, sep=' ', header=None, index_col=0).T
 
         sources_info = {
             "sample_rate": float(df["samplerate"].iloc[0]),

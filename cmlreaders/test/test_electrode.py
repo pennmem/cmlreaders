@@ -70,8 +70,8 @@ class TestElectrodeCategoriesReader:
     @pytest.mark.parametrize("subject,lens", [
         ("R1111M", {'soz': 9, 'interictal': 15, 'brain_lesion': 5,
                     'bad_channel': 6}),
-        ("R1052E", {'soz': 2, 'interictal': 14, 'brain_lesion': 0,
-                    'bad_channel': 0})
+        ("R1052E", {'soz': 2, 'interictal': 14, 'brain_lesion': 1,
+                    'bad_channel': 1})
     ])
     def test_load(self, subject, lens, rhino_root):
         reader = ElectrodeCategoriesReader('electrode_categories',
