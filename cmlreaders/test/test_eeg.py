@@ -575,7 +575,6 @@ class TestLoadEEG:
                 all([s in events.subject.values for s in subjects]) and
                 all([e in events.experiment.values for e in experiments])
             )
-
         reader = CMLReader(events["subject"].unique()[0], rootdir=rhino_root)
 
         load = lambda: reader.load_eeg(events, rel_start=0, rel_stop=10)  # noqa
@@ -584,7 +583,11 @@ class TestLoadEEG:
             with pytest.raises(ValueError):
                 load()
             return
-
+        if len(events['session'].unique()>0):
+            with pytest.raises(ValueError):
+                load()
+            return
+        
         eeg = load()
 
         assert len(eeg.epochs) == len(events)
