@@ -196,7 +196,8 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             return self._load_from_memory()
         else:
             raise ValueError("Invalid caching type: " + self.caching)
-
+        #if weakref.ref(self) not in BaseCMLReader._instances:
+        #    BaseCMLReader._instances.add(weakref.ref(self))
     def _clear_memory_cache(self):
         """Clear in-memory cached result."""
         self._result = None
@@ -216,6 +217,7 @@ class BaseCMLReader(object, metaclass=_MetaReader):
             obj = ref()
             if obj is not None:
                 obj.clear_cache()
+                cls._instances.remove(ref)
             else:
                 cls._instances.remove(ref)
 
