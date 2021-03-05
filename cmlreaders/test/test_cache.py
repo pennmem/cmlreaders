@@ -52,8 +52,8 @@ def test_clear_all(caching_enabled, contacts_reader, pairs_reader):
         assert pairs_reader._result is not None
     cache.clear_all()
 
-    #assert contacts_reader._result is None
-    #assert pairs_reader._result is None
+    # assert contacts_reader._result is None
+    # assert pairs_reader._result is None
 
 
 def test_enable(caching_enabled):

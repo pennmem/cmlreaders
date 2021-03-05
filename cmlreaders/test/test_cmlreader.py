@@ -48,8 +48,8 @@ class TestCMLReader:
             assert reader.localization == localization
 
     @pytest.mark.rhino
+    # FIXME add an intrcranial subject to test
     @pytest.mark.parametrize("subject,experiment,session,localization", [
-       # ("R1405E", "FR1", 1, 1), #these reports apparently no longer on rhino
         ("LTP093", "ltpFR2", 0, None),
     ])
     @pytest.mark.parametrize("file_type", [

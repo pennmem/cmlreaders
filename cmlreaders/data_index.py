@@ -63,7 +63,8 @@ def generate_pyfr_index(outdir: str, rootdir: str):
 
     # Internal scipy bug.
     warnings.filterwarnings('ignore', '.*tostring.*',
-        category=DeprecationWarning, module=r'scipy\.io\.matlab')
+                            category=DeprecationWarning,
+                            module=r'scipy\.io\.matlab')
 
     for filename in event_files:
         subject = filename.name.split("_events")[0]

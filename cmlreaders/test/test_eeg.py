@@ -583,11 +583,11 @@ class TestLoadEEG:
             with pytest.raises(ValueError):
                 load()
             return
-        if len(events['session'].unique()>0):
+        if len(events['session'].unique() > 0):
             with pytest.raises(ValueError):
                 load()
             return
-        
+
         eeg = load()
 
         assert len(eeg.epochs) == len(events)
