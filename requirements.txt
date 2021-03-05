@@ -3,8 +3,10 @@ pytest>=6.2.1
 pytest-cov
 pandas>=0.23.1
 matplotlib
+traits<=5.2.0
 numpy
 scipy
+scikit-learn<=0.22.1
 codecov
 sphinx
 flake8
