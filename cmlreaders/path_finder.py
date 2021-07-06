@@ -10,7 +10,7 @@ from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, ramulator_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
-from .warnings import MultiplePathsFoundWarning
+# from .warnings import MultiplePathsFoundWarning
 
 __all__ = ['PathFinder']
 
