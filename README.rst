@@ -1,8 +1,8 @@
 CML Data Readers
 ================
 
-.. image:: https://travis-ci.org/pennmem/cmlreaders.svg?branch=master
-    :target: https://travis-ci.org/pennmem/cmlreaders
+.. image:: https://travis-ci.com/pennmem/cmlreaders.svg?branch=master
+    :target: https://travis-ci.com/pennmem/cmlreaders
 
 .. image:: https://codecov.io/gh/pennmem/cmlreaders/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/pennmem/cmlreaders
