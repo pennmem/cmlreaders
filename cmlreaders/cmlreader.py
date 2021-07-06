@@ -69,7 +69,7 @@ class CMLReader(object):
 
     def _load_index(self) -> pd.DataFrame:
         """Loads the data index. Used internally to determine montage and
-        localization nubmers.
+        localization numbers.
 
         """
         index = get_data_index(self.protocol, rootdir=self.rootdir)
@@ -230,8 +230,8 @@ class CMLReader(object):
                  clean: Optional[bool] = False):
         """Load EEG data.
 
-        Keyword arguments
-        -----------------
+        Parameters
+        ----------
         events
             Events to load EEG epochs from. Incompatible with passing
             ``epochs``.

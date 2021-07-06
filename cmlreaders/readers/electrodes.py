@@ -326,7 +326,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
         with open(self.file_path, 'r') as f:
             ch_info = f.read().split('\n')
 
-        # This will be used to initalize a before after kind of check to sort
+        # This will be used to initialize a before after kind of check to sort
         # the groups
         count = 0
         groups = {}  # Save the groups here
@@ -335,7 +335,7 @@ class ElectrodeCategoriesReader(BaseCMLReader):
             # We skip to 2 because all files start with line 1 being subject
             # followed by another line of '', if the user wishes to access the
             # information feel free to modify below. Blank spaces used to
-            # seperate, if we encountered one count increases
+            # separate, if we encountered one count increases
             if line == '':
                 count += 1
                 continue  # Ensures '' isn't appended to dict[group_name]
