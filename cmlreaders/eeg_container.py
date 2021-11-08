@@ -45,6 +45,7 @@ class EEGContainer(object):
         first data dimension
 
     """
+
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, ...]]] = None,
                  events: Optional[pd.DataFrame] = None,
@@ -240,7 +241,8 @@ class EEGContainer(object):
             if len(self.epochs[0]) > 2:
                 columns = [columns[i] if i < 2 else "column_{}".format(i)
                            for i in range(len(self.epochs[0]))]
-            events = pd.MultiIndex.from_frame(pd.DataFrame(self.epochs, columns=columns))
+            events = pd.MultiIndex.from_frame(pd.DataFrame(self.epochs,
+                                                           columns=columns))
 
         coords = {
             "event": events,

@@ -276,8 +276,10 @@ class SplitEEGReader(BaseEEGReader):
         # check epochs exist in eeg
         for i, epoch in enumerate(self.epochs):
             for mmap in memmaps:
-                assert epoch[1] < len(mmap), f"Must have epoch end {epoch[1]} < length {len(mmap)}"
-                assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0], f"epoch difference not equal to length of mmap {len(mmap)}"
+                assert epoch[1] < len(mmap), f"Must have epoch end {epoch[1]} <\
+                length {len(mmap)}"
+                assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0], f"\
+                    epoch difference not equal to length of mmap {len(mmap)}"
 
         data = np.array([
             [mmap[epoch[0]:epoch[1]] for mmap in memmaps]
