@@ -228,10 +228,12 @@ class EEGContainer(object):
 
         """
         from ptsa.data.timeseries import TimeSeries
-
         dims = ("event", "channel", "time")
 
         if self.events is not None:
+            for col in self.events.columns:
+                if isinstance(self.events[col].iloc[0], list):
+                    self.events[col] = self.events[col].apply(tuple)
             events = pd.MultiIndex.from_frame(self.events)
         else:
             columns = ["eegoffset", "epoch_end"]

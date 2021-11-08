@@ -133,7 +133,7 @@ class TestEEGContainer:
         assert tsx["samplerate"] == ts.samplerate
         assert_equal(tsx.data, data)
 
-        offsets = tsx["event"].data["eegoffset"]
+        offsets = tsx["event"]["eegoffset"].values
 
         if which == "epochs":
             assert_equal(offsets, ts.start_offsets)
