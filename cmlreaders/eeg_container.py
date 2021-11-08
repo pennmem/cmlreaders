@@ -232,14 +232,13 @@ class EEGContainer(object):
         dims = ("event", "channel", "time")
 
         if self.events is not None:
-            events = self.events.to_records()
+            events = pd.MultiIndex.from_frame(self.events)
         else:
             columns = ["eegoffset", "epoch_end"]
             if len(self.epochs[0]) > 2:
                 columns = [columns[i] if i < 2 else "column_{}".format(i)
                            for i in range(len(self.epochs[0]))]
-            events = pd.DataFrame(self.epochs, columns=columns).to_records(
-                index=False)
+            events = pd.MultiIndex.from_frame(pd.DataFrame(self.epochs, columns=columns))
 
         coords = {
             "event": events,
