@@ -45,6 +45,7 @@ class EEGContainer(object):
         first data dimension
 
     """
+
     def __init__(self, data: np.ndarray, samplerate: Union[int, float],
                  epochs: Optional[List[Tuple[int, ...]]] = None,
                  events: Optional[pd.DataFrame] = None,
@@ -228,18 +229,20 @@ class EEGContainer(object):
 
         """
         from ptsa.data.timeseries import TimeSeries
-
         dims = ("event", "channel", "time")
 
         if self.events is not None:
-            events = self.events.to_records()
+            for col in self.events.columns:
+                if isinstance(self.events[col].iloc[0], list):
+                    self.events[col] = self.events[col].apply(tuple)
+            events = pd.MultiIndex.from_frame(self.events)
         else:
             columns = ["eegoffset", "epoch_end"]
             if len(self.epochs[0]) > 2:
                 columns = [columns[i] if i < 2 else "column_{}".format(i)
                            for i in range(len(self.epochs[0]))]
-            events = pd.DataFrame(self.epochs, columns=columns).to_records(
-                index=False)
+            events = pd.MultiIndex.from_frame(pd.DataFrame(self.epochs,
+                                                           columns=columns))
 
         coords = {
             "event": events,

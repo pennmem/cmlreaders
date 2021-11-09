@@ -1,5 +1,10 @@
 Changes
 =======
+Version 0.10.0
+-------------
+**2021-11-4**
+
+* to_ptsa now stores events as a pandas MultiIndex, to match updates in PTSA v3.0.0
 
 Version 0.9.6
 -------------
