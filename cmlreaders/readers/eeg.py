@@ -274,12 +274,12 @@ class SplitEEGReader(BaseEEGReader):
             contacts.append(contact_num)
             memmaps.append(np.memmap(f, dtype=self.dtype, mode='r'))
         # check epochs exist in eeg
-        for i, epoch in enumerate(self.epochs):
-            for mmap in memmaps:
-                assert epoch[1] < len(mmap), f"Must have epoch end {epoch[1]} <\
-                length {len(mmap)}"
-                assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0], f"\
-                    epoch difference not equal to length of mmap {len(mmap)}"
+        #for i, epoch in enumerate(self.epochs):
+        #    for mmap in memmaps:
+        #        assert epoch[1] < len(mmap), f"Must have epoch end {epoch[1]} <\
+        #        length {len(mmap)}"
+        #        assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0], f"\
+        #            epoch difference not equal to length of mmap {len(mmap)}"
 
         data = np.array([
             [mmap[epoch[0]:epoch[1]] for mmap in memmaps]
