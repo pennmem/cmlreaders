@@ -325,6 +325,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
                         idxs[i] = False
             else:
                 idxs = np.array([True for _ in hfile['ports']])
+            idxs = idxs.nonzero()[0]
 
             # Only select channels we care about
             if 'orient' in ts.attrs.keys() and ts.attrs['orient'] == b'row':
