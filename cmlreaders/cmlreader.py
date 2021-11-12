@@ -317,6 +317,7 @@ class CMLReader(object):
     @classmethod
     def load_events(cls, subjects: Optional[Union[str, List[str]]] = None,
                     experiments: Optional[Union[str, List[str]]] = None,
+                    data_type: Optional[str] = "events",
                     rootdir: Optional[str] = None) -> pd.DataFrame:
         """Load events from multiple sessions.
 
@@ -326,6 +327,10 @@ class CMLReader(object):
             Subject or list of subjects.
         experiments
             Experiment or list of experiments to include.
+        data_type
+            data_type to pass to the CMLReader.load method, 
+            like "task_events" or "all_events. 
+            (see :attr:`readers` for available options)
         rootdir
             Path to root data directory.
 
@@ -359,6 +364,6 @@ class CMLReader(object):
                 for session in sessions:
                     reader = CMLReader(subject, experiment, session,
                                        rootdir=rootdir)
-                    events.append(reader.load("events"))
+                    events.append(reader.load(data_type))
 
         return pd.concat(events, sort=True)
