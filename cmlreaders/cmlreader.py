@@ -328,8 +328,8 @@ class CMLReader(object):
         experiments
             Experiment or list of experiments to include.
         data_type
-            data_type to pass to the CMLReader.load method, 
-            like "task_events" or "all_events. 
+            data_type to pass to the CMLReader.load method,
+            like "task_events" or "all_events.
             (see :attr:`readers` for available options)
         rootdir
             Path to root data directory.
