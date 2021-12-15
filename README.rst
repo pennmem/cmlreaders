@@ -77,7 +77,7 @@ Load montage pair data from FR1 session 0:
 
     >>> reader = CMLReader("R1111M", "FR1", 0)
     >>> pairs = reader.load("pairs")
-    >>> pairs.columns()
+    >>> pairs.columns
     Index(['contact_1', 'contact_2', 'label', 'is_stim_only', 'type_1', 'type_2',
            'avg.dural.region', 'avg.dural.x', 'avg.dural.y', 'avg.dural.z',
            'avg.region', 'avg.x', 'avg.y', 'avg.z', 'dk.region', 'dk.x', 'dk.y',
