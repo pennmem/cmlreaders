@@ -219,8 +219,14 @@ class EEGContainer(object):
         """
         raise NotImplementedError
 
-    def to_ptsa(self) -> "TimeSeries":  # noqa: F821
+    def to_ptsa(self, recarray=False) -> "TimeSeries":  # noqa: F821
         """Convert to a PTSA :class:`TimeSeriesX` object.
+
+        Parameters
+        ----------
+        recarray
+            If True, events get stored as a recarray, to preserve backwards compatibility
+            If False, events get stored as xarray coordinates.
 
         Notes
         -----
@@ -232,10 +238,13 @@ class EEGContainer(object):
         dims = ("event", "channel", "time")
 
         if self.events is not None:
-            for col in self.events.columns:
-                if isinstance(self.events[col].iloc[0], list):
-                    self.events[col] = self.events[col].apply(tuple)
-            events = pd.MultiIndex.from_frame(self.events)
+            if recarray:
+                events = self.events.to_records()
+            else:
+                for col in self.events.columns:
+                    if isinstance(self.events[col].iloc[0], list):
+                        self.events[col] = self.events[col].apply(tuple)
+                events = pd.MultiIndex.from_frame(self.events)
         else:
             columns = ["eegoffset", "epoch_end"]
             if len(self.epochs[0]) > 2:
@@ -243,6 +252,8 @@ class EEGContainer(object):
                            for i in range(len(self.epochs[0]))]
             events = pd.MultiIndex.from_frame(pd.DataFrame(self.epochs,
                                                            columns=columns))
+            if recarray:
+                events = events.to_records(index=False)
 
         coords = {
             "event": events,
