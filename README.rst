@@ -35,7 +35,7 @@ The following assumes you have already installed Anaconda_ or Miniconda_.
 
 .. code-block:: shell-session
 
-    conda create -y -n environment_name python=3
+    conda create -y -n environment_name python=3.7
     source activate environment_name
     conda install -c pennmem cmlreaders
 
