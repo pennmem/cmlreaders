@@ -49,7 +49,7 @@ class TestTextReader:
         callable_method = getattr(reader, method_name)
         data = callable_method()
         assert data is not None
-        assert type(data) == expected_types[method]
+        assert isinstance(data, expected_types[method])
 
     @pytest.mark.parametrize("subject,filename,sep", [
         ("R1389J", datafile("jacksheet.txt"), " "),
@@ -101,7 +101,7 @@ class TestRAMCSVReader:
         callable_method = getattr(reader, method_name)
         data = callable_method()
         assert data is not None
-        assert type(data) == expected_types[method]
+        assert isinstance(data, expected_types[method])
 
 
 class TestRamulatorEventLogReader:
@@ -127,7 +127,7 @@ class TestRamulatorEventLogReader:
         callable_method = getattr(reader, method_name)
         data = callable_method()
         assert data is not None
-        assert type(data) == expected_types[method]
+        assert isinstance(data, expected_types[method])
 
 
 class TestBaseJSONReader:

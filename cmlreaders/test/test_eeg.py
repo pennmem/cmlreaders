@@ -577,7 +577,7 @@ class TestLoadEEG:
             )
         reader = CMLReader(events["subject"].unique()[0], rootdir=rhino_root)
 
-        load = lambda: reader.load_eeg(events, rel_start=0, rel_stop=10)  # noqa
+        def load(): return reader.load_eeg(events, rel_start=0, rel_stop=10)  # noqa
 
         if len(subjects) > 1:
             with pytest.raises(ValueError):

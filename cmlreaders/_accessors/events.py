@@ -20,6 +20,7 @@ class EventsAccessor(object):
         >>> forgotten_words = df.events.words_not_recalled
 
     """
+
     def __init__(self, obj):
         self._obj = obj
 

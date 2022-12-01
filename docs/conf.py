@@ -17,6 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from cmlreaders import version_info
 from datetime import datetime
 import os
 import sys
@@ -66,7 +67,6 @@ author = 'Penn Computational Memory Lab'
 # built documents.
 #
 # The short X.Y version.
-from cmlreaders import version_info
 version = '.'.join(version_info[:2])
 # The full version, including alpha/beta/rc tags.
 release = '.'.join(version_info)
@@ -170,5 +170,5 @@ html_static_path = ['_static']
 html_context = {
     'css_files': [
         '_static/theme_overrides.css',  # override wide tables in RTD theme
-        ],
-     }
+    ],
+}
