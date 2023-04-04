@@ -1,6 +1,12 @@
 Changes
 =======
-Version 0.10.0
+Version 0.10.2
+-------------
+**2022-12-1**
+
+* Added recarray backport, added an error message for empty events dataframes, and changed version number in CHANGELOG.txt for 0.10.1
+
+Version 0.10.1
 -------------
 **2021-11-4**
 

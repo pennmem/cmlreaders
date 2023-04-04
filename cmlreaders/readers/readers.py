@@ -182,6 +182,10 @@ class EventReader(BaseCMLReader):
             df = self._read_json_events()
         else:
             df = self._read_matlab_events()
+        
+        if df.empty:
+            raise ValueError("Events DataFrame is empty. Events JSON or MATLAB file likely empty, and experiment session likely not run or uploaded properly.")
+        
         first = ['eegoffset']
         df = df[first + [col for col in df.columns if col not in first]]
         return df
