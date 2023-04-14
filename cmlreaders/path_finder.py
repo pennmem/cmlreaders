@@ -65,6 +65,8 @@ class PathFinder(object):
             self.protocol = None
         elif self.subject.startswith("R1"):
             self.protocol = "r1"
+        elif self.subject.startswith("FBG"):
+            self.protocol = "r1"
         elif self.subject.startswith("LTP") or self.subject.startswith("PLTP"):
             self.protocol = "ltp"
         elif self.subject[:2] in PYFR_SUBJECT_CODE_PREFIXES:
