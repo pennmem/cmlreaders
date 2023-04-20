@@ -451,8 +451,7 @@ class ScalpEEGReader(BaseEEGReader):
                              preload=True)
             data = eeg._data
             # Add information about how many events needed to be truncated
-            eeg.info['truncated_events_pre'] = truncated_events_pre
-            eeg.info['truncated_events_post'] = truncated_events_post
+            eeg.info['temp'] = {"truncated_events_pre": truncated_events_pre, "truncated_events_post":truncated_events_post}
 
         return data, eeg.info
 
@@ -539,7 +538,7 @@ class EEGReader(BaseCMLReader):
             events = kwargs["events"]  # type: pd.DataFrame
             assert ~np.any(events["eegoffset"] < 0), "Some events outside bounds of EEG (eegoffset < 0)"
             # drop any invalid eegoffset events
-            #events = events[events["eegoffset"] >= 0]
+            events = events[events["eegoffset"] >= 0]
         else:
             if self.session is None:
                 raise ValueError(
@@ -714,12 +713,12 @@ class EEGReader(BaseCMLReader):
                 attrs["mne_info"] = info
                 channels = info["ch_names"]
                 if epochs is not None:
-                    # Crop out any events/epoch times that ran beyond the
-                    # bounds of the EEG recording
-                    te_pre = info["truncated_events_pre"] \
-                        if info["truncated_events_pre"] > 0 else None
-                    te_post = -info["truncated_events_post"] \
-                        if info["truncated_events_post"] > 0 else None
+#                     Crop out any events/epoch times that ran beyond the
+#                     bounds of the EEG recording
+                    te_pre = info["temp"]["truncated_events_pre"] \
+                        if info["temp"]["truncated_events_pre"] > 0 else None
+                    te_post = -info["temp"]["truncated_events_post"] \
+                        if info["temp"]["truncated_events_post"] > 0 else None
                     on_off_epochs = on_off_epochs[te_pre:te_post]
                     ev = ev[te_pre:te_post]
                 # Pass the onset & offset time epoch list to EEGContainer, NOT
