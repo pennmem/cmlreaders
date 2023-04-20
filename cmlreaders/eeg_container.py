@@ -313,6 +313,6 @@ class EEGContainer(object):
                            for i in range(len(self.epochs[0]))]
             events = pd.DataFrame(self.epochs, columns=columns).to_records(
                 index=False)
-        eeg.info['temp'] = {"events":events}
+        eeg.info['events'] = events
 
         return eeg
