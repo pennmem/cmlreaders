@@ -3,7 +3,7 @@ import warnings
 
 import pandas as pd
 from pandas.errors import ParserWarning
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 import scipy.io as sio
 
 from cmlreaders.base_reader import BaseCMLReader
