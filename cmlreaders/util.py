@@ -21,9 +21,14 @@ def get_root_dir(path: Union[str, Path] = None) -> str:
     return os.path.expanduser(os.environ.get("CML_ROOT", "/"))
 
 
-def is_rerefable(subject: str, experiment: str, session: int,
-                 localization: int = 0, montage: int = 0,
-                 rootdir: Optional[str] = None) -> bool:
+def is_rerefable(
+    subject: str,
+    experiment: str,
+    session: int,
+    localization: int = 0,
+    montage: int = 0,
+    rootdir: Optional[str] = None,
+) -> bool:
     """Checks if a subject's EEG data can be arbitrarily rereferenced.
 
     Parameters
@@ -48,8 +53,9 @@ def is_rerefable(subject: str, experiment: str, session: int,
     """
     from cmlreaders import CMLReader
 
-    reader = CMLReader(subject, experiment, session, localization, montage,
-                       rootdir=rootdir)
+    reader = CMLReader(
+        subject, experiment, session, localization, montage, rootdir=rootdir
+    )
     sources = reader.load("sources")
 
     if sources["source_file"] == "eeg_timeseries.h5":
@@ -78,9 +84,7 @@ def get_protocol(subject: str) -> str:
     elif subject[:2] in constants.PYFR_SUBJECT_CODE_PREFIXES:
         return "pyfr"
     else:
-        raise UnknownProtocolError(
-            "Can't determine protocol for subject id " + subject
-        )
+        raise UnknownProtocolError("Can't determine protocol for subject id " + subject)
 
 
 class DefaultTuple(tuple):
@@ -94,6 +98,7 @@ class DefaultTuple(tuple):
         Default value to return when an item is None (default: 0).
 
     """
+
     __default = 0
 
     def __new__(cls, iterable: Iterable, default: Any = 0):

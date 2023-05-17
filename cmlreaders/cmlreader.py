@@ -8,13 +8,14 @@ from . import readers
 from .data_index import get_data_index
 from .exc import IncompatibleParametersError, UnsupportedProtocolError
 from .util import get_protocol, get_root_dir
+from .constants import rhino_paths
 
 
-__all__ = ['CMLReader']
+__all__ = ["CMLReader"]
 
 
 class CMLReader(object):
-    """ Generic reader for all CML-specific files
+    """Generic reader for all CML-specific files
 
     Notes
     -----
@@ -31,17 +32,20 @@ class CMLReader(object):
     the reader defined to handle that data.
 
     """
+
     reader_names = {}
     readers = {}
     reader_protocols = {}
 
-    def __init__(self, subject: str,
-                 experiment: Optional[str] = None,
-                 session: Optional[int] = None,
-                 localization: Optional[int] = None,
-                 montage: Optional[int] = None,
-                 rootdir: Optional[str] = None):
-
+    def __init__(
+        self,
+        subject: str,
+        experiment: Optional[str] = None,
+        session: Optional[int] = None,
+        localization: Optional[int] = None,
+        montage: Optional[int] = None,
+        rootdir: Optional[str] = None,
+    ):
         self.subject = subject
         self.experiment = experiment
         self.session = session
@@ -58,8 +62,7 @@ class CMLReader(object):
             }
         if not len(CMLReader.reader_protocols):
             CMLReader.reader_protocols = {
-                k: getattr(readers, v).protocols
-                for k, v in self.reader_names.items()
+                k: getattr(readers, v).protocols for k, v in self.reader_names.items()
             }
 
     def __repr__(self):
@@ -119,8 +122,9 @@ class CMLReader(object):
             return value
 
     @staticmethod
-    def get_data_index(protocol: str = "all",
-                       rootdir: Optional[str] = None) -> pd.DataFrame:
+    def get_data_index(
+        protocol: str = "all", rootdir: Optional[str] = None
+    ) -> pd.DataFrame:
         """Shortcut for the global :func:`get_data_index` function to only
         need to import :class:`CMLReader`.
 
@@ -145,19 +149,29 @@ class CMLReader(object):
     def path_finder(self):
         """Return a path finder using the proper kwargs."""
         from .path_finder import PathFinder
-        return PathFinder(self.subject, self.experiment, self.session,
-                          self.localization, self.montage, self.rootdir)
+
+        return PathFinder(
+            self.subject,
+            self.experiment,
+            self.session,
+            self.localization,
+            self.montage,
+            self.rootdir,
+        )
 
     @functools.lru_cache()
-    def _construct_reader(self, data_type, subject, experiment, session,
-                          localization, montage, rootdir):
-        return self.readers[data_type](data_type,
-                                       subject=subject,
-                                       experiment=experiment,
-                                       session=session,
-                                       localization=localization,
-                                       montage=montage,
-                                       rootdir=rootdir)
+    def _construct_reader(
+        self, data_type, subject, experiment, session, localization, montage, rootdir
+    ):
+        return self.readers[data_type](
+            data_type,
+            subject=subject,
+            experiment=experiment,
+            session=session,
+            localization=localization,
+            montage=montage,
+            rootdir=rootdir,
+        )
 
     def get_reader(self, data_type):
         """Return an instance of the reader class for the given data type.
@@ -167,13 +181,15 @@ class CMLReader(object):
         Reader instances get cached via :func:`functools.lru_cache`.
 
         """
-        return self._construct_reader(data_type,
-                                      self.subject,
-                                      self.experiment,
-                                      self.session,
-                                      self.localization,
-                                      self.montage,
-                                      self.rootdir)
+        return self._construct_reader(
+            data_type,
+            self.subject,
+            self.experiment,
+            self.session,
+            self.localization,
+            self.montage,
+            self.rootdir,
+        )
 
     def load(self, data_type: str, **kwargs):
         """Load requested data into memory.
@@ -190,30 +206,33 @@ class CMLReader(object):
 
         """
         if data_type not in self.readers:
-            raise NotImplementedError("There is no reader to support the "
-                                      "requested file type")
+            raise NotImplementedError(
+                "There is no reader to support the " "requested file type"
+            )
 
         # By default we want task + math events when requesting events so
         # coerce to "all_events" unless we're looking at experiments that don't
         # include these.
         if data_type == "events":
             if (
-                self.experiment.startswith("PS") or
-                self.experiment.startswith("TH") or
-                self.experiment.startswith("YC") or
-                self.experiment.startswith("Location")
+                self.experiment.startswith("PS")
+                or self.experiment.startswith("TH")
+                or self.experiment.startswith("YC")
+                or self.experiment.startswith("Location")
             ):
                 data_type = "task_events"
             else:
                 data_type = "all_events"
 
-        cls = self._construct_reader(data_type,
-                                     self.subject,
-                                     self.experiment,
-                                     self.session,
-                                     self.localization,
-                                     self.montage,
-                                     self.rootdir)
+        cls = self._construct_reader(
+            data_type,
+            self.subject,
+            self.experiment,
+            self.session,
+            self.localization,
+            self.montage,
+            self.rootdir,
+        )
 
         if self.protocol not in cls.protocols:
             raise UnsupportedProtocolError(
@@ -224,10 +243,14 @@ class CMLReader(object):
 
         return cls.load(**kwargs)
 
-    def load_eeg(self, events: Optional[pd.DataFrame] = None,
-                 rel_start: int = None, rel_stop: int = None,
-                 scheme: Optional[pd.DataFrame] = None,
-                 clean: Optional[bool] = False):
+    def load_eeg(
+        self,
+        events: Optional[pd.DataFrame] = None,
+        rel_start: int = None,
+        rel_stop: int = None,
+        scheme: Optional[pd.DataFrame] = None,
+        clean: Optional[bool] = False,
+    ):
         """Load EEG data.
 
         Parameters
@@ -264,10 +287,7 @@ class CMLReader(object):
             used without passing ``rel_start`` and/or ``rel_stop``.
 
         """
-        kwargs = {
-            "scheme": scheme,
-            "clean": clean
-        }
+        kwargs = {"scheme": scheme, "clean": clean}
         if rel_start is not None:
             kwargs["rel_start"] = rel_start
         if rel_stop is not None:
@@ -282,43 +302,49 @@ class CMLReader(object):
             # are limiting the load_eeg method to only apply to events
             # for the subject and session with which the cmlreader
             # object was initialized with:
-            if 'subject' in events:
-                if len(np.unique(events['subject'])) != 1:
+            if "subject" in events:
+                if len(np.unique(events["subject"])) != 1:
+                    raise ValueError("Events must correspond to one subject only")
+                if events["subject"].iloc[0] != self.subject:
                     raise ValueError(
-                        'Events must correspond to one subject only')
-                if events['subject'].iloc[0] != self.subject:
+                        "Events must correspond to the subject with which "
+                        + "the reader was initialized: "
+                        + self.subject
+                        + " (events correspond to "
+                        + events["subject"].iloc[0]
+                        + ")"
+                    )
+            if "session" in events:
+                if len(np.unique(events["session"])) != 1:
+                    raise ValueError("Events must correspond to one session only")
+                if events["session"].iloc[0] != self.session:
                     raise ValueError(
-                        'Events must correspond to the subject with which ' +
-                        'the reader was initialized: ' +
-                        self.subject + ' (events correspond to ' +
-                        events['subject'].iloc[0] + ')')
-            if 'session' in events:
-                if len(np.unique(events['session'])) != 1:
-                    raise ValueError(
-                        'Events must correspond to one session only')
-                if events['session'].iloc[0] != self.session:
-                    raise ValueError(
-                        'Events must correspond to the session with which ' +
-                        'the reader was initialized: ' +
-                        str(self.session) + ' (events correspond to ' +
-                        str(events['session'].iloc[0]) + ')')
+                        "Events must correspond to the session with which "
+                        + "the reader was initialized: "
+                        + str(self.session)
+                        + " (events correspond to "
+                        + str(events["session"].iloc[0])
+                        + ")"
+                    )
             if "rel_start" not in kwargs or "rel_stop" not in kwargs:
                 raise IncompatibleParametersError(
                     "rel_start and rel_stop are required keyword arguments"
-                    " when passing events")
-            kwargs.update({
-                'events': events,
-                'rel_start': rel_start,
-                'rel_stop': rel_stop
-            })
+                    " when passing events"
+                )
+            kwargs.update(
+                {"events": events, "rel_start": rel_start, "rel_stop": rel_stop}
+            )
 
-        return self.load('eeg', **kwargs)
+        return self.load("eeg", **kwargs)
 
     @classmethod
-    def load_events(cls, subjects: Optional[Union[str, List[str]]] = None,
-                    experiments: Optional[Union[str, List[str]]] = None,
-                    data_type: Optional[str] = "events",
-                    rootdir: Optional[str] = None) -> pd.DataFrame:
+    def load_events(
+        cls,
+        subjects: Optional[Union[str, List[str]]] = None,
+        experiments: Optional[Union[str, List[str]]] = None,
+        data_type: Optional[str] = "events",
+        rootdir: Optional[str] = None,
+    ) -> pd.DataFrame:
         """Load events from multiple sessions.
 
         Parameters
@@ -336,9 +362,7 @@ class CMLReader(object):
 
         """
         if subjects is None and experiments is None:
-            raise ValueError(
-                "Please specify at least one subject or experiment."
-            )
+            raise ValueError("Please specify at least one subject or experiment.")
 
         rootdir = get_root_dir(rootdir)
         df = get_data_index("all", rootdir=rootdir)
@@ -357,13 +381,26 @@ class CMLReader(object):
 
         for subject in subjects:
             for experiment in experiments:
-                mask = (df["subject"] == subject) &\
-                       (df["experiment"] == experiment)
+                mask = (df["subject"] == subject) & (df["experiment"] == experiment)
                 sessions = df[mask]["session"].unique()
 
                 for session in sessions:
-                    reader = CMLReader(subject, experiment, session,
-                                       rootdir=rootdir)
+                    reader = CMLReader(subject, experiment, session, rootdir=rootdir)
                     events.append(reader.load(data_type))
 
         return pd.concat(events, sort=True)
+
+    @classmethod
+    def load_subject_info(
+        cls,
+        subjects: Optional[Union[str, List[str]]] = None,
+        experiments: Optional[Union[str, List[str]]] = None,
+    ):
+        subject_info = pd.concat(
+            [
+                pd.read_csv(f"{rhino_paths['subject_info']}", sep="\t", engine="python")
+                for experiment in experiments
+            ]
+        ).drop_duplicates()
+        subject_info = subject_info.query("subject in @subjects")
+        return subject_info
