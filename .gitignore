@@ -78,6 +78,7 @@ target/
 .idea/
 
 # VScode files
+.vscode/
 .editorconfig
 
 # Mac OSX directory info
