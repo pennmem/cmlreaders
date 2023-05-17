@@ -393,14 +393,28 @@ class CMLReader(object):
     @classmethod
     def load_subject_info(
         cls,
-        subjects: Optional[Union[str, List[str]]] = None,
         experiments: Optional[Union[str, List[str]]] = None,
+        subjects: Optional[Union[str, List[str]]] = None,
     ):
+        """Loads subject info originally from Django database. Only works for scalp experiments/subjects
+
+        Args:
+            experiments (Optional[Union[str, List[str]]], required): Experiments in which the subjects participated. Defaults to None.
+            subjects (Optional[Union[str, List[str]]], optional): Subjects to load info for. Defaults to None.
+
+        Returns:
+            subject_info: pandas dataframe with subject info
+        """
         subject_info = pd.concat(
             [
-                pd.read_csv(f"{rhino_paths['subject_info']}", sep="\t", engine="python")
+                pd.read_csv(
+                    rhino_paths["subject_info"].format(experiment=experiment),
+                    sep="\t",
+                    engine="python",
+                )
                 for experiment in experiments
             ]
         ).drop_duplicates()
-        subject_info = subject_info.query("subject in @subjects")
+        if subjects:
+            subject_info = subject_info.query("subject in @subjects")
         return subject_info
