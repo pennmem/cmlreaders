@@ -8,35 +8,49 @@ import scipy.io as sio
 
 from cmlreaders.base_reader import BaseCMLReader
 from cmlreaders.exc import (
-    MissingParameter, UnmetOptionalDependencyError, UnsupportedRepresentation,
+    MissingParameter,
+    UnmetOptionalDependencyError,
+    UnsupportedRepresentation,
 )
 
 
 class TextReader(BaseCMLReader):
-    """ Generic reader class for reading RAM text files """
-    data_types = ['voxel_coordinates',
-                  'jacksheet', 'classifier_excluded_leads',
-                  'good_leads', 'leads', 'area']
+    """Generic reader class for reading RAM text files"""
+
+    data_types = [
+        "voxel_coordinates",
+        "jacksheet",
+        "classifier_excluded_leads",
+        "good_leads",
+        "leads",
+        "area",
+    ]
     protocols = ["r1"]
 
     headers = {
-        'voxel_coordinates': ['label', 'vox_x', 'vox_y', 'vox_z', 'type',
-                              'min_contact_num', 'max_contact_num'],
-        'jacksheet': ["number", "label"],
-        'classifier_excluded_leads': ['channel_label'],
-        'good_leads': ['channel_num'],
-        'leads': ['channel_num'],
-        'area': ['lead_label', 'surface_area'],
+        "voxel_coordinates": [
+            "label",
+            "vox_x",
+            "vox_y",
+            "vox_z",
+            "type",
+            "min_contact_num",
+            "max_contact_num",
+        ],
+        "jacksheet": ["number", "label"],
+        "classifier_excluded_leads": ["channel_label"],
+        "good_leads": ["channel_num"],
+        "leads": ["channel_num"],
+        "area": ["lead_label", "surface_area"],
     }
 
-    def __init__(self, data_type: str, subject: str,
-                 **kwargs):
+    def __init__(self, data_type: str, subject: str, **kwargs):
         super(TextReader, self).__init__(data_type, subject=subject, **kwargs)
         self._headers = self.headers[data_type]
 
     def as_dataframe(self):
         if self.data_type == "jacksheet":
-            sep = r'\s+'  # Split on any whitespace
+            sep = r"\s+"  # Split on any whitespace
         else:
             sep = ","  # read_csv's default value
 
@@ -51,19 +65,27 @@ class TextReader(BaseCMLReader):
 
 
 class MNICoordinatesReader(TextReader):
+    data_types = ["mni_coordinates"]
 
-    data_types = ['mni_coordinates']
-
-    protocols = ['r1']
+    protocols = ["r1"]
 
     headers = {
-        'mni_coordinates': ['label', 'mni.x', 'mni.y', 'mni.z',
-                                     'x1', 'x2', 'x3', 'x4', 'x5'],
+        "mni_coordinates": [
+            "label",
+            "mni.x",
+            "mni.y",
+            "mni.z",
+            "x1",
+            "x2",
+            "x3",
+            "x4",
+            "x5",
+        ],
     }  # Ignoring these last 5 fields at the moment
 
     def as_dataframe(self):
         df = super(MNICoordinatesReader, self).as_dataframe()
-        return df[['label', 'mni.x', 'mni.y', 'mni.z']]
+        return df[["label", "mni.x", "mni.y", "mni.z"]]
 
 
 class BaseCSVReader(BaseCMLReader):
@@ -76,6 +98,7 @@ class BaseCSVReader(BaseCMLReader):
 
 class RAMCSVReader(BaseCSVReader):
     """CSV reader type for RAM data."""
+
     data_types = [
         "electrode_coordinates",
         "prior_stim_results",
@@ -83,43 +106,66 @@ class RAMCSVReader(BaseCSVReader):
     ]
     protocols = ["r1"]
 
-    def __init__(self, data_type, subject, localization, experiment=None,
-                 file_path=None, rootdir="/", **kwargs):
+    def __init__(
+        self,
+        data_type,
+        subject,
+        localization,
+        experiment=None,
+        file_path=None,
+        rootdir="/",
+        **kwargs
+    ):
+        if (data_type == "target_selection_table") and experiment is None:
+            raise MissingParameter(
+                "Experiment required with target_selection_" "table data type"
+            )
 
-        if (data_type == 'target_selection_table') and experiment is None:
-            raise MissingParameter("Experiment required with target_selection_"
-                                   "table data type")
-
-        super().__init__(data_type, subject=subject,
-                         localization=localization,
-                         experiment=experiment,
-                         file_path=file_path, rootdir=rootdir)
+        super().__init__(
+            data_type,
+            subject=subject,
+            localization=localization,
+            experiment=experiment,
+            file_path=file_path,
+            rootdir=rootdir,
+        )
 
 
 class RamulatorEventLogReader(BaseCMLReader):
     """Reader for Ramulator event log"""
+
     data_types = ["experiment_log"]
     protocols = ["r1"]
 
-    def __init__(self, data_type, subject, experiment, session, file_path=None,
-                 rootdir="/", **kwargs):
-        super(RamulatorEventLogReader, self).__init__(data_type,
-                                                      subject=subject,
-                                                      experiment=experiment,
-                                                      session=session,
-                                                      file_path=file_path,
-                                                      rootdir=rootdir)
+    def __init__(
+        self,
+        data_type,
+        subject,
+        experiment,
+        session,
+        file_path=None,
+        rootdir="/",
+        **kwargs
+    ):
+        super(RamulatorEventLogReader, self).__init__(
+            data_type,
+            subject=subject,
+            experiment=experiment,
+            session=session,
+            file_path=file_path,
+            rootdir=rootdir,
+        )
 
     def as_dataframe(self):
-        with open(self.file_path, 'r') as efile:
-            raw = json.loads(efile.read())['events']
+        with open(self.file_path, "r") as efile:
+            raw = json.loads(efile.read())["events"]
 
-        exclude = ['to_id', 'from_id', 'event_id', 'command_id']
+        exclude = ["to_id", "from_id", "event_id", "command_id"]
         df = json_normalize(raw)
         return df.drop(exclude, axis=1)
 
     def as_dict(self):
-        with open(self.file_path, 'r') as efile:
+        with open(self.file_path, "r") as efile:
             raw_dict = json.load(efile)
         return raw_dict
 
@@ -130,6 +176,7 @@ class BaseJSONReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
     data_types = []
 
     def as_dataframe(self):
@@ -139,15 +186,15 @@ class BaseJSONReader(BaseCMLReader):
 class SessionJSONLogReader(BaseCMLReader):
     """Reads the ``session.json`` file produced by UnityEPL"""
 
-    data_types = ['session_json']
+    data_types = ["session_json"]
 
     def as_dataframe(self):
         df = pd.read_json(self._file_path, lines=True)
-        contents_dict = [{col: df.iloc[i][col] for col in df.columns}
-                         for i in df.index]
+        contents_dict = [{col: df.iloc[i][col] for col in df.columns} for i in df.index]
         df_normalized = pd.io.json.json_normalize(contents_dict)
-        fixed_columns = {col: col.replace(' ', '_').lower()
-                         for col in df_normalized.columns}
+        fixed_columns = {
+            col: col.replace(" ", "_").lower() for col in df_normalized.columns
+        }
         return df_normalized.rename(columns=fixed_columns)
 
 
@@ -157,8 +204,13 @@ class EventReader(BaseCMLReader):
     Returns a :class:`pd.DataFrame`.
 
     """
+
     data_types = [
-        "all_events", "events", "math_events", "ps4_events", "task_events",
+        "all_events",
+        "events",
+        "math_events",
+        "ps4_events",
+        "task_events",
     ]
     caching = "memory"
 
@@ -166,8 +218,7 @@ class EventReader(BaseCMLReader):
         return pd.read_json(self.file_path)
 
     def _read_matlab_events(self) -> pd.DataFrame:
-        df = pd.DataFrame(sio.loadmat(self.file_path,
-                                      squeeze_me=True)["events"])
+        df = pd.DataFrame(sio.loadmat(self.file_path, squeeze_me=True)["events"])
 
         if self.session is not None:
             df = df[df["session"] == self.session]
@@ -185,15 +236,18 @@ class EventReader(BaseCMLReader):
             df = self._read_matlab_events()
 
         if df.empty:
-            raise ValueError("Events DataFrame is empty. Events JSON or MATLAB file likely empty, and experiment session likely not run or uploaded properly.")
+            raise ValueError(
+                "Events DataFrame is empty. Events JSON or MATLAB \
+                file likely empty, and experiment session likely not run or uploaded properly."
+            )
 
-        first = ['eegoffset']
+        first = ["eegoffset"]
         df = df[first + [col for col in df.columns if col not in first]]
         return df
 
 
 class ClassifierContainerReader(BaseCMLReader):
-    """ Reader class for loading a serialized classifier classifier
+    """Reader class for loading a serialized classifier classifier
 
     Notes
     -----
@@ -201,30 +255,41 @@ class ClassifierContainerReader(BaseCMLReader):
     returned.
 
     """
+
     data_types = ["used_classifier", "baseline_classifier"]
     protocols = ["r1"]
     default_representation = "pyobject"
 
-    def __init__(self, data_type, subject, experiment, session, localization,
-                 file_path=None, rootdir="/", **kwargs):
-        super(ClassifierContainerReader, self
-              ).__init__(data_type, subject=subject, experiment=experiment,
-                         session=session, localization=localization,
-                         file_path=file_path, rootdir=rootdir)
+    def __init__(
+        self,
+        data_type,
+        subject,
+        experiment,
+        session,
+        localization,
+        file_path=None,
+        rootdir="/",
+        **kwargs
+    ):
+        super(ClassifierContainerReader, self).__init__(
+            data_type,
+            subject=subject,
+            experiment=experiment,
+            session=session,
+            localization=localization,
+            file_path=file_path,
+            rootdir=rootdir,
+        )
         try:
             from classiflib.container import ClassifierContainer
         except ImportError:
-            raise UnmetOptionalDependencyError(
-                "Install classiflib to use this reader")
+            raise UnmetOptionalDependencyError("Install classiflib to use this reader")
 
-        self.pyclass_mapping = {
-            'classifier': ClassifierContainer
-        }
+        self.pyclass_mapping = {"classifier": ClassifierContainer}
 
     def as_pyobject(self):
-        summary_obj = self.pyclass_mapping['classifier']
+        summary_obj = self.pyclass_mapping["classifier"]
         return summary_obj.load(self.file_path)
 
     def as_dataframe(self):
-        raise UnsupportedRepresentation(
-            "Unable to represent classifier as a dataframe")
+        raise UnsupportedRepresentation("Unable to represent classifier as a dataframe")

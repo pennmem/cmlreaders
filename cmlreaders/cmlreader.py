@@ -396,11 +396,14 @@ class CMLReader(object):
         experiments: Optional[Union[str, List[str]]] = None,
         subjects: Optional[Union[str, List[str]]] = None,
     ):
-        """Loads subject info originally from Django database. Only works for scalp experiments/subjects
+        """Loads subject info originally from Django database.
+        Only works for scalp experiments/subjects
 
         Args:
-            experiments (Optional[Union[str, List[str]]], required): Experiments in which the subjects participated. Defaults to None.
-            subjects (Optional[Union[str, List[str]]], optional): Subjects to load info for. Defaults to None.
+            experiments (Optional[Union[str, List[str]]], required):
+                Experiments in which the subjects participated. Defaults to None.
+            subjects (Optional[Union[str, List[str]]], optional):
+                Subjects to load info for. Defaults to None.
 
         Returns:
             subject_info: pandas dataframe with subject info
