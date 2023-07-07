@@ -3,6 +3,8 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import scipy
+from .data_index import get_data_index       # needed to find system version
+import warnings
 
 
 class EEGContainer(object):
@@ -225,7 +227,8 @@ class EEGContainer(object):
         Parameters
         ----------
         recarray
-            If True, events get stored as a recarray, to preserve backwards compatibility
+            If True, events get stored as a recarray, to preserve backwards compatibility 
+            (use for sessions with 'stim_params' field with dict entries).
             If False, events get stored as xarray coordinates.
 
         Notes
@@ -313,6 +316,6 @@ class EEGContainer(object):
                            for i in range(len(self.epochs[0]))]
             events = pd.DataFrame(self.epochs, columns=columns).to_records(
                 index=False)
-        eeg.info['events'] = events
+        eeg.info["temp"] = {"events": events}
 
         return eeg
