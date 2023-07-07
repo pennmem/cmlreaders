@@ -4,6 +4,7 @@ pytest-cov
 pandas>=0.23.1
 matplotlib
 # traits<=5.2.0
+mkl
 numpy
 scipy
 scikit-learn<=0.22.1
