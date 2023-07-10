@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import scipy
+from .data_index import get_data_index
 
 
 class EEGContainer(object):
@@ -341,3 +342,24 @@ class EEGContainer(object):
         eeg.metadata = events
 
         return eeg
+    
+    def scale_eeg(self):
+        """
+        Rescale self.data attribute to put in units of uV (microvolts).  Call before to_ptsa or to_mne.
+        """
+        # find metadata from events, load session row of dataframe to find system version
+        sub = self.events.iloc[0]["subject"]
+        exp = self.events.iloc[0]["experiment"]
+        sess = self.events.iloc[0]["session"]
+        df = get_data_index()
+        df_sess = df[(df["subject"]==sub) & (df["experiment"]==exp) & (df["session"]==sess)]
+        sys_v = df_sess.iloc[0]["system_version"]
+        # unit conversion dependent on recording system
+        if sys_v == 2.0 or sys_v == 4.0:          # Blackrock records in units of 250 nV
+            print('Rescaling EEG data to uV.')
+            self.data /= 4.0
+        elif sys_v >= 3.0 and sys_v < 4:
+            # find ENS information
+            warnings.warn('EEG data not rescaled.')
+        else:
+            warnings.warn('EEG data not rescaled.')
