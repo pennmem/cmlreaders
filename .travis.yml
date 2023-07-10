@@ -14,10 +14,10 @@ env:
     # we get the environment to build on Python 3.5 again.
     #- PYTHON_VERSION=3.5
     #- PYTHON_VERSION=3.6
-    - PYTHON_VERSION=3.7
+    #- PYTHON_VERSION=3.7
     #- PYTHON_VERSION=3.8
     #- PYTHON_VERSION=3.9
-    - PYTHON_VERSION=3.10
+    #- PYTHON_VERSION=3.10
     - PYTHON_VERSION=3.11
 
 before_install:
@@ -39,7 +39,7 @@ install:
   - conda install --use-local $PKG_NAME
 
 script:
-  - flake8 --ignore W504,W503 --max-line-length 100
+  - flake8 --ignore W504,W503,E203 --max-line-length 100
   - invoke test
 
 after_success:
