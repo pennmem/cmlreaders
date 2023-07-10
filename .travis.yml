@@ -13,10 +13,13 @@ env:
     # For some reason, Anaconda 4.6.12 fails to install on Python 3.5. Commenting 3.5 out until
     # we get the environment to build on Python 3.5 again.
     #- PYTHON_VERSION=3.5
-    - PYTHON_VERSION=3.6
-    - PYTHON_VERSION=3.7
-    - PYTHON_VERSION=3.8
+    # - PYTHON_VERSION=3.6
+    # - PYTHON_VERSION=3.7
+    # - PYTHON_VERSION=3.8
     #- PYTHON_VERSION=3.9
+    #- PYTHON_VERSION=3.10
+    - PYTHON_VERSION=3.11
+
 
 before_install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -30,14 +33,14 @@ before_install:
 
 install:
   - conda install -c pennmem -c conda-forge numpy pandas classiflib ptsa
-  - conda install "traits<=5.2.0"
+  # - conda install "traits<=5.2.0"
   - pip install -r requirements.txt
   - invoke build --no-convert --no-use-local-build-dir
   - ls $HOME/miniconda/conda-bld/linux-64
   - conda install --use-local $PKG_NAME
 
 script:
-  - flake8 --ignore W504,W503 --max-line-length 100
+  - flake8 --ignore W504,W503,E203 --max-line-length 100
   - invoke test
 
 after_success:

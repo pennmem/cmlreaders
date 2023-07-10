@@ -22,7 +22,7 @@ build:
 # subsections of the requirements section.
 {% set deps = [
     "pandas>=0.23.1",
-    "numpy",
+    "numpy>=1.17",
     "scipy",
     "h5py",
 ] %}
