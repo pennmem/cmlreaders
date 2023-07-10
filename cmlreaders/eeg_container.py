@@ -245,6 +245,7 @@ class EEGContainer(object):
         ----------
         recarray
             If True, events get stored as a recarray, to preserve backwards compatibility
+            (use for sessions with 'stim_params' field with dict entries).
             If False, events get stored as xarray coordinates.
 
         Notes
