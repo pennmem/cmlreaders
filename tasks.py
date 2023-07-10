@@ -5,9 +5,12 @@ import platform
 import shutil
 import sys
 import webbrowser
+import inspect
 
 from invoke import task
 
+if not hasattr(inspect, 'getargspec'):
+    inspect.getargspec = inspect.getfullargspec
 
 @task
 def clean_build(c):
