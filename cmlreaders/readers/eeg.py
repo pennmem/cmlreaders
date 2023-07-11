@@ -558,10 +558,9 @@ class EEGReader(BaseCMLReader):
         """
         if "events" in kwargs:
             events = kwargs["events"]  # type: pd.DataFrame
-            assert ~np.any(
-                events["eegoffset"] < 0
-            ), "Some events outside bounds of EEG (eegoffset < 0)"
             # drop any invalid eegoffset events
+            if np.any(events["eegoffset"] < 0):
+                warnings.warn("Some events have eegoffset < 0 and will be dropped.")
             events = events[events["eegoffset"] >= 0]
         else:
             if self.session is None:
