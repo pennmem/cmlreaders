@@ -5,8 +5,7 @@ from random import shuffle
 import pytest
 
 from cmlreaders import exc
-from cmlreaders.util import DefaultTuple, get_protocol, get_root_dir,\
-    is_rerefable
+from cmlreaders.util import DefaultTuple, get_protocol, get_root_dir, is_rerefable
 
 
 @contextmanager
