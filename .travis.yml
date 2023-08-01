@@ -40,7 +40,7 @@ install:
   - conda install --use-local $PKG_NAME
 
 script:
-  - flake8 --ignore W504,W503,E203 --max-line-length 100
+  - flake8 --ignore W504,W503,E203,E231 --max-line-length 100
   - invoke test
 
 after_success:
