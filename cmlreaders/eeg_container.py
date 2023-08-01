@@ -339,6 +339,6 @@ class EEGContainer(object):
             events = pd.DataFrame(
                 self.epochs, columns=columns
             )  # .to_records(index=False)
-        eeg.metadata = events
+        eeg.metadata = events             # return events in metadata field
 
         return eeg
