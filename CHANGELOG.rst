@@ -9,6 +9,7 @@ Version 0.10.4
 Version 0.10.3
 -------------
 **2023-5-17**
+
 * Added functionality for loading scalp subject info (which is copied to rhino from Django each night)
 
 Version 0.10.2
