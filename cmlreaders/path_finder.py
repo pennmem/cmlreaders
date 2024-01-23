@@ -10,7 +10,6 @@ from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, ramulator_files, elemem_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
-#from .data_index import get_data_index --> causes circular import, have to infer system version
 # from .warnings import MultiplePathsFoundWarning
 
 __all__ = ['PathFinder']
@@ -113,18 +112,21 @@ class PathFinder(object):
         return subject_files
 
     def _determine_system_version(self):
-        elemem_wildcard = self._paths["elemem_session_folder"][0]
+        elemem_wildcard = self._paths["elemem_session_folder"][0].rstrip('*')
+
+        subject_montage = self.subject
         if self.montage != '0':
             subject_montage = "_".join([self.subject, self.montage])
-        elemem_path = elemem_wildcard.format(subject=subject_montage, 
-                                             experiment=self.experiment, 
+
+        elemem_path = elemem_wildcard.format(subject=subject_montage,
+                                             experiment=self.experiment,
                                              session=self.session)
         if os.path.exists(elemem_path):
             return 4.0
         else:
             return 3.0  # only 4.0 is matched on, but may want to fully implement
+        
 
-    
     def find(self, data_type):
         """
 
@@ -171,12 +173,11 @@ class PathFinder(object):
                     subject=subject_montage, experiment=self.experiment, 
                     session=self.session)
                 
-                timestamped_dir = self._get_most_recent_elemem_folder(
-                    elemem_session_folder)
+                timestamped_dir = self._get_most_recent_elemem_folder(elemem_session_folder)
                 
                 if data_type == 'elemem_session_folder':
                     return timestamped_dir
-            else:                                # system 3 (don't think will work for systems 1 and 2)
+            else:                     # system 3 (don't think will work for systems 1 and 2)
                 folder_wildcard = self._paths['ramulator_session_folder'][0]
                 ramulator_session_folder = folder_wildcard.format(
                     subject=subject_montage, experiment=self.experiment,
@@ -232,12 +233,11 @@ class PathFinder(object):
         return latest_directory
     
     def _get_most_recent_elemem_folder(self, base_folder_path):
-        timestamped_directories = glob.glob(os.path.join(self.rootdir, 
-                                                         base_folder_path))
-        
+        timestamped_directories = glob.glob(os.path.join(self.rootdir, base_folder_path))
+
         # start of directory should be subject code
         timestamped_directories = [
-            d for d in timestamped_directories 
+            d for d in timestamped_directories
             if os.path.isdir(d) and d[:len(self.subject)]==self.subject
         ]
 
@@ -250,7 +250,7 @@ class PathFinder(object):
         # only return the values from the final "/" to the end
         latest = timestamped_directories[0]
         latest_directory = latest[latest.rfind("/") + 1:]
-
+        
         return latest_directory
 
     def _find_single_path(self, paths, **kwargs):
