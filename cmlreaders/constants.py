@@ -128,6 +128,7 @@ rhino_paths = {
     ],
     "session_json": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.json",
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.jsonl",
     ],
     "ramulator_session_folder": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*",
