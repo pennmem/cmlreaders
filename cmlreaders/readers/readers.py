@@ -243,10 +243,14 @@ class EventReader(BaseCMLReader):
 
         first = ["eegoffset"]
         df = df[first + [col for col in df.columns if col not in first]]
-
+        
+        # ensure session field matches data index
         if df['session'].unique()[0] != self.session:
-            warnings.warn(f'Changing events session field from {df["session"].unique()[0]} ' +
-                          f'to {self.session} to match data index.')
+            # have to split up to appease Travis CI
+            wm1 = f'Changing events session field from {df["session"].unique()[0]} '
+            wm2 = f'to {self.session} to match data index.'
+            wm = wm1 + wm2
+            warnings.warn(wm)
             df['session'] = self.session
 
         return df
