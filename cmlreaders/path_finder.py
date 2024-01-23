@@ -237,7 +237,7 @@ class PathFinder(object):
         # start of directory should be subject code
         timestamped_directories = [
             d for d in timestamped_directories
-            if os.path.isdir(d) and d[:len(self.subject)] == self.subject
+            if os.path.isdir(d) and os.path.basename(d)[:len(self.subject)] == self.subject
         ]
 
         # sort such that most recent appears first
