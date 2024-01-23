@@ -152,6 +152,9 @@ rhino_paths = {
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/eeg_timeseries.h5",
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/{timestamped_dir}/eeg_data.edf",
     ],
+    "archived_eeg": [
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem{timestamped_dir}/eeg_archive/eeg_data.edf"
+    ],
     "odin_config": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}_*.csv",
     ],
@@ -244,4 +247,5 @@ elemem_files = (
     "experiment_config",
     "raw_eeg",
     "elemem_session_folder",
+    "archived_eeg"
 )
