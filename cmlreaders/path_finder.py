@@ -10,7 +10,7 @@ from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, ramulator_files, elemem_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
-from .data_index import get_data_index
+#from .data_index import get_data_index --> causes circular import, have to infer system version
 # from .warnings import MultiplePathsFoundWarning
 
 __all__ = ['PathFinder']
@@ -81,12 +81,7 @@ class PathFinder(object):
 
         self._paths = rhino_paths
 
-        df = get_data_index(self.protocol)
-        self.system_version = df[(df.subject==subject) & 
-                                 (df.experiment==experiment) & 
-                                 (df.session==session) & 
-                                 (df.localization==localization) &
-                                 (df.montage==montage)].iloc[0].system_version
+        self.system_version = self._determine_system_version()
 
     @property
     def path_info(self):
@@ -117,6 +112,19 @@ class PathFinder(object):
         """ All files that vary only by subject """
         return subject_files
 
+    def _determine_system_version(self):
+        elemem_wildcard = self._paths["elemem_session_folder"][0]
+        if self.montage != '0':
+            subject_montage = "_".join([self.subject, self.montage])
+        elemem_path = elemem_wildcard.format(subject=subject_montage, 
+                                             experiment=self.experiment, 
+                                             session=self.session)
+        if os.path.exists(elemem_path):
+            return 4.0
+        else:
+            return 3.0  # only 4.0 is matched on, but may want to fully implement
+
+    
     def find(self, data_type):
         """
 

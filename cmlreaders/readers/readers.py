@@ -246,11 +246,8 @@ class EventReader(BaseCMLReader):
         
         # ensure session field matches data index
         if df['session'].unique()[0] != self.session:
-            # have to split up to appease Travis CI
-            wm1 = f'Changing events session field from {df["session"].unique()[0]} '
-            wm2 = f'to {self.session} to match data index.'
-            wm = wm1 + wm2
-            warnings.warn(wm)
+            warnings.warn(f'Changing events session field from {df["session"].unique()[0]} ' +
+                          f'to {self.session} to match data index.')
             df['session'] = self.session
 
         return df
