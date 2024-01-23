@@ -125,7 +125,6 @@ class PathFinder(object):
             return 4.0
         else:
             return 3.0  # only 4.0 is matched on, but may want to fully implement
-        
 
     def find(self, data_type):
         """
@@ -170,11 +169,11 @@ class PathFinder(object):
             if self.system_version == 4.0:       # system 4
                 folder_wildcard = self._paths['elemem_session_folder'][0]
                 elemem_session_folder = folder_wildcard.format(
-                    subject=subject_montage, experiment=self.experiment, 
+                    subject=subject_montage, experiment=self.experiment,
                     session=self.session)
-                
+
                 timestamped_dir = self._get_most_recent_elemem_folder(elemem_session_folder)
-                
+
                 if data_type == 'elemem_session_folder':
                     return timestamped_dir
             else:                     # system 3 (don't think will work for systems 1 and 2)
@@ -231,14 +230,14 @@ class PathFinder(object):
         latest_directory = latest[latest.rfind("/") + 1:]
 
         return latest_directory
-    
+
     def _get_most_recent_elemem_folder(self, base_folder_path):
         timestamped_directories = glob.glob(os.path.join(self.rootdir, base_folder_path))
 
         # start of directory should be subject code
         timestamped_directories = [
             d for d in timestamped_directories
-            if os.path.isdir(d) and d[:len(self.subject)]==self.subject
+            if os.path.isdir(d) and d[:len(self.subject)] == self.subject
         ]
 
         # sort such that most recent appears first
@@ -246,11 +245,11 @@ class PathFinder(object):
 
         if len(timestamped_directories) == 0:
             raise RuntimeError("No timestamped folder found in elemem folder.")
-        
+
         # only return the values from the final "/" to the end
         latest = timestamped_directories[0]
         latest_directory = latest[latest.rfind("/") + 1:]
-        
+
         return latest_directory
 
     def _find_single_path(self, paths, **kwargs):
