@@ -121,7 +121,7 @@ class PathFinder(object):
         elemem_path = elemem_wildcard.format(subject=subject_montage,
                                              experiment=self.experiment,
                                              session=self.session)
-        if os.path.exists(elemem_path):
+        if os.path.exists(os.path.join(self.rootdir, elemem_path)):
             return 4.0
         else:
             return 3.0  # only 4.0 is matched on, but may want to fully implement
