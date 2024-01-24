@@ -128,21 +128,33 @@ rhino_paths = {
     ],
     "session_json": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.json",
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/session.jsonl",
     ],
     "ramulator_session_folder": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/*",
         "protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_source/host_pc/*",
     ],
+    # Elemem-related information
+    "elemem_session_folder": [
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/*",
+        "protocols/r1/subjects/{subject}/experiments/{experiment}/sessions/{session}/ephys/current_source/elemem/*",
+    ],
     # There can be multiple timestamped folders for the host pc files for when
     # a session is restarted
     "event_log": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/event_log.json",
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/{timestamped_dir}/event.log",
     ],
     "experiment_config": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/experiment_config.json",
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/{timestamped_dir}/experiment_config.json",
     ],
     "raw_eeg": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/eeg_timeseries.h5",
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/{timestamped_dir}/eeg_data.edf",
+    ],
+    "archived_eeg": [
+        "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/elemem/{timestamped_dir}/eeg_archive/eeg_data.edf",
     ],
     "odin_config": [
         "data10/RAM/subjects/{subject}/behavioral/{experiment}/session_{session}/host_pc/{timestamped_dir}/config_files/{subject}_*.csv",
@@ -229,3 +241,12 @@ used_classifier_files = ("used_classifier", "excluded_pairs", "all_pairs")
 
 # All Ramulator files/directories
 ramulator_files = host_pc_files + used_classifier_files + ("ramulator_session_folder",)
+
+# All Elemem files/directories
+elemem_files = (
+    "event_log",
+    "experiment_config",
+    "raw_eeg",
+    "elemem_session_folder",
+    "archived_eeg"
+)

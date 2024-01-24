@@ -7,7 +7,7 @@ import string
 from typing import Optional
 
 from .constants import rhino_paths, localization_files, montage_files, \
-    subject_files, session_files, ramulator_files, \
+    subject_files, session_files, ramulator_files, elemem_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
 # from .warnings import MultiplePathsFoundWarning
@@ -80,6 +80,8 @@ class PathFinder(object):
 
         self._paths = rhino_paths
 
+        self.system_version = self._determine_system_version()
+
     @property
     def path_info(self):
         return self._paths
@@ -108,6 +110,21 @@ class PathFinder(object):
     def subject_files(self):
         """ All files that vary only by subject """
         return subject_files
+
+    def _determine_system_version(self):
+        elemem_wildcard = self._paths["elemem_session_folder"][0].rstrip('*')
+
+        subject_montage = self.subject
+        if self.montage != '0':
+            subject_montage = "_".join([self.subject, self.montage])
+
+        elemem_path = elemem_wildcard.format(subject=subject_montage,
+                                             experiment=self.experiment,
+                                             session=self.session)
+        if os.path.exists(os.path.join(self.rootdir, elemem_path)):
+            return 4.0
+        else:
+            return 3.0  # only 4.0 is matched on, but may want to fully implement
 
     def find(self, data_type):
         """
@@ -148,18 +165,29 @@ class PathFinder(object):
         timestamped_dir = None
 
         # Only check the host_pc folder if necessary
-        if data_type in ramulator_files:
-            folder_wildcard = self._paths['ramulator_session_folder'][0]
-            ramulator_session_folder = folder_wildcard.format(
-                subject=subject_montage, experiment=self.experiment,
-                session=self.session)
+        if data_type in ramulator_files or data_type in elemem_files:
+            if self.system_version == 4.0:       # system 4
+                folder_wildcard = self._paths['elemem_session_folder'][0]
+                elemem_session_folder = folder_wildcard.format(
+                    subject=subject_montage, experiment=self.experiment,
+                    session=self.session)
 
-            timestamped_dir = self._get_most_recent_ramulator_folder(
-                ramulator_session_folder)
+                timestamped_dir = self._get_most_recent_elemem_folder(elemem_session_folder)
 
-            # The user can also just request the folder
-            if data_type == 'ramulator_session_folder':
-                return timestamped_dir
+                if data_type == 'elemem_session_folder':
+                    return timestamped_dir
+            else:                     # system 3 (don't think will work for systems 1 and 2)
+                folder_wildcard = self._paths['ramulator_session_folder'][0]
+                ramulator_session_folder = folder_wildcard.format(
+                    subject=subject_montage, experiment=self.experiment,
+                    session=self.session)
+
+                timestamped_dir = self._get_most_recent_ramulator_folder(
+                    ramulator_session_folder)
+
+                # The user can also just request the folder
+                if data_type == 'ramulator_session_folder':
+                    return timestamped_dir
 
         expected_path = self._find_single_path(paths_to_check,
                                                protocol=self.protocol,
@@ -198,6 +226,27 @@ class PathFinder(object):
         #     )
 
         # Only return the values from the final "/" to the end
+        latest = timestamped_directories[0]
+        latest_directory = latest[latest.rfind("/") + 1:]
+
+        return latest_directory
+
+    def _get_most_recent_elemem_folder(self, base_folder_path):
+        timestamped_directories = glob.glob(os.path.join(self.rootdir, base_folder_path))
+
+        # start of directory should be subject code
+        timestamped_directories = [
+            d for d in timestamped_directories
+            if os.path.isdir(d) and os.path.basename(d)[:len(self.subject)] == self.subject
+        ]
+
+        # sort such that most recent appears first
+        timestamped_directories = sorted(timestamped_directories)[::-1]
+
+        if len(timestamped_directories) == 0:
+            raise RuntimeError("No timestamped folder found in elemem folder.")
+
+        # only return the values from the final "/" to the end
         latest = timestamped_directories[0]
         latest_directory = latest[latest.rfind("/") + 1:]
 
