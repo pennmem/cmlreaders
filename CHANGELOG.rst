@@ -1,5 +1,13 @@
 Changes
 =======
+Version 0.10.5
+-------------
+**2024-1-24**
+
+* Added system 4 files to PathFinder, including `archived_eeg` which points to replaced elemem eeg
+* Loading events and EGG will automatically modify ``session`` field to match 'session' in data index,
+  fixing issues where events dataframe contains 'original session' value
+  
 Version 0.10.4
 -------------
 **2023-8-1**
