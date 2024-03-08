@@ -1,6 +1,5 @@
 import json
 import warnings
-import os
 
 import pandas as pd
 from pandas.errors import ParserWarning
@@ -13,8 +12,6 @@ from cmlreaders.exc import (
     UnmetOptionalDependencyError,
     UnsupportedRepresentation,
 )
-from cmlreaders.path_finder import PathFinder
-from cmlreaders import constants
 
 
 class TextReader(BaseCMLReader):
@@ -231,40 +228,6 @@ class EventReader(BaseCMLReader):
             df.loc[:, "experiment"] = self.experiment
 
         return df
-    
-    # correct eegoffset values for retrieval events with unityEPL-FR bug
-    def _correct_retrieval_offsets(self, df):
-        # event types that require offset correction
-        retrieval_events = ['REC_START', 'REC_WORD', 'REC_WORD_VV', 'REC_END']
-        # load in csv with offset correction sessions
-        offset_corrections = pd.read_csv(os.path.join(self.rootdir, constants.offset_corrections[0]))
-        oc = offset_corrections[(offset_corrections['subject'] == self.subject) &
-                                (offset_corrections['experiment'] == self.experiment) &
-                                (offset_corrections['session'] == self.session)]
-        
-        # no correction necessary (TICL experiments corrections problematic)
-        if len(oc) == 0 or self.experiment == 'TICL_FR' or self.experiment == 'TICL_catFR':
-            return df
-        else:
-            ms = int(oc.offset_ms.iloc[0])                            # 1000 or 500 ms correction
-            if ms == 1000:     # don't correct REC_END for 1000 ms sessions
-                retrieval_events = retrieval_events[:-1]
-            pf = PathFinder(subject=self.subject, experiment=self.experiment, session=self.session,
-                            localization=self.localization, montage=self.montage)
-            path = pf.find('sources')
-            with open(path, 'r') as f:
-                sources = json.load(f)
-            sr = sources[list(sources.keys())[0]]['sample_rate']      # samplerate
-            samples = int((ms / 1000) * sr)                           # samples for correction
-
-            # apply offset correction to retrieval events (also adjust mstimes)
-            df['eegoffset'] = [row.eegoffset + samples if row.type in retrieval_events else
-                               row.eegoffset for _, row in df.iterrows()]
-            df['mstime'] = [row.mstime + ms if row.type in retrieval_events else
-                            row.mstime for _, row in df.iterrows()]
-            warnings.warn(f'Applying {ms} ms offset correction to retrieval events.')
-
-            return df
 
     def as_dataframe(self):
         if self.file_path.endswith(".json"):
@@ -287,14 +250,6 @@ class EventReader(BaseCMLReader):
             warnings.warn(f'Changing events session field from {df["session"].unique()[0]} ' +
                           f'to {self.session} to match data index.')
             df['session'] = self.session
-
-        # apply offset correction to retrieval events if necessary
-        df = self._correct_retrieval_offsets(df)
-
-        # sort by mstime if multiple EEG files
-        eegfiles = [x for x in df['eegfile'].unique() if x != '']
-        if len(eegfiles) > 1:
-            df = df.sort_values(['mstime', 'eegoffset'], ignore_index=True)
 
         return df
 
