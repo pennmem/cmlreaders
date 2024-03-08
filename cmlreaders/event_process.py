@@ -6,6 +6,7 @@ import warnings
 from .path_finder import PathFinder
 from . import constants
 
+
 def correct_retrieval_offsets(events, reader):
     """Correct eegoffset and mstime values for retrieval events with unityEPL-FR bug.
 
@@ -15,13 +16,13 @@ def correct_retrieval_offsets(events, reader):
         The :class: `pd.DataFrame` loaded from reader.load('events').
     reader
         The :class: `cmlreaders.CMLReader` used to load the events dataframe.
-    
+
     Returns
     -------
     events
         A :class: `pd.DataFrame` with corrected eegoffset and mstime fields,
         as necessary.
-    
+
     """
     rhino_root = '/'
     # event types that require offset correction
@@ -31,7 +32,7 @@ def correct_retrieval_offsets(events, reader):
     oc = offset_corrections[(offset_corrections['subject'] == reader.subject) &
                             (offset_corrections['experiment'] == reader.experiment) &
                             (offset_corrections['session'] == reader.session)]
-    
+
     # no correction necessary (TICL experiments corrections problematic)
     if len(oc) == 0 or reader.experiment == 'TICL_FR' or reader.experiment == 'TICL_catFR':
         return events
@@ -39,7 +40,7 @@ def correct_retrieval_offsets(events, reader):
         ms = int(oc.offset_ms.iloc[0])                            # 1000 or 500 ms correction
         if ms == 1000:     # don't correct REC_END for 1000 ms sessions
             retrieval_events = retrieval_events[:-1]
-        pf = PathFinder(subject=reader.subject, experiment=reader.experiment, 
+        pf = PathFinder(subject=reader.subject, experiment=reader.experiment,
                         session=reader.session, localization=reader.localization,
                         montage=reader.montage)
         path = pf.find('sources')
@@ -56,10 +57,11 @@ def correct_retrieval_offsets(events, reader):
         warnings.warn(f'Applying {ms} ms offset correction to retrieval events.')
 
         return events
-    
+
+
 def sort_eegfiles(events):
     """Sort events by mstime for sessions with multipl eegfile values.
-    
+
     Parameters
     ----------
     events:
@@ -72,7 +74,7 @@ def sort_eegfiles(events):
 
     """
     # find number of eegfiles, not including empty rows
-    eegfiles = [x for x in df['eegfile'].unique() if x != '']
+    eegfiles = [x for x in events['eegfile'].unique() if x != '']
     if len(eegfiles) > 1:
         events = events.sort_values(['mstime', 'eegoffset'], ignore_index=True)
         warnings.warn("Sorting events by mstime since multiple eegfile values.")
