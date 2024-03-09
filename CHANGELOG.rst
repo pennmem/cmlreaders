@@ -6,6 +6,7 @@ Version 0.10.6
 
 Added ``event_process.py``, which contains ``correct_retrieval_offsets`` and
 ``sort_eegfiles`` methods.
+
 * ``correct_retrieval_offsets`` applies corrections to ``eegoffset`` and ``mstime``
   fields of retrieval events for sessions containing unityEPL-FR bug.
 * ``sort_eegfiles`` sorts events for sessions with multiple ``eegfile`` values
