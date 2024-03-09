@@ -250,3 +250,6 @@ elemem_files = (
     "elemem_session_folder",
     "archived_eeg"
 )
+
+# Offset corrections for retrieval events
+offset_corrections = ["protocols/r1/offset_corrections.csv"]
