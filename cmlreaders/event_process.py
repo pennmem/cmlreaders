@@ -77,6 +77,6 @@ def sort_eegfiles(events):
     eegfiles = [x for x in events['eegfile'].unique() if x != '']
     if len(eegfiles) > 1:
         events = events.sort_values(['mstime', 'eegoffset'], ignore_index=True)
-        warnings.warn("Sorting events by mstime since multiple eegfile values.")
+        warnings.warn("Multiple eegfile values, sorting events by mstime.")
 
     return events

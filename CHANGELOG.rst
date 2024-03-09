@@ -1,12 +1,23 @@
 Changes
 =======
+Version 0.10.6
+-------------
+**2024-3-8**
+
+Added ``event_process.py``, which contains ``correct_retrieval_offsets`` and
+``sort_eegfiles`` methods.
+* ``correct_retrieval_offsets`` applies corrections to ``eegoffset`` and ``mstime``
+  fields of retrieval events for sessions containing unityEPL-FR bug.
+* ``sort_eegfiles`` sorts events for sessions with multiple ``eegfile`` values
+  by ``mstime``, placing the rows (and EEG files) in chronological order.
+
 Version 0.10.5
 -------------
 **2024-1-24**
 
-* Added system 4 files to PathFinder, including `archived_eeg` which points to replaced elemem eeg
+* Added system 4 files to PathFinder, including ``archived_eeg`` which points to replaced elemem eeg
 * Loading events and EGG will automatically modify ``session`` field to match 'session' in data index,
-  fixing issues where events dataframe contains 'original session' value
+  fixing issues where events dataframe contains ``original session`` value
   
 Version 0.10.4
 -------------
