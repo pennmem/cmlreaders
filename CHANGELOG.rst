@@ -1,14 +1,14 @@
 Changes
 =======
 Version 0.10.7
--------------
+--------------
 **2024-4-2**
 
 * Added ``correct_countdown_lists`` method, which applies to corrections to
   ``list`` field of countdown events for sessions containing unityEPL-FR bug.
 
 Version 0.10.6
--------------
+--------------
 **2024-3-8**
 
 Added ``event_process.py``, which contains ``correct_retrieval_offsets`` and
@@ -20,7 +20,7 @@ Added ``event_process.py``, which contains ``correct_retrieval_offsets`` and
   by ``mstime``, placing the rows (and EEG files) in chronological order.
 
 Version 0.10.5
--------------
+--------------
 **2024-1-24**
 
 * Added system 4 files to PathFinder, including ``archived_eeg`` which points to replaced elemem eeg
@@ -28,31 +28,31 @@ Version 0.10.5
   fixing issues where events dataframe contains ``original session`` value
   
 Version 0.10.4
--------------
+--------------
 **2023-8-1**
 
 * Python 3.11, non-fatal warning for negative eeg offsets, re-enable loading eeg in mne format
 
 Version 0.10.3
--------------
+--------------
 **2023-5-17**
 
 * Added functionality for loading scalp subject info (which is copied to rhino from Django each night)
 
 Version 0.10.2
--------------
+--------------
 **2022-12-1**
 
 * Added recarray backport, added an error message for empty events dataframes, and changed version number in CHANGELOG.txt for 0.10.1
 
 Version 0.10.1
--------------
+--------------
 **2021-11-4**
 
 * Bug fixes
 
 Version 0.10.0
--------------
+--------------
 **2021-11-4**
 
 * to_ptsa now stores events as a pandas MultiIndex, to match updates in PTSA v3.0.0
