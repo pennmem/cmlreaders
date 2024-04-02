@@ -123,5 +123,6 @@ def correct_countdown_lists(events, reader):
                 lst.append(row.list)
 
         events['list'] = lst                     # set 'list' field
+        warnings.warn("Correcting list values for countdown events.")
 
         return events
