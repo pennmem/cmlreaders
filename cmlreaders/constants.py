@@ -253,3 +253,6 @@ elemem_files = (
 
 # Offset corrections for retrieval events
 offset_corrections = ["protocols/r1/offset_corrections.csv"]
+
+# Countdown event list corrections
+countdown_errors = ["protocols/r1/countdown_errors.csv"]
