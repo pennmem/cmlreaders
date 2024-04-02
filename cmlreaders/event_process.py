@@ -123,5 +123,5 @@ def correct_countdown_lists(events, reader):
                 lst.append(row.list)
 
         events['list'] = lst                     # set 'list' field
-        
+
         return events
