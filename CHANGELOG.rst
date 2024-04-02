@@ -4,7 +4,7 @@ Version 0.10.7
 --------------
 **2024-4-2**
 
-* Added ``correct_countdown_lists`` method, which applies to corrections to
+* Added ``correct_countdown_lists`` method, which applies corrections to
   ``list`` field of countdown events for sessions containing unityEPL-FR bug.
 
 Version 0.10.6
