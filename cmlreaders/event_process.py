@@ -60,7 +60,7 @@ def correct_retrieval_offsets(events, reader):
 
 
 def sort_eegfiles(events):
-    """Sort events by mstime for sessions with multipl eegfile values.
+    """Sort events by mstime for sessions with multiple eegfile values.
 
     Parameters
     ----------
@@ -80,3 +80,47 @@ def sort_eegfiles(events):
         warnings.warn("Multiple eegfile values, sorting events by mstime.")
 
     return events
+
+def correct_countdown_lists(events, reader):
+    """Correct list values for countdown events with unityEPL-FR bug.
+
+    Parameters
+    __________
+    events
+        The :class: `pd.DataFrame` loaded from reader.load('events').
+    reader
+        The :class: `cmlreaders.CMLReader` used to load the events dataframe.
+
+    Returns
+    -------
+    events
+        A :class: `pd.DataFrame` with corrected list fields for countdown 
+        events, as necessary.
+
+    """
+    rhino_root = '/'
+    # load in csv with countdown error sessions
+    countdown_errors = pd.read_csv(os.path.join(rhino_root, constants.countdown_errors[0]))
+    cde = countdown_errors[(countdown_errors['subject'] == reader.subject) &
+                           (countdown_errors['experiment'] == reader.experiment) &
+                           (countdown_errors['session'] == reader.session)]
+    
+    # no correction necessary
+    if len(cde) == 0:
+        return events
+    else:
+        lst = []                                # list value for each event
+        counter = 0                             # count of countdown events
+        for _, row in events.iterrows():
+            if row.type in ['COUNTDOWN_START', 'COUNTDOWN_END'] and row.list != -999:
+                if counter >= 2:                # already two list 1 countdown events
+                    lst.append(row.list + 1)
+                else:
+                    lst.append(row.list)
+                counter += 1
+            else:
+                lst.append(row.list)
+
+        events['list'] = lst                     # set 'list' field
+        
+        return events
