@@ -81,6 +81,7 @@ def sort_eegfiles(events):
 
     return events
 
+
 def correct_countdown_lists(events, reader):
     """Correct list values for countdown events with unityEPL-FR bug.
 
@@ -94,7 +95,7 @@ def correct_countdown_lists(events, reader):
     Returns
     -------
     events
-        A :class: `pd.DataFrame` with corrected list fields for countdown 
+        A :class: `pd.DataFrame` with corrected list fields for countdown
         events, as necessary.
 
     """
@@ -104,7 +105,7 @@ def correct_countdown_lists(events, reader):
     cde = countdown_errors[(countdown_errors['subject'] == reader.subject) &
                            (countdown_errors['experiment'] == reader.experiment) &
                            (countdown_errors['session'] == reader.session)]
-    
+
     # no correction necessary
     if len(cde) == 0:
         return events
