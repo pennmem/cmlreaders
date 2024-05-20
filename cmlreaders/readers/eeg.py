@@ -289,10 +289,15 @@ class SplitEEGReader(BaseEEGReader):
         #       {epoch[1]} < length {len(mmap)}"
         #        assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0],
         #           f"epoch difference not equal to length of mmap {len(mmap)}"
-
-        data = np.array(
-            [[mmap[epoch[0] : epoch[1]] for mmap in memmaps] for epoch in self.epochs]
-        )
+        try:
+            data = np.array(
+                [[mmap[epoch[0] : epoch[1]] for mmap in memmaps] for epoch in self.epochs]
+            )
+        except ValueError:  # requesting event-epoched data beyond final sample of EEG
+            raise exc.MissingDataError(
+                "Unable to load EEG for some events because rel_stop parameter is " +
+                "beyond final sample of EEG recording."
+            )
 
         return data, contacts
 
