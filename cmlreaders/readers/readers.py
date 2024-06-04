@@ -1,5 +1,6 @@
 import json
 import warnings
+import os
 
 import pandas as pd
 from pandas.errors import ParserWarning
@@ -226,6 +227,27 @@ class EventReader(BaseCMLReader):
         # ensure we have an experiment column
         if "experiment" not in df:
             df.loc[:, "experiment"] = self.experiment
+
+        # pyFR read math events
+        if self.experiment == 'pyFR':
+            math_toggle = False
+            if self.montage != 0:
+                fpath = f'/data/events/pyFR/{self.subject}_{self.montage}_math.mat'
+                if os.path.exists(fpath):
+                    math_toggle = True
+                    math_df = pd.DataFrame(sio.loadmat(fpath, squeeze_me=True)['events'])
+            else:
+                fpath = f'/data/events/pyFR/{self.subject}_math.mat'
+                if os.path.exists(fpath):
+                    math_toggle = True
+                    math_df = pd.DataFrame(sio.loadmat(fpath, squeeze_me=True)['events'])
+
+            if math_toggle:
+                math_df = math_df[math_df['session'] == self.session]    # select out session
+                math_df = math_df[(math_df['type'] != 'B') & (math_df['type'] != 'E')]
+                math_df['list'] = math_df['list'] - 1    # math events given list + 1
+                df = pd.concat([math_df, df], ignore_index=True)
+                df = df.sort_values(by='mstime', ascending=True, ignore_index=True)
 
         return df
 

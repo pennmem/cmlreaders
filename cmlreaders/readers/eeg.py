@@ -716,6 +716,19 @@ class EEGReader(BaseCMLReader):
             if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
+                # drop events beyond bounds of EEG samples
+                n_samples = sources["n_samples"]
+                rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
+                rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
+                # only events within boundaries
+                evs = ev[(ev['eegoffset'] - rstart >= 0) & (ev['eegoffset'] + rstop <= n_samples)]
+                if len(evs) < len(ev):
+                    warnings.warn(
+                        f"Dropping {len(ev) - len(evs)} events with epochs beyond the " +
+                        "boundaries of the EEG recording."
+                    )
+                    epochs = convert.events_to_epochs(evs, rel_start, rel_stop, sample_rate)
+
                 epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
             # Scalp EEG reader requires onsets, rel_start (in sec), and rel_
