@@ -179,7 +179,7 @@ class MontageReader(BaseCMLReader):
                     df = df.merge(new_df, how='outer',
                                   left_index=True, right_index=True)
                 except BaseException as e:
-                    warnings.warn(f'Error loading column {col}.{c}: {e}.')
+                    warnings.warn(f'Error loading column {col}.{c}, omitting from dataframe.')
                     continue
 
         if hasattr(df.channel.iloc[0], "__len__"):
