@@ -10,8 +10,8 @@ pyFR loading:
 * PathFinder now searches multiple files for monpolar montage.
 * Try-except to avoid errors from missing fields in localization data.
 
-Loading EEG for event epochs beyond boundaries of EEG recording no longer raises error,
-  instead dropping unloadable epochs with a warning.
+Loading EEG for event epochs beyond boundaries of EEG recording no longer raises error, 
+instead dropping unloadable epochs with a warning.
 
 Version 0.10.7
 --------------
