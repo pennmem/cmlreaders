@@ -181,6 +181,7 @@ class MontageReader(BaseCMLReader):
                                 left_index=True, right_index=True)
                 except BaseException as e:
                     warnings.warn(f'Error loading column {col}.{c}: {e}.')
+                    continue
 
         if hasattr(df.channel.iloc[0], "__len__"):
             channels = np.array([[ch[0], ch[1]] for ch in df.pop("channel")])
