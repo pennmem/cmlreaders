@@ -164,19 +164,23 @@ class MontageReader(BaseCMLReader):
         for col in nested_cols:
             subcols = arr[col][0].dtype.names
             for c in subcols:
-                datacol = [x[c] if x.shape else x[c].item() for x in
-                           arr[col]]
-                idxs = range(len(datacol))
-                new_datacol, new_idxs = list(
-                    zip(*[(x, i) for (x, i) in zip(datacol, idxs)
-                          if (((not isinstance(x, np.ndarray))
-                              or x.size > 0) and x)])
-                )
-                new_df = pd.DataFrame(np.array(new_datacol),
-                                      index=new_idxs,
-                                      columns=['{}.{}'.format(col, c)])
-                df = df.merge(new_df, how='outer',
-                              left_index=True, right_index=True)
+                # if error for specific column, raise warning and omit column
+                try:
+                    datacol = [x[c] if x.shape else x[c].item() for x in
+                            arr[col]]
+                    idxs = range(len(datacol))
+                    new_datacol, new_idxs = list(
+                        zip(*[(x, i) for (x, i) in zip(datacol, idxs)
+                            if (((not isinstance(x, np.ndarray))
+                                or x.size > 0) and x)])
+                    )
+                    new_df = pd.DataFrame(np.array(new_datacol),
+                                        index=new_idxs,
+                                        columns=['{}.{}'.format(col, c)])
+                    df = df.merge(new_df, how='outer',
+                                left_index=True, right_index=True)
+                except BaseException as e:
+                    warnings.warn(f'Error loading column {col}.{c}: {e}.')
 
         if hasattr(df.channel.iloc[0], "__len__"):
             channels = np.array([[ch[0], ch[1]] for ch in df.pop("channel")])
