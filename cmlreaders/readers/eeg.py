@@ -289,10 +289,15 @@ class SplitEEGReader(BaseEEGReader):
         #       {epoch[1]} < length {len(mmap)}"
         #        assert len(mmap[epoch[0]:epoch[1]]) == epoch[1] - epoch[0],
         #           f"epoch difference not equal to length of mmap {len(mmap)}"
-
-        data = np.array(
-            [[mmap[epoch[0] : epoch[1]] for mmap in memmaps] for epoch in self.epochs]
-        )
+        try:
+            data = np.array(
+                [[mmap[epoch[0] : epoch[1]] for mmap in memmaps] for epoch in self.epochs]
+            )
+        except ValueError:  # requesting event-epoched data beyond final sample of EEG
+            raise exc.MissingDataError(
+                "Unable to load EEG for some events because rel_stop parameter is " +
+                "beyond final sample of EEG recording."
+            )
 
         return data, contacts
 
@@ -711,6 +716,20 @@ class EEGReader(BaseCMLReader):
             if rel_start == 0 and rel_stop == -1 and len(events) == 1:
                 epochs = [(0, None)]
             else:
+                # drop events beyond bounds of EEG samples
+                n_samples = sources["n_samples"]
+                rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
+                rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
+                # only events within boundaries
+                evs = ev[(ev['eegoffset'] - rstart >= 0) & (ev['eegoffset'] + rstop <= n_samples)]
+                if len(evs) < len(ev):
+                    drop_idx = ev.index.difference(evs.index).to_numpy()   # event indices to drop
+                    warnings.warn(
+                        f"Dropping {len(ev) - len(evs)} event(s) at index(es) {drop_idx} " +
+                        "with epochs beyond the boundaries of the EEG recording."
+                    )
+                    ev = evs             # need to store in "ev" variable
+
                 epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
             # Scalp EEG reader requires onsets, rel_start (in sec), and rel_

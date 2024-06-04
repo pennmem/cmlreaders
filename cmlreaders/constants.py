@@ -71,9 +71,11 @@ rhino_paths = {
     "contacts": [
         "protocols/{protocol}/subjects/{subject}/localizations/{localization}/montages/{montage}/neuroradiology/current_processed/contacts.json",
         "data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat",
+        "data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database.mat",
     ],
     "matlab_contacts": [
         "data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database_monopol.mat",
+        "data/eeg/{subject_montage}/tal/{subject_montage}_talLocs_database.mat",
     ],
     # Report Data
     "session_summary": [
