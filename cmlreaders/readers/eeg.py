@@ -727,7 +727,7 @@ class EEGReader(BaseCMLReader):
                         f"Dropping {len(ev) - len(evs)} events with epochs beyond the " +
                         "boundaries of the EEG recording."
                     )
-                    epochs = convert.events_to_epochs(evs, rel_start, rel_stop, sample_rate)
+                    ev = evs             # need to store in "ev" variable
 
                 epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
