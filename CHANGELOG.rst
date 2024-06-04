@@ -1,16 +1,17 @@
 Changes
 =======
-Version 0.10.8
+Version 0.11.0
 --------------
 **2024-6-4**
 
 pyFR loading:
+
 * Implemented loading of pyFR math events.
 * PathFinder now searches multiple files for monpolar montage.
 * Try-except to avoid errors from missing fields in localization data.
 
-Loading EEG for event epochs beyond boundaries of EEG recording no longer raises error,
-  instead dropping unloadable epochs with a warning.
+Loading EEG for event epochs beyond boundaries of EEG recording no longer raises error, 
+instead dropping unloadable epochs with a warning.
 
 Version 0.10.7
 --------------
