@@ -166,8 +166,7 @@ class MontageReader(BaseCMLReader):
             for c in subcols:
                 # if error for specific column, raise warning and omit column
                 try:
-                    datacol = [x[c] if x.shape else x[c].item() for x in
-                            arr[col]]
+                    datacol = [x[c] if x.shape else x[c].item() for x in arr[col]]
                     idxs = range(len(datacol))
                     new_datacol, new_idxs = list(
                         zip(*[(x, i) for (x, i) in zip(datacol, idxs)
@@ -175,10 +174,10 @@ class MontageReader(BaseCMLReader):
                                 or x.size > 0) and x)])
                     )
                     new_df = pd.DataFrame(np.array(new_datacol),
-                                        index=new_idxs,
-                                        columns=['{}.{}'.format(col, c)])
+                                          index=new_idxs,
+                                          columns=['{}.{}'.format(col, c)])
                     df = df.merge(new_df, how='outer',
-                                left_index=True, right_index=True)
+                                  left_index=True, right_index=True)
                 except BaseException as e:
                     warnings.warn(f'Error loading column {col}.{c}: {e}.')
                     continue
