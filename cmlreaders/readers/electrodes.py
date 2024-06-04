@@ -178,7 +178,7 @@ class MontageReader(BaseCMLReader):
                                           columns=['{}.{}'.format(col, c)])
                     df = df.merge(new_df, how='outer',
                                   left_index=True, right_index=True)
-                except BaseException as e:
+                except BaseException:
                     warnings.warn(f'Error loading column {col}.{c}, omitting from dataframe.')
                     continue
 
