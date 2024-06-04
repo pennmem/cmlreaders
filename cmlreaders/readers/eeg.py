@@ -723,9 +723,10 @@ class EEGReader(BaseCMLReader):
                 # only events within boundaries
                 evs = ev[(ev['eegoffset'] - rstart >= 0) & (ev['eegoffset'] + rstop <= n_samples)]
                 if len(evs) < len(ev):
+                    drop_idx = evs.index.difference(ev.index).to_numpy()   # event indices to drop
                     warnings.warn(
-                        f"Dropping {len(ev) - len(evs)} events with epochs beyond the " +
-                        "boundaries of the EEG recording."
+                        f"Dropping {len(ev) - len(evs)} event(s) at index(es) {drop_idx} " +
+                        "with epochs beyond the boundaries of the EEG recording."
                     )
                     ev = evs             # need to store in "ev" variable
 
