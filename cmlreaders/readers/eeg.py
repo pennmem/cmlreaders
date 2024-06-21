@@ -718,17 +718,19 @@ class EEGReader(BaseCMLReader):
             else:
                 # drop events beyond bounds of EEG samples
                 n_samples = sources["n_samples"]
-                rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
-                rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
-                # only events within boundaries
-                evs = ev[(ev['eegoffset'] - rstart >= 0) & (ev['eegoffset'] + rstop <= n_samples)]
-                if len(evs) < len(ev):
-                    drop_idx = ev.index.difference(evs.index).to_numpy()   # event indices to drop
-                    warnings.warn(
-                        f"Dropping {len(ev) - len(evs)} event(s) at index(es) {drop_idx} " +
-                        "with epochs beyond the boundaries of the EEG recording."
-                    )
-                    ev = evs             # need to store in "ev" variable
+                if not isinstance(n_samples, np.ndarray):         # pass if multiple EEG files
+                    rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
+                    rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
+                    # only events within boundaries
+                    evs = ev[(ev['eegoffset'] - rstart >= 0) & 
+                             (ev['eegoffset'] + rstop <= n_samples)]
+                    if len(evs) < len(ev):
+                        drop_idx = ev.index.difference(evs.index).to_numpy()   # event idx to drop
+                        warnings.warn(
+                            f"Dropping {len(ev) - len(evs)} event(s) at index(es) {drop_idx} " +
+                            "with epochs beyond the boundaries of the EEG recording."
+                        )
+                        ev = evs             # need to store in "ev" variable
 
                 epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
