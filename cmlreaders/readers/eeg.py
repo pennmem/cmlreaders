@@ -723,7 +723,7 @@ class EEGReader(BaseCMLReader):
                     rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
                     rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
                     # only events within boundaries
-                    evs = ev[(ev['eegoffset'] - rstart >= 0) & 
+                    evs = ev[(ev['eegoffset'] - rstart >= 0) &
                              (ev['eegoffset'] + rstop <= n_samples)]
                     if len(evs) < len(ev):
                         drop_idx = ev.index.difference(evs.index).to_numpy()   # event idx to drop
