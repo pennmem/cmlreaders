@@ -1,5 +1,12 @@
 Changes
 =======
+Version 0.11.1
+--------------
+**2024-6-21**
+
+* Patch to avoid error when loading EEG for sessions with multiple EEG files.  Toggle off 
+  event-epoch EEG boundary checks.
+
 Version 0.11.0
 --------------
 **2024-6-4**
