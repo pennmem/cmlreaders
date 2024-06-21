@@ -295,8 +295,9 @@ class SplitEEGReader(BaseEEGReader):
             )
         except ValueError:  # requesting event-epoched data beyond final sample of EEG
             raise exc.MissingDataError(
-                "Unable to load EEG for some events because rel_stop parameter is " +
-                "beyond final sample of EEG recording."
+                "Unable to load EEG for some events because rel_start or rel_stop parameter " +
+                "is beyond the first or last sample of the EEG recording.  Try loading EEG " +
+                "again after dropping the first or last event(s)."
             )
 
         return data, contacts
