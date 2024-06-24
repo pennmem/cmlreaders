@@ -733,6 +733,11 @@ class EEGReader(BaseCMLReader):
                         )
                         ev = evs             # need to store in "ev" variable
 
+                if len(evs) == 0:
+                    raise exc.MissingDataError(
+                        "Unable to load EEG for all events because rel_start or rel_stop parameter " +
+                        "is beyond the first or last sample of the EEG recording."
+                    )
                 epochs = convert.events_to_epochs(ev, rel_start, rel_stop, sample_rate)
 
             # Scalp EEG reader requires onsets, rel_start (in sec), and rel_
