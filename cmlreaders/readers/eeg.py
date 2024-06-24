@@ -207,7 +207,7 @@ class BaseEEGReader(ABC):
         if self.scheme_type == "pairs":
             contact_1_to_index_df = pd.DataFrame({'contact_1': info}).reset_index()
             contact_2_to_index_df = pd.DataFrame({'contact_2': info}).reset_index()
-            pairs_to_index_df = pairs.merge(contact_1_to_index_df).merge(contact_2_to_index_df, on='contact_2', suffixes=('_1', '_2'))
+            pairs_to_index_df = self.scheme.merge(contact_1_to_index_df).merge(contact_2_to_index_df, on='contact_2', suffixes=('_1', '_2'))
             c1 = pairs_to_index_df["index_1"]
             c2 = pairs_to_index_df["index_2"]
 
@@ -359,7 +359,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible or self.scheme_type == "contacts":
             return BaseEEGReader.rereference(self, data, contacts)
 
-        with h5py.File(filename, "r") as hfile:
+        with h5py.File(self.filename, "r") as hfile:
             bpinfo = hfile["bipolar_info"]
             bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
                                       'ch1_label': bpinfo["ch1_label"][:].astype(int),
