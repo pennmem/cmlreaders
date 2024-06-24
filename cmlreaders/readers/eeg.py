@@ -360,14 +360,15 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
         with h5py.File(self.filename, "r") as hfile:
             bpinfo = hfile["bipolar_info"]
-            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
+            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
                                       'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                       'contact_name': bpinfo["contact_name"][:]}).reset_index()
-        
-        pairs_bpinfo_all_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'], 
-            left_on=['contact_1', 'contact_2'], how='left', indicator=True)
+
+        pairs_bpinfo_all_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'],
+                                                left_on=['contact_1', 'contact_2'], how='left', 
+                                                indicator=True)
         # only use pairs that are in the scheme and the actual recording
-        pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"') 
+        pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
         labels = pairs_bpinfo_df['label'].tolist()
         channel_inds = pairs_bpinfo_df['index'].tolist()
 
