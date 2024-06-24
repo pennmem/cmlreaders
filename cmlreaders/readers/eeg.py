@@ -366,7 +366,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
         
         pairs_bpinfo_all_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'], 
             left_on=['contact_1', 'contact_2'], how='left', indicator=True)
-        pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"') # only use pairs that are in the scheme and the actual recording
+        # only use pairs that are in the scheme and the actual recording
+        pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"') 
         labels = pairs_bpinfo_df['label'].tolist()
         channel_inds = pairs_bpinfo_df['index'].tolist()
 
