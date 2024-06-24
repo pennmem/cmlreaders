@@ -205,21 +205,16 @@ class BaseEEGReader(ABC):
         contact_to_index = {c: i for i, c in enumerate(contacts)}
 
         if self.scheme_type == "pairs":
-            c1 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_1"]
-                if c in contact_to_index
-            ]
-            c2 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_2"]
-                if c in contact_to_index
-            ]
+            contact_1_to_index_df = pd.DataFrame({'contact_1': info}).reset_index()
+            contact_2_to_index_df = pd.DataFrame({'contact_2': info}).reset_index()
+            pairs_to_index_df = pairs.merge(contact_1_to_index_df).merge(contact_2_to_index_df, on='contact_2', suffixes=('_1', '_2'))
+            c1 = pairs_to_index_df["index_1"]
+            c2 = pairs_to_index_df["index_2"]
 
             reref = np.array(
                 [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
             )
-            return reref, self.scheme["label"].tolist()
+            return reref, pairs_to_index_df["label"].tolist()
         else:
             channels = [contact_to_index[c] for c in self.scheme["contact"]]
             subset = np.array([data[i, channels, :] for i in range(data.shape[0])])
@@ -364,55 +359,29 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible or self.scheme_type == "contacts":
             return BaseEEGReader.rereference(self, data, contacts)
 
-        with h5py.File(self.filename, "r") as hfile:
+        with h5py.File(filename, "r") as hfile:
             bpinfo = hfile["bipolar_info"]
-            all_nums = [
-                (int(a), int(b))
-                for (a, b) in zip(bpinfo["ch0_label"][:], bpinfo["ch1_label"][:])
-            ]
-            # added this to filter the montage, removing dupes
-            # in the same way as above in the read() function
-            idxs = np.empty(len(all_nums), dtype=bool)
-            idxs.fill(True)
-            for i, pair in enumerate(all_nums):
-                if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
-                    idxs[i] = False
-            all_nums = list(compress(all_nums, idxs))
+            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
+                                      'ch1_label': bpinfo["ch1_label"][:].astype(int),
+                                      'contact_name': bpinfo["contact_name"][:]}).reset_index()
+        pairs_bpinfo_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'], left_on=['contact_1', 'contact_2'], how='left', indicator=True)
+        labels = pairs_bpinfo_df['label'].tolist()
+        channel_inds = pairs_bpinfo_df['index'].tolist()
 
-        # Create a mask of channels that appear in both the passed scheme and
-        # the recorded data.
-        all_nums_array = np.asarray(all_nums)
-        valid_mask = (self.scheme["contact_1"].isin(all_nums_array[:, 0])) & (
-            self.scheme["contact_2"].isin(all_nums_array[:, 1])
-        )
-
-        if not len(self.scheme[valid_mask]):
+        if not len(pairs_bpinfo_df) > 0:
             raise exc.RereferencingNotPossibleError(
                 "No channels specified in scheme are present in EEG recording"
             )
 
-        if len(self.scheme[valid_mask]) < len(self.scheme):
+        pairs_only_df = pairs_bpinfo_df.query('_merge == "left"')
+        if len(pairs_only_df) > 0:
             # Some channels included in the scheme are not present in the
             # actual recording
             msg = "The following channels are missing: {:s}".format(
-                ", ".join(self.scheme[~valid_mask]["label"])
+                ", ".join(pairs_only_df["label"])
             )
             warnings.warn(msg, MissingChannelsWarning)
 
-        # Handle missing channels
-        scheme_nums = list(
-            zip(
-                self.scheme[valid_mask]["contact_1"],
-                self.scheme[valid_mask]["contact_2"],
-            )
-        )
-        labels = self.scheme[valid_mask]["label"].tolist()
-
-        # allow a subset of channels
-        channel_inds = [
-            chan in scheme_nums or (chan[1], chan[0]) in scheme_nums
-            for chan in list(all_nums)
-        ]
         return data[:, channel_inds, :], labels
 
 
