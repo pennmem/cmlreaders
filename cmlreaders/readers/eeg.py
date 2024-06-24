@@ -20,7 +20,6 @@ from cmlreaders.path_finder import PathFinder
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
 from cmlreaders.warnings import MissingChannelsWarning
-from itertools import compress
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -202,12 +201,11 @@ class BaseEEGReader(ABC):
         be constructed manually.
 
         """
-        contact_to_index = {c: i for i, c in enumerate(contacts)}
-
         if self.scheme_type == "pairs":
-            contact_1_to_index_df = pd.DataFrame({'contact_1': info}).reset_index()
-            contact_2_to_index_df = pd.DataFrame({'contact_2': info}).reset_index()
-            pairs_to_index_df = self.scheme.merge(contact_1_to_index_df).merge(contact_2_to_index_df, on='contact_2', suffixes=('_1', '_2'))
+            contact_1_to_index_df = pd.DataFrame({'contact_1': contacts}).reset_index()
+            contact_2_to_index_df = pd.DataFrame({'contact_2': contacts}).reset_index()
+            pairs_to_index_df = self.scheme.merge(contact_1_to_index_df).merge(contact_2_to_index_df, 
+                on='contact_2', suffixes=('_1', '_2'))
             c1 = pairs_to_index_df["index_1"]
             c2 = pairs_to_index_df["index_2"]
 
@@ -364,7 +362,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
             bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
                                       'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                       'contact_name': bpinfo["contact_name"][:]}).reset_index()
-        pairs_bpinfo_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'], left_on=['contact_1', 'contact_2'], how='left', indicator=True)
+        pairs_bpinfo_df = self.scheme.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'], 
+            left_on=['contact_1', 'contact_2'], how='left', indicator=True)
         labels = pairs_bpinfo_df['label'].tolist()
         channel_inds = pairs_bpinfo_df['index'].tolist()
 
