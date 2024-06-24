@@ -725,7 +725,12 @@ class EEGReader(BaseCMLReader):
                     # only events within boundaries
                     evs = ev[(ev['eegoffset'] - rstart >= 0) &
                              (ev['eegoffset'] + rstop <= n_samples)]
-                    if len(evs) < len(ev):
+                    if len(evs) == 0:                         # raise error if all events dropped
+                        raise exc.MissingDataError(
+                            "All event epochs beyond boundaries of EEG recording, potentially " +
+                            f"due to short EEG file. EEG contains {n_samples} samples."
+                        )
+                    elif len(evs) < len(ev):
                         drop_idx = ev.index.difference(evs.index).to_numpy()   # event idx to drop
                         warnings.warn(
                             f"Dropping {len(ev) - len(evs)} event(s) at index(es) {drop_idx} " +
