@@ -370,7 +370,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
         # only use pairs that are in the scheme and the actual recording
         pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
         labels = pairs_bpinfo_df['label'].tolist()
-        channel_inds = pairs_bpinfo_df['index'].tolist()
+        channel_inds = pairs_bpinfo_df['index'].astype(int).tolist()
 
         if not len(pairs_bpinfo_df) > 0:
             raise exc.RereferencingNotPossibleError(
