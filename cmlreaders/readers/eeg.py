@@ -206,8 +206,10 @@ class BaseEEGReader(ABC):
             contact_2_to_index_df = pd.DataFrame({'contact_2': contacts}).reset_index()
             pairs_to_index_df = self.scheme.merge(contact_1_to_index_df).merge(
                 contact_2_to_index_df, on='contact_2', suffixes=('_1', '_2'))
-            c1 = pairs_to_index_df["index_1"]
-            c2 = pairs_to_index_df["index_2"]
+            #for comparison to older version
+            pairs_to_index_df = pairs_to_index_df.sort_values('pairs_index')
+            c1 = pairs_to_index_df["index_1"].tolist()
+            c2 = pairs_to_index_df["index_2"].tolist()
 
             reref = np.array(
                 [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
