@@ -317,8 +317,12 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 # Older versions of Ramulator recorded monopolar channels only
                 # and did not include a flag indicating this.
                 pass
+                # Equivalent to:
+                # self.rereferencing_possible = True
+                # Because set as true in constructor
 
             ts = hfile["/timeseries"]
+
 
             if "orient" in ts.attrs.keys() and ts.attrs["orient"] == b"row":
                 data = np.array(
@@ -329,9 +333,34 @@ class RamulatorHDF5Reader(BaseEEGReader):
                     [ts[:, epoch[0] : epoch[1]] for epoch in self.epochs]
                 )
 
-            contacts = hfile["ports"]#[idxs]
+            if self.rereferencing_possible or self.scheme_type == "contacts":
+                contacts = hfile["ports"]#[idxs]
+            else:
+                bpinfo = hfile["bipolar_info"]
+                bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
+                                          'ch1_label': bpinfo["ch1_label"][:].astype(int),
+                                          'contact_name': bpinfo["contact_name"][:]}
+                                          ).reset_index(names='bp_index')
+                pairs = self.scheme.reset_index(names='pairs_index')
+                pairs_bpinfo_all_df = pairs.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'],
+                                                  left_on=['contact_1', 'contact_2'], how='left',
+                                                  indicator=True).sort_values('pairs_index')
+                # only use pairs that are in the scheme and the actual recording
+                pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
+                contacts = pairs_bpinfo_df['label'].tolist()
+                # use bpinfo to select inds in eeg data
+                channel_inds = pairs_bpinfo_df['bp_index'].astype(int).tolist()
 
-            return data, contacts
+                pairs_only_df = pairs_bpinfo_df.query('_merge == "left"')
+                if len(pairs_only_df) > 0:
+                    # Some channels included in the scheme are not present in the
+                    # actual recording
+                    msg = "The following channels are missing: {:s}".format(
+                        ", ".join(pairs_only_df["label"])
+                    )
+                    warnings.warn(msg, MissingChannelsWarning)
+
+            return data[:, channel_inds, :], contacts
 
     def rereference(
         self, data: np.ndarray, contacts: List[int]
@@ -343,37 +372,14 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible or self.scheme_type == "contacts":
             return BaseEEGReader.rereference(self, data, contacts)
 
-        with h5py.File(self.filename, "r") as hfile:
-            bpinfo = hfile["bipolar_info"]
-            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
-                                      'ch1_label': bpinfo["ch1_label"][:].astype(int),
-                                      'contact_name': bpinfo["contact_name"][:]}).reset_index(names='bp_index')
-            
-        pairs = self.scheme.reset_index(names='pairs_index')
-        pairs_bpinfo_all_df = pairs.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'],
-                                          left_on=['contact_1', 'contact_2'], how='left',
-                                          indicator=True).sort_values('pairs_index')
-        # only use pairs that are in the scheme and the actual recording
-        pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
-        labels = pairs_bpinfo_df['label'].tolist()
-        # use bpinfo to select inds in eeg data
-        channel_inds = pairs_bpinfo_df['bp_index'].astype(int).tolist()
-
-        if not len(pairs_bpinfo_df) > 0:
+        if not len(contacts) > 0:
             raise exc.RereferencingNotPossibleError(
                 "No channels specified in scheme are present in EEG recording"
             )
 
-        pairs_only_df = pairs_bpinfo_df.query('_merge == "left"')
-        if len(pairs_only_df) > 0:
-            # Some channels included in the scheme are not present in the
-            # actual recording
-            msg = "The following channels are missing: {:s}".format(
-                ", ".join(pairs_only_df["label"])
-            )
-            warnings.warn(msg, MissingChannelsWarning)
-
-        return data[:, channel_inds, :], labels
+        # otherwise, data is already rereferenced and contacts IS labels
+        labels = contacts
+        return data, labels
 
 
 class ScalpEEGReader(BaseEEGReader):
