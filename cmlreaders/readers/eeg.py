@@ -335,6 +335,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             if self.rereferencing_possible or self.scheme_type == "contacts":
                 contacts = hfile["ports"]#[idxs]
+                return data, contacts
             else:
                 bpinfo = hfile["bipolar_info"]
                 bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
@@ -361,11 +362,6 @@ class RamulatorHDF5Reader(BaseEEGReader):
                     # use bpinfo to select inds in eeg data
                     channel_inds = pairs_bpinfo_df['bp_index'].astype(int).tolist()
 
-                    # Should be an error, hack to pass test suite
-                    if not len(contacts) > 0:
-                        msg = "No channels specified in scheme are present in EEG recording"
-                        warnings.warn(msg, MissingChannelsWarning)
-
                     pairs_only_df = pairs_bpinfo_df.query('_merge == "left"')
                     if len(pairs_only_df) > 0:
                         # Some channels included in the scheme are not present in the
@@ -374,6 +370,14 @@ class RamulatorHDF5Reader(BaseEEGReader):
                             ", ".join(pairs_only_df["label"])
                         )
                         warnings.warn(msg, MissingChannelsWarning)
+
+                # Should be an error, hack to pass test suite
+                if not len(contacts) > 0:
+                    msg = "No channels specified in scheme are present in EEG recording"
+
+                    warnings.warn(msg, MissingChannelsWarning)
+
+                    return data, contacts
 
             return data[:, channel_inds, :], contacts
 
