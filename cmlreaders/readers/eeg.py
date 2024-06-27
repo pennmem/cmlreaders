@@ -320,35 +320,16 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             ts = hfile["/timeseries"]
 
-            # Check for duplicated channels
-            if "bipolar_info" in hfile:
-                bpinfo = hfile["bipolar_info"]
-                all_nums = [
-                    (int(a), int(b))
-                    for (a, b) in list(
-                        zip(bpinfo["ch0_label"][:], bpinfo["ch1_label"][:])
-                    )
-                ]
-                idxs = np.empty(len(all_nums), dtype=bool)
-                idxs.fill(True)
-                for i, pair in enumerate(all_nums):
-                    if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
-                        idxs[i] = False
-            else:
-                idxs = np.array([True for _ in hfile["ports"]])
-            idxs = idxs.nonzero()[0]
-
-            # Only select channels we care about
             if "orient" in ts.attrs.keys() and ts.attrs["orient"] == b"row":
                 data = np.array(
-                    [ts[epoch[0] : epoch[1], idxs].T for epoch in self.epochs]
+                    [ts[epoch[0] : epoch[1], :].T for epoch in self.epochs]
                 )
             else:
                 data = np.array(
-                    [ts[idxs, epoch[0] : epoch[1]] for epoch in self.epochs]
+                    [ts[:, epoch[0] : epoch[1]] for epoch in self.epochs]
                 )
 
-            contacts = hfile["ports"][idxs]
+            contacts = hfile["ports"]#[idxs]
 
             return data, contacts
 
@@ -364,10 +345,10 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
         with h5py.File(self.filename, "r") as hfile:
             bpinfo = hfile["bipolar_info"]
-            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
+            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
                                       'ch1_label': bpinfo["ch1_label"][:].astype(int),
-                                      'contact_name': bpinfo["contact_name"][:]}).reset_index()
-
+                                      'contact_name': bpinfo["contact_name"][:]}).reset_index(names='bp_index')
+            
         pairs = self.scheme.reset_index(names='pairs_index')
         pairs_bpinfo_all_df = pairs.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'],
                                           left_on=['contact_1', 'contact_2'], how='left',
@@ -375,7 +356,8 @@ class RamulatorHDF5Reader(BaseEEGReader):
         # only use pairs that are in the scheme and the actual recording
         pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
         labels = pairs_bpinfo_df['label'].tolist()
-        channel_inds = pairs_bpinfo_df['pairs_index'].astype(int).tolist()
+        # use bpinfo to select inds in eeg data
+        channel_inds = pairs_bpinfo_df['bp_index'].astype(int).tolist()
 
         if not len(pairs_bpinfo_df) > 0:
             raise exc.RereferencingNotPossibleError(
