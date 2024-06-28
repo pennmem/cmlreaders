@@ -208,8 +208,8 @@ class BaseEEGReader(ABC):
             bp_pairs = self.scheme.reset_index(names='pairs_index')
             bp_pairs_to_index_df = bp_pairs.merge(contact_1_to_index_df
                                                   ).merge(contact_2_to_index_df,
-                                                         on='contact_2', suffixes=('_1', '_2')
-                                                         ).sort_values('pairs_index')
+                                                          on='contact_2', suffixes=('_1', '_2')
+                                                          ).sort_values('pairs_index')
             c1 = bp_pairs_to_index_df["index_1"].tolist()
             c2 = bp_pairs_to_index_df["index_2"].tolist()
 
