@@ -334,7 +334,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 )
 
             if self.rereferencing_possible or self.scheme_type == "contacts":
-                contacts = hfile["ports"]#[idxs]
+                contacts = hfile["ports"][:]#[idxs]
                 return data, contacts
             else:
                 bpinfo = hfile["bipolar_info"]
