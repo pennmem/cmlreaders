@@ -336,13 +336,13 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 contacts = hfile["ports"][:]
                 return data, contacts
 
-            elif self.scheme_type == 'pairs':
-                bpinfo = hfile["bipolar_info"]
-                bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
-                                          'ch1_label': bpinfo["ch1_label"][:].astype(int),
-                                          'contact_name': bpinfo["contact_name"][:]}
-                                          ).reset_index(names='bp_index')
-                
+            bpinfo = hfile["bipolar_info"]
+            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
+                                      'ch1_label': bpinfo["ch1_label"][:].astype(int),
+                                      'contact_name': bpinfo["contact_name"][:]}
+                                      ).reset_index(names='bp_index')
+
+            if self.scheme_type == 'pairs':
                 bp_pairs = self.scheme.reset_index(names='pairs_index')
                 bp_pairs_bpinfo_all_df = bp_pairs.merge(bpinfo_df,
                                                         right_on=['ch0_label', 'ch1_label'],
