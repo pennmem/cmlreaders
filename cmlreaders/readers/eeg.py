@@ -204,18 +204,18 @@ class BaseEEGReader(ABC):
         if self.scheme_type == "pairs":
             contact_1_to_index_df = pd.DataFrame({'contact_1': contacts}).reset_index()
             contact_2_to_index_df = pd.DataFrame({'contact_2': contacts}).reset_index()
-            pairs = self.scheme.reset_index(names='pairs_index')
-            pairs_to_index_df = pairs.merge(contact_1_to_index_df
-                                            ).merge(contact_2_to_index_df,
-                                                    on='contact_2', suffixes=('_1', '_2')
-                                                    ).sort_values('pairs_index')
-            c1 = pairs_to_index_df["index_1"].tolist()
-            c2 = pairs_to_index_df["index_2"].tolist()
+            bp_pairs = self.scheme.reset_index(names='pairs_index')
+            bp_pairs_to_index_df = bp_pairs.merge(contact_1_to_index_df
+                                                  ).merge(contact_2_to_index_df,
+                                                          on='contact_2', suffixes=('_1', '_2')
+                                                          ).sort_values('pairs_index')
+            c1 = bp_pairs_to_index_df["index_1"].tolist()
+            c2 = bp_pairs_to_index_df["index_2"].tolist()
 
             reref = np.array(
                 [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
             )
-            return reref, pairs_to_index_df["label"].tolist()
+            return reref, bp_pairs_to_index_df["label"].tolist()
         else:
             contact_to_index = {c: i for i, c in enumerate(contacts)}
             channels = [contact_to_index[c] for c in self.scheme["contact"]]
@@ -335,53 +335,52 @@ class RamulatorHDF5Reader(BaseEEGReader):
             if self.rereferencing_possible or self.scheme_type == "contacts":
                 contacts = hfile["ports"][:]
                 return data, contacts
-            else:
+
+            elif self.scheme_type == 'pairs':
                 bpinfo = hfile["bipolar_info"]
                 bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
                                           'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                           'contact_name': bpinfo["contact_name"][:]}
                                           ).reset_index(names='bp_index')
+                
+                bp_pairs = self.scheme.reset_index(names='pairs_index')
+                bp_pairs_bpinfo_all_df = bp_pairs.merge(bpinfo_df,
+                                                        right_on=['ch0_label', 'ch1_label'],
+                                                        left_on=['contact_1', 'contact_2'],
+                                                        how='left',
+                                                        indicator=True).sort_values('pairs_index')
+                # only use pairs that are in the scheme and the actual recording
+                bp_pairs_bpinfo_df = bp_pairs_bpinfo_all_df.query('_merge == "both"')
+                contacts = bp_pairs_bpinfo_df['label'].tolist()
+                # use bpinfo to select inds in eeg data
+                channel_inds = bp_pairs_bpinfo_df['bp_index'].astype(int).tolist()
 
-                # hack to pass test suite
-                if self.scheme_type != "pairs":
-                    bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']],
-                                                            axis=1)
-                    bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']],
-                                                            axis=1)
-                    bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'],
-                                              inplace=True)
-                    contacts = bpinfo_df['contact_name'].tolist()
-                    # use bpinfo to select inds in eeg data
-                    channel_inds = bpinfo_df['bp_index'].astype(int).tolist()
-                else:
-                    pairs = self.scheme.reset_index(names='pairs_index')
-                    pairs_bpinfo_all_df = pairs.merge(bpinfo_df,
-                                                      right_on=['ch0_label', 'ch1_label'],
-                                                      left_on=['contact_1', 'contact_2'],
-                                                      how='left',
-                                                      indicator=True).sort_values('pairs_index')
-                    # only use pairs that are in the scheme and the actual recording
-                    pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
-                    contacts = pairs_bpinfo_df['label'].tolist()
-                    # use bpinfo to select inds in eeg data
-                    channel_inds = pairs_bpinfo_df['bp_index'].astype(int).tolist()
-
-                    pairs_only_df = pairs_bpinfo_df.query('_merge == "left"')
-                    if len(pairs_only_df) > 0:
-                        # Some channels included in the scheme are not present in the
-                        # actual recording
-                        msg = "The following channels are missing: {:s}".format(
-                            ", ".join(pairs_only_df["label"])
-                        )
-                        warnings.warn(msg, MissingChannelsWarning)
-
-                # Should be an error, hack to pass test suite
-                if not len(contacts) > 0:
-                    msg = "No channels specified in scheme are present in EEG recording"
-
+                bp_pairs_only_df = bp_pairs_bpinfo_df.query('_merge == "left"')
+                if len(bp_pairs_only_df) > 0:
+                    # Some channels included in the scheme are not present in the
+                    # actual recording
+                    msg = "The following channels are missing: {:s}".format(
+                        ", ".join(bp_pairs_only_df["label"])
+                    )
                     warnings.warn(msg, MissingChannelsWarning)
 
-                    return data, contacts
+            else:      # scheme = None, still drop duplicates
+                bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']],
+                                                        axis=1)
+                bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']],
+                                                        axis=1)
+                bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'],
+                                          inplace=True)
+                contacts = bpinfo_df['contact_name'].tolist()
+                # use bpinfo to select inds in eeg data
+                channel_inds = bpinfo_df['bp_index'].astype(int).tolist()
+
+            # Should be an error, hack to pass test suite
+            if not len(contacts) > 0:
+                msg = "No channels specified in scheme are present in EEG recording"
+                warnings.warn(msg, MissingChannelsWarning)
+
+                return data, contacts
 
             return data[:, channel_inds, :], contacts
 
