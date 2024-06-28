@@ -340,7 +340,7 @@ class RamulatorHDF5Reader(BaseEEGReader):
             bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
                                       'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                       'contact_name': bpinfo["contact_name"][:]}
-                                      ).reset_index(names='bp_index')
+                                     ).reset_index(names='bp_index')
 
             if self.scheme_type == 'pairs':
                 bp_pairs = self.scheme.reset_index(names='pairs_index')
