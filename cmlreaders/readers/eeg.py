@@ -202,25 +202,23 @@ class BaseEEGReader(ABC):
         be constructed manually.
 
         """
-        contact_to_index = {c: i for i, c in enumerate(contacts)}
-
         if self.scheme_type == "pairs":
-            c1 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_1"]
-                if c in contact_to_index
-            ]
-            c2 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_2"]
-                if c in contact_to_index
-            ]
+            contact_1_to_index_df = pd.DataFrame({'contact_1': contacts}).reset_index()
+            contact_2_to_index_df = pd.DataFrame({'contact_2': contacts}).reset_index()
+            bp_pairs = self.scheme.reset_index(names='pairs_index')
+            bp_pairs_to_index_df = bp_pairs.merge(contact_1_to_index_df
+                                                  ).merge(contact_2_to_index_df,
+                                                         on='contact_2', suffixes=('_1', '_2')
+                                                         ).sort_values('pairs_index')
+            c1 = bp_pairs_to_index_df["index_1"].tolist()
+            c2 = bp_pairs_to_index_df["index_2"].tolist()
 
             reref = np.array(
                 [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
             )
-            return reref, self.scheme["label"].tolist()
+            return reref, bp_pairs_to_index_df["label"].tolist()
         else:
+            contact_to_index = {c: i for i, c in enumerate(contacts)}
             channels = [contact_to_index[c] for c in self.scheme["contact"]]
             subset = np.array([data[i, channels, :] for i in range(data.shape[0])])
             return subset, self.scheme["label"].tolist()
