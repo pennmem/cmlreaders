@@ -323,7 +323,6 @@ class RamulatorHDF5Reader(BaseEEGReader):
 
             ts = hfile["/timeseries"]
 
-
             if "orient" in ts.attrs.keys() and ts.attrs["orient"] == b"row":
                 data = np.array(
                     [ts[epoch[0] : epoch[1], :].T for epoch in self.epochs]
@@ -334,27 +333,32 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 )
 
             if self.rereferencing_possible or self.scheme_type == "contacts":
-                contacts = hfile["ports"][:]#[idxs]
+                contacts = hfile["ports"][:]
                 return data, contacts
             else:
                 bpinfo = hfile["bipolar_info"]
-                bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int), 
+                bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
                                           'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                           'contact_name': bpinfo["contact_name"][:]}
-                                          ).reset_index(names='bp_index')
-                
+                                        ).reset_index(names='bp_index')
+
                 # hack to pass test suite
                 if self.scheme_type != "pairs":
-                    bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']], axis=1)
-                    bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']], axis=1)
-                    bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'], inplace=True)
+                    bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']], 
+                                                            axis=1)
+                    bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']], 
+                                                            axis=1)
+                    bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'], 
+                                              inplace=True)
                     contacts = bpinfo_df['contact_name'].tolist()
                     # use bpinfo to select inds in eeg data
                     channel_inds = bpinfo_df['bp_index'].astype(int).tolist()
                 else:
                     pairs = self.scheme.reset_index(names='pairs_index')
-                    pairs_bpinfo_all_df = pairs.merge(bpinfo_df, right_on=['ch0_label', 'ch1_label'],
-                                                      left_on=['contact_1', 'contact_2'], how='left',
+                    pairs_bpinfo_all_df = pairs.merge(bpinfo_df, 
+                                                      right_on=['ch0_label', 'ch1_label'],
+                                                      left_on=['contact_1', 'contact_2'], 
+                                                      how='left',
                                                       indicator=True).sort_values('pairs_index')
                     # only use pairs that are in the scheme and the actual recording
                     pairs_bpinfo_df = pairs_bpinfo_all_df.query('_merge == "both"')
