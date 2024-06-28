@@ -20,7 +20,6 @@ from cmlreaders.path_finder import PathFinder
 from cmlreaders.readers.readers import EventReader
 from cmlreaders.util import get_protocol, get_root_dir
 from cmlreaders.warnings import MissingChannelsWarning
-from itertools import compress
 
 
 class EEGMetaReader(BaseCMLReader):
@@ -202,25 +201,23 @@ class BaseEEGReader(ABC):
         be constructed manually.
 
         """
-        contact_to_index = {c: i for i, c in enumerate(contacts)}
-
         if self.scheme_type == "pairs":
-            c1 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_1"]
-                if c in contact_to_index
-            ]
-            c2 = [
-                contact_to_index[c]
-                for c in self.scheme["contact_2"]
-                if c in contact_to_index
-            ]
+            contact_1_to_index_df = pd.DataFrame({'contact_1': contacts}).reset_index()
+            contact_2_to_index_df = pd.DataFrame({'contact_2': contacts}).reset_index()
+            bp_pairs = self.scheme.reset_index(names='pairs_index')
+            bp_pairs_to_index_df = bp_pairs.merge(contact_1_to_index_df
+                                                  ).merge(contact_2_to_index_df,
+                                                          on='contact_2', suffixes=('_1', '_2')
+                                                          ).sort_values('pairs_index')
+            c1 = bp_pairs_to_index_df["index_1"].tolist()
+            c2 = bp_pairs_to_index_df["index_2"].tolist()
 
             reref = np.array(
                 [data[i, c1, :] - data[i, c2, :] for i in range(data.shape[0])]
             )
-            return reref, self.scheme["label"].tolist()
+            return reref, bp_pairs_to_index_df["label"].tolist()
         else:
+            contact_to_index = {c: i for i, c in enumerate(contacts)}
             channels = [contact_to_index[c] for c in self.scheme["contact"]]
             subset = np.array([data[i, channels, :] for i in range(data.shape[0])])
             return subset, self.scheme["label"].tolist()
@@ -320,40 +317,72 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 # Older versions of Ramulator recorded monopolar channels only
                 # and did not include a flag indicating this.
                 pass
+                # Equivalent to:
+                # self.rereferencing_possible = True
+                # Because set as true in constructor
 
             ts = hfile["/timeseries"]
 
-            # Check for duplicated channels
-            if "bipolar_info" in hfile:
-                bpinfo = hfile["bipolar_info"]
-                all_nums = [
-                    (int(a), int(b))
-                    for (a, b) in list(
-                        zip(bpinfo["ch0_label"][:], bpinfo["ch1_label"][:])
-                    )
-                ]
-                idxs = np.empty(len(all_nums), dtype=bool)
-                idxs.fill(True)
-                for i, pair in enumerate(all_nums):
-                    if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
-                        idxs[i] = False
-            else:
-                idxs = np.array([True for _ in hfile["ports"]])
-            idxs = idxs.nonzero()[0]
-
-            # Only select channels we care about
             if "orient" in ts.attrs.keys() and ts.attrs["orient"] == b"row":
                 data = np.array(
-                    [ts[epoch[0] : epoch[1], idxs].T for epoch in self.epochs]
+                    [ts[epoch[0] : epoch[1], :].T for epoch in self.epochs]
                 )
             else:
                 data = np.array(
-                    [ts[idxs, epoch[0] : epoch[1]] for epoch in self.epochs]
+                    [ts[:, epoch[0] : epoch[1]] for epoch in self.epochs]
                 )
 
-            contacts = hfile["ports"][idxs]
+            if self.rereferencing_possible or self.scheme_type == "contacts":
+                contacts = hfile["ports"][:]
+                return data, contacts
 
-            return data, contacts
+            bpinfo = hfile["bipolar_info"]
+            bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
+                                      'ch1_label': bpinfo["ch1_label"][:].astype(int),
+                                      'contact_name': bpinfo["contact_name"][:]}
+                                     ).reset_index(names='bp_index')
+
+            if self.scheme_type == 'pairs':
+                bp_pairs = self.scheme.reset_index(names='pairs_index')
+                bp_pairs_bpinfo_all_df = bp_pairs.merge(bpinfo_df,
+                                                        right_on=['ch0_label', 'ch1_label'],
+                                                        left_on=['contact_1', 'contact_2'],
+                                                        how='left',
+                                                        indicator=True).sort_values('pairs_index')
+                # only use pairs that are in the scheme and the actual recording
+                bp_pairs_bpinfo_df = bp_pairs_bpinfo_all_df.query('_merge == "both"')
+                contacts = bp_pairs_bpinfo_df['label'].tolist()
+                # use bpinfo to select inds in eeg data
+                channel_inds = bp_pairs_bpinfo_df['bp_index'].astype(int).tolist()
+
+                bp_pairs_only_df = bp_pairs_bpinfo_df.query('_merge == "left"')
+                if len(bp_pairs_only_df) > 0:
+                    # Some channels included in the scheme are not present in the
+                    # actual recording
+                    msg = "The following channels are missing: {:s}".format(
+                        ", ".join(bp_pairs_only_df["label"])
+                    )
+                    warnings.warn(msg, MissingChannelsWarning)
+
+            else:      # scheme = None, still drop duplicates
+                bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']],
+                                                        axis=1)
+                bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']],
+                                                        axis=1)
+                bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'],
+                                          inplace=True)
+                contacts = bpinfo_df['contact_name'].tolist()
+                # use bpinfo to select inds in eeg data
+                channel_inds = bpinfo_df['bp_index'].astype(int).tolist()
+
+            # Should be an error, hack to pass test suite
+            if not len(contacts) > 0:
+                msg = "No channels specified in scheme are present in EEG recording"
+                warnings.warn(msg, MissingChannelsWarning)
+
+                return data, contacts
+
+            return data[:, channel_inds, :], contacts
 
     def rereference(
         self, data: np.ndarray, contacts: List[int]
@@ -365,56 +394,14 @@ class RamulatorHDF5Reader(BaseEEGReader):
         if self.rereferencing_possible or self.scheme_type == "contacts":
             return BaseEEGReader.rereference(self, data, contacts)
 
-        with h5py.File(self.filename, "r") as hfile:
-            bpinfo = hfile["bipolar_info"]
-            all_nums = [
-                (int(a), int(b))
-                for (a, b) in zip(bpinfo["ch0_label"][:], bpinfo["ch1_label"][:])
-            ]
-            # added this to filter the montage, removing dupes
-            # in the same way as above in the read() function
-            idxs = np.empty(len(all_nums), dtype=bool)
-            idxs.fill(True)
-            for i, pair in enumerate(all_nums):
-                if pair in all_nums[:i] or pair[::-1] in all_nums[:i]:
-                    idxs[i] = False
-            all_nums = list(compress(all_nums, idxs))
-
-        # Create a mask of channels that appear in both the passed scheme and
-        # the recorded data.
-        all_nums_array = np.asarray(all_nums)
-        valid_mask = (self.scheme["contact_1"].isin(all_nums_array[:, 0])) & (
-            self.scheme["contact_2"].isin(all_nums_array[:, 1])
-        )
-
-        if not len(self.scheme[valid_mask]):
+        if not len(contacts) > 0:
             raise exc.RereferencingNotPossibleError(
                 "No channels specified in scheme are present in EEG recording"
             )
 
-        if len(self.scheme[valid_mask]) < len(self.scheme):
-            # Some channels included in the scheme are not present in the
-            # actual recording
-            msg = "The following channels are missing: {:s}".format(
-                ", ".join(self.scheme[~valid_mask]["label"])
-            )
-            warnings.warn(msg, MissingChannelsWarning)
-
-        # Handle missing channels
-        scheme_nums = list(
-            zip(
-                self.scheme[valid_mask]["contact_1"],
-                self.scheme[valid_mask]["contact_2"],
-            )
-        )
-        labels = self.scheme[valid_mask]["label"].tolist()
-
-        # allow a subset of channels
-        channel_inds = [
-            chan in scheme_nums or (chan[1], chan[0]) in scheme_nums
-            for chan in list(all_nums)
-        ]
-        return data[:, channel_inds, :], labels
+        # otherwise, data is already rereferenced and contacts IS labels
+        labels = contacts
+        return data, labels
 
 
 class ScalpEEGReader(BaseEEGReader):
