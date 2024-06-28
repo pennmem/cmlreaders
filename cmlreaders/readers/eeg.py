@@ -340,24 +340,24 @@ class RamulatorHDF5Reader(BaseEEGReader):
                 bpinfo_df = pd.DataFrame({'ch0_label': bpinfo["ch0_label"][:].astype(int),
                                           'ch1_label': bpinfo["ch1_label"][:].astype(int),
                                           'contact_name': bpinfo["contact_name"][:]}
-                                        ).reset_index(names='bp_index')
+                                          ).reset_index(names='bp_index')
 
                 # hack to pass test suite
                 if self.scheme_type != "pairs":
-                    bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']], 
+                    bpinfo_df['ch0_label_ordered'] = np.min(bpinfo_df[['ch0_label', 'ch1_label']],
                                                             axis=1)
-                    bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']], 
+                    bpinfo_df['ch1_label_ordered'] = np.max(bpinfo_df[['ch0_label', 'ch1_label']],
                                                             axis=1)
-                    bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'], 
+                    bpinfo_df.drop_duplicates(subset=['ch0_label_ordered', 'ch1_label_ordered'],
                                               inplace=True)
                     contacts = bpinfo_df['contact_name'].tolist()
                     # use bpinfo to select inds in eeg data
                     channel_inds = bpinfo_df['bp_index'].astype(int).tolist()
                 else:
                     pairs = self.scheme.reset_index(names='pairs_index')
-                    pairs_bpinfo_all_df = pairs.merge(bpinfo_df, 
+                    pairs_bpinfo_all_df = pairs.merge(bpinfo_df,
                                                       right_on=['ch0_label', 'ch1_label'],
-                                                      left_on=['contact_1', 'contact_2'], 
+                                                      left_on=['contact_1', 'contact_2'],
                                                       how='left',
                                                       indicator=True).sort_values('pairs_index')
                     # only use pairs that are in the scheme and the actual recording
