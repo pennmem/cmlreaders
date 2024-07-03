@@ -3,6 +3,7 @@ Changes
 Version 0.11.3
 --------------
 **2024-7-2**
+
 * Patch to resolve error introduced by previous patch.
 
 Version 0.11.2
