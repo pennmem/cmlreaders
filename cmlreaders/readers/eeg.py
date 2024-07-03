@@ -721,7 +721,7 @@ class EEGReader(BaseCMLReader):
                 # drop events beyond bounds of EEG samples
                 n_samples = sources["n_samples"]
                 # pass if no n_samples or if multiple EEG files
-                if n_samples and not isinstance(n_samples, np.ndarray):
+                if not isinstance(n_samples, np.ndarray) and n_samples:
                     rstart = convert.milliseconds_to_samples(rel_start, sample_rate)
                     rstop = convert.milliseconds_to_samples(rel_stop, sample_rate)
                     # only events within boundaries
