@@ -1,5 +1,15 @@
 Changes
 =======
+Version 0.12.0
+--------------
+**2024-7-10**
+
+Refactoring EEG loading and re-referencing code.
+
+* Improved handling of missing channels.  Ensure montage channels exist in the EEG recording 
+  to avoid errors.
+* Improved handling of duplicate channels.
+
 Version 0.11.3
 --------------
 **2024-7-2**
