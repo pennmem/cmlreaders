@@ -1,5 +1,18 @@
 Changes
 =======
+Version 0.11.3
+--------------
+**2024-7-2**
+
+* Patch to resolve error introduced by previous patch.
+
+Version 0.11.2
+--------------
+**2024-7-2**
+
+* Patch to load EEG for pre-RAM sessions without ``n_samples`` metadata.  Toggle off
+  event-epoch EEG boundary checks.
+
 Version 0.11.1
 --------------
 **2024-6-21**
