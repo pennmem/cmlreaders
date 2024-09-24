@@ -246,6 +246,7 @@ class EventReader(BaseCMLReader):
                 math_df = math_df[math_df['session'] == self.session]    # select out session
                 math_df = math_df[(math_df['type'] != 'B') & (math_df['type'] != 'E')]
                 math_df['list'] = math_df['list'] - 1    # math events given list + 1
+                math_df['experiment'] = 'pyFR'     # math events don't have experiment field
                 df = pd.concat([math_df, df], ignore_index=True)
                 df = df.sort_values(by='mstime', ascending=True, ignore_index=True)
 
