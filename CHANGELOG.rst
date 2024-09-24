@@ -1,5 +1,11 @@
 Changes
 =======
+Version 0.12.1
+--------------
+**2024-9-24**
+
+Assigned default values to pyFR math events when loading instead of NaN.
+
 Version 0.12.0
 --------------
 **2024-7-10**
