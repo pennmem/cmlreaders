@@ -258,3 +258,7 @@ offset_corrections = ["protocols/r1/offset_corrections.csv"]
 
 # Countdown event list corrections
 countdown_errors = ["protocols/r1/countdown_errors.csv"]
+
+# data quality database
+data_quality_categories = ["protocols/r1/data_quality_categories.json"]
+data_quality_database = ['protocols/r1/data_quality_database.csv']

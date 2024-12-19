@@ -129,3 +129,30 @@ mounted:
 
 Upon completion, the coverage report will be saved into htmlcov/ in the top
 level directory of the project.
+
+
+Development
+-----------
+
+To release a new package version:
+
+1. Make and push all changes to github
+    - On development branch
+    - Update version in cmlreaders/__init__.py
+    - Update CHANGELOG.rst
+
+2. Merge pull request (do this before step 3 to release from master branch)
+
+3. ``git tag``
+    - List git tags
+
+4. ``git tag <tag_name>``
+    - Add tag to development branch
+
+5. ``git push --tags``
+    - Adds tag to most recent commit
+    - With Travis CI, should trigger a build and deployment
+
+6. On GitHub, navigate to "tags", click "...", and "create release"
+    - This is to display relase on GitHub webpage
+
