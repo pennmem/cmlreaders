@@ -3,14 +3,13 @@
 import glob
 import os
 import string
-# import warnings
+import pandas as pd
 from typing import Optional
 
 from .constants import rhino_paths, localization_files, montage_files, \
     subject_files, session_files, ramulator_files, elemem_files, \
     PYFR_SUBJECT_CODE_PREFIXES
 from .util import get_root_dir
-# from .warnings import MultiplePathsFoundWarning
 
 __all__ = ['PathFinder']
 
@@ -60,9 +59,20 @@ class PathFinder(object):
         self.rootdir = get_root_dir(rootdir)
         self.experiment = experiment
         self.session = str(session)
+        
+        # load RAM subjects collected prior (and not subsequently transferred) to cmlreaders
+        try:
+            pre_cmlreaders_index = pd.read_csv(os.path.join(self.rootdir, rhino_paths["pre_cmlreaders_ram_index"]))
+            # need to filter for experiment to not mask subjects that ran in both FR1 and pyFR
+            pre_cmlreaders_subjects = list(pre_cmlreaders_index.query("subject == @self.subject and experiment == @self.experiment").subject.unique())
+        except FileNotFoundError as e:
+            print(e)
+            pass
 
         if self.subject is None:
             self.protocol = None
+        elif self.subject in pre_cmlreaders_subjects:
+            self.protocol = "pre_cmlreaders_r1"
         elif self.subject.startswith("R1"):
             self.protocol = "r1"
         elif self.subject.startswith("FBG"):

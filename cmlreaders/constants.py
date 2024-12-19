@@ -5,6 +5,7 @@ PROTOCOLS = (
     "r1",
     "ltp",
     "pyfr",
+    "pre_cmlreaders_r1",
 )
 
 PYFR_SUBJECT_CODE_PREFIXES = ("BW", "CH", "CP", "FR", "FZ", "TJ", "UP")
@@ -16,6 +17,10 @@ rhino_paths = {
     "pyfr_index": ["data/events/pyFR/pyFR.json"],
     # root directory to look for pyFR data
     "pyfr_root": ["data/events/pyFR"],
+    # early RAM data that did not all get transferred to cmlreaders
+    # these data are loaded in formats similar to pyFR
+    "pre_cmlreaders_ram_root": ["data/events/"],
+    "pre_cmlreaders_ram_index": ["data/events/pre_cmlreaders_r1.json"],
     # Localization-level (subject + localization_
     "localization": [
         "protocols/{protocol}/subjects/{subject}/localizations/{localization}/neuroradiology/current_processed/localization.json",
@@ -98,14 +103,17 @@ rhino_paths = {
     "all_events": [
         "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/all_events.json",
         "data/events/pyFR/{subject_montage}_events.mat",
+        "data/events/{pre_cmlreaders_experiment}/{subject_montage}_events.mat",
     ],
     "task_events": [
         "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/task_events.json",
         "data/events/pyFR/{subject_montage}_events.mat",
+        "data/events/{pre_cmlreaders_experiment}/{subject_montage}_events.mat",
     ],
     "math_events": [
         "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/math_events.json",
         "data/events/pyFR/{subject_montage}_math.mat",
+        "data/events/{pre_cmlreaders_experiment}/{subject_montage}_events.mat",
     ],
     "ps4_events": [
         "protocols/{protocol}/subjects/{subject}/experiments/{experiment}/sessions/{session}/behavioral/current_processed/ps4_events.json"
