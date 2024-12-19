@@ -40,7 +40,7 @@ class data_quality_database:
 
     # initialize
     def __init__(self, categories_path=data_quality_categories, database_path=data_quality_database):
-        self.categoris_path = categories_path
+        self.categories_path = categories_path
         self.database_path = database_path
 
         # data issue categories
