@@ -142,7 +142,9 @@ To release a new package version:
     - Update version in cmlreaders/__init__.py
     - Update CHANGELOG.rst
 
-2. Merge pull request (do this before step 3 to release from master branch)
+2. Merge pull request
+    
+    - Do this before step 3 to release from master branch
 
 3. ``git tag``
 
