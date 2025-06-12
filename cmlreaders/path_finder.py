@@ -62,10 +62,11 @@ class PathFinder(object):
         
         # load RAM subjects collected prior (and not subsequently transferred) to cmlreaders
         try:
-            pre_cmlreaders_index = pd.read_csv(os.path.join(self.rootdir, rhino_paths["pre_cmlreaders_ram_index"]))
+            pre_cmlreaders_index = pd.read_csv(os.path.join(self.rootdir, rhino_paths["pre_cmlreaders_ram_index"][0]))
             # need to filter for experiment to not mask subjects that ran in both FR1 and pyFR
             pre_cmlreaders_subjects = list(pre_cmlreaders_index.query("subject == @self.subject and experiment == @self.experiment").subject.unique())
         except FileNotFoundError as e:
+            pre_cmlreaders_subjects = list()
             print(e)
             pass
 
