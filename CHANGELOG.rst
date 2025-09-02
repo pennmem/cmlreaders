@@ -1,5 +1,11 @@
 Changes
 =======
+Version 0.12.2
+--------------
+**2025-9-01**
+
+Extended rootdir functionality to event_process functions.
+
 Version 0.12.1
 --------------
 **2024-9-24**

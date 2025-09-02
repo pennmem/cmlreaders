@@ -24,7 +24,7 @@ def correct_retrieval_offsets(events, reader):
         as necessary.
 
     """
-    rhino_root = '/'
+    rhino_root = reader.rootdir
     # event types that require offset correction
     retrieval_events = ['REC_START', 'REC_WORD', 'REC_WORD_VV', 'REC_END']
     # load in csv with offset correction sessions
@@ -42,7 +42,8 @@ def correct_retrieval_offsets(events, reader):
             retrieval_events = retrieval_events[:-1]
         pf = PathFinder(subject=reader.subject, experiment=reader.experiment,
                         session=reader.session, localization=reader.localization,
-                        montage=reader.montage)
+                        montage=reader.montage,
+                        rootdir=rhino_root)
         path = pf.find('sources')
         with open(path, 'r') as f:
             sources = json.load(f)
@@ -99,7 +100,7 @@ def correct_countdown_lists(events, reader):
         events, as necessary.
 
     """
-    rhino_root = '/'
+    rhino_root = reader.rootdir
     # load in csv with countdown error sessions
     countdown_errors = pd.read_csv(os.path.join(rhino_root, constants.countdown_errors[0]))
     cde = countdown_errors[(countdown_errors['subject'] == reader.subject) &
